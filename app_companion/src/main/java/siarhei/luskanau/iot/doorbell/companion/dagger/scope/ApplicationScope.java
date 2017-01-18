@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.lamp.remote.control.dagger.scope;
+package siarhei.luskanau.iot.doorbell.companion.dagger.scope;
 
 import java.lang.annotation.Retention;
 

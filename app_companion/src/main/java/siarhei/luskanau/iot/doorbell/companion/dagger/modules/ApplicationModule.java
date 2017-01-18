@@ -1,10 +1,10 @@
-package siarhei.luskanau.iot.lamp.remote.control.dagger.modules;
+package siarhei.luskanau.iot.doorbell.companion.dagger.modules;
 
 import android.app.Application;
 
 import dagger.Module;
 import dagger.Provides;
-import siarhei.luskanau.iot.lamp.data.firebase.FirebaseImageRepository;
+import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
 import siarhei.luskanau.iot.doorbell.domain.ImageRepository;
 import siarhei.luskanau.iot.doorbell.domain.exception.ErrorMessageFactory;
 import siarhei.luskanau.iot.doorbell.domain.exception.SimpleErrorMessageFactory;
@@ -12,7 +12,7 @@ import siarhei.luskanau.iot.doorbell.domain.executor.JobExecutor;
 import siarhei.luskanau.iot.doorbell.domain.executor.PostExecutionThread;
 import siarhei.luskanau.iot.doorbell.domain.executor.ThreadExecutor;
 import siarhei.luskanau.iot.doorbell.domain.executor.UIThread;
-import siarhei.luskanau.iot.lamp.remote.control.dagger.scope.ApplicationScope;
+import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
 
 @Module
 public class ApplicationModule {
@@ -43,7 +43,7 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
-    ImageRepository provideLampRepository() {
+    ImageRepository provideImageRepository() {
         return new FirebaseImageRepository();
     }
 

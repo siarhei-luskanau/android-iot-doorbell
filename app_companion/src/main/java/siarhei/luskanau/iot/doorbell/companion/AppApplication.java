@@ -1,12 +1,12 @@
-package siarhei.luskanau.iot.lamp.remote.control;
+package siarhei.luskanau.iot.doorbell.companion;
 
 import android.app.Application;
 
 import com.squareup.leakcanary.LeakCanary;
 
-import siarhei.luskanau.iot.lamp.remote.control.dagger.component.ApplicationComponent;
-import siarhei.luskanau.iot.lamp.remote.control.dagger.component.DaggerApplicationComponent;
-import siarhei.luskanau.iot.lamp.remote.control.dagger.modules.ApplicationModule;
+import siarhei.luskanau.iot.doorbell.companion.dagger.component.ApplicationComponent;
+import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerApplicationComponent;
+import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ApplicationModule;
 
 public class AppApplication extends Application {
 

@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.lamp.data.firebase;
+package siarhei.luskanau.iot.doorbell.data.firebase;
 
 import android.util.Base64;
 

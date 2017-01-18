@@ -1,6 +1,5 @@
 <resources>
 
-    <string name="app_name">IoT Lamp Remote Control</string>
-    <string name="lamp">Lamp</string>
+    <string name="app_name">IoT Doorbell Companion</string>
 
 </resources>

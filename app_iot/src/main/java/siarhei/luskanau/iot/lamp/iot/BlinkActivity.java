@@ -17,10 +17,10 @@ import siarhei.luskanau.iot.lamp.iot.dagger.component.DaggerLampComponent;
 import siarhei.luskanau.iot.lamp.iot.dagger.component.LampComponent;
 import siarhei.luskanau.iot.doorbell.presenter.listen.ListenLampStatePresenter;
 import siarhei.luskanau.iot.doorbell.presenter.listen.ListenLampStateView;
-import siarhei.luskanau.iot.doorbell.presenter.send.SendLampStatePresenter;
-import siarhei.luskanau.iot.doorbell.presenter.send.SendLampStateView;
+import siarhei.luskanau.iot.doorbell.presenter.send.SendImagePresenter;
+import siarhei.luskanau.iot.doorbell.presenter.send.SendImageView;
 
-public class BlinkActivity extends BaseComponentActivity implements ListenLampStateView, SendLampStateView {
+public class BlinkActivity extends BaseComponentActivity implements ListenLampStateView, SendImageView {
 
     private static final String TAG = BlinkActivity.class.getSimpleName();
     private static final String GPIO_LAMP = "BCM6";
@@ -29,7 +29,7 @@ public class BlinkActivity extends BaseComponentActivity implements ListenLampSt
     @Inject
     protected ListenLampStatePresenter listenLampStatePresenter;
     @Inject
-    protected SendLampStatePresenter sendLampStatePresenter;
+    protected SendImagePresenter sendImagePresenter;
 
     private Gpio lampGpio;
     private Gpio buttonGpio;
@@ -45,14 +45,14 @@ public class BlinkActivity extends BaseComponentActivity implements ListenLampSt
         this.initializeInjector();
 
         listenLampStatePresenter.setView(this);
-        sendLampStatePresenter.setView(this);
+        sendImagePresenter.setView(this);
 
         try {
             setContentView(R.layout.activity_main);
             switchCompat = (SwitchCompat) findViewById(R.id.switchCompat);
             switchCompat.setOnClickListener(v -> {
                 boolean isChecked = switchCompat.isChecked();
-                sendLampStatePresenter.sendLampState(isChecked);
+                sendImagePresenter.sendLampState(isChecked);
             });
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -72,7 +72,7 @@ public class BlinkActivity extends BaseComponentActivity implements ListenLampSt
                         Log.i(TAG, "GPIO changed, button pressed");
                         boolean newLampState = !lampState;
                         showLampState(newLampState);
-                        sendLampStatePresenter.sendLampState(newLampState);
+                        sendImagePresenter.sendLampState(newLampState);
                     }
 
                     // Return true to continue listening to events
@@ -112,7 +112,7 @@ public class BlinkActivity extends BaseComponentActivity implements ListenLampSt
         super.onPause();
 
         listenLampStatePresenter.destroy();
-        sendLampStatePresenter.destroy();
+        sendImagePresenter.destroy();
     }
 
     @Override

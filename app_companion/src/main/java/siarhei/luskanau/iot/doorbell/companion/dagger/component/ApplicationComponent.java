@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.lamp.remote.control.dagger.component;
+package siarhei.luskanau.iot.doorbell.companion.dagger.component;
 
 import android.app.Application;
 
@@ -7,8 +7,8 @@ import siarhei.luskanau.iot.doorbell.domain.ImageRepository;
 import siarhei.luskanau.iot.doorbell.domain.exception.ErrorMessageFactory;
 import siarhei.luskanau.iot.doorbell.domain.executor.PostExecutionThread;
 import siarhei.luskanau.iot.doorbell.domain.executor.ThreadExecutor;
-import siarhei.luskanau.iot.lamp.remote.control.dagger.modules.ApplicationModule;
-import siarhei.luskanau.iot.lamp.remote.control.dagger.scope.ApplicationScope;
+import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ApplicationModule;
+import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
 
 @ApplicationScope
 @Component(modules = ApplicationModule.class)

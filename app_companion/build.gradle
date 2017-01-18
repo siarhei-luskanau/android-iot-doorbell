@@ -7,7 +7,7 @@ android {
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "siarhei.luskanau.iot.lamp.remote.control"
+        applicationId "siarhei.luskanau.iot.doorbell.companion"
         minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
         versionCode 1

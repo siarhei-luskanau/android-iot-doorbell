@@ -27,7 +27,7 @@ public class SendImageUseCase extends UseCase<Void, SendImageUseCase.Params> {
             this.imageBytes = imageBytes;
         }
 
-        public static Params forLampState(byte[] imageBytes) {
+        public static Params forImage(byte[] imageBytes) {
             return new Params(imageBytes);
         }
     }

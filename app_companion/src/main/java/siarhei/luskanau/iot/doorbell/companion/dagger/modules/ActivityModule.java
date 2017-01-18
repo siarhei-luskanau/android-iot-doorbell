@@ -1,10 +1,10 @@
-package siarhei.luskanau.iot.lamp.remote.control.dagger.modules;
+package siarhei.luskanau.iot.doorbell.companion.dagger.modules;
 
 import android.app.Activity;
 
 import dagger.Module;
 import dagger.Provides;
-import siarhei.luskanau.iot.lamp.remote.control.dagger.scope.ActivityScope;
+import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ActivityScope;
 
 @Module
 public class ActivityModule {

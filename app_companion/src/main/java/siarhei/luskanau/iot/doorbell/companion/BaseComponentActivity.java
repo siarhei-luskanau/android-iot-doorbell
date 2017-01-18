@@ -1,9 +1,9 @@
-package siarhei.luskanau.iot.lamp.remote.control;
+package siarhei.luskanau.iot.doorbell.companion;
 
 import android.support.v7.app.AppCompatActivity;
 
-import siarhei.luskanau.iot.lamp.remote.control.dagger.component.ApplicationComponent;
-import siarhei.luskanau.iot.lamp.remote.control.dagger.modules.ActivityModule;
+import siarhei.luskanau.iot.doorbell.companion.dagger.component.ApplicationComponent;
+import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ActivityModule;
 
 public class BaseComponentActivity extends AppCompatActivity {
 

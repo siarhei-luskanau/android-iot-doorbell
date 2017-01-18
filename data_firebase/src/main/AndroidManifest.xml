@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="siarhei.luskanau.iot.lamp.data.firebase">
+    package="siarhei.luskanau.iot.doorbell.data.firebase">
 
     <application android:allowBackup="true" />
 

@@ -7,25 +7,25 @@ import siarhei.luskanau.iot.doorbell.domain.interactor.DefaultObserver;
 import siarhei.luskanau.iot.doorbell.domain.interactor.SendImageUseCase;
 import siarhei.luskanau.iot.doorbell.presenter.Presenter;
 
-public class SendLampStatePresenter implements Presenter {
+public class SendImagePresenter implements Presenter {
 
     private final SendImageUseCase sendImageUseCase;
     private final ErrorMessageFactory errorMessageFactory;
-    private SendLampStateView sendLampStateView;
+    private SendImageView sendImageView;
 
-    public SendLampStatePresenter(SendImageUseCase sendImageUseCase,
-                                  ErrorMessageFactory errorMessageFactory) {
+    public SendImagePresenter(SendImageUseCase sendImageUseCase,
+                              ErrorMessageFactory errorMessageFactory) {
         this.sendImageUseCase = sendImageUseCase;
         this.errorMessageFactory = errorMessageFactory;
     }
 
-    public void setView(@NonNull SendLampStateView view) {
-        this.sendLampStateView = view;
+    public void setView(@NonNull SendImageView view) {
+        this.sendImageView = view;
     }
 
-    public void sendLampState(Boolean lampState) {
+    public void sendImage(byte[] imageBytes) {
         this.sendImageUseCase.execute(new SendLampStateObserver(),
-                SendImageUseCase.Params.forLampState(lampState));
+                SendImageUseCase.Params.forImage(imageBytes));
     }
 
     @Override
@@ -38,14 +38,14 @@ public class SendLampStatePresenter implements Presenter {
 
     public void destroy() {
         this.sendImageUseCase.dispose();
-        this.sendLampStateView = null;
+        this.sendImageView = null;
     }
 
     private final class SendLampStateObserver extends DefaultObserver<Void> {
         @Override
         public void onError(Throwable e) {
             CharSequence errorMessage = errorMessageFactory.create(e);
-            SendLampStatePresenter.this.sendLampStateView.showErrorMessage(errorMessage);
+            SendImagePresenter.this.sendImageView.showErrorMessage(errorMessage);
         }
     }
 }

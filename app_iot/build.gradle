@@ -6,7 +6,7 @@ android {
     buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "siarhei.luskanau.iot.lamp.iot"
+        applicationId "siarhei.luskanau.iot.doorbell.iot"
         minSdkVersion 24
         targetSdkVersion 24
         versionCode 1
