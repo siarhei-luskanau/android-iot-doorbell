@@ -7,6 +7,7 @@ import com.squareup.leakcanary.LeakCanary;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.ApplicationComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerApplicationComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ApplicationModule;
+import siarhei.luskanau.iot.doorbell.utils.CameraHelper;
 
 public class AppApplication extends Application {
 
@@ -17,6 +18,8 @@ public class AppApplication extends Application {
         super.onCreate();
         this.initializeInjector();
         this.initializeLeakDetection();
+
+        new CameraHelper(this).cameraInfo();
     }
 
     private void initializeInjector() {

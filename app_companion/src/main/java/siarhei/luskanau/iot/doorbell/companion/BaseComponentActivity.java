@@ -1,11 +1,9 @@
 package siarhei.luskanau.iot.doorbell.companion;
 
-import android.support.v7.app.AppCompatActivity;
-
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.ApplicationComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ActivityModule;
 
-public class BaseComponentActivity extends AppCompatActivity {
+public class BaseComponentActivity extends GrantPermissionsActivity {
 
     /**
      * Get the Main Application component for dependency injection.
