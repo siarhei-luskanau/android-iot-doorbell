@@ -1,4 +1,5 @@
 include ':domain'
 include ':data_firebase'
+include ':base_camera'
 include ':app_companion'
 include ':app_iot'

@@ -21,10 +21,9 @@ android {
 }
 
 dependencies {
-    def domainDependencies = rootProject.ext.domainDependencies
+    def baseCameraDependencies = rootProject.ext.baseCameraDependencies
 
-    compile domainDependencies.rxJava
-    compile domainDependencies.rxAndroid
-    compile domainDependencies.supportAnnotations
-    compile domainDependencies.supportCompat
+    compile project(':domain')
+
+    compile baseCameraDependencies.gson
 }

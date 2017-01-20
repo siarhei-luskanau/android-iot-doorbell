@@ -33,6 +33,7 @@ dependencies {
 
     compile project(':domain')
     compile project(':data_firebase')
+    compile project(':base_camera')
 
     annotationProcessor remoteControlDependencies.daggerCompiler
     compile remoteControlDependencies.dagger

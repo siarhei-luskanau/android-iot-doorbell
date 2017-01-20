@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.utils;
+package siarhei.luskanau.iot.doorbell.camera;
 
 import android.content.Context;
 import android.hardware.camera2.CameraAccessException;

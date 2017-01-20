@@ -6,7 +6,7 @@ import android.util.Log;
 
 import javax.inject.Inject;
 
-import siarhei.luskanau.iot.doorbell.permissions.CameraPermissionsListener;
+import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.permissions.PermissionCustomer;
 import siarhei.luskanau.iot.doorbell.permissions.PermissionsGranter;
 

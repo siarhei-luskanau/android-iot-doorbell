@@ -6,7 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import siarhei.luskanau.iot.doorbell.companion.GrantPermissionsActivity;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ActivityScope;
-import siarhei.luskanau.iot.doorbell.permissions.CameraPermissionsListener;
+import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 
 @Module
 public class ActivityModule {

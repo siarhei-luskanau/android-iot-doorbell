@@ -1,13 +1,15 @@
-package siarhei.luskanau.iot.doorbell.permissions;
+package siarhei.luskanau.iot.doorbell.camera;
 
 import android.Manifest;
+
+import siarhei.luskanau.iot.doorbell.permissions.PermissionsGranter;
+import siarhei.luskanau.iot.doorbell.permissions.PermissionsListener;
 
 public class CameraPermissionsListener extends PermissionsListener {
 
     private static final int PERMISSIONS_REQUEST_CODE = 201;
     private static final String[] PERMISSIONS = new String[]{
             Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION
     };
 
     public CameraPermissionsListener(PermissionsGranter permissionsGranter) {

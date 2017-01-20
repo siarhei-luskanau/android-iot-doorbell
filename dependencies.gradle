@@ -9,7 +9,7 @@ ext {
     ANDROID_BUILD_SDK_VERSION = 25
     ANDROID_BUILD_TARGET_SDK_VERSION = ANDROID_BUILD_SDK_VERSION
     ANDROID_BUILD_TOOLS_VERSION = "25.0.2"
-    ANDROID_BUILD_MIN_SDK_VERSION = 15
+    ANDROID_BUILD_MIN_SDK_VERSION = 21
     SUPPORT_LIBRARY_VERSION = "25.1.0"
     PLAY_SERVICES_VERSION = "10.0.1"
 
@@ -42,6 +42,10 @@ ext {
             supportDesign : "com.android.support:design:${SUPPORT_LIBRARY_VERSION}",
     ]
 
+    baseCameraDependencies = [
+            gson: "com.google.code.gson:gson:${gsonVersion}",
+    ]
+
     dataFirebaseDependencies = [
             firebaseCore      : "com.google.firebase:firebase-core:${PLAY_SERVICES_VERSION}",
             firebaseDatabase  : "com.google.firebase:firebase-database:${PLAY_SERVICES_VERSION}",
@@ -53,7 +57,6 @@ ext {
             supportCompat     : "com.android.support:support-compat:${SUPPORT_LIBRARY_VERSION}",
             rxJava            : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
             rxAndroid         : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
-            gson              : "com.google.code.gson:gson:${gsonVersion}",
     ]
 
     developmentDependencies = [

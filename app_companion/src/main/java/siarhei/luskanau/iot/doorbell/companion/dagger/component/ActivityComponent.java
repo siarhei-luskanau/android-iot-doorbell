@@ -5,8 +5,7 @@ import android.app.Activity;
 import dagger.Component;
 import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ActivityModule;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ActivityScope;
-import siarhei.luskanau.iot.doorbell.domain.ImageRepository;
-import siarhei.luskanau.iot.doorbell.permissions.CameraPermissionsListener;
+import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 
 @ActivityScope
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)

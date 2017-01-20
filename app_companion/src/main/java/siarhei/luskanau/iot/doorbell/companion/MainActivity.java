@@ -14,7 +14,6 @@ import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerImageCompo
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.ImageComponent;
 import siarhei.luskanau.iot.doorbell.presenter.send.SendImagePresenter;
 import siarhei.luskanau.iot.doorbell.presenter.send.SendImageView;
-import siarhei.luskanau.iot.doorbell.utils.CameraHelper;
 
 public class MainActivity extends BaseComponentActivity implements SendImageView {
 
@@ -30,8 +29,6 @@ public class MainActivity extends BaseComponentActivity implements SendImageView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        new CameraHelper(this).cameraInfo();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
