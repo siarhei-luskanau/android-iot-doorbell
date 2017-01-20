@@ -26,4 +26,6 @@ dependencies {
     compile domainDependencies.rxJava
     compile domainDependencies.rxAndroid
     compile domainDependencies.supportAnnotations
+    compile domainDependencies.supportCompat
+    compile domainDependencies.gson
 }

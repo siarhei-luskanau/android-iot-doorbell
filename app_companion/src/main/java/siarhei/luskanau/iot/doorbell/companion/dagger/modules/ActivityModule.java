@@ -4,14 +4,16 @@ import android.app.Activity;
 
 import dagger.Module;
 import dagger.Provides;
+import siarhei.luskanau.iot.doorbell.companion.GrantPermissionsActivity;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ActivityScope;
+import siarhei.luskanau.iot.doorbell.permissions.CameraPermissionsListener;
 
 @Module
 public class ActivityModule {
 
-    private final Activity activity;
+    private final GrantPermissionsActivity activity;
 
-    public ActivityModule(Activity activity) {
+    public ActivityModule(GrantPermissionsActivity activity) {
         this.activity = activity;
     }
 
@@ -19,5 +21,11 @@ public class ActivityModule {
     @ActivityScope
     Activity activity() {
         return this.activity;
+    }
+
+    @Provides
+    @ActivityScope
+    CameraPermissionsListener provideCameraPermissionsListener() {
+        return new CameraPermissionsListener(activity.getPermissionsGranter());
     }
 }
