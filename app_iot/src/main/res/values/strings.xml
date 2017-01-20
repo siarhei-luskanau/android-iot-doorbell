@@ -1,6 +1,5 @@
 <resources>
 
-    <string name="app_name">IoT Lamp board</string>
-    <string name="lamp">Lamp</string>
+    <string name="app_name">IoT Doorbell board</string>
 
 </resources>

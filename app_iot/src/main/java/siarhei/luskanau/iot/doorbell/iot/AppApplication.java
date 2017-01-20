@@ -11,6 +11,7 @@ import siarhei.luskanau.iot.doorbell.iot.dagger.modules.ApplicationModule;
 
 public class AppApplication extends Application {
 
+    private static final String TAG = AppApplication.class.getSimpleName();
     private ApplicationComponent applicationComponent;
 
     @Override
@@ -36,6 +37,4 @@ public class AppApplication extends Application {
             LeakCanary.install(this);
         }
     }
-
-    private static final String TAG = AppApplication.class.getSimpleName();
 }

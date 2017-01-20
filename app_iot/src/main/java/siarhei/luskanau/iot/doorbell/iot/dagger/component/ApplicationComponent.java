@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.iot.dagger.component;
 import android.app.Application;
 
 import dagger.Component;
-import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
 import siarhei.luskanau.android.framework.executor.PostExecutionThread;
 import siarhei.luskanau.android.framework.executor.ThreadExecutor;
@@ -19,8 +18,6 @@ public interface ApplicationComponent {
     ThreadExecutor threadExecutor();
 
     PostExecutionThread postExecutionThread();
-
-    ImageRepository lampRepository();
 
     ErrorMessageFactory errorMessageFactory();
 }

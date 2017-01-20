@@ -4,11 +4,4 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/switchCompat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/lamp" />
-
 </LinearLayout>

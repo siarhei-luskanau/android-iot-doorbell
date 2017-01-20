@@ -4,8 +4,6 @@ import android.app.Application;
 
 import dagger.Module;
 import dagger.Provides;
-import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
-import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
 import siarhei.luskanau.android.framework.exception.SimpleErrorMessageFactory;
 import siarhei.luskanau.android.framework.executor.JobExecutor;
@@ -39,12 +37,6 @@ public class ApplicationModule {
     @ApplicationScope
     PostExecutionThread providePostExecutionThread() {
         return new UIThread();
-    }
-
-    @Provides
-    @ApplicationScope
-    ImageRepository provideLampRepository() {
-        return new FirebaseImageRepository();
     }
 
     @Provides

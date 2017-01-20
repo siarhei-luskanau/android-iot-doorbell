@@ -30,9 +30,7 @@ dependencies {
     def iotDependencies = rootProject.ext.iotDependencies
     def developmentDependencies = rootProject.ext.developmentDependencies
 
-    compile project(':domain')
-    compile project(':base_firebase')
-    compile project(':base_camera')
+    compile project(':base_framework')
 
     annotationProcessor iotDependencies.daggerCompiler
     compile iotDependencies.dagger
