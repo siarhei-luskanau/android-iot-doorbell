@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.companion.dagger.modules;
+package siarhei.luskanau.iot.doorbell.iot.dagger.modules;
 
 import android.app.Application;
 
@@ -12,7 +12,7 @@ import siarhei.luskanau.android.framework.executor.JobExecutor;
 import siarhei.luskanau.android.framework.executor.PostExecutionThread;
 import siarhei.luskanau.android.framework.executor.ThreadExecutor;
 import siarhei.luskanau.android.framework.executor.UIThread;
-import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
+import siarhei.luskanau.iot.doorbell.iot.dagger.scope.ApplicationScope;
 
 @Module
 public class ApplicationModule {
@@ -43,7 +43,7 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
-    ImageRepository provideImageRepository() {
+    ImageRepository provideLampRepository() {
         return new FirebaseImageRepository();
     }
 

@@ -7,8 +7,8 @@ import android.util.Log;
 import javax.inject.Inject;
 
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
-import siarhei.luskanau.iot.doorbell.permissions.PermissionCustomer;
-import siarhei.luskanau.iot.doorbell.permissions.PermissionsGranter;
+import siarhei.luskanau.android.framework.permissions.PermissionCustomer;
+import siarhei.luskanau.android.framework.permissions.PermissionsGranter;
 
 public abstract class GrantPermissionsActivity extends AppCompatActivity {
 

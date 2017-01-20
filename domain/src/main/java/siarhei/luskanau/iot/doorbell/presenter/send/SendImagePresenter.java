@@ -2,10 +2,10 @@ package siarhei.luskanau.iot.doorbell.presenter.send;
 
 import android.support.annotation.NonNull;
 
-import siarhei.luskanau.iot.doorbell.domain.exception.ErrorMessageFactory;
-import siarhei.luskanau.iot.doorbell.domain.interactor.DefaultObserver;
-import siarhei.luskanau.iot.doorbell.domain.interactor.SendImageUseCase;
-import siarhei.luskanau.iot.doorbell.presenter.Presenter;
+import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
+import siarhei.luskanau.android.framework.interactor.DefaultObserver;
+import siarhei.luskanau.iot.doorbell.interactor.SendImageUseCase;
+import siarhei.luskanau.android.framework.presenter.Presenter;
 
 public class SendImagePresenter implements Presenter {
 

@@ -2,8 +2,8 @@ package siarhei.luskanau.iot.doorbell.camera;
 
 import android.Manifest;
 
-import siarhei.luskanau.iot.doorbell.permissions.PermissionsGranter;
-import siarhei.luskanau.iot.doorbell.permissions.PermissionsListener;
+import siarhei.luskanau.android.framework.permissions.PermissionsGranter;
+import siarhei.luskanau.android.framework.permissions.PermissionsListener;
 
 public class CameraPermissionsListener extends PermissionsListener {
 

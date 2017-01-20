@@ -21,7 +21,10 @@ android {
 }
 
 dependencies {
-    def domainDependencies = rootProject.ext.domainDependencies
+    def baseFrameworkDependencies = rootProject.ext.baseFrameworkDependencies
 
-    compile project(':base_framework')
+    compile baseFrameworkDependencies.rxJava
+    compile baseFrameworkDependencies.rxAndroid
+    compile baseFrameworkDependencies.supportAnnotations
+    compile baseFrameworkDependencies.supportCompat
 }

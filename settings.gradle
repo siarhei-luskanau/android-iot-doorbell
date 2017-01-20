@@ -1,5 +1,6 @@
-include ':domain'
-include ':data_firebase'
+include ':base_framework'
 include ':base_camera'
+include ':domain'
+include ':base_firebase'
 include ':app_companion'
 include ':app_iot'
