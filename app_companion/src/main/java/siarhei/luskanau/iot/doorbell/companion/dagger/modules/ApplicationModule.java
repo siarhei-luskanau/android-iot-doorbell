@@ -4,8 +4,6 @@ import android.app.Application;
 
 import dagger.Module;
 import dagger.Provides;
-import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
-import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
 import siarhei.luskanau.android.framework.exception.SimpleErrorMessageFactory;
 import siarhei.luskanau.android.framework.executor.JobExecutor;
@@ -13,6 +11,8 @@ import siarhei.luskanau.android.framework.executor.PostExecutionThread;
 import siarhei.luskanau.android.framework.executor.ThreadExecutor;
 import siarhei.luskanau.android.framework.executor.UIThread;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
+import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
+import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 
 @Module
 public class ApplicationModule {

@@ -17,13 +17,11 @@ import siarhei.luskanau.iot.doorbell.presenter.send.SendImageView;
 
 public class MainActivity extends BaseComponentActivity implements SendImageView {
 
-    private DatabaseReference mDatabaseRef;
-
-    private RecyclerView mRecyclerView;
-    private DoorbellEntryAdapter mAdapter;
-
     @Inject
     protected SendImagePresenter sendImagePresenter;
+    private DatabaseReference mDatabaseRef;
+    private RecyclerView mRecyclerView;
+    private DoorbellEntryAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

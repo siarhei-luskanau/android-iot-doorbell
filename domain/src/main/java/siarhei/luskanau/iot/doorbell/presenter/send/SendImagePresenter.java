@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
 import siarhei.luskanau.android.framework.interactor.DefaultObserver;
-import siarhei.luskanau.iot.doorbell.interactor.SendImageUseCase;
 import siarhei.luskanau.android.framework.presenter.Presenter;
+import siarhei.luskanau.iot.doorbell.interactor.SendImageUseCase;
 
 public class SendImagePresenter implements Presenter {
 

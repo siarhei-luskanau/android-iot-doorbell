@@ -23,25 +23,6 @@ import java.util.List;
 public class DoorbellEntryAdapter extends FirebaseRecyclerAdapter<DoorbellEntry, DoorbellEntryAdapter.DoorbellEntryViewHolder> {
 
     private static final String TAG = "DoorbellEntryAdapter";
-
-    /**
-     * ViewHolder for each doorbell entry
-     */
-    public static class DoorbellEntryViewHolder extends RecyclerView.ViewHolder {
-
-        public final ImageView image;
-        public final TextView time;
-        public final TextView metadata;
-
-        public DoorbellEntryViewHolder(View itemView) {
-            super(itemView);
-
-            this.image = (ImageView) itemView.findViewById(R.id.imageView1);
-            this.time = (TextView) itemView.findViewById(R.id.textView1);
-            this.metadata = (TextView) itemView.findViewById(R.id.textView2);
-        }
-    }
-
     private Context mApplicationContext;
 
     public DoorbellEntryAdapter(Context context, DatabaseReference ref) {
@@ -85,6 +66,24 @@ public class DoorbellEntryAdapter extends FirebaseRecyclerAdapter<DoorbellEntry,
             viewHolder.metadata.setText(TextUtils.join("\n", keywords.subList(0, limit)));
         } else {
             viewHolder.metadata.setText("no annotations yet");
+        }
+    }
+
+    /**
+     * ViewHolder for each doorbell entry
+     */
+    public static class DoorbellEntryViewHolder extends RecyclerView.ViewHolder {
+
+        public final ImageView image;
+        public final TextView time;
+        public final TextView metadata;
+
+        public DoorbellEntryViewHolder(View itemView) {
+            super(itemView);
+
+            this.image = (ImageView) itemView.findViewById(R.id.imageView1);
+            this.time = (TextView) itemView.findViewById(R.id.textView1);
+            this.metadata = (TextView) itemView.findViewById(R.id.textView2);
         }
     }
 

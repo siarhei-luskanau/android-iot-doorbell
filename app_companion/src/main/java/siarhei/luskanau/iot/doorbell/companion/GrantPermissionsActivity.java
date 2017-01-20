@@ -6,18 +6,16 @@ import android.util.Log;
 
 import javax.inject.Inject;
 
-import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.android.framework.permissions.PermissionCustomer;
 import siarhei.luskanau.android.framework.permissions.PermissionsGranter;
+import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 
 public abstract class GrantPermissionsActivity extends AppCompatActivity {
 
     private static final String TAG = GrantPermissionsActivity.class.getSimpleName();
-
-    private PermissionsGranter permissionsGranter = new PermissionsGranter(this);
-
     @Inject
     protected CameraPermissionsListener cameraPermissionsListener;
+    private PermissionsGranter permissionsGranter = new PermissionsGranter(this);
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
