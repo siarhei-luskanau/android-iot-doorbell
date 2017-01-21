@@ -3,6 +3,7 @@ package siarhei.luskanau.iot.doorbell.companion;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -10,16 +11,26 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import javax.inject.Inject;
 
-import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerImageComponent;
-import siarhei.luskanau.iot.doorbell.companion.dagger.component.ImageComponent;
+import siarhei.luskanau.android.framework.interactor.DefaultObserver;
+import siarhei.luskanau.android.framework.permissions.PermissionCustomer;
+import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
+import siarhei.luskanau.iot.doorbell.camera.TakePictureUseCase;
+import siarhei.luskanau.iot.doorbell.companion.dagger.component.ActivityComponent;
+import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerActivityComponent;
 import siarhei.luskanau.iot.doorbell.presenter.send.SendImagePresenter;
 import siarhei.luskanau.iot.doorbell.presenter.send.SendImageView;
 
 public class MainActivity extends BaseComponentActivity implements SendImageView {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     @Inject
     protected SendImagePresenter sendImagePresenter;
-    private DatabaseReference mDatabaseRef;
+    @Inject
+    protected CameraPermissionsListener cameraPermissionsListener;
+    @Inject
+    protected TakePictureUseCase takePictureUseCase;
+
     private RecyclerView mRecyclerView;
     private DoorbellEntryAdapter mAdapter;
 
@@ -30,25 +41,40 @@ public class MainActivity extends BaseComponentActivity implements SendImageView
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("logs");
 
         this.initializeInjector();
         sendImagePresenter.setView(this);
+
+        findViewById(R.id.cameraButton).setOnClickListener(v -> {
+            cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
+                @Override
+                public void onPermissionsGranted() {
+                    Log.d(TAG, "onPermissionsGranted");
+                    takePictureUseCase.execute(new TakePictureObserver(), null);
+                }
+
+                @Override
+                public void onPermissionsDenied() {
+                    Log.d(TAG, "onPermissionsDenied");
+                }
+            });
+        });
     }
 
     private void initializeInjector() {
-        ImageComponent imageComponent = DaggerImageComponent.builder()
+        ActivityComponent activityComponent = DaggerActivityComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
-        imageComponent.inject(this);
+        activityComponent.inject(this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        mAdapter = new DoorbellEntryAdapter(this, mDatabaseRef);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("logs");
+        mAdapter = new DoorbellEntryAdapter(this, databaseReference);
         mRecyclerView.setAdapter(mAdapter);
 
         // Make sure new events are visible
@@ -75,11 +101,29 @@ public class MainActivity extends BaseComponentActivity implements SendImageView
     protected void onDestroy() {
         super.onDestroy();
 
+        takePictureUseCase.dispose();
         sendImagePresenter.destroy();
     }
 
     @Override
     public void showErrorMessage(CharSequence errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private final class TakePictureObserver extends DefaultObserver<byte[]> {
+        @Override
+        public void onComplete() {
+            Log.d(TAG, "onComplete");
+        }
+
+        @Override
+        public void onNext(byte[] bytes) {
+            Log.d(TAG, "onNext: " + bytes.length);
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.d(TAG, "onError: " + e);
+        }
     }
 }

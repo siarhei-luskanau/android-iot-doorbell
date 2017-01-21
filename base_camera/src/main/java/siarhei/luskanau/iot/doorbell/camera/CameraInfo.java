@@ -9,14 +9,14 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-public class CameraHelper {
+public class CameraInfo {
 
-    private static final String TAG = CameraHelper.class.getSimpleName();
+    private static final String TAG = CameraInfo.class.getSimpleName();
 
     private Context context;
     private Gson gson = new Gson();
 
-    public CameraHelper(Context context) {
+    public CameraInfo(Context context) {
         this.context = context;
     }
 

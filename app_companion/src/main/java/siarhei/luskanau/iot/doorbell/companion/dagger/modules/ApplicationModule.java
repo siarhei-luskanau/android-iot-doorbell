@@ -10,6 +10,7 @@ import siarhei.luskanau.android.framework.executor.JobExecutor;
 import siarhei.luskanau.android.framework.executor.PostExecutionThread;
 import siarhei.luskanau.android.framework.executor.ThreadExecutor;
 import siarhei.luskanau.android.framework.executor.UIThread;
+import siarhei.luskanau.iot.doorbell.camera.CameraRepository;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
 import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
@@ -49,7 +50,13 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
-    ErrorMessageFactory provide() {
+    ErrorMessageFactory provideErrorMessageFactory() {
         return new SimpleErrorMessageFactory();
+    }
+
+    @Provides
+    @ApplicationScope
+    CameraRepository provideCameraRepository() {
+        return new CameraRepository(this.application);
     }
 }
