@@ -16,10 +16,11 @@ import android.os.HandlerThread;
 import android.util.Log;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 
 import static android.content.Context.CAMERA_SERVICE;
 
@@ -38,24 +39,32 @@ public class CameraRepository {
     }
 
     public Observable<byte[]> takePicture() {
+        List<Observable<byte[]>> observableList = new ArrayList<>();
+
+        CameraManager cameraManager = (CameraManager) context.getSystemService(CAMERA_SERVICE);
+        String[] cameraIdList = {};
+        try {
+            cameraIdList = cameraManager.getCameraIdList();
+        } catch (CameraAccessException e) {
+            Log.d(TAG, "Cam access exception getting IDs", e);
+            return Observable.error(e);
+        }
+
+        if (cameraIdList.length < 1) {
+            Log.d(TAG, "No cameras found");
+            return Observable.empty();
+        }
+
+        for (String cameraId : cameraIdList) {
+            observableList.add(createCameraObservable(cameraManager, cameraId));
+        }
+
+        return Observable.merge(observableList);
+    }
+
+    private Observable<byte[]> createCameraObservable(CameraManager cameraManager, String cameraId) {
         return Observable.create(emitter -> {
-            CameraManager manager = (CameraManager) context.getSystemService(CAMERA_SERVICE);
-            String[] camIds = {};
-            try {
-                camIds = manager.getCameraIdList();
-            } catch (CameraAccessException e) {
-                Log.d(TAG, "Cam access exception getting IDs", e);
-                onError(emitter, e);
-            }
-
-            if (camIds.length < 1) {
-                Log.d(TAG, "No cameras found");
-                emitter.onComplete();
-                return;
-            }
-
-            String id = camIds[0];
-            Log.d(TAG, "Using camera id " + id);
+            Log.d(TAG, "Using camera id " + cameraId);
 
             // Initialize the image processor
             ImageReader imageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES);
@@ -154,8 +163,7 @@ public class CameraRepository {
                 @Override
                 public void onError(CameraDevice cameraDevice, int i) {
                     Log.d(TAG, "Camera device error, closing.");
-                    CameraRepository.this.onError(emitter,
-                            new RuntimeException("CameraDevice:StateCallback:onError " + 1));
+                    emitter.onError(new RuntimeException("CameraDevice:StateCallback:onError " + 1));
                     cameraDevice.close();
                 }
 
@@ -167,16 +175,11 @@ public class CameraRepository {
 
             // Open the camera resource
             try {
-                manager.openCamera(id, stateCallback, backgroundHandler);
+                cameraManager.openCamera(cameraId, stateCallback, backgroundHandler);
             } catch (CameraAccessException cae) {
                 Log.d(TAG, "Camera access exception", cae);
-                onError(emitter, cae);
+                emitter.onError(cae);
             }
         });
-    }
-
-    private void onError(ObservableEmitter emitter, Exception e) {
-        emitter.onError(e);
-        emitter.onComplete();
     }
 }
