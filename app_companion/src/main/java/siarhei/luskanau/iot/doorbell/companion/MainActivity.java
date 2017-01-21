@@ -3,11 +3,13 @@ package siarhei.luskanau.iot.doorbell.companion;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import javax.inject.Inject;
 
@@ -117,8 +119,15 @@ public class MainActivity extends BaseComponentActivity implements SendImageView
         }
 
         @Override
-        public void onNext(byte[] bytes) {
-            Log.d(TAG, "onNext: " + bytes.length);
+        public void onNext(byte[] imageBytes) {
+            Log.d(TAG, "onNext: " + imageBytes.length);
+
+            final DatabaseReference log = FirebaseDatabase.getInstance().getReference("logs").push();
+            String imageStr = Base64.encodeToString(imageBytes, Base64.NO_WRAP | Base64.URL_SAFE);
+            // upload image to firebase
+            log.child("timestamp").setValue(ServerValue.TIMESTAMP);
+            log.child("image").setValue(imageStr);
+            log.child("image_length").setValue(imageBytes.length);
         }
 
         @Override
