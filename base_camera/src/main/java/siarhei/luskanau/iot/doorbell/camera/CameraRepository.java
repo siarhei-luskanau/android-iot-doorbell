@@ -25,10 +25,11 @@ import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
+import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
 
 import static android.content.Context.CAMERA_SERVICE;
 
-public class CameraRepository {
+public class CameraRepository implements TakePictureRepository {
 
     private static final String TAG = CameraRepository.class.getSimpleName();
 
@@ -37,11 +38,14 @@ public class CameraRepository {
     private static final int MAX_IMAGES = 1;
 
     private final Context context;
+    private final ImageCompressor imageCompressor;
 
-    public CameraRepository(Context context) {
+    public CameraRepository(Context context, ImageCompressor imageCompressor) {
         this.context = context;
+        this.imageCompressor = imageCompressor;
     }
 
+    @Override
     public Observable<byte[]> takePicture() {
         List<Observable<byte[]>> observableList = new ArrayList<>();
 
@@ -61,7 +65,8 @@ public class CameraRepository {
 
         for (String cameraId : cameraIdList) {
             //cameraInfo(cameraManager, cameraId);
-            observableList.add(createCameraObservable(cameraManager, cameraId));
+            Observable<byte[]> observable = createCameraObservable(cameraManager, cameraId);
+            observableList.add(imageCompressor.scale(observable, IMAGE_WIDTH));
         }
 
         return Observable.merge(observableList);

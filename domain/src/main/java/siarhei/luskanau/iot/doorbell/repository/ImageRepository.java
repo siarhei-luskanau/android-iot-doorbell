@@ -4,5 +4,5 @@ import io.reactivex.Observable;
 
 public interface ImageRepository {
 
-    Observable<Void> sendImage(final byte[] imageBytes);
+    Observable<Void> saveImage(final byte[] imageBytes);
 }

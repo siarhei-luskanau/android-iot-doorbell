@@ -11,9 +11,11 @@ import siarhei.luskanau.android.framework.executor.PostExecutionThread;
 import siarhei.luskanau.android.framework.executor.ThreadExecutor;
 import siarhei.luskanau.android.framework.executor.UIThread;
 import siarhei.luskanau.iot.doorbell.camera.CameraRepository;
+import siarhei.luskanau.iot.doorbell.camera.ImageCompressor;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
 import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
+import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
 
 @Module
 public class ApplicationModule {
@@ -44,6 +46,12 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
+    TakePictureRepository provideTakePictureRepository() {
+        return new CameraRepository(this.application, new ImageCompressor());
+    }
+
+    @Provides
+    @ApplicationScope
     ImageRepository provideImageRepository() {
         return new FirebaseImageRepository();
     }
@@ -52,11 +60,5 @@ public class ApplicationModule {
     @ApplicationScope
     ErrorMessageFactory provideErrorMessageFactory() {
         return new SimpleErrorMessageFactory();
-    }
-
-    @Provides
-    @ApplicationScope
-    CameraRepository provideCameraRepository() {
-        return new CameraRepository(this.application);
     }
 }
