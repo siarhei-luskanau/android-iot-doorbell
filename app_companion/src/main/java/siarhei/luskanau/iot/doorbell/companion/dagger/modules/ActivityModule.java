@@ -46,5 +46,4 @@ public class ActivityModule {
                 imageRepository, threadExecutor, postExecutionThread);
         return new TakeAndSaveImagePresenter(takeAndSaveImageUseCase, errorMessageFactory);
     }
-
 }

@@ -16,9 +16,9 @@ import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.ActivityComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerActivityComponent;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
-import siarhei.luskanau.iot.doorbell.presenter.send.SendImageView;
+import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImageView;
 
-public class MainActivity extends BaseComponentActivity implements SendImageView {
+public class MainActivity extends BaseComponentActivity implements TakeAndSaveImageView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 

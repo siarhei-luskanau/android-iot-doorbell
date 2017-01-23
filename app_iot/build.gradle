@@ -30,13 +30,16 @@ dependencies {
     def iotDependencies = rootProject.ext.iotDependencies
     def developmentDependencies = rootProject.ext.developmentDependencies
 
-    compile project(':base_framework')
+    compile project(':domain')
+    compile project(':base_firebase')
+    compile project(':base_camera')
 
     annotationProcessor iotDependencies.daggerCompiler
     compile iotDependencies.dagger
     compile iotDependencies.javaxInject
 
     provided iotDependencies.androidThings
+    compile iotDependencies.driverButton
     compile iotDependencies.supportDesign
 
     //Development

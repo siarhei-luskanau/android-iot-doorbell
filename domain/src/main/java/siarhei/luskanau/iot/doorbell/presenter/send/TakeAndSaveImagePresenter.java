@@ -14,7 +14,7 @@ public class TakeAndSaveImagePresenter implements Presenter {
 
     private final TakeAndSaveImageUseCase takeAndSaveImageUseCase;
     private final ErrorMessageFactory errorMessageFactory;
-    private SendImageView sendImageView;
+    private TakeAndSaveImageView takeAndSaveImageView;
 
     public TakeAndSaveImagePresenter(TakeAndSaveImageUseCase takeAndSaveImageUseCase,
                                      ErrorMessageFactory errorMessageFactory) {
@@ -22,8 +22,8 @@ public class TakeAndSaveImagePresenter implements Presenter {
         this.errorMessageFactory = errorMessageFactory;
     }
 
-    public void setView(@NonNull SendImageView view) {
-        this.sendImageView = view;
+    public void setView(@NonNull TakeAndSaveImageView view) {
+        this.takeAndSaveImageView = view;
     }
 
     public void takeAndSaveImage() {
@@ -40,7 +40,7 @@ public class TakeAndSaveImagePresenter implements Presenter {
 
     public void destroy() {
         this.takeAndSaveImageUseCase.dispose();
-        this.sendImageView = null;
+        this.takeAndSaveImageView = null;
     }
 
     private final class TakePictureObserver extends DefaultObserver<Void> {
@@ -48,7 +48,7 @@ public class TakeAndSaveImagePresenter implements Presenter {
         public void onError(Throwable e) {
             Log.d(TAG, "onError: " + e);
             CharSequence errorMessage = errorMessageFactory.create(e);
-            TakeAndSaveImagePresenter.this.sendImageView.showErrorMessage(errorMessage);
+            TakeAndSaveImagePresenter.this.takeAndSaveImageView.showErrorMessage(errorMessage);
         }
     }
 }

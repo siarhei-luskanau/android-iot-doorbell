@@ -1,5 +1,5 @@
 package siarhei.luskanau.iot.doorbell.presenter.send;
 
-public interface SendImageView {
+public interface TakeAndSaveImageView {
     void showErrorMessage(CharSequence errorMessage);
 }

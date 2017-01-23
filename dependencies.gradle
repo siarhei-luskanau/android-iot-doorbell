@@ -26,12 +26,14 @@ ext {
 
     //Android Things
     androidthingsVersion = '0.1-devpreview'
+    thingsContribVersion = '0.1'
 
     iotDependencies = [
             daggerCompiler: "com.google.dagger:dagger-compiler:${daggerVersion}",
             dagger        : "com.google.dagger:dagger:${daggerVersion}",
             javaxInject   : "javax.inject:javax.inject:${javaxInjectVersion}",
             androidThings : "com.google.android.things:androidthings:${androidthingsVersion}",
+            driverButton  : "com.google.android.things.contrib:driver-button:${thingsContribVersion}",
             supportDesign : "com.android.support:design:${SUPPORT_LIBRARY_VERSION}",
     ]
 

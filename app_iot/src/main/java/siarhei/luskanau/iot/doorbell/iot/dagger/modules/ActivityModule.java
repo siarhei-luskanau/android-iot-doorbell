@@ -4,14 +4,23 @@ import android.app.Activity;
 
 import dagger.Module;
 import dagger.Provides;
+import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
+import siarhei.luskanau.android.framework.executor.PostExecutionThread;
+import siarhei.luskanau.android.framework.executor.ThreadExecutor;
+import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
+import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
+import siarhei.luskanau.iot.doorbell.iot.GrantPermissionsActivity;
 import siarhei.luskanau.iot.doorbell.iot.dagger.scope.ActivityScope;
+import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
+import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
+import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
 
 @Module
 public class ActivityModule {
 
-    private final Activity activity;
+    private final GrantPermissionsActivity activity;
 
-    public ActivityModule(Activity activity) {
+    public ActivityModule(GrantPermissionsActivity activity) {
         this.activity = activity;
     }
 
@@ -19,5 +28,22 @@ public class ActivityModule {
     @ActivityScope
     Activity activity() {
         return this.activity;
+    }
+
+    @Provides
+    @ActivityScope
+    CameraPermissionsListener provideCameraPermissionsListener() {
+        return new CameraPermissionsListener(activity.getPermissionsGranter());
+    }
+
+    @Provides
+    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(TakePictureRepository takePictureRepository,
+                                                               ImageRepository imageRepository,
+                                                               ThreadExecutor threadExecutor,
+                                                               PostExecutionThread postExecutionThread,
+                                                               ErrorMessageFactory errorMessageFactory) {
+        TakeAndSaveImageUseCase takeAndSaveImageUseCase = new TakeAndSaveImageUseCase(takePictureRepository,
+                imageRepository, threadExecutor, postExecutionThread);
+        return new TakeAndSaveImagePresenter(takeAndSaveImageUseCase, errorMessageFactory);
     }
 }
