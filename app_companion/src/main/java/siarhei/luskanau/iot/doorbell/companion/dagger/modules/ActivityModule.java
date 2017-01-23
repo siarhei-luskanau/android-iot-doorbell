@@ -9,6 +9,7 @@ import siarhei.luskanau.android.framework.executor.PostExecutionThread;
 import siarhei.luskanau.android.framework.executor.ThreadExecutor;
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.camera.CameraRepository;
+import siarhei.luskanau.iot.doorbell.camera.ImageCompressor;
 import siarhei.luskanau.iot.doorbell.camera.TakePictureUseCase;
 import siarhei.luskanau.iot.doorbell.companion.GrantPermissionsActivity;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ActivityScope;
@@ -51,6 +52,7 @@ public class ActivityModule {
     TakePictureUseCase provideTakePictureUseCase(CameraRepository cameraRepository,
                                                  ThreadExecutor threadExecutor,
                                                  PostExecutionThread postExecutionThread) {
-        return new TakePictureUseCase(cameraRepository, threadExecutor, postExecutionThread);
+        ImageCompressor imageCompressor = new ImageCompressor();
+        return new TakePictureUseCase(cameraRepository, imageCompressor, threadExecutor, postExecutionThread);
     }
 }

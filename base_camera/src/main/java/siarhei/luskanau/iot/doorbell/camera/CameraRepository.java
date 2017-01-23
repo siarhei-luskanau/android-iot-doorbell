@@ -4,16 +4,20 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.CaptureResult;
 import android.hardware.camera2.TotalCaptureResult;
+import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+
+import com.google.gson.Gson;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -56,6 +60,7 @@ public class CameraRepository {
         }
 
         for (String cameraId : cameraIdList) {
+            //cameraInfo(cameraManager, cameraId);
             observableList.add(createCameraObservable(cameraManager, cameraId));
         }
 
@@ -181,5 +186,27 @@ public class CameraRepository {
                 emitter.onError(cae);
             }
         });
+    }
+
+    public void cameraInfo(CameraManager cameraManager, String cameraId) {
+        Gson gson = new Gson();
+        Log.d(TAG, "Using camera id " + cameraId);
+        try {
+            CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
+            StreamConfigurationMap configs = characteristics.get(
+                    CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+
+            int[] outputFormats = configs.getOutputFormats();
+            Log.i(TAG, "OutputFormats: " + gson.toJson(outputFormats));
+            for (int format : outputFormats) {
+                Log.i(TAG, "Getting sizes for format " + format + ": "
+                        + gson.toJson(configs.getOutputSizes(format)));
+            }
+
+            int[] effects = characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS);
+            Log.i(TAG, "effects: " + gson.toJson(effects));
+        } catch (CameraAccessException e) {
+            Log.d(TAG, "Cam access exception getting characteristics.");
+        }
     }
 }
