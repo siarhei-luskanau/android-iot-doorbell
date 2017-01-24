@@ -53,7 +53,7 @@ public class ApplicationModule {
     @Provides
     @ApplicationScope
     ImageRepository provideImageRepository() {
-        return new FirebaseImageRepository();
+        return new FirebaseImageRepository(this.application);
     }
 
     @Provides

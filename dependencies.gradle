@@ -48,10 +48,10 @@ ext {
             gson: "com.google.code.gson:gson:${gsonVersion}",
     ]
 
-    dataFirebaseDependencies = [
-            firebaseCore      : "com.google.firebase:firebase-core:${PLAY_SERVICES_VERSION}",
+    baseFirebaseDependencies = [
             firebaseDatabase  : "com.google.firebase:firebase-database:${PLAY_SERVICES_VERSION}",
             firebaseUiDatabase: "com.firebaseui:firebase-ui-database:${firebaseUiDatabaseVersion}",
+            playServicesVision: "com.google.android.gms:play-services-vision:${PLAY_SERVICES_VERSION}",
     ]
 
     domainDependencies = [
