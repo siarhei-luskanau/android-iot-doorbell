@@ -5,26 +5,26 @@ import siarhei.luskanau.android.framework.executor.PostExecutionThread;
 import siarhei.luskanau.android.framework.executor.ThreadExecutor;
 import siarhei.luskanau.android.framework.interactor.UseCase;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
-import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
+import siarhei.luskanau.iot.doorbell.repository.IpAddressSource;
 
-public class TakeAndSaveImageUseCase extends UseCase<Void, TakeAndSaveImageUseCase.Params> {
+public class SendDeviceIpAddressUseCase extends UseCase<Void, SendDeviceIpAddressUseCase.Params> {
 
-    private final TakePictureRepository takePictureRepository;
     private final ImageRepository imageRepository;
+    private final IpAddressSource ipAddressSource;
 
-    public TakeAndSaveImageUseCase(TakePictureRepository takePictureRepository,
-                                   ImageRepository imageRepository,
-                                   ThreadExecutor threadExecutor,
-                                   PostExecutionThread postExecutionThread) {
+    public SendDeviceIpAddressUseCase(ImageRepository imageRepository,
+                                      IpAddressSource ipAddressSource,
+                                      ThreadExecutor threadExecutor,
+                                      PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
-        this.takePictureRepository = takePictureRepository;
         this.imageRepository = imageRepository;
+        this.ipAddressSource = ipAddressSource;
     }
 
     @Override
     public Observable<Void> buildUseCaseObservable(Params params) {
-        return this.takePictureRepository.takePicture()
-                .flatMap(bytes -> this.imageRepository.saveImage(params.deviceId, bytes));
+        return this.ipAddressSource.listenIpAddress().flatMap(pair ->
+                imageRepository.sendDeviceIpAddress(params.deviceId, pair));
     }
 
     public static final class Params {

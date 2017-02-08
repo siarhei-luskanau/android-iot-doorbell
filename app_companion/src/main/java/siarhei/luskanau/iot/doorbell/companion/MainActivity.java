@@ -69,7 +69,8 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
     public void onStart() {
         super.onStart();
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("logs");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                .child("doorbell/bd677a36133204cd/images ");
         mAdapter = new DoorbellEntryAdapter(this, databaseReference);
         mRecyclerView.setAdapter(mAdapter);
 

@@ -45,7 +45,6 @@ ext {
     ]
 
     baseCameraDependencies = [
-            gson: "com.google.code.gson:gson:${gsonVersion}",
     ]
 
     baseFirebaseDependencies = [
@@ -55,6 +54,7 @@ ext {
     ]
 
     domainDependencies = [
+            gson: "com.google.code.gson:gson:${gsonVersion}",
     ]
 
     baseFrameworkDependencies = [

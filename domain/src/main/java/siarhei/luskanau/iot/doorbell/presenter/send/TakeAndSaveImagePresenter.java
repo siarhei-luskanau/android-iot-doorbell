@@ -6,6 +6,7 @@ import android.util.Log;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
 import siarhei.luskanau.android.framework.interactor.DefaultObserver;
 import siarhei.luskanau.android.framework.presenter.Presenter;
+import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
 
 public class TakeAndSaveImagePresenter implements Presenter {
@@ -13,12 +14,15 @@ public class TakeAndSaveImagePresenter implements Presenter {
     private static final String TAG = TakeAndSaveImagePresenter.class.getSimpleName();
 
     private final TakeAndSaveImageUseCase takeAndSaveImageUseCase;
+    private final DeviceInfo deviceInfo;
     private final ErrorMessageFactory errorMessageFactory;
     private TakeAndSaveImageView takeAndSaveImageView;
 
     public TakeAndSaveImagePresenter(TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+                                     DeviceInfo deviceInfo,
                                      ErrorMessageFactory errorMessageFactory) {
         this.takeAndSaveImageUseCase = takeAndSaveImageUseCase;
+        this.deviceInfo = deviceInfo;
         this.errorMessageFactory = errorMessageFactory;
     }
 
@@ -27,7 +31,8 @@ public class TakeAndSaveImagePresenter implements Presenter {
     }
 
     public void takeAndSaveImage() {
-        takeAndSaveImageUseCase.execute(new TakePictureObserver(), null);
+        takeAndSaveImageUseCase.execute(new TakePictureObserver(),
+                TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId()));
     }
 
     @Override

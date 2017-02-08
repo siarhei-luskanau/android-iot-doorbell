@@ -24,6 +24,4 @@ dependencies {
     def baseCameraDependencies = rootProject.ext.baseCameraDependencies
 
     compile project(':domain')
-
-    compile baseCameraDependencies.gson
 }

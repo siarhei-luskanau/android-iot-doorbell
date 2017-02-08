@@ -24,4 +24,6 @@ dependencies {
     def domainDependencies = rootProject.ext.domainDependencies
 
     compile project(':base_framework')
+
+    compile domainDependencies.gson
 }

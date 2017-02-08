@@ -7,6 +7,7 @@ import dagger.Provides;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
 import siarhei.luskanau.android.framework.executor.PostExecutionThread;
 import siarhei.luskanau.android.framework.executor.ThreadExecutor;
+import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.companion.GrantPermissionsActivity;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ActivityScope;
@@ -41,9 +42,10 @@ public class ActivityModule {
                                                                ImageRepository imageRepository,
                                                                ThreadExecutor threadExecutor,
                                                                PostExecutionThread postExecutionThread,
+                                                               DeviceInfo deviceInfo,
                                                                ErrorMessageFactory errorMessageFactory) {
         TakeAndSaveImageUseCase takeAndSaveImageUseCase = new TakeAndSaveImageUseCase(takePictureRepository,
                 imageRepository, threadExecutor, postExecutionThread);
-        return new TakeAndSaveImagePresenter(takeAndSaveImageUseCase, errorMessageFactory);
+        return new TakeAndSaveImagePresenter(takeAndSaveImageUseCase, deviceInfo, errorMessageFactory);
     }
 }
