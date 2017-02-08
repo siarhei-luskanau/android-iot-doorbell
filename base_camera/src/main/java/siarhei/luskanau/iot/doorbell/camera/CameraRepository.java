@@ -16,6 +16,10 @@ import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.util.SparseIntArray;
+import android.view.Display;
+import android.view.Surface;
+import android.view.WindowManager;
 
 import com.google.gson.Gson;
 
@@ -32,6 +36,14 @@ import static android.content.Context.CAMERA_SERVICE;
 public class CameraRepository implements TakePictureRepository {
 
     private static final String TAG = CameraRepository.class.getSimpleName();
+
+    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    static {
+        ORIENTATIONS.append(Surface.ROTATION_0, 90);
+        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+    }
 
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
@@ -64,12 +76,12 @@ public class CameraRepository implements TakePictureRepository {
         }
 
         for (String cameraId : cameraIdList) {
-            //cameraInfo(cameraManager, cameraId);
+            cameraInfo(cameraManager, cameraId);
             Observable<byte[]> observable = createCameraObservable(cameraManager, cameraId);
             observableList.add(imageCompressor.scale(observable, IMAGE_WIDTH));
         }
 
-        return Observable.merge(observableList);
+        return Observable.concat(observableList);
     }
 
     private Observable<byte[]> createCameraObservable(CameraManager cameraManager, String cameraId) {
@@ -119,6 +131,11 @@ public class CameraRepository implements TakePictureRepository {
                                             final CaptureRequest.Builder captureBuilder =
                                                     cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
                                             captureBuilder.addTarget(imageReader.getSurface());
+
+                                            Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+                                            int rotation = display.getRotation();
+                                            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+
                                             captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
                                             Log.d(TAG, "Session initialized.");
 
@@ -173,7 +190,7 @@ public class CameraRepository implements TakePictureRepository {
                 @Override
                 public void onError(CameraDevice cameraDevice, int i) {
                     Log.d(TAG, "Camera device error, closing.");
-                    emitter.onError(new RuntimeException("CameraDevice:StateCallback:onError " + 1));
+                    emitter.onError(new RuntimeException("CameraDevice:StateCallback:onError " + i));
                     cameraDevice.close();
                 }
 
