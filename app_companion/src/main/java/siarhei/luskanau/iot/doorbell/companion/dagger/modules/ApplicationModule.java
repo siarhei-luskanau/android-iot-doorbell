@@ -94,12 +94,4 @@ public class ApplicationModule {
                                                        PostExecutionThread postExecutionThread) {
         return new SendDeviceInfoUseCase(imageRepository, threadExecutor, postExecutionThread);
     }
-
-    @Provides
-    @ApplicationScope
-    SendDeviceIpAddressUseCase provideSendDeviceIpAddressUseCase(ImageRepository imageRepository,
-                                                                 ThreadExecutor threadExecutor,
-                                                                 PostExecutionThread postExecutionThread) {
-        return new SendDeviceIpAddressUseCase(imageRepository, new IpAddressSource(), threadExecutor, postExecutionThread);
-    }
 }

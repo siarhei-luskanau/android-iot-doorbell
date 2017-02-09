@@ -12,18 +12,15 @@ import siarhei.luskanau.iot.doorbell.companion.dagger.component.ApplicationCompo
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerApplicationComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ApplicationModule;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceInfoUseCase;
-import siarhei.luskanau.iot.doorbell.interactor.SendDeviceIpAddressUseCase;
 
 public class AppApplication extends Application {
-
-    private ApplicationComponent applicationComponent;
 
     @Inject
     protected DeviceInfo deviceInfo;
     @Inject
     protected SendDeviceInfoUseCase sendDeviceInfoUseCase;
-    @Inject
-    protected SendDeviceIpAddressUseCase sendDeviceIpAddressUseCase;
+
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
@@ -33,9 +30,6 @@ public class AppApplication extends Application {
 
         sendDeviceInfoUseCase.execute(new DefaultObserver<>(),
                 SendDeviceInfoUseCase.Params.forParams(deviceInfo));
-
-        sendDeviceIpAddressUseCase.execute(new DefaultObserver<>(),
-                SendDeviceIpAddressUseCase.Params.forParams(deviceInfo.getDeviceId()));
     }
 
     private void initializeInjector() {
