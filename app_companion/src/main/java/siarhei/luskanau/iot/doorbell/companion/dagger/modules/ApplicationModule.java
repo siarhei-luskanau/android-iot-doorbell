@@ -22,9 +22,7 @@ import siarhei.luskanau.iot.doorbell.camera.ImageCompressor;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
 import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceInfoUseCase;
-import siarhei.luskanau.iot.doorbell.interactor.SendDeviceIpAddressUseCase;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
-import siarhei.luskanau.iot.doorbell.repository.IpAddressSource;
 import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
 
 @Module

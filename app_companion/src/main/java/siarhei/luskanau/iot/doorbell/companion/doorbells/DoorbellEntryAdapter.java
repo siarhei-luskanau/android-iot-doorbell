@@ -11,7 +11,7 @@ import siarhei.luskanau.iot.doorbell.companion.databinding.ListItemDoorbellEntry
 import siarhei.luskanau.iot.doorbell.ui.BaseRecyclerArrayAdapter;
 import siarhei.luskanau.iot.doorbell.ui.BindableViewHolder;
 
-public class DoorbellEntryAdapter  extends BaseRecyclerArrayAdapter<DoorbellEntry, BindableViewHolder> {
+public class DoorbellEntryAdapter extends BaseRecyclerArrayAdapter<DoorbellEntry, BindableViewHolder> {
 
     @Override
     public BindableViewHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {

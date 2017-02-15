@@ -36,18 +36,17 @@ import static android.content.Context.CAMERA_SERVICE;
 public class CameraRepository implements TakePictureRepository {
 
     private static final String TAG = CameraRepository.class.getSimpleName();
-
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    private static final int IMAGE_WIDTH = 320;
+    private static final int IMAGE_HEIGHT = 240;
+    private static final int MAX_IMAGES = 1;
+
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
         ORIENTATIONS.append(Surface.ROTATION_90, 0);
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
-
-    private static final int IMAGE_WIDTH = 320;
-    private static final int IMAGE_HEIGHT = 240;
-    private static final int MAX_IMAGES = 1;
 
     private final Context context;
     private final ImageCompressor imageCompressor;
