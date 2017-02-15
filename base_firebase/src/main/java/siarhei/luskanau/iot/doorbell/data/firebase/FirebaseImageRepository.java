@@ -14,14 +14,19 @@ import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
+import siarhei.luskanau.iot.doorbell.DoorbellEntry;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 
 public class FirebaseImageRepository implements ImageRepository {
@@ -113,6 +118,15 @@ public class FirebaseImageRepository implements ImageRepository {
     }
 
     @Override
+    public Observable<List<DoorbellEntry>> listenDoorbellEntryList() {
+        Observable<Map<String, DoorbellEntry>> observable = Observable.create(emitter -> {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(DOORBELLS_KEY);
+            databaseReference.addValueEventListener(new DoorbellEntryMapValueEventListener(emitter, databaseReference));
+        });
+        return observable.map(map -> new ArrayList<>(map.values()));
+    }
+
+    @Override
     public Observable<Void> sendDeviceIpAddress(String deviceId, Pair<String, String> ipAddress) {
         return Observable.defer(() -> {
             FirebaseDatabase.getInstance()
@@ -123,5 +137,12 @@ public class FirebaseImageRepository implements ImageRepository {
                     .child(ipAddress.first).setValue(ipAddress.second);
             return Observable.empty();
         });
+    }
+
+    private static class DoorbellEntryMapValueEventListener
+            extends EmitterValueEventListener<Map<String, DoorbellEntry>> {
+        public DoorbellEntryMapValueEventListener(ObservableEmitter<Map<String, DoorbellEntry>> emitter, Query query) {
+            super(emitter, query);
+        }
     }
 }

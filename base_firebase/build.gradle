@@ -26,7 +26,6 @@ dependencies {
     compile project(':domain')
 
     compile baseFirebaseDependencies.firebaseDatabase
-    compile baseFirebaseDependencies.firebaseUiDatabase
     compile baseFirebaseDependencies.playServicesVision
 }
 

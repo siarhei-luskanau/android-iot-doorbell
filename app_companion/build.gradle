@@ -21,6 +21,10 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -40,6 +44,7 @@ dependencies {
     compile remoteControlDependencies.javaxInject
 
     compile remoteControlDependencies.supportDesign
+    compile remoteControlDependencies.supportCardview
 
     //Development
     debugCompile developmentDependencies.leakCanary

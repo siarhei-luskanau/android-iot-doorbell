@@ -6,22 +6,27 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import siarhei.luskanau.android.framework.permissions.PermissionCustomer;
+import siarhei.luskanau.iot.doorbell.DoorbellEntry;
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.ActivityComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerActivityComponent;
+import siarhei.luskanau.iot.doorbell.companion.doorbells.DoorbellEntryAdapter;
+import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListPresenter;
+import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListView;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImageView;
 
-public class MainActivity extends BaseComponentActivity implements TakeAndSaveImageView {
+public class MainActivity extends BaseComponentActivity implements TakeAndSaveImageView, DoorbellListView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    @Inject
+    protected DoorbellListPresenter doorbellListPresenter;
     @Inject
     protected TakeAndSaveImagePresenter takeAndSaveImagePresenter;
     @Inject
@@ -40,6 +45,9 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
 
         this.initializeInjector();
         takeAndSaveImagePresenter.setView(this);
+        doorbellListPresenter.setView(this);
+        mAdapter = new DoorbellEntryAdapter();
+        mRecyclerView.setAdapter(mAdapter);
 
         findViewById(R.id.cameraButton).setOnClickListener(v -> {
             cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
@@ -55,6 +63,7 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
                 }
             });
         });
+        doorbellListPresenter.listenDoorbellList();
     }
 
     private void initializeInjector() {
@@ -66,39 +75,16 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
-                .child("doorbell/bd677a36133204cd/images ");
-        mAdapter = new DoorbellEntryAdapter(this, databaseReference);
-        mRecyclerView.setAdapter(mAdapter);
-
-        // Make sure new events are visible
-        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onItemRangeChanged(int positionStart, int itemCount) {
-                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount());
-            }
-        });
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // Tear down Firebase listeners in adapter
-        if (mAdapter != null) {
-            mAdapter.cleanup();
-            mAdapter = null;
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 
         takeAndSaveImagePresenter.destroy();
+        doorbellListPresenter.destroy();
+    }
+
+    @Override
+    public void onDoorbellListUpdated(List<DoorbellEntry> doorbellEntries) {
+        mAdapter.setData(doorbellEntries);
     }
 
     @Override
