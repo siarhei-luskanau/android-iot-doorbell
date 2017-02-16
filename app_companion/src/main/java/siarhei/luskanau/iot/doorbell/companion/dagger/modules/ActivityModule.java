@@ -16,7 +16,6 @@ import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
 import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListPresenter;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
-import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
 
 @Module
 public class ActivityModule {
@@ -40,14 +39,9 @@ public class ActivityModule {
     }
 
     @Provides
-    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(TakePictureRepository takePictureRepository,
-                                                               ImageRepository imageRepository,
-                                                               ThreadExecutor threadExecutor,
-                                                               PostExecutionThread postExecutionThread,
+    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(TakeAndSaveImageUseCase takeAndSaveImageUseCase,
                                                                DeviceInfo deviceInfo,
                                                                ErrorMessageFactory errorMessageFactory) {
-        TakeAndSaveImageUseCase takeAndSaveImageUseCase = new TakeAndSaveImageUseCase(takePictureRepository,
-                imageRepository, threadExecutor, postExecutionThread);
         return new TakeAndSaveImagePresenter(takeAndSaveImageUseCase, deviceInfo, errorMessageFactory);
     }
 

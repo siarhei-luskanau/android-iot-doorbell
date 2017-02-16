@@ -16,6 +16,7 @@ import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Display;
 import android.view.Surface;
@@ -26,7 +27,9 @@ import com.google.gson.Gson;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
@@ -75,7 +78,6 @@ public class CameraRepository implements TakePictureRepository {
         }
 
         for (String cameraId : cameraIdList) {
-            cameraInfo(cameraManager, cameraId);
             Observable<byte[]> observable = createCameraObservable(cameraManager, cameraId);
             observableList.add(imageCompressor.scale(observable, IMAGE_WIDTH));
         }
@@ -209,25 +211,36 @@ public class CameraRepository implements TakePictureRepository {
         });
     }
 
-    public void cameraInfo(CameraManager cameraManager, String cameraId) {
-        Gson gson = new Gson();
-        Log.d(TAG, "Using camera id " + cameraId);
+    public static Map<String, Object> getCameraInfo(Context context) {
+        Map<String, Object> map = new HashMap<>();
         try {
-            CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
-            StreamConfigurationMap configs = characteristics.get(
-                    CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            CameraManager cameraManager = (CameraManager) context.getSystemService(CAMERA_SERVICE);
+            String[] cameraIdList = cameraManager.getCameraIdList();
+            for (String cameraId : cameraIdList) {
+                Map<String, Object> cameraMap = new HashMap<>();
+                map.put(cameraId, cameraMap);
+                CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
 
-            int[] outputFormats = configs.getOutputFormats();
-            Log.i(TAG, "OutputFormats: " + gson.toJson(outputFormats));
-            for (int format : outputFormats) {
-                Log.i(TAG, "Getting sizes for format " + format + ": "
-                        + gson.toJson(configs.getOutputSizes(format)));
+                cameraMap.put("CONTROL_AVAILABLE_EFFECTS", characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS));
+
+                StreamConfigurationMap streamConfigurationMap = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                Map<String, Object> outputFormatsMap = new HashMap<>();
+                cameraMap.put("OutputFormats", outputFormatsMap);
+                int[] outputFormats = streamConfigurationMap.getOutputFormats();
+                for (int outputFormat : outputFormats) {
+                    StringBuilder builder = new StringBuilder();
+                    for (Size size : streamConfigurationMap.getOutputSizes(outputFormat)) {
+                        if (builder.length() > 0) {
+                            builder.append(", ");
+                        }
+                        builder.append(size.toString());
+                    }
+                    outputFormatsMap.put(String.valueOf(outputFormat), builder.toString());
+                }
             }
-
-            int[] effects = characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS);
-            Log.i(TAG, "effects: " + gson.toJson(effects));
         } catch (CameraAccessException e) {
-            Log.d(TAG, "Cam access exception getting characteristics.");
+            Log.d(TAG, e.getMessage(), e);
         }
+        return map;
     }
 }

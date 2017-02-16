@@ -29,11 +29,15 @@ public abstract class EmitterValueEventListener<T> implements ValueEventListener
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         if (!isDisposed(emitter, this, query)) {
-            Type genericSuperclass = getClass().getGenericSuperclass();
-            Type typeArgument = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
-            Object value = dataSnapshot.getValue();
-            T typedValue = GSON.fromJson(GSON.toJson(value), typeArgument);
-            emitter.onNext(typedValue);
+            try {
+                Type genericSuperclass = getClass().getGenericSuperclass();
+                Type typeArgument = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
+                Object value = dataSnapshot.getValue();
+                T typedValue = GSON.fromJson(GSON.toJson(value), typeArgument);
+                emitter.onNext(typedValue);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
+            }
         }
     }
 

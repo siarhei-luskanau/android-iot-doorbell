@@ -14,6 +14,8 @@ public interface ImageRepository {
 
     Observable<Void> sendDeviceInfo(DeviceInfo deviceInfo);
 
+    Observable<DoorbellEntry> listenDoorbellEntry(String deviceId);
+
     Observable<List<DoorbellEntry>> listenDoorbellEntryList();
 
     Observable<Void> sendDeviceIpAddress(String deviceId, Pair<String, String> ipAddress);

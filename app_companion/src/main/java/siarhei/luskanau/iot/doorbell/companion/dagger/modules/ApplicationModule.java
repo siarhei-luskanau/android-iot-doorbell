@@ -21,7 +21,9 @@ import siarhei.luskanau.iot.doorbell.camera.CameraRepository;
 import siarhei.luskanau.iot.doorbell.camera.ImageCompressor;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
 import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
+import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceInfoUseCase;
+import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
 
@@ -69,12 +71,6 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
-    TakePictureRepository provideTakePictureRepository() {
-        return new CameraRepository(this.application, new ImageCompressor());
-    }
-
-    @Provides
-    @ApplicationScope
     ImageRepository provideImageRepository() {
         return new FirebaseImageRepository(this.application);
     }
@@ -91,5 +87,22 @@ public class ApplicationModule {
                                                        ThreadExecutor threadExecutor,
                                                        PostExecutionThread postExecutionThread) {
         return new SendDeviceInfoUseCase(imageRepository, threadExecutor, postExecutionThread);
+    }
+
+    @Provides
+    @ApplicationScope
+    TakeAndSaveImageUseCase provideTakeAndSaveImageUseCase(ImageRepository imageRepository,
+                                                           ThreadExecutor threadExecutor,
+                                                           PostExecutionThread postExecutionThread) {
+        TakePictureRepository takePictureRepository = new CameraRepository(this.application, new ImageCompressor());
+        return new TakeAndSaveImageUseCase(takePictureRepository, imageRepository, threadExecutor, postExecutionThread);
+    }
+
+    @Provides
+    @ApplicationScope
+    ListenDoorbellUseCase provideListenDoorbellUseCase(ImageRepository imageRepository,
+                                                       ThreadExecutor threadExecutor,
+                                                       PostExecutionThread postExecutionThread) {
+        return new ListenDoorbellUseCase(imageRepository, threadExecutor, postExecutionThread);
     }
 }

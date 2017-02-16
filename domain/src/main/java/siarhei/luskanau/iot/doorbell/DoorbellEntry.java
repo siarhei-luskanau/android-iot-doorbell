@@ -16,6 +16,8 @@ public class DoorbellEntry {
     private String image;
     @SerializedName("annotations")
     private Map<String, Float> annotations;
+    @SerializedName("ring")
+    private Boolean ring;
 
     public String getDeviceId() {
         return deviceId;
@@ -35,5 +37,9 @@ public class DoorbellEntry {
 
     public Map<String, Float> getAnnotations() {
         return annotations;
+    }
+
+    public Boolean getRing() {
+        return ring;
     }
 }

@@ -34,6 +34,7 @@ public class FirebaseImageRepository implements ImageRepository {
     private static final String TAG = FirebaseImageRepository.class.getSimpleName();
     private static final String DOORBELLS_KEY = "doorbells";
     private static final String IMAGES_KEY = "images";
+    private static final String RING_KEY = "ring";
     private static final String ADDITIONAL_INFO = "additional_info";
     private static final String DEVICES_ID = "device_id";
     private static final String BUILD_DEVICES = "build_device";
@@ -51,12 +52,14 @@ public class FirebaseImageRepository implements ImageRepository {
     @Override
     public Observable<Void> saveImage(String deviceId, byte[] imageBytes) {
         return Observable.defer(() -> {
-            final DatabaseReference log = FirebaseDatabase.getInstance().getReference(DOORBELLS_KEY).child(deviceId)
-                    .child(IMAGES_KEY).push();
+            DatabaseReference deviceDatabaseReference = FirebaseDatabase.getInstance()
+                    .getReference(DOORBELLS_KEY).child(deviceId);
+            deviceDatabaseReference.child(RING_KEY).setValue(Boolean.FALSE);
+            DatabaseReference imagesDatabaseReference = deviceDatabaseReference.child(IMAGES_KEY).push();
             String imageStr = Base64.encodeToString(imageBytes, Base64.NO_WRAP | Base64.URL_SAFE);
-            log.child("timestamp").setValue(ServerValue.TIMESTAMP);
-            log.child("image_length").setValue(imageBytes.length);
-            log.child("image").setValue(imageStr);
+            imagesDatabaseReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
+            imagesDatabaseReference.child("image_length").setValue(imageBytes.length);
+            imagesDatabaseReference.child("image").setValue(imageStr);
 
             Map<String, Float> annotations = new HashMap<>();
 
@@ -89,7 +92,7 @@ public class FirebaseImageRepository implements ImageRepository {
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
             }
-            log.child("annotations").setValue(annotations);
+            imagesDatabaseReference.child("annotations").setValue(annotations);
 
             return Observable.empty();
         });
@@ -106,14 +109,35 @@ public class FirebaseImageRepository implements ImageRepository {
             databaseReference.child(ADDITIONAL_INFO).child(BUILD_MODEL).setValue(deviceInfo.getBuildModel());
             databaseReference.child(ADDITIONAL_INFO).child(BUILD_VERSION_SDK_INT).setValue(deviceInfo.getBuildVersionSdkInt());
             databaseReference.child(ADDITIONAL_INFO).child(BUILD_VERSION_RELEASE).setValue(deviceInfo.getBuildVersionRelease());
-            Gson gson = new Gson();
-            if (deviceInfo.getAdditionalInfo() != null) {
-                for (String index : deviceInfo.getAdditionalInfo().keySet()) {
-                    databaseReference.child(ADDITIONAL_INFO).child(index)
-                            .setValue(gson.toJson(deviceInfo.getAdditionalInfo().get(index)));
+            putMap(databaseReference.child(ADDITIONAL_INFO), deviceInfo.getAdditionalInfo());
+            return Observable.empty();
+        });
+    }
+
+    private void putMap(DatabaseReference databaseReference, Map map) {
+        Gson gson = new Gson();
+        if (map != null) {
+            for (Object key : map.keySet()) {
+                Object value = map.get(key);
+                if (value instanceof Map) {
+                    Map valueMap = (Map) value;
+                    putMap(databaseReference.child(String.valueOf(key)), valueMap);
+                } else {
+                    if (value instanceof String) {
+                        databaseReference.child(String.valueOf(key)).setValue(value);
+                    } else {
+                        databaseReference.child(String.valueOf(key)).setValue(gson.toJson(value));
+                    }
                 }
             }
-            return Observable.empty();
+        }
+    }
+
+    @Override
+    public Observable<DoorbellEntry> listenDoorbellEntry(String deviceId) {
+        return Observable.create(emitter -> {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(DOORBELLS_KEY).child(deviceId);
+            databaseReference.addValueEventListener(new DoorbellEntryValueEventListener(emitter, databaseReference));
         });
     }
 
@@ -137,6 +161,12 @@ public class FirebaseImageRepository implements ImageRepository {
                     .child(ipAddress.first).setValue(ipAddress.second);
             return Observable.empty();
         });
+    }
+
+    private static class DoorbellEntryValueEventListener extends EmitterValueEventListener<DoorbellEntry> {
+        public DoorbellEntryValueEventListener(ObservableEmitter<DoorbellEntry> emitter, Query query) {
+            super(emitter, query);
+        }
     }
 
     private static class DoorbellEntryMapValueEventListener

@@ -10,8 +10,8 @@ import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.companion.AppApplication;
 import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ApplicationModule;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
+import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
-import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
 
 @ApplicationScope
 @Component(modules = ApplicationModule.class)
@@ -27,7 +27,7 @@ public interface ApplicationComponent {
 
     PostExecutionThread postExecutionThread();
 
-    TakePictureRepository takePictureRepository();
+    TakeAndSaveImageUseCase takeAndSaveImageUseCase();
 
     ImageRepository lampRepository();
 
