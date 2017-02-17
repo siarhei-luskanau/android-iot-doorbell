@@ -60,6 +60,13 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        imagesPresenter.destroy();
+    }
+
+    @Override
     public void onImageListUpdated(List<ImageEntry> list) {
         adapter.setData(list);
     }
