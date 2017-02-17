@@ -19,28 +19,27 @@ import com.google.firebase.database.ServerValue;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
+import siarhei.luskanau.iot.doorbell.DomainConstants;
 import siarhei.luskanau.iot.doorbell.DoorbellEntry;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 
 public class FirebaseImageRepository implements ImageRepository {
 
     private static final String TAG = FirebaseImageRepository.class.getSimpleName();
-    private static final String DOORBELLS_KEY = "doorbells";
-    private static final String IMAGES_KEY = "images";
-    private static final String RING_KEY = "ring";
-    private static final String ADDITIONAL_INFO = "additional_info";
-    private static final String DEVICES_ID = "device_id";
+    private static final String DOORBELL_APP_KEY = "doorbell_app";
+    private static final String DEVICES_KEY = "devices";
+
     private static final String BUILD_DEVICES = "build_device";
     private static final String BUILD_MODEL = "build_model";
     private static final String BUILD_VERSION_SDK_INT = "build_version_sdk_int";
     private static final String BUILD_VERSION_RELEASE = "build_version_release";
+    private static final String ADDITIONAL_INFO = "additional_info";
     private static final String IP_ADDRESS = "ip_address";
 
     private final Context context;
@@ -52,59 +51,44 @@ public class FirebaseImageRepository implements ImageRepository {
     @Override
     public Observable<Void> saveImage(String deviceId, byte[] imageBytes) {
         return Observable.defer(() -> {
+            List<String> annotations = getAnnotations(imageBytes);
+
             DatabaseReference deviceDatabaseReference = FirebaseDatabase.getInstance()
-                    .getReference(DOORBELLS_KEY).child(deviceId);
-            deviceDatabaseReference.child(RING_KEY).setValue(Boolean.FALSE);
-            DatabaseReference imagesDatabaseReference = deviceDatabaseReference.child(IMAGES_KEY).push();
-            String imageStr = Base64.encodeToString(imageBytes, Base64.NO_WRAP | Base64.URL_SAFE);
-            imagesDatabaseReference.child("timestamp").setValue(ServerValue.TIMESTAMP);
-            imagesDatabaseReference.child("image_length").setValue(imageBytes.length);
-            imagesDatabaseReference.child("image").setValue(imageStr);
+                    .getReference(DOORBELL_APP_KEY).child(DEVICES_KEY)
+                    .child(deviceId).child(DomainConstants.IMAGES).push();
+            String imageId = deviceDatabaseReference.getKey();
+            putImageEntry(deviceDatabaseReference, imageId, annotations, imageBytes.length, null);
 
-            Map<String, Float> annotations = new HashMap<>();
+            DatabaseReference imageDatabaseReference = FirebaseDatabase.getInstance()
+                    .getReference(DOORBELL_APP_KEY).child(DomainConstants.IMAGES)
+                    .child(deviceId).child(imageId);
+            putImageEntry(imageDatabaseReference, imageId, annotations, imageBytes.length, imageBytes);
 
-            //detect TextBlocks
-            try {
-                Frame frame = new Frame.Builder()
-                        .setBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length))
-                        .build();
-
-                SparseArray<TextBlock> textBlocks = new TextRecognizer.Builder(context).build().detect(frame);
-
-                for (int i = 0; i < textBlocks.size(); i++) {
-                    TextBlock textBlock = textBlocks.get(i);
-                    annotations.put(textBlock.getValue(), (float) i);
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
-            }
-
-            // detect faces
-            try {
-                Frame frame = new Frame.Builder()
-                        .setBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length))
-                        .build();
-
-                SparseArray<Face> faces = new FaceDetector.Builder(context).build().detect(frame);
-                if (faces.size() > 0) {
-                    annotations.put("Faces: " + faces.size(), (float) annotations.size());
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
-            }
-            imagesDatabaseReference.child("annotations").setValue(annotations);
-
+            FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY).child(DEVICES_KEY)
+                    .child(deviceId).child(DomainConstants.RING).setValue(Boolean.FALSE);
             return Observable.empty();
         });
+    }
+
+    private void putImageEntry(DatabaseReference databaseReference, String imageId,
+                               List<String> annotations, int length, byte[] imageBytes) {
+        databaseReference.child(DomainConstants.IMAGE_ID).setValue(imageId);
+        databaseReference.child(DomainConstants.TIMESTAMP).setValue(ServerValue.TIMESTAMP);
+        databaseReference.child(DomainConstants.ANNOTATIONS).setValue(annotations);
+        databaseReference.child(DomainConstants.IMAGE_LENGTH).setValue(length);
+        if (imageBytes != null) {
+            String imageStr = Base64.encodeToString(imageBytes, Base64.NO_WRAP | Base64.URL_SAFE);
+            databaseReference.child(DomainConstants.IMAGE).setValue(imageStr);
+        }
     }
 
     @Override
     public Observable<Void> sendDeviceInfo(DeviceInfo deviceInfo) {
         return Observable.defer(() -> {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance()
-                    .getReference(DOORBELLS_KEY)
+                    .getReference(DOORBELL_APP_KEY).child(DEVICES_KEY)
                     .child(deviceInfo.getDeviceId());
-            databaseReference.child(DEVICES_ID).setValue(deviceInfo.getDeviceId());
+            databaseReference.child(DomainConstants.DEVICE_ID).setValue(deviceInfo.getDeviceId());
             databaseReference.child(ADDITIONAL_INFO).child(BUILD_DEVICES).setValue(deviceInfo.getBuildDevice());
             databaseReference.child(ADDITIONAL_INFO).child(BUILD_MODEL).setValue(deviceInfo.getBuildModel());
             databaseReference.child(ADDITIONAL_INFO).child(BUILD_VERSION_SDK_INT).setValue(deviceInfo.getBuildVersionSdkInt());
@@ -136,7 +120,8 @@ public class FirebaseImageRepository implements ImageRepository {
     @Override
     public Observable<DoorbellEntry> listenDoorbellEntry(String deviceId) {
         return Observable.create(emitter -> {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(DOORBELLS_KEY).child(deviceId);
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                    .getReference(DOORBELL_APP_KEY).child(DEVICES_KEY).child(deviceId);
             databaseReference.addValueEventListener(new DoorbellEntryValueEventListener(emitter, databaseReference));
         });
     }
@@ -144,7 +129,8 @@ public class FirebaseImageRepository implements ImageRepository {
     @Override
     public Observable<List<DoorbellEntry>> listenDoorbellEntryList() {
         Observable<Map<String, DoorbellEntry>> observable = Observable.create(emitter -> {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(DOORBELLS_KEY);
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                    .getReference(DOORBELL_APP_KEY).child(DEVICES_KEY);
             databaseReference.addValueEventListener(new DoorbellEntryMapValueEventListener(emitter, databaseReference));
         });
         return observable.map(map -> new ArrayList<>(map.values()));
@@ -153,14 +139,46 @@ public class FirebaseImageRepository implements ImageRepository {
     @Override
     public Observable<Void> sendDeviceIpAddress(String deviceId, Pair<String, String> ipAddress) {
         return Observable.defer(() -> {
-            FirebaseDatabase.getInstance()
-                    .getReference(DOORBELLS_KEY)
+            FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY).child(DEVICES_KEY)
                     .child(deviceId)
                     .child(ADDITIONAL_INFO)
                     .child(IP_ADDRESS)
                     .child(ipAddress.first).setValue(ipAddress.second);
             return Observable.empty();
         });
+    }
+
+    private List<String> getAnnotations(byte[] imageBytes) {
+        List<String> annotations = new ArrayList<>();
+        //detect TextBlocks
+        try {
+            Frame frame = new Frame.Builder()
+                    .setBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length))
+                    .build();
+
+            SparseArray<TextBlock> textBlocks = new TextRecognizer.Builder(context).build().detect(frame);
+
+            for (int i = 0; i < textBlocks.size(); i++) {
+                TextBlock textBlock = textBlocks.get(i);
+                annotations.add(textBlock.getValue());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        // detect faces
+        try {
+            Frame frame = new Frame.Builder()
+                    .setBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length))
+                    .build();
+
+            SparseArray<Face> faces = new FaceDetector.Builder(context).build().detect(frame);
+            if (faces.size() > 0) {
+                annotations.add("Faces: " + faces.size());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        return annotations;
     }
 
     private static class DoorbellEntryValueEventListener extends EmitterValueEventListener<DoorbellEntry> {

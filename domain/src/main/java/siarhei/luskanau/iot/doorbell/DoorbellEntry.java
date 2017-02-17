@@ -6,18 +6,14 @@ import java.util.Map;
 
 public class DoorbellEntry {
 
-    @SerializedName("device_id")
+    @SerializedName(DomainConstants.DEVICE_ID)
     private String deviceId;
-    @SerializedName("name")
+    @SerializedName(DomainConstants.NAME)
     private String name;
-    @SerializedName("timestamp")
-    private Long timestamp;
-    @SerializedName("image")
-    private String image;
-    @SerializedName("annotations")
-    private Map<String, Float> annotations;
-    @SerializedName("ring")
+    @SerializedName(DomainConstants.RING)
     private Boolean ring;
+    @SerializedName(DomainConstants.IMAGES)
+    private Map<String, ImageEntry> images;
 
     public String getDeviceId() {
         return deviceId;
@@ -27,19 +23,11 @@ public class DoorbellEntry {
         return name;
     }
 
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public Map<String, Float> getAnnotations() {
-        return annotations;
-    }
-
     public Boolean getRing() {
         return ring;
+    }
+
+    public Map<String, ImageEntry> getImages() {
+        return images;
     }
 }
