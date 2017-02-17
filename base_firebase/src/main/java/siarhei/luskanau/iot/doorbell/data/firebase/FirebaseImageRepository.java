@@ -27,6 +27,7 @@ import io.reactivex.ObservableEmitter;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.DomainConstants;
 import siarhei.luskanau.iot.doorbell.DoorbellEntry;
+import siarhei.luskanau.iot.doorbell.ImageEntry;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 
 public class FirebaseImageRepository implements ImageRepository {
@@ -137,6 +138,16 @@ public class FirebaseImageRepository implements ImageRepository {
     }
 
     @Override
+    public Observable<List<ImageEntry>> listenImagesList(String deviceId) {
+        Observable<Map<String, ImageEntry>> observable = Observable.create(emitter -> {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                    .getReference(DOORBELL_APP_KEY).child(DomainConstants.IMAGES).child(deviceId);
+            databaseReference.addValueEventListener(new ImagesEntryMapValueEventListener(emitter, databaseReference));
+        });
+        return observable.map(map -> new ArrayList<>(map.values()));
+    }
+
+    @Override
     public Observable<Void> sendDeviceIpAddress(String deviceId, Pair<String, String> ipAddress) {
         return Observable.defer(() -> {
             FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY).child(DEVICES_KEY)
@@ -190,6 +201,13 @@ public class FirebaseImageRepository implements ImageRepository {
     private static class DoorbellEntryMapValueEventListener
             extends EmitterValueEventListener<Map<String, DoorbellEntry>> {
         public DoorbellEntryMapValueEventListener(ObservableEmitter<Map<String, DoorbellEntry>> emitter, Query query) {
+            super(emitter, query);
+        }
+    }
+
+    private static class ImagesEntryMapValueEventListener
+            extends EmitterValueEventListener<Map<String, ImageEntry>> {
+        public ImagesEntryMapValueEventListener(ObservableEmitter<Map<String, ImageEntry>> emitter, Query query) {
             super(emitter, query);
         }
     }

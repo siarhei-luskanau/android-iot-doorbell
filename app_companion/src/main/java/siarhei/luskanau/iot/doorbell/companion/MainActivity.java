@@ -15,6 +15,7 @@ import siarhei.luskanau.iot.doorbell.DoorbellEntry;
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.ActivityComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerActivityComponent;
+import siarhei.luskanau.iot.doorbell.companion.images.ImagesActivity;
 import siarhei.luskanau.iot.doorbell.companion.doorbells.DoorbellEntryAdapter;
 import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListPresenter;
 import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListView;
@@ -32,22 +33,26 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
     @Inject
     protected CameraPermissionsListener cameraPermissionsListener;
 
-    private RecyclerView mRecyclerView;
-    private DoorbellEntryAdapter mAdapter;
+    private RecyclerView recyclerView;
+    private DoorbellEntryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         this.initializeInjector();
         takeAndSaveImagePresenter.setView(this);
         doorbellListPresenter.setView(this);
-        mAdapter = new DoorbellEntryAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+        adapter = new DoorbellEntryAdapter();
+        recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener((context, holder, position) -> {
+            DoorbellEntry item = adapter.getItem(position);
+            context.startActivity(ImagesActivity.buildIntent(context, item.getDeviceId()));
+        });
 
         findViewById(R.id.cameraButton).setOnClickListener(v -> {
             cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
@@ -84,7 +89,7 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
 
     @Override
     public void onDoorbellListUpdated(List<DoorbellEntry> doorbellEntries) {
-        mAdapter.setData(doorbellEntries);
+        adapter.setData(doorbellEntries);
     }
 
     @Override

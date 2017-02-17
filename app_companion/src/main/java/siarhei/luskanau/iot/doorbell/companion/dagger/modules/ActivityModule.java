@@ -12,8 +12,10 @@ import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.companion.GrantPermissionsActivity;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ActivityScope;
 import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellListUseCase;
+import siarhei.luskanau.iot.doorbell.interactor.ListenImageListUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
 import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListPresenter;
+import siarhei.luskanau.iot.doorbell.presenter.images.ImagesPresenter;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 
@@ -53,5 +55,15 @@ public class ActivityModule {
         ListenDoorbellListUseCase doorbellsUseCase = new ListenDoorbellListUseCase(imageRepository,
                 threadExecutor, postExecutionThread);
         return new DoorbellListPresenter(doorbellsUseCase, errorMessageFactory);
+    }
+
+    @Provides
+    ImagesPresenter provideDoorbellPresenter(ImageRepository imageRepository,
+                                             ThreadExecutor threadExecutor,
+                                             PostExecutionThread postExecutionThread,
+                                             ErrorMessageFactory errorMessageFactory) {
+        ListenImageListUseCase listenImageListUseCase = new ListenImageListUseCase(imageRepository,
+                threadExecutor, postExecutionThread);
+        return new ImagesPresenter(listenImageListUseCase, errorMessageFactory);
     }
 }

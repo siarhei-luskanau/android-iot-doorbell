@@ -16,4 +16,24 @@ public class ImageEntry {
     private List<String> annotations;
     @SerializedName(DomainConstants.IMAGE_LENGTH)
     private long imageLength;
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public List<String> getAnnotations() {
+        return annotations;
+    }
+
+    public long getImageLength() {
+        return imageLength;
+    }
 }
