@@ -19,6 +19,7 @@ import com.google.firebase.database.ServerValue;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -148,6 +149,17 @@ public class FirebaseImageRepository implements ImageRepository {
     }
 
     @Override
+    public Observable<Void> removeImage(String deviceId, String imageId) {
+        return Observable.defer(() -> {
+            FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY).child(DomainConstants.IMAGES)
+                    .child(deviceId).child(imageId).removeValue();
+            FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY).child(DEVICES_KEY).child(deviceId)
+                    .child(DomainConstants.IMAGES).child(imageId).removeValue();
+            return Observable.empty();
+        });
+    }
+
+    @Override
     public Observable<Void> sendDeviceIpAddress(String deviceId, Pair<String, String> ipAddress) {
         return Observable.defer(() -> {
             FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY).child(DEVICES_KEY)
@@ -203,12 +215,28 @@ public class FirebaseImageRepository implements ImageRepository {
         public DoorbellEntryMapValueEventListener(ObservableEmitter<Map<String, DoorbellEntry>> emitter, Query query) {
             super(emitter, query);
         }
+
+        @Override
+        protected Map<String, DoorbellEntry> checkValue(Map<String, DoorbellEntry> value) {
+            if (value == null) {
+                return Collections.emptyMap();
+            }
+            return super.checkValue(value);
+        }
     }
 
     private static class ImagesEntryMapValueEventListener
             extends EmitterValueEventListener<Map<String, ImageEntry>> {
         public ImagesEntryMapValueEventListener(ObservableEmitter<Map<String, ImageEntry>> emitter, Query query) {
             super(emitter, query);
+        }
+
+        @Override
+        protected Map<String, ImageEntry> checkValue(Map<String, ImageEntry> value) {
+            if (value == null) {
+                return Collections.emptyMap();
+            }
+            return super.checkValue(value);
         }
     }
 }

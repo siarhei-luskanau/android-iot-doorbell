@@ -21,5 +21,7 @@ public interface ImageRepository {
 
     Observable<List<ImageEntry>> listenImagesList(String deviceId);
 
+    Observable<Void> removeImage(String deviceId, String imageId);
+
     Observable<Void> sendDeviceIpAddress(String deviceId, Pair<String, String> ipAddress);
 }

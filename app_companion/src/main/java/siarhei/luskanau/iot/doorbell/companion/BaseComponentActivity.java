@@ -10,7 +10,7 @@ public class BaseComponentActivity extends GrantPermissionsActivity {
      *
      * @return {@link ApplicationComponent}
      */
-    protected ApplicationComponent getApplicationComponent() {
+    public ApplicationComponent getApplicationComponent() {
         return ((AppApplication) getApplication()).getApplicationComponent();
     }
 
@@ -19,7 +19,7 @@ public class BaseComponentActivity extends GrantPermissionsActivity {
      *
      * @return {@link ActivityModule}
      */
-    protected ActivityModule getActivityModule() {
+    public ActivityModule getActivityModule() {
         return new ActivityModule(this);
     }
 }

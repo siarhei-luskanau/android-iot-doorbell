@@ -47,6 +47,11 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
         adapter = new ImageEntryAdapter();
         recyclerView.setAdapter(adapter);
 
+        adapter.setOnItemClickListener((context, holder, position) -> {
+            ImageEntry item = adapter.getItem(position);
+            RemoveImageDialogFragment.showFragment(ImagesActivity.this, deviceId, null, item.getImageId());
+        });
+
         this.initializeInjector();
         imagesPresenter.setView(this);
         imagesPresenter.listenDoorbell(deviceId);

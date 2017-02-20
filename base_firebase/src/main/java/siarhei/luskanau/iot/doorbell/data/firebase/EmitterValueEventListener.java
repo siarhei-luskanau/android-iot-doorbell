@@ -34,11 +34,16 @@ public abstract class EmitterValueEventListener<T> implements ValueEventListener
                 Type typeArgument = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
                 Object value = dataSnapshot.getValue();
                 T typedValue = GSON.fromJson(GSON.toJson(value), typeArgument);
-                emitter.onNext(typedValue);
+                T checkedValue = checkValue(typedValue);
+                emitter.onNext(checkedValue);
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
             }
         }
+    }
+
+    protected T checkValue(T value) {
+        return value;
     }
 
     @Override
