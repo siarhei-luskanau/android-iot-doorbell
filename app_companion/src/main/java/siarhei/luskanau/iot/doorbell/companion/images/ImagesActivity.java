@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import siarhei.luskanau.iot.doorbell.DomainConstants;
 import siarhei.luskanau.iot.doorbell.ImageEntry;
 import siarhei.luskanau.iot.doorbell.companion.BaseComponentActivity;
@@ -42,7 +43,7 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
         getSupportActionBar().setTitle(deviceId);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ImageEntryAdapter();
         recyclerView.setAdapter(adapter);
 
@@ -68,6 +69,12 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
 
     @Override
     public void onImageListUpdated(List<ImageEntry> list) {
+        if (list != null) {
+            list = Observable.fromIterable(list)
+                    .toSortedList((imageEntry1, imageEntry2) ->
+                            imageEntry2.getTimestamp().compareTo(imageEntry1.getTimestamp()))
+                    .blockingGet();
+        }
         adapter.setData(list);
     }
 
