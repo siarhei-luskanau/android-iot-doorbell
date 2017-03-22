@@ -79,7 +79,7 @@ public class FirebaseImageRepository implements ImageRepository {
         databaseReference.child(DomainConstants.ANNOTATIONS).setValue(annotations);
         databaseReference.child(DomainConstants.IMAGE_LENGTH).setValue(length);
         if (imageBytes != null) {
-            String imageStr = Base64.encodeToString(imageBytes, Base64.NO_WRAP | Base64.URL_SAFE);
+            String imageStr = Base64.encodeToString(imageBytes, Base64.DEFAULT);
             databaseReference.child(DomainConstants.IMAGE).setValue(imageStr);
         }
     }
