@@ -22,13 +22,9 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
 
-import com.google.gson.Gson;
-
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -60,29 +56,10 @@ public class CameraRepository implements TakePictureRepository {
     }
 
     @Override
-    public Observable<byte[]> takePicture() {
-        List<Observable<byte[]>> observableList = new ArrayList<>();
-
+    public Observable<byte[]> takePicture(String cameraId) {
         CameraManager cameraManager = (CameraManager) context.getSystemService(CAMERA_SERVICE);
-        String[] cameraIdList = {};
-        try {
-            cameraIdList = cameraManager.getCameraIdList();
-        } catch (CameraAccessException e) {
-            Log.d(TAG, "Cam access exception getting IDs", e);
-            return Observable.error(e);
-        }
-
-        if (cameraIdList.length < 1) {
-            Log.d(TAG, "No cameras found");
-            return Observable.empty();
-        }
-
-        for (String cameraId : cameraIdList) {
-            Observable<byte[]> observable = createCameraObservable(cameraManager, cameraId);
-            observableList.add(imageCompressor.scale(observable, IMAGE_WIDTH));
-        }
-
-        return Observable.concat(observableList);
+        Observable<byte[]> observable = createCameraObservable(cameraManager, cameraId);
+        return imageCompressor.scale(observable, IMAGE_WIDTH);
     }
 
     private Observable<byte[]> createCameraObservable(CameraManager cameraManager, String cameraId) {

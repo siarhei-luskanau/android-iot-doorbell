@@ -23,19 +23,21 @@ public class TakeAndSaveImageUseCase extends UseCase<Void, TakeAndSaveImageUseCa
 
     @Override
     public Observable<Void> buildUseCaseObservable(Params params) {
-        return this.takePictureRepository.takePicture()
+        return this.takePictureRepository.takePicture(params.cameraId)
                 .flatMap(bytes -> this.imageRepository.saveImage(params.deviceId, bytes));
     }
 
     public static final class Params {
         private final String deviceId;
+        private final String cameraId;
 
-        private Params(String deviceId) {
+        private Params(String deviceId, String cameraId) {
             this.deviceId = deviceId;
+            this.cameraId = cameraId;
         }
 
-        public static Params forParams(String deviceId) {
-            return new Params(deviceId);
+        public static Params forParams(String deviceId, String cameraId) {
+            return new Params(deviceId, cameraId);
         }
     }
 }

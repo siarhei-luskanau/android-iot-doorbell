@@ -30,9 +30,9 @@ public class TakeAndSaveImagePresenter implements Presenter {
         this.takeAndSaveImageView = view;
     }
 
-    public void takeAndSaveImage() {
+    public void takeAndSaveImage(String cameraId) {
         takeAndSaveImageUseCase.execute(new TakePictureObserver(),
-                TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId()));
+                TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraId));
     }
 
     @Override

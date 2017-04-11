@@ -1,6 +1,9 @@
 package siarhei.luskanau.iot.doorbell.companion;
 
 import android.app.Application;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import android.util.Log;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -18,6 +21,7 @@ import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
 
 public class AppApplication extends Application {
 
+    private static final String TAG = "AppApplication";
     @Inject
     protected DeviceInfo deviceInfo;
     @Inject
@@ -63,8 +67,18 @@ public class AppApplication extends Application {
         @Override
         public void onNext(DoorbellEntry doorbellEntry) {
             if (doorbellEntry.getRing() != null && doorbellEntry.getRing()) {
-                takeAndSaveImageUseCase.execute(new DefaultObserver<>(),
-                        TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId()));
+                try {
+                    CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+                    String[] cameraIdList = cameraManager.getCameraIdList();
+                    if (cameraIdList != null) {
+                        for (String cameraId : cameraIdList) {
+                            takeAndSaveImageUseCase.execute(new DefaultObserver<>(),
+                                    TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraId));
+                        }
+                    }
+                } catch (CameraAccessException e) {
+                    Log.d(TAG, e.getMessage(), e);
+                }
             }
         }
     }

@@ -4,5 +4,5 @@ import io.reactivex.Observable;
 
 public interface TakePictureRepository {
 
-    Observable<byte[]> takePicture();
+    Observable<byte[]> takePicture(String cameraId);
 }

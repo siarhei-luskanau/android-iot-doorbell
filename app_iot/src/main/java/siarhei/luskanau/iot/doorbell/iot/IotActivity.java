@@ -1,5 +1,7 @@
 package siarhei.luskanau.iot.doorbell.iot;
 
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -43,7 +45,17 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
                     @Override
                     public void onPermissionsGranted() {
                         Log.d(TAG, "onPermissionsGranted");
-                        takeAndSaveImagePresenter.takeAndSaveImage();
+                        try {
+                            CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+                            String[] cameraIdList = cameraManager.getCameraIdList();
+                            if (cameraIdList != null) {
+                                for (String cameraId : cameraIdList) {
+                                    takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
+                                }
+                            }
+                        } catch (CameraAccessException e) {
+                            Log.d(TAG, e.getMessage(), e);
+                        }
                     }
 
                     @Override
@@ -69,7 +81,17 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
                             @Override
                             public void onPermissionsGranted() {
                                 Log.d(TAG, "onPermissionsGranted");
-                                takeAndSaveImagePresenter.takeAndSaveImage();
+                                try {
+                                    CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+                                    String[] cameraIdList = cameraManager.getCameraIdList();
+                                    if (cameraIdList != null) {
+                                        for (String cameraId : cameraIdList) {
+                                            takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
+                                        }
+                                    }
+                                } catch (CameraAccessException e) {
+                                    Log.d(TAG, e.getMessage(), e);
+                                }
                             }
 
                             @Override

@@ -1,5 +1,7 @@
 package siarhei.luskanau.iot.doorbell.companion;
 
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import siarhei.luskanau.android.framework.permissions.PermissionCustomer;
 import siarhei.luskanau.iot.doorbell.DoorbellEntry;
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
@@ -59,7 +62,17 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
                 @Override
                 public void onPermissionsGranted() {
                     Log.d(TAG, "onPermissionsGranted");
-                    takeAndSaveImagePresenter.takeAndSaveImage();
+                    try {
+                        CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+                        String[] cameraIdList = cameraManager.getCameraIdList();
+                        if (cameraIdList != null) {
+                            for (String cameraId : cameraIdList) {
+                                takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
+                            }
+                        }
+                    } catch (CameraAccessException e) {
+                        Log.d(TAG, e.getMessage(), e);
+                    }
                 }
 
                 @Override
