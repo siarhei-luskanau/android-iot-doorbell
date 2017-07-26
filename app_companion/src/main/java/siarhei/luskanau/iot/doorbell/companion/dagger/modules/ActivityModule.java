@@ -59,11 +59,13 @@ public class ActivityModule {
 
     @Provides
     ImagesPresenter provideDoorbellPresenter(ImageRepository imageRepository,
+                                             TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+                                             DeviceInfo deviceInfo,
                                              ThreadExecutor threadExecutor,
                                              PostExecutionThread postExecutionThread,
                                              ErrorMessageFactory errorMessageFactory) {
         ListenImageListUseCase listenImageListUseCase = new ListenImageListUseCase(imageRepository,
                 threadExecutor, postExecutionThread);
-        return new ImagesPresenter(listenImageListUseCase, errorMessageFactory);
+        return new ImagesPresenter(listenImageListUseCase, takeAndSaveImageUseCase, deviceInfo, errorMessageFactory);
     }
 }

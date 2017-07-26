@@ -9,7 +9,7 @@ public class ImageEntry {
     @SerializedName(DomainConstants.IMAGE_ID)
     private String imageId;
     @SerializedName(DomainConstants.TIMESTAMP)
-    private Long timestamp;
+    private long timestamp;
     @SerializedName(DomainConstants.IMAGE)
     private String image;
     @SerializedName(DomainConstants.ANNOTATIONS)
@@ -21,7 +21,7 @@ public class ImageEntry {
         return imageId;
     }
 
-    public Long getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
