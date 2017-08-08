@@ -100,6 +100,17 @@ public class FirebaseImageRepository implements ImageRepository {
         });
     }
 
+    @Override
+    public Observable<Void> sendDeviceName(final String deviceId, final String deviceName) {
+        return Observable.defer(() -> {
+            final DatabaseReference databaseReference = FirebaseDatabase.getInstance()
+                    .getReference(DOORBELL_APP_KEY).child(DEVICES_KEY)
+                    .child(deviceId);
+            databaseReference.child(DomainConstants.NAME).setValue(deviceName);
+            return Observable.empty();
+        });
+    }
+
     private void putMap(DatabaseReference databaseReference, Map map) {
         Gson gson = new Gson();
         if (map != null) {
@@ -205,6 +216,7 @@ public class FirebaseImageRepository implements ImageRepository {
     }
 
     private static class DoorbellEntryValueEventListener extends EmitterValueEventListener<DoorbellEntry> {
+
         public DoorbellEntryValueEventListener(ObservableEmitter<DoorbellEntry> emitter, Query query) {
             super(emitter, query);
         }
@@ -212,6 +224,7 @@ public class FirebaseImageRepository implements ImageRepository {
 
     private static class DoorbellEntryMapValueEventListener
             extends EmitterValueEventListener<Map<String, DoorbellEntry>> {
+
         public DoorbellEntryMapValueEventListener(ObservableEmitter<Map<String, DoorbellEntry>> emitter, Query query) {
             super(emitter, query);
         }
@@ -227,6 +240,7 @@ public class FirebaseImageRepository implements ImageRepository {
 
     private static class ImagesEntryMapValueEventListener
             extends EmitterValueEventListener<Map<String, ImageEntry>> {
+
         public ImagesEntryMapValueEventListener(ObservableEmitter<Map<String, ImageEntry>> emitter, Query query) {
             super(emitter, query);
         }

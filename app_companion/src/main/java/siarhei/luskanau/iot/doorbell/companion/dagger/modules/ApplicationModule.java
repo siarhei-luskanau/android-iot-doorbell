@@ -23,6 +23,7 @@ import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
 import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
 import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceInfoUseCase;
+import siarhei.luskanau.iot.doorbell.interactor.SendDeviceNameUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
@@ -34,7 +35,7 @@ public class ApplicationModule {
 
     private final Application application;
 
-    public ApplicationModule(Application application) {
+    public ApplicationModule(final Application application) {
         this.application = application;
     }
 
@@ -47,11 +48,11 @@ public class ApplicationModule {
     @Provides
     @ApplicationScope
     DeviceInfo provideDeviceInfo() {
-        Map<String, Object> additionalInfo = new HashMap<>();
+        final Map<String, Object> additionalInfo = new HashMap<>();
         try {
-            CameraManager cameraManager = (CameraManager) this.application.getSystemService(Context.CAMERA_SERVICE);
+            final CameraManager cameraManager = (CameraManager) this.application.getSystemService(Context.CAMERA_SERVICE);
             additionalInfo.put("CameraIdList", cameraManager.getCameraIdList());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
         return new DeviceInfo(this.application, additionalInfo);
@@ -83,26 +84,34 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
-    SendDeviceInfoUseCase provideSendDeviceInfoUseCase(ImageRepository imageRepository,
-                                                       ThreadExecutor threadExecutor,
-                                                       PostExecutionThread postExecutionThread) {
+    SendDeviceInfoUseCase provideSendDeviceInfoUseCase(final ImageRepository imageRepository,
+                                                       final ThreadExecutor threadExecutor,
+                                                       final PostExecutionThread postExecutionThread) {
         return new SendDeviceInfoUseCase(imageRepository, threadExecutor, postExecutionThread);
     }
 
     @Provides
     @ApplicationScope
-    TakeAndSaveImageUseCase provideTakeAndSaveImageUseCase(ImageRepository imageRepository,
-                                                           ThreadExecutor threadExecutor,
-                                                           PostExecutionThread postExecutionThread) {
-        TakePictureRepository takePictureRepository = new CameraRepository(this.application, new ImageCompressor());
+    TakeAndSaveImageUseCase provideTakeAndSaveImageUseCase(final ImageRepository imageRepository,
+                                                           final ThreadExecutor threadExecutor,
+                                                           final PostExecutionThread postExecutionThread) {
+        final TakePictureRepository takePictureRepository = new CameraRepository(this.application, new ImageCompressor());
         return new TakeAndSaveImageUseCase(takePictureRepository, imageRepository, threadExecutor, postExecutionThread);
     }
 
     @Provides
     @ApplicationScope
-    ListenDoorbellUseCase provideListenDoorbellUseCase(ImageRepository imageRepository,
-                                                       ThreadExecutor threadExecutor,
-                                                       PostExecutionThread postExecutionThread) {
+    ListenDoorbellUseCase provideListenDoorbellUseCase(final ImageRepository imageRepository,
+                                                       final ThreadExecutor threadExecutor,
+                                                       final PostExecutionThread postExecutionThread) {
         return new ListenDoorbellUseCase(imageRepository, threadExecutor, postExecutionThread);
+    }
+
+    @Provides
+    @ApplicationScope
+    SendDeviceNameUseCase provideSendDeviceNameUseCase(final ImageRepository imageRepository,
+                                                       final ThreadExecutor threadExecutor,
+                                                       final PostExecutionThread postExecutionThread) {
+        return new SendDeviceNameUseCase(imageRepository, threadExecutor, postExecutionThread);
     }
 }

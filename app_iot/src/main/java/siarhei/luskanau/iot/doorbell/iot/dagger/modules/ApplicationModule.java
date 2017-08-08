@@ -22,8 +22,10 @@ import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.camera.CameraRepository;
 import siarhei.luskanau.iot.doorbell.camera.ImageCompressor;
 import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
+import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceInfoUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceIpAddressUseCase;
+import siarhei.luskanau.iot.doorbell.interactor.SendDeviceNameUseCase;
 import siarhei.luskanau.iot.doorbell.iot.dagger.scope.ApplicationScope;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.iot.doorbell.repository.IpAddressSource;
@@ -36,7 +38,7 @@ public class ApplicationModule {
 
     private final Application application;
 
-    public ApplicationModule(Application application) {
+    public ApplicationModule(final Application application) {
         this.application = application;
     }
 
@@ -49,17 +51,17 @@ public class ApplicationModule {
     @Provides
     @ApplicationScope
     DeviceInfo provideDeviceInfo() {
-        Map<String, Object> additionalInfo = new HashMap<>();
+        final Map<String, Object> additionalInfo = new HashMap<>();
         try {
-            PeripheralManagerService peripheralManagerService = new PeripheralManagerService();
+            final PeripheralManagerService peripheralManagerService = new PeripheralManagerService();
             additionalInfo.put("GpioList", peripheralManagerService.getGpioList());
             additionalInfo.put("I2cBusList", peripheralManagerService.getI2cBusList());
             additionalInfo.put("PwmList", peripheralManagerService.getPwmList());
             additionalInfo.put("SpiBusList", peripheralManagerService.getSpiBusList());
             additionalInfo.put("UartDeviceList", peripheralManagerService.getUartDeviceList());
-            CameraManager cameraManager = (CameraManager) this.application.getSystemService(Context.CAMERA_SERVICE);
+            final CameraManager cameraManager = (CameraManager) this.application.getSystemService(Context.CAMERA_SERVICE);
             additionalInfo.put("CameraIdList", cameraManager.getCameraIdList());
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
         return new DeviceInfo(this.application, additionalInfo);
@@ -97,17 +99,33 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
-    SendDeviceInfoUseCase provideSendDeviceInfoUseCase(ImageRepository imageRepository,
-                                                       ThreadExecutor threadExecutor,
-                                                       PostExecutionThread postExecutionThread) {
+    SendDeviceInfoUseCase provideSendDeviceInfoUseCase(final ImageRepository imageRepository,
+                                                       final ThreadExecutor threadExecutor,
+                                                       final PostExecutionThread postExecutionThread) {
         return new SendDeviceInfoUseCase(imageRepository, threadExecutor, postExecutionThread);
     }
 
     @Provides
     @ApplicationScope
-    SendDeviceIpAddressUseCase provideSendDeviceIpAddressUseCase(ImageRepository imageRepository,
-                                                                 ThreadExecutor threadExecutor,
-                                                                 PostExecutionThread postExecutionThread) {
+    SendDeviceIpAddressUseCase provideSendDeviceIpAddressUseCase(final ImageRepository imageRepository,
+                                                                 final ThreadExecutor threadExecutor,
+                                                                 final PostExecutionThread postExecutionThread) {
         return new SendDeviceIpAddressUseCase(imageRepository, new IpAddressSource(), threadExecutor, postExecutionThread);
+    }
+
+    @Provides
+    @ApplicationScope
+    ListenDoorbellUseCase provideListenDoorbellUseCase(final ImageRepository imageRepository,
+                                                       final ThreadExecutor threadExecutor,
+                                                       final PostExecutionThread postExecutionThread) {
+        return new ListenDoorbellUseCase(imageRepository, threadExecutor, postExecutionThread);
+    }
+
+    @Provides
+    @ApplicationScope
+    SendDeviceNameUseCase provideSendDeviceNameUseCase(final ImageRepository imageRepository,
+                                                       final ThreadExecutor threadExecutor,
+                                                       final PostExecutionThread postExecutionThread) {
+        return new SendDeviceNameUseCase(imageRepository, threadExecutor, postExecutionThread);
     }
 }

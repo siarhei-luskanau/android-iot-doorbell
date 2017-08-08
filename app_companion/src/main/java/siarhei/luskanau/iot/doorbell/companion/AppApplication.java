@@ -3,6 +3,8 @@ package siarhei.luskanau.iot.doorbell.companion;
 import android.app.Application;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
+import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.squareup.leakcanary.LeakCanary;
@@ -17,6 +19,7 @@ import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerApplicatio
 import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ApplicationModule;
 import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceInfoUseCase;
+import siarhei.luskanau.iot.doorbell.interactor.SendDeviceNameUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
 
 public class AppApplication extends Application {
@@ -30,6 +33,8 @@ public class AppApplication extends Application {
     protected ListenDoorbellUseCase listenDoorbellUseCase;
     @Inject
     protected TakeAndSaveImageUseCase takeAndSaveImageUseCase;
+    @Inject
+    protected SendDeviceNameUseCase sendDeviceNameUseCase;
 
     private ApplicationComponent applicationComponent;
 
@@ -64,17 +69,19 @@ public class AppApplication extends Application {
     }
 
     private class ListenDoorbellObserver extends DefaultObserver<DoorbellEntry> {
+
         @Override
-        public void onNext(DoorbellEntry doorbellEntry) {
+        public void onNext(final DoorbellEntry doorbellEntry) {
+            if (TextUtils.isEmpty(doorbellEntry.getName())) {
+                sendDeviceNameUseCase.execute(new DefaultObserver<>(), SendDeviceNameUseCase.Params.forParams(doorbellEntry.getDeviceId(), Build.MODEL));
+            }
             if (doorbellEntry.getRing() != null && doorbellEntry.getRing()) {
                 try {
-                    CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
-                    String[] cameraIdList = cameraManager.getCameraIdList();
-                    if (cameraIdList != null) {
-                        for (String cameraId : cameraIdList) {
-                            takeAndSaveImageUseCase.execute(new DefaultObserver<>(),
-                                    TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraId));
-                        }
+                    final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+                    final String[] cameraIdList = cameraManager.getCameraIdList();
+                    if (cameraIdList.length > 0) {
+                        takeAndSaveImageUseCase.execute(new DefaultObserver<>(),
+                                TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraIdList[0]));
                     }
                 } catch (CameraAccessException e) {
                     Log.d(TAG, e.getMessage(), e);
