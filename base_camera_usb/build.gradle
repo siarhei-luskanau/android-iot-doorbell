@@ -21,10 +21,14 @@ android {
 }
 
 dependencies {
-    def baseCameraDependencies = rootProject.ext.baseCameraDependencies
+    def baseCameraUsbDependencies = rootProject.ext.baseCameraUsbDependencies
 
     compile project(':domain')
 
     compile project(':base_camera_usb:aars:libuvccamera-release')
     compile project(':base_camera_usb:aars:usbCameraCommon-release')
+
+    compile(baseCameraUsbDependencies.serenegiantCommon) {
+        exclude module: 'support-v4'
+    }
 }

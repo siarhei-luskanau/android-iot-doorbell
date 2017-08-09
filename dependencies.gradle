@@ -1,6 +1,7 @@
 allprojects {
     repositories {
         jcenter()
+        maven { url 'http://raw.github.com/saki4510t/libcommon/master/repository/' }
     }
 }
 
@@ -19,6 +20,7 @@ ext {
     rxJavaVersion = '2.1.2'
     rxAndroidVersion = '2.0.1'
     gsonVersion = '2.8.1'
+    serenegiantCommonVersion = '1.5.53'
 
     //Development
     leakCanaryVersion = '1.5.1'
@@ -45,6 +47,10 @@ ext {
     ]
 
     baseCameraDependencies = [
+    ]
+
+    baseCameraUsbDependencies = [
+            serenegiantCommon: "com.serenegiant:common:${serenegiantCommonVersion}",
     ]
 
     baseFirebaseDependencies = [

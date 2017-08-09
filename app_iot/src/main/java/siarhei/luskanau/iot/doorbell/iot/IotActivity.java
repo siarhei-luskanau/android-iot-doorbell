@@ -32,7 +32,7 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
     private Button button;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         this.initializeInjector();
@@ -42,18 +42,18 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
             setContentView(R.layout.activity_main);
             findViewById(R.id.cameraButton).setOnClickListener(v -> {
                 cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
+
                     @Override
                     public void onPermissionsGranted() {
                         Log.d(TAG, "onPermissionsGranted");
                         try {
-                            CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
-                            String[] cameraIdList = cameraManager.getCameraIdList();
-                            if (cameraIdList != null) {
-                                for (String cameraId : cameraIdList) {
-                                    takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
-                                }
+                            final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+                            final String[] cameraIdList = cameraManager.getCameraIdList();
+                            for (final String cameraId : cameraIdList) {
+                                takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
                             }
-                        } catch (CameraAccessException e) {
+                            takeAndSaveImagePresenter.takeAndSaveImage(null);
+                        } catch (final CameraAccessException e) {
                             Log.d(TAG, e.getMessage(), e);
                         }
                     }
@@ -64,7 +64,7 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
                     }
                 });
             });
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
 
@@ -72,24 +72,24 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
         try {
             button = new Button(GPIO_BUTTON, Button.LogicState.PRESSED_WHEN_LOW);
             button.setOnButtonEventListener(new Button.OnButtonEventListener() {
+
                 @Override
-                public void onButtonEvent(Button button, boolean pressed) {
+                public void onButtonEvent(final Button button, final boolean pressed) {
                     if (pressed) {
                         // Doorbell rang!
                         Log.d(TAG, "button pressed");
                         cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
+
                             @Override
                             public void onPermissionsGranted() {
                                 Log.d(TAG, "onPermissionsGranted");
                                 try {
-                                    CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
-                                    String[] cameraIdList = cameraManager.getCameraIdList();
-                                    if (cameraIdList != null) {
-                                        for (String cameraId : cameraIdList) {
-                                            takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
-                                        }
+                                    final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+                                    final String[] cameraIdList = cameraManager.getCameraIdList();
+                                    for (final String cameraId : cameraIdList) {
+                                        takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
                                     }
-                                } catch (CameraAccessException e) {
+                                } catch (final CameraAccessException e) {
                                     Log.d(TAG, e.getMessage(), e);
                                 }
                             }
@@ -102,13 +102,13 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
                     }
                 }
             });
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Log.e(TAG, "button driver error", e);
         }
     }
 
     private void initializeInjector() {
-        ActivityComponent activityComponent = DaggerActivityComponent.builder()
+        final ActivityComponent activityComponent = DaggerActivityComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
@@ -123,13 +123,13 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
 
         try {
             button.close();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Log.e(TAG, "button driver error", e);
         }
     }
 
     @Override
-    public void showErrorMessage(CharSequence errorMessage) {
+    public void showErrorMessage(final CharSequence errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 }
