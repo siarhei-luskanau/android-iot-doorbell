@@ -1,7 +1,5 @@
 package siarhei.luskanau.iot.doorbell.companion;
 
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,14 +10,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import siarhei.luskanau.android.framework.permissions.PermissionCustomer;
 import siarhei.luskanau.iot.doorbell.DoorbellEntry;
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.ActivityComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerActivityComponent;
-import siarhei.luskanau.iot.doorbell.companion.images.ImagesActivity;
 import siarhei.luskanau.iot.doorbell.companion.doorbells.DoorbellEntryAdapter;
+import siarhei.luskanau.iot.doorbell.companion.images.ImagesActivity;
 import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListPresenter;
 import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListView;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
@@ -36,15 +33,14 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
     @Inject
     protected CameraPermissionsListener cameraPermissionsListener;
 
-    private RecyclerView recyclerView;
     private DoorbellEntryAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         this.initializeInjector();
@@ -53,39 +49,16 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
         adapter = new DoorbellEntryAdapter();
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener((context, holder, position) -> {
-            DoorbellEntry item = adapter.getItem(position);
+            final DoorbellEntry item = adapter.getItem(position);
             context.startActivity(ImagesActivity.buildIntent(context, item.getDeviceId()));
         });
 
-        findViewById(R.id.cameraButton).setOnClickListener(v -> {
-            cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
-                @Override
-                public void onPermissionsGranted() {
-                    Log.d(TAG, "onPermissionsGranted");
-                    try {
-                        CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
-                        String[] cameraIdList = cameraManager.getCameraIdList();
-                        if (cameraIdList != null) {
-                            for (String cameraId : cameraIdList) {
-                                takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
-                            }
-                        }
-                    } catch (CameraAccessException e) {
-                        Log.d(TAG, e.getMessage(), e);
-                    }
-                }
-
-                @Override
-                public void onPermissionsDenied() {
-                    Log.d(TAG, "onPermissionsDenied");
-                }
-            });
-        });
+        findViewById(R.id.cameraButton).setOnClickListener(v -> takeAndSaveImage());
         doorbellListPresenter.listenDoorbellList();
     }
 
     private void initializeInjector() {
-        ActivityComponent activityComponent = DaggerActivityComponent.builder()
+        final ActivityComponent activityComponent = DaggerActivityComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
@@ -101,12 +74,37 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
     }
 
     @Override
-    public void onDoorbellListUpdated(List<DoorbellEntry> doorbellEntries) {
+    public void onDoorbellListUpdated(final List<DoorbellEntry> doorbellEntries) {
         adapter.setData(doorbellEntries);
     }
 
     @Override
-    public void showErrorMessage(CharSequence errorMessage) {
+    public void showErrorMessage(final CharSequence errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private void takeAndSaveImage() {
+        cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
+
+            @Override
+            public void onPermissionsGranted() {
+                Log.d(TAG, "onPermissionsGranted");
+                try {
+//                    final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+//                    final String[] cameraIdList = cameraManager.getCameraIdList();
+//                    for (final String cameraId : cameraIdList) {
+//                        takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
+//                    }
+                    takeAndSaveImagePresenter.takeAndSaveImage(null);
+                } catch (final Exception e) {
+                    Log.d(TAG, e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onPermissionsDenied() {
+                Log.d(TAG, "onPermissionsDenied");
+            }
+        });
     }
 }

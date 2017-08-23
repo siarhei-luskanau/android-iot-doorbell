@@ -38,6 +38,7 @@ dependencies {
     compile project(':domain')
     compile project(':base_firebase')
     compile project(':base_camera')
+    compile project(':base_camera_usb')
 
     annotationProcessor remoteControlDependencies.daggerCompiler
     compile remoteControlDependencies.dagger

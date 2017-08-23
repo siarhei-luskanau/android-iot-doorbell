@@ -81,6 +81,7 @@ public class ApplicationModule {
     @Provides
     @ApplicationScope
     TakePictureRepository provideTakePictureRepository() {
+        //return new CameraRepository(this.application, new ImageCompressor());
         return new CameraUsbRepository(this.application);
     }
 

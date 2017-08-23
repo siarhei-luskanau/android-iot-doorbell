@@ -17,8 +17,7 @@ import siarhei.luskanau.android.framework.executor.PostExecutionThread;
 import siarhei.luskanau.android.framework.executor.ThreadExecutor;
 import siarhei.luskanau.android.framework.executor.UIThread;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
-import siarhei.luskanau.iot.doorbell.camera.CameraRepository;
-import siarhei.luskanau.iot.doorbell.camera.ImageCompressor;
+import siarhei.luskanau.iot.doorbell.camera.usb.CameraUsbRepository;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
 import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
 import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellUseCase;
@@ -95,7 +94,8 @@ public class ApplicationModule {
     TakeAndSaveImageUseCase provideTakeAndSaveImageUseCase(final ImageRepository imageRepository,
                                                            final ThreadExecutor threadExecutor,
                                                            final PostExecutionThread postExecutionThread) {
-        final TakePictureRepository takePictureRepository = new CameraRepository(this.application, new ImageCompressor());
+        //final TakePictureRepository takePictureRepository = new CameraRepository(this.application, new ImageCompressor());
+        final TakePictureRepository takePictureRepository = new CameraUsbRepository(this.application);
         return new TakeAndSaveImageUseCase(takePictureRepository, imageRepository, threadExecutor, postExecutionThread);
     }
 

@@ -40,30 +40,7 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
 
         try {
             setContentView(R.layout.activity_main);
-            findViewById(R.id.cameraButton).setOnClickListener(v -> {
-                cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
-
-                    @Override
-                    public void onPermissionsGranted() {
-                        Log.d(TAG, "onPermissionsGranted");
-                        try {
-                            final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
-                            final String[] cameraIdList = cameraManager.getCameraIdList();
-                            for (final String cameraId : cameraIdList) {
-                                takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
-                            }
-                            takeAndSaveImagePresenter.takeAndSaveImage(null);
-                        } catch (final CameraAccessException e) {
-                            Log.d(TAG, e.getMessage(), e);
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionsDenied() {
-                        Log.d(TAG, "onPermissionsDenied");
-                    }
-                });
-            });
+            findViewById(R.id.cameraButton).setOnClickListener(v -> takeAndSaveImage());
         } catch (final Exception e) {
             Log.e(TAG, e.getMessage(), e);
         }
@@ -71,35 +48,11 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
         // Initialize the doorbell button driver
         try {
             button = new Button(GPIO_BUTTON, Button.LogicState.PRESSED_WHEN_LOW);
-            button.setOnButtonEventListener(new Button.OnButtonEventListener() {
-
-                @Override
-                public void onButtonEvent(final Button button, final boolean pressed) {
-                    if (pressed) {
-                        // Doorbell rang!
-                        Log.d(TAG, "button pressed");
-                        cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
-
-                            @Override
-                            public void onPermissionsGranted() {
-                                Log.d(TAG, "onPermissionsGranted");
-                                try {
-                                    final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
-                                    final String[] cameraIdList = cameraManager.getCameraIdList();
-                                    for (final String cameraId : cameraIdList) {
-                                        takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
-                                    }
-                                } catch (final CameraAccessException e) {
-                                    Log.d(TAG, e.getMessage(), e);
-                                }
-                            }
-
-                            @Override
-                            public void onPermissionsDenied() {
-                                Log.d(TAG, "onPermissionsDenied");
-                            }
-                        });
-                    }
+            button.setOnButtonEventListener((button1, pressed) -> {
+                if (pressed) {
+                    // Doorbell rang!
+                    Log.d(TAG, "button pressed");
+                    takeAndSaveImage();
                 }
             });
         } catch (final IOException e) {
@@ -131,5 +84,30 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
     @Override
     public void showErrorMessage(final CharSequence errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private void takeAndSaveImage() {
+        cameraPermissionsListener.checkPermissions(new PermissionCustomer() {
+
+            @Override
+            public void onPermissionsGranted() {
+                Log.d(TAG, "onPermissionsGranted");
+                try {
+                    final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+                    final String[] cameraIdList = cameraManager.getCameraIdList();
+                    for (final String cameraId : cameraIdList) {
+                        takeAndSaveImagePresenter.takeAndSaveImage(cameraId);
+                    }
+                    takeAndSaveImagePresenter.takeAndSaveImage(null);
+                } catch (final CameraAccessException e) {
+                    Log.d(TAG, e.getMessage(), e);
+                }
+            }
+
+            @Override
+            public void onPermissionsDenied() {
+                Log.d(TAG, "onPermissionsDenied");
+            }
+        });
     }
 }
