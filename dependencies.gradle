@@ -2,6 +2,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'http://raw.github.com/saki4510t/libcommon/master/repository/' }
+        maven { url "https://maven.google.com" }
     }
 }
 
@@ -9,25 +10,25 @@ ext {
     //Android
     ANDROID_BUILD_SDK_VERSION = 26
     ANDROID_BUILD_TARGET_SDK_VERSION = ANDROID_BUILD_SDK_VERSION
-    ANDROID_BUILD_TOOLS_VERSION = "26.0.1"
+    ANDROID_BUILD_TOOLS_VERSION = "26.0.2"
     ANDROID_BUILD_MIN_SDK_VERSION = 21
-    SUPPORT_LIBRARY_VERSION = "26.0.0-alpha1"
-    PLAY_SERVICES_VERSION = "11.0.2"
+    SUPPORT_LIBRARY_VERSION = "26.1.0"
+    PLAY_SERVICES_VERSION = "11.0.4"
 
     //Libraries
     daggerVersion = '2.11'
     javaxInjectVersion = '1'
     rxJavaVersion = '2.1.2'
     rxAndroidVersion = '2.0.1'
-    gsonVersion = '2.8.1'
+    gsonVersion = '2.8.2'
     serenegiantCommonVersion = '1.5.53'
 
     //Development
     leakCanaryVersion = '1.5.1'
 
     //Android Things
-    androidthingsVersion = '0.4-devpreview'
-    driverButtonVersion = '0.3'
+    androidthingsVersion = '0.5.1-devpreview'
+    driverButtonVersion = '0.4'
 
     iotDependencies = [
             daggerCompiler: "com.google.dagger:dagger-compiler:${daggerVersion}",

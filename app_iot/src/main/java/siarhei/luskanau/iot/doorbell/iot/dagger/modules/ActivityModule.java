@@ -21,7 +21,7 @@ public class ActivityModule {
 
     private final GrantPermissionsActivity activity;
 
-    public ActivityModule(GrantPermissionsActivity activity) {
+    public ActivityModule(final GrantPermissionsActivity activity) {
         this.activity = activity;
     }
 
@@ -38,13 +38,13 @@ public class ActivityModule {
     }
 
     @Provides
-    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(TakePictureRepository takePictureRepository,
-                                                               ImageRepository imageRepository,
-                                                               ThreadExecutor threadExecutor,
-                                                               PostExecutionThread postExecutionThread,
-                                                               DeviceInfo deviceInfo,
-                                                               ErrorMessageFactory errorMessageFactory) {
-        TakeAndSaveImageUseCase takeAndSaveImageUseCase = new TakeAndSaveImageUseCase(takePictureRepository,
+    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(final TakePictureRepository takePictureRepository,
+                                                               final ImageRepository imageRepository,
+                                                               final ThreadExecutor threadExecutor,
+                                                               final PostExecutionThread postExecutionThread,
+                                                               final DeviceInfo deviceInfo,
+                                                               final ErrorMessageFactory errorMessageFactory) {
+        final TakeAndSaveImageUseCase takeAndSaveImageUseCase = new TakeAndSaveImageUseCase(takePictureRepository,
                 imageRepository, threadExecutor, postExecutionThread);
         return new TakeAndSaveImagePresenter(takeAndSaveImageUseCase, deviceInfo, errorMessageFactory);
     }

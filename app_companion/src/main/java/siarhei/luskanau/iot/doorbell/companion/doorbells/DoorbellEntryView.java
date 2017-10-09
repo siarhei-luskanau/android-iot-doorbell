@@ -13,26 +13,26 @@ import siarhei.luskanau.iot.doorbell.companion.databinding.ViewDoorbellEntryBind
 
 public class DoorbellEntryView extends LinearLayout {
 
-    private ViewDoorbellEntryBinding binding;
+    private final ViewDoorbellEntryBinding binding;
 
     {
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()),
                 R.layout.view_doorbell_entry, this, true);
     }
 
-    public DoorbellEntryView(Context context) {
+    public DoorbellEntryView(final Context context) {
         super(context);
     }
 
-    public DoorbellEntryView(Context context, AttributeSet attrs) {
+    public DoorbellEntryView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public DoorbellEntryView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public DoorbellEntryView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setItem(DoorbellEntry doorbellEntry) {
+    public void setItem(final DoorbellEntry doorbellEntry) {
         if (doorbellEntry != null) {
             if (!TextUtils.isEmpty(doorbellEntry.getName())) {
                 binding.nameTextView.setText(doorbellEntry.getName());

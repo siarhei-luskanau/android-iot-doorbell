@@ -18,44 +18,44 @@ public abstract class EmitterValueEventListener<T> implements ValueEventListener
     private static final String TAG = EmitterValueEventListener.class.getSimpleName();
     private static final Gson GSON = new Gson();
 
-    private ObservableEmitter<T> emitter;
-    private Query query;
+    private final ObservableEmitter<T> emitter;
+    private final Query query;
 
-    public EmitterValueEventListener(ObservableEmitter<T> emitter, Query query) {
+    public EmitterValueEventListener(final ObservableEmitter<T> emitter, final Query query) {
         this.emitter = emitter;
         this.query = query;
     }
 
     @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
+    public void onDataChange(final DataSnapshot dataSnapshot) {
         if (!isDisposed(emitter, this, query)) {
             try {
-                Type genericSuperclass = getClass().getGenericSuperclass();
-                Type typeArgument = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
-                Object value = dataSnapshot.getValue();
-                T typedValue = GSON.fromJson(GSON.toJson(value), typeArgument);
-                T checkedValue = checkValue(typedValue);
+                final Type genericSuperclass = getClass().getGenericSuperclass();
+                final Type typeArgument = ((ParameterizedType) genericSuperclass).getActualTypeArguments()[0];
+                final Object value = dataSnapshot.getValue();
+                final T typedValue = GSON.fromJson(GSON.toJson(value), typeArgument);
+                final T checkedValue = checkValue(typedValue);
                 emitter.onNext(checkedValue);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
             }
         }
     }
 
-    protected T checkValue(T value) {
+    protected T checkValue(final T value) {
         return value;
     }
 
     @Override
-    public void onCancelled(DatabaseError databaseError) {
+    public void onCancelled(final DatabaseError databaseError) {
         if (!isDisposed(emitter, this, query)) {
             emitter.onError(databaseError.toException());
         }
         Log.w(TAG, databaseError.toString(), databaseError.toException());
     }
 
-    private boolean isDisposed(ObservableEmitter<T> emitter, ValueEventListener valueEventListener, Query query) {
-        boolean isDisposed = emitter.isDisposed();
+    private boolean isDisposed(final ObservableEmitter<T> emitter, final ValueEventListener valueEventListener, final Query query) {
+        final boolean isDisposed = emitter.isDisposed();
         if (isDisposed) {
             query.removeEventListener(valueEventListener);
         }

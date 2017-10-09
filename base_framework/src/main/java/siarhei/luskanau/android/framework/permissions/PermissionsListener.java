@@ -9,14 +9,14 @@ public abstract class PermissionsListener {
 
     private PermissionCustomer permissionCustomer;
 
-    public PermissionsListener(PermissionsGranter permissionsGranter) {
+    public PermissionsListener(final PermissionsGranter permissionsGranter) {
         this.permissionsGranter = permissionsGranter;
         permissionsGranter.addPermissionsListener(this);
     }
 
-    public void checkPermissions(PermissionCustomer permissionCustomer) {
-        String[] permissions = getRequiredPermissions();
-        for (String permission : permissions) {
+    public void checkPermissions(final PermissionCustomer permissionCustomer) {
+        final String[] permissions = getRequiredPermissions();
+        for (final String permission : permissions) {
             if (!permissionsGranter.isPermissionsGranted(permission)) {
                 this.permissionCustomer = permissionCustomer;
                 permissionsGranter.requestPermissions(permissions, getRequestCode());
@@ -26,11 +26,11 @@ public abstract class PermissionsListener {
         permissionCustomer.onPermissionsGranted();
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         if (requestCode == getRequestCode()) {
             boolean granted = true;
-            for (int i = 0; i < grantResults.length; i++) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+            for (final int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
                     granted = false;
                     break;
                 }

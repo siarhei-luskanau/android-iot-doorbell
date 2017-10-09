@@ -12,7 +12,7 @@ public class ImageCompressor {
 
     private static final String TAG = ImageCompressor.class.getSimpleName();
 
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    public static int calculateInSampleSize(final BitmapFactory.Options options, final int reqWidth, final int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
@@ -29,26 +29,26 @@ public class ImageCompressor {
         return inSampleSize;
     }
 
-    public Observable<byte[]> scale(Observable<byte[]> sourceObservable, int maxSize) {
+    public Observable<byte[]> scale(final Observable<byte[]> sourceObservable, final int maxSize) {
         return sourceObservable.map(bytes -> {
             try {
-                BitmapFactory.Options options = new BitmapFactory.Options();
+                final BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
 
-                int inSampleSize = calculateInSampleSize(options, maxSize, maxSize);
+                final int inSampleSize = calculateInSampleSize(options, maxSize, maxSize);
                 // some times the input bytes size is very big
-                int maxImageBytes = options.outHeight * options.outWidth;
+                final int maxImageBytes = options.outHeight * options.outWidth;
                 if (inSampleSize > 1 || bytes.length > maxImageBytes) {
                     options.inSampleSize = inSampleSize;
                     options.inJustDecodeBounds = false;
 
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    final Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+                    final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
                     return outputStream.toByteArray();
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 Log.e(TAG, e.getMessage(), e);
             }
             return bytes;

@@ -8,41 +8,41 @@ import java.util.List;
 
 public abstract class BaseRecyclerArrayAdapter<T, V extends RecyclerView.ViewHolder> extends BaseRecyclerAdapter<V> {
 
-    private List<T> mData = new ArrayList<>();
+    private final List<T> mData = new ArrayList<>();
 
     public BaseRecyclerArrayAdapter() {
     }
 
-    public BaseRecyclerArrayAdapter(OnItemClickListener<V> listener) {
+    public BaseRecyclerArrayAdapter(final OnItemClickListener<V> listener) {
         super(listener);
     }
 
-    public void addItem(T item) {
+    public void addItem(final T item) {
         mData.add(item);
         notifyItemInserted(mData.size() - 1);
     }
 
-    public void addItem(int position, T item) {
+    public void addItem(final int position, final T item) {
         mData.add(position, item);
         notifyItemInserted(position);
     }
 
-    public void addItems(Collection<? extends T> items) {
+    public void addItems(final Collection<? extends T> items) {
         if (items != null) {
-            int oldSize = getItemCount();
+            final int oldSize = getItemCount();
             mData.addAll(items);
             notifyItemRangeInserted(oldSize, getItemCount() - oldSize);
         }
     }
 
-    public void addItems(int position, Collection<? extends T> items) {
+    public void addItems(final int position, final Collection<? extends T> items) {
         if (items != null) {
             mData.addAll(position, items);
             notifyItemRangeInserted(position, items.size());
         }
     }
 
-    public void setItem(int position, T item) {
+    public void setItem(final int position, final T item) {
         mData.set(position, item);
         notifyItemChanged(position);
     }
@@ -51,7 +51,7 @@ public abstract class BaseRecyclerArrayAdapter<T, V extends RecyclerView.ViewHol
         return mData;
     }
 
-    public void setData(Collection<? extends T> data) {
+    public void setData(final Collection<? extends T> data) {
         mData.clear();
         if (data != null) {
             mData.addAll(data);
@@ -65,7 +65,7 @@ public abstract class BaseRecyclerArrayAdapter<T, V extends RecyclerView.ViewHol
         return mData.size();
     }
 
-    public T getItem(int position) {
+    public T getItem(final int position) {
         return mData.get(position);
     }
 }

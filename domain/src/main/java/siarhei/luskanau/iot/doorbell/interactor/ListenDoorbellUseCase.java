@@ -11,26 +11,26 @@ public class ListenDoorbellUseCase extends UseCase<DoorbellEntry, ListenDoorbell
 
     private final ImageRepository imageRepository;
 
-    public ListenDoorbellUseCase(ImageRepository imageRepository,
-                                 ThreadExecutor threadExecutor,
-                                 PostExecutionThread postExecutionThread) {
+    public ListenDoorbellUseCase(final ImageRepository imageRepository,
+                                 final ThreadExecutor threadExecutor,
+                                 final PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.imageRepository = imageRepository;
     }
 
     @Override
-    public Observable<DoorbellEntry> buildUseCaseObservable(Params params) {
+    public Observable<DoorbellEntry> buildUseCaseObservable(final Params params) {
         return this.imageRepository.listenDoorbellEntry(params.deviceId);
     }
 
     public static final class Params {
         private final String deviceId;
 
-        private Params(String deviceId) {
+        private Params(final String deviceId) {
             this.deviceId = deviceId;
         }
 
-        public static Params forParams(String deviceId) {
+        public static Params forParams(final String deviceId) {
             return new Params(deviceId);
         }
     }

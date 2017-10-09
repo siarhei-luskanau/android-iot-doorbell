@@ -21,29 +21,29 @@ import siarhei.luskanau.iot.doorbell.companion.databinding.ViewImageEntryBinding
 public class ImageEntryView extends LinearLayout {
 
     private static final String TAG = ImageEntryView.class.getSimpleName();
-    private ViewImageEntryBinding binding;
+    private final ViewImageEntryBinding binding;
 
     {
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()),
                 R.layout.view_image_entry, this, true);
     }
 
-    public ImageEntryView(Context context) {
+    public ImageEntryView(final Context context) {
         super(context);
     }
 
-    public ImageEntryView(Context context, AttributeSet attrs) {
+    public ImageEntryView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ImageEntryView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ImageEntryView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setItem(ImageEntry imageEntry) {
+    public void setItem(final ImageEntry imageEntry) {
         if (imageEntry != null) {
             // Display the timestamp
-            CharSequence prettyTime = DateUtils.getRelativeDateTimeString(getContext(),
+            final CharSequence prettyTime = DateUtils.getRelativeDateTimeString(getContext(),
                     imageEntry.getTimestamp(), DateUtils.SECOND_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0);
             binding.textView1.setText(prettyTime);
 
@@ -51,9 +51,9 @@ public class ImageEntryView extends LinearLayout {
             Bitmap bitmap = null;
             if (imageEntry.getImage() != null) {
                 try {
-                    byte[] imageBytes = Base64.decode(imageEntry.getImage(), Base64.DEFAULT);
+                    final byte[] imageBytes = Base64.decode(imageEntry.getImage(), Base64.DEFAULT);
                     bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                 }
             }
@@ -65,8 +65,8 @@ public class ImageEntryView extends LinearLayout {
 
             // Display the metadata
             if (imageEntry.getAnnotations() != null) {
-                List<String> annotations = imageEntry.getAnnotations();
-                int limit = Math.min(annotations.size(), 3);
+                final List<String> annotations = imageEntry.getAnnotations();
+                final int limit = Math.min(annotations.size(), 3);
                 binding.textView2.setText(TextUtils.join("\n", annotations.subList(0, limit)));
             } else {
                 binding.textView2.setText(null);

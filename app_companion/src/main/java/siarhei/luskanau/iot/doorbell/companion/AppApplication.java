@@ -83,7 +83,7 @@ public class AppApplication extends Application {
                         takeAndSaveImageUseCase.execute(new DefaultObserver<>(),
                                 TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraIdList[0]));
                     }
-                } catch (CameraAccessException e) {
+                } catch (final CameraAccessException e) {
                     Log.d(TAG, e.getMessage(), e);
                 }
             }

@@ -19,14 +19,13 @@ public class DoorbellListPresenter implements Presenter {
     private final ErrorMessageFactory errorMessageFactory;
     private DoorbellListView doorbellListView;
 
-
-    public DoorbellListPresenter(ListenDoorbellListUseCase listenDoorbellListUseCase,
-                                 ErrorMessageFactory errorMessageFactory) {
+    public DoorbellListPresenter(final ListenDoorbellListUseCase listenDoorbellListUseCase,
+                                 final ErrorMessageFactory errorMessageFactory) {
         this.listenDoorbellListUseCase = listenDoorbellListUseCase;
         this.errorMessageFactory = errorMessageFactory;
     }
 
-    public void setView(@NonNull DoorbellListView view) {
+    public void setView(@NonNull final DoorbellListView view) {
         this.doorbellListView = view;
     }
 
@@ -50,14 +49,14 @@ public class DoorbellListPresenter implements Presenter {
 
     private final class DoorbellsObserver extends DefaultObserver<List<DoorbellEntry>> {
         @Override
-        public void onNext(List<DoorbellEntry> doorbellEntries) {
+        public void onNext(final List<DoorbellEntry> doorbellEntries) {
             DoorbellListPresenter.this.doorbellListView.onDoorbellListUpdated(doorbellEntries);
         }
 
         @Override
-        public void onError(Throwable e) {
+        public void onError(final Throwable e) {
             Log.d(TAG, "onError: " + e);
-            CharSequence errorMessage = errorMessageFactory.create(e);
+            final CharSequence errorMessage = errorMessageFactory.create(e);
             DoorbellListPresenter.this.doorbellListView.showErrorMessage(errorMessage);
         }
     }

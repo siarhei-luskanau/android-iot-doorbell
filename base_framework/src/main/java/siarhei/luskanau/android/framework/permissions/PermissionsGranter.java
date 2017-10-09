@@ -12,27 +12,27 @@ import java.util.List;
 public class PermissionsGranter {
 
     private final Activity activity;
-    private List<PermissionsListener> permissionsListeners = new ArrayList<>();
+    private final List<PermissionsListener> permissionsListeners = new ArrayList<>();
 
-    public PermissionsGranter(Activity activity) {
+    public PermissionsGranter(final Activity activity) {
         this.activity = activity;
     }
 
-    public void addPermissionsListener(PermissionsListener permissionsListener) {
+    public void addPermissionsListener(final PermissionsListener permissionsListener) {
         permissionsListeners.add(permissionsListener);
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        for (PermissionsListener permissionsListener : permissionsListeners) {
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        for (final PermissionsListener permissionsListener : permissionsListeners) {
             permissionsListener.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
-    public boolean isPermissionsGranted(String permission) {
+    public boolean isPermissionsGranted(final String permission) {
         return ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
-    public void requestPermissions(String[] permissions, int requestCode) {
+    public void requestPermissions(final String[] permissions, final int requestCode) {
         ActivityCompat.requestPermissions(activity, permissions, requestCode);
     }
 }

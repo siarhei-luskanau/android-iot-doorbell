@@ -7,10 +7,10 @@ import siarhei.luskanau.android.framework.permissions.PermissionsGranter;
 
 public abstract class GrantPermissionsActivity extends AppCompatActivity {
 
-    private PermissionsGranter permissionsGranter = new PermissionsGranter(this);
+    private final PermissionsGranter permissionsGranter = new PermissionsGranter(this);
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permissionsGranter.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

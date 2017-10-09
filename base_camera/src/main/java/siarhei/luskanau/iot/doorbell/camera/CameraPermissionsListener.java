@@ -12,7 +12,7 @@ public class CameraPermissionsListener extends PermissionsListener {
             Manifest.permission.CAMERA,
     };
 
-    public CameraPermissionsListener(PermissionsGranter permissionsGranter) {
+    public CameraPermissionsListener(final PermissionsGranter permissionsGranter) {
         super(permissionsGranter);
     }
 

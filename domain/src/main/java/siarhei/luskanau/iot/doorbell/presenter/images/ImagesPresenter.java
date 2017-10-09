@@ -23,27 +23,26 @@ public class ImagesPresenter implements Presenter {
     private final ErrorMessageFactory errorMessageFactory;
     private ImagesView view;
 
-
-    public ImagesPresenter(ListenImageListUseCase listenImageListUseCase,
-                           TakeAndSaveImageUseCase takeAndSaveImageUseCase,
-                           DeviceInfo deviceInfo,
-                           ErrorMessageFactory errorMessageFactory) {
+    public ImagesPresenter(final ListenImageListUseCase listenImageListUseCase,
+                           final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+                           final DeviceInfo deviceInfo,
+                           final ErrorMessageFactory errorMessageFactory) {
         this.listenImageListUseCase = listenImageListUseCase;
         this.takeAndSaveImageUseCase = takeAndSaveImageUseCase;
         this.deviceInfo = deviceInfo;
         this.errorMessageFactory = errorMessageFactory;
     }
 
-    public void setView(@NonNull ImagesView view) {
+    public void setView(@NonNull final ImagesView view) {
         this.view = view;
     }
 
-    public void listenDoorbell(String deviceId) {
+    public void listenDoorbell(final String deviceId) {
         listenImageListUseCase.execute(new DoorbellObserver(),
                 ListenImageListUseCase.Params.forParams(deviceId));
     }
 
-    public void takeAndSaveImage(String cameraId) {
+    public void takeAndSaveImage(final String cameraId) {
         takeAndSaveImageUseCase.execute(new ImagesPresenter.TakePictureObserver(),
                 TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraId));
     }
@@ -64,23 +63,23 @@ public class ImagesPresenter implements Presenter {
 
     private final class DoorbellObserver extends DefaultObserver<List<ImageEntry>> {
         @Override
-        public void onNext(List<ImageEntry> list) {
+        public void onNext(final List<ImageEntry> list) {
             ImagesPresenter.this.view.onImageListUpdated(list);
         }
 
         @Override
-        public void onError(Throwable e) {
+        public void onError(final Throwable e) {
             Log.d(TAG, "onError: " + e);
-            CharSequence errorMessage = errorMessageFactory.create(e);
+            final CharSequence errorMessage = errorMessageFactory.create(e);
             ImagesPresenter.this.view.showErrorMessage(errorMessage);
         }
     }
 
     private final class TakePictureObserver extends DefaultObserver<Void> {
         @Override
-        public void onError(Throwable e) {
+        public void onError(final Throwable e) {
             Log.d(TAG, "onError: " + e);
-            CharSequence errorMessage = errorMessageFactory.create(e);
+            final CharSequence errorMessage = errorMessageFactory.create(e);
             ImagesPresenter.this.view.showErrorMessage(errorMessage);
         }
     }

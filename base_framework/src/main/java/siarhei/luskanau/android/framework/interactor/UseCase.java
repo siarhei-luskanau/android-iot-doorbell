@@ -37,7 +37,7 @@ public abstract class UseCase<T, Params> {
     private final PostExecutionThread postExecutionThread;
     private final CompositeDisposable disposables;
 
-    public UseCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public UseCase(final ThreadExecutor threadExecutor, final PostExecutionThread postExecutionThread) {
         this.threadExecutor = threadExecutor;
         this.postExecutionThread = postExecutionThread;
         this.disposables = new CompositeDisposable();
@@ -55,7 +55,7 @@ public abstract class UseCase<T, Params> {
      *                 by {@link #buildUseCaseObservable(Params)} ()} method.
      * @param params   Parameters (Optional) used to build/execute this use case.
      */
-    public void execute(DisposableObserver<T> observer, Params params) {
+    public void execute(final DisposableObserver<T> observer, final Params params) {
         final Observable<T> observable = this.buildUseCaseObservable(params)
                 .subscribeOn(Schedulers.from(threadExecutor))
                 .observeOn(postExecutionThread.getScheduler());
@@ -74,7 +74,7 @@ public abstract class UseCase<T, Params> {
     /**
      * Dispose from current {@link CompositeDisposable}.
      */
-    private void addDisposable(Disposable disposable) {
+    private void addDisposable(final Disposable disposable) {
         disposables.add(disposable);
     }
 }

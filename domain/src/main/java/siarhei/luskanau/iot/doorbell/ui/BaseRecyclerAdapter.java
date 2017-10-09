@@ -10,11 +10,11 @@ public abstract class BaseRecyclerAdapter<V extends RecyclerView.ViewHolder> ext
 
     private OnItemClickListener<V> itemClickListener;
 
-    private View.OnClickListener innerClickListener = new View.OnClickListener() {
+    private final View.OnClickListener innerClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
             if (itemClickListener != null) {
-                V holder = (V) v.getTag();
+                final V holder = (V) v.getTag();
                 itemClickListener.onClick(holder.itemView.getContext(),
                         holder, holder.getAdapterPosition());
             }
@@ -24,14 +24,14 @@ public abstract class BaseRecyclerAdapter<V extends RecyclerView.ViewHolder> ext
     public BaseRecyclerAdapter() {
     }
 
-    public BaseRecyclerAdapter(OnItemClickListener<V> listener) {
+    public BaseRecyclerAdapter(final OnItemClickListener<V> listener) {
         this.itemClickListener = listener;
     }
 
     @Override
-    public V onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        V holder = onCreateViewHolder(inflater, parent, viewType);
+    public V onCreateViewHolder(final ViewGroup parent, final int viewType) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final V holder = onCreateViewHolder(inflater, parent, viewType);
         if (itemClickListener != null) {
             holder.itemView.setOnClickListener(innerClickListener);
         }
@@ -45,7 +45,7 @@ public abstract class BaseRecyclerAdapter<V extends RecyclerView.ViewHolder> ext
         return innerClickListener;
     }
 
-    public void setOnItemClickListener(OnItemClickListener<V> listener) {
+    public void setOnItemClickListener(final OnItemClickListener<V> listener) {
         this.itemClickListener = listener;
     }
 

@@ -13,15 +13,15 @@ public class ListenDoorbellListUseCase extends UseCase<List<DoorbellEntry>, Void
 
     private final ImageRepository imageRepository;
 
-    public ListenDoorbellListUseCase(ImageRepository imageRepository,
-                                     ThreadExecutor threadExecutor,
-                                     PostExecutionThread postExecutionThread) {
+    public ListenDoorbellListUseCase(final ImageRepository imageRepository,
+                                     final ThreadExecutor threadExecutor,
+                                     final PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.imageRepository = imageRepository;
     }
 
     @Override
-    public Observable<List<DoorbellEntry>> buildUseCaseObservable(Void aVoid) {
+    public Observable<List<DoorbellEntry>> buildUseCaseObservable(final Void aVoid) {
         return this.imageRepository.listenDoorbellEntryList();
     }
 }

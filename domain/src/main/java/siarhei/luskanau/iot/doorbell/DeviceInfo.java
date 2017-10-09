@@ -15,18 +15,18 @@ public class DeviceInfo {
     private int buildVersionSdkInt = Build.VERSION.SDK_INT;
     private String buildVersionRelease = Build.VERSION.RELEASE;
 
-    private Map<String, Object> additionalInfo;
+    private final Map<String, Object> additionalInfo;
 
-    public DeviceInfo(Context context) {
+    public DeviceInfo(final Context context) {
         this(context, null);
     }
 
-    public DeviceInfo(Context context, Map<String, Object> additionalInfo) {
+    public DeviceInfo(final Context context, final Map<String, Object> additionalInfo) {
         deviceId = getDeviceId(context);
         this.additionalInfo = additionalInfo;
     }
 
-    private String getDeviceId(Context context) {
+    private String getDeviceId(final Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
@@ -38,7 +38,7 @@ public class DeviceInfo {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 

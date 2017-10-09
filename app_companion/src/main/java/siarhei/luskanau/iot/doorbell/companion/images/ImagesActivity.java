@@ -34,12 +34,12 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
     private String deviceId;
     private ImageEntryAdapter adapter;
 
-    public static Intent buildIntent(Context context, String deviceId) {
+    public static Intent buildIntent(final Context context, final String deviceId) {
         return new Intent(context, ImagesActivity.class).putExtra(DomainConstants.DEVICE_ID, deviceId);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_images);
 
@@ -48,14 +48,14 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
             getSupportActionBar().setTitle(deviceId);
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ImageEntryAdapter();
         recyclerView.setAdapter(adapter);
 
         adapter.setOnItemClickListener((context, holder, position) -> {
-            ImageEntry item = adapter.getItem(position);
-            RemoveImageDialogFragment.showFragment(ImagesActivity.this, deviceId, null, item.getImageId());
+            final ImageEntry item = adapter.getItem(position);
+            RemoveImageDialogFragment.showFragment(this, deviceId, null, item.getImageId());
         });
 
         this.initializeInjector();
@@ -64,9 +64,9 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
 
         findViewById(R.id.cameraButton).setOnClickListener(v -> {
             try {
-                CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
-                String[] cameraIdList = cameraManager.getCameraIdList();
-                for (String cameraId : cameraIdList) {
+                final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
+                final String[] cameraIdList = cameraManager.getCameraIdList();
+                for (final String cameraId : cameraIdList) {
                     imagesPresenter.takeAndSaveImage(cameraId);
                 }
             } catch (CameraAccessException e) {
@@ -76,7 +76,7 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
     }
 
     private void initializeInjector() {
-        ActivityComponent activityComponent = DaggerActivityComponent.builder()
+        final ActivityComponent activityComponent = DaggerActivityComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
@@ -102,7 +102,7 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
     }
 
     @Override
-    public void showErrorMessage(CharSequence errorMessage) {
+    public void showErrorMessage(final CharSequence errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

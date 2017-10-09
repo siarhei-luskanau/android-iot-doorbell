@@ -12,17 +12,17 @@ public class SendDeviceIpAddressUseCase extends UseCase<Void, SendDeviceIpAddres
     private final ImageRepository imageRepository;
     private final IpAddressSource ipAddressSource;
 
-    public SendDeviceIpAddressUseCase(ImageRepository imageRepository,
-                                      IpAddressSource ipAddressSource,
-                                      ThreadExecutor threadExecutor,
-                                      PostExecutionThread postExecutionThread) {
+    public SendDeviceIpAddressUseCase(final ImageRepository imageRepository,
+                                      final IpAddressSource ipAddressSource,
+                                      final ThreadExecutor threadExecutor,
+                                      final PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.imageRepository = imageRepository;
         this.ipAddressSource = ipAddressSource;
     }
 
     @Override
-    public Observable<Void> buildUseCaseObservable(Params params) {
+    public Observable<Void> buildUseCaseObservable(final Params params) {
         return this.ipAddressSource.listenIpAddress().flatMap(pair ->
                 imageRepository.sendDeviceIpAddress(params.deviceId, pair));
     }
@@ -30,11 +30,11 @@ public class SendDeviceIpAddressUseCase extends UseCase<Void, SendDeviceIpAddres
     public static final class Params {
         private final String deviceId;
 
-        private Params(String deviceId) {
+        private Params(final String deviceId) {
             this.deviceId = deviceId;
         }
 
-        public static Params forParams(String deviceId) {
+        public static Params forParams(final String deviceId) {
             return new Params(deviceId);
         }
     }

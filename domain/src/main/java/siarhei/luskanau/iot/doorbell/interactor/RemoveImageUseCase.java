@@ -10,15 +10,15 @@ public class RemoveImageUseCase extends UseCase<Void, RemoveImageUseCase.Params>
 
     private final ImageRepository imageRepository;
 
-    public RemoveImageUseCase(ImageRepository imageRepository,
-                              ThreadExecutor threadExecutor,
-                              PostExecutionThread postExecutionThread) {
+    public RemoveImageUseCase(final ImageRepository imageRepository,
+                              final ThreadExecutor threadExecutor,
+                              final PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.imageRepository = imageRepository;
     }
 
     @Override
-    public Observable<Void> buildUseCaseObservable(Params params) {
+    public Observable<Void> buildUseCaseObservable(final Params params) {
         return this.imageRepository.removeImage(params.deviceId, params.imageId);
     }
 
@@ -26,12 +26,12 @@ public class RemoveImageUseCase extends UseCase<Void, RemoveImageUseCase.Params>
         private final String deviceId;
         private final String imageId;
 
-        private Params(String deviceId, String imageId) {
+        private Params(final String deviceId, final String imageId) {
             this.deviceId = deviceId;
             this.imageId = imageId;
         }
 
-        public static Params forParams(String deviceId, String imageId) {
+        public static Params forParams(final String deviceId, final String imageId) {
             return new Params(deviceId, imageId);
         }
     }

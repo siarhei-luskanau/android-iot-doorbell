@@ -18,19 +18,19 @@ public class TakeAndSaveImagePresenter implements Presenter {
     private final ErrorMessageFactory errorMessageFactory;
     private TakeAndSaveImageView takeAndSaveImageView;
 
-    public TakeAndSaveImagePresenter(TakeAndSaveImageUseCase takeAndSaveImageUseCase,
-                                     DeviceInfo deviceInfo,
-                                     ErrorMessageFactory errorMessageFactory) {
+    public TakeAndSaveImagePresenter(final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+                                     final DeviceInfo deviceInfo,
+                                     final ErrorMessageFactory errorMessageFactory) {
         this.takeAndSaveImageUseCase = takeAndSaveImageUseCase;
         this.deviceInfo = deviceInfo;
         this.errorMessageFactory = errorMessageFactory;
     }
 
-    public void setView(@NonNull TakeAndSaveImageView view) {
+    public void setView(@NonNull final TakeAndSaveImageView view) {
         this.takeAndSaveImageView = view;
     }
 
-    public void takeAndSaveImage(String cameraId) {
+    public void takeAndSaveImage(final String cameraId) {
         takeAndSaveImageUseCase.execute(new TakePictureObserver(),
                 TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraId));
     }
@@ -50,9 +50,9 @@ public class TakeAndSaveImagePresenter implements Presenter {
 
     private final class TakePictureObserver extends DefaultObserver<Void> {
         @Override
-        public void onError(Throwable e) {
+        public void onError(final Throwable e) {
             Log.d(TAG, "onError: " + e);
-            CharSequence errorMessage = errorMessageFactory.create(e);
+            final CharSequence errorMessage = errorMessageFactory.create(e);
             TakeAndSaveImagePresenter.this.takeAndSaveImageView.showErrorMessage(errorMessage);
         }
     }

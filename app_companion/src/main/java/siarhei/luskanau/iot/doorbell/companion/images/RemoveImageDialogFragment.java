@@ -34,31 +34,30 @@ public class RemoveImageDialogFragment extends DialogFragment {
     protected PostExecutionThread postExecutionThread;
 
     private String deviceId;
-    private String name;
     private String imageId;
 
-    public static void showFragment(FragmentActivity activity, String deviceId, String name, String imageId) {
+    public static void showFragment(final FragmentActivity activity, final String deviceId, final String name, final String imageId) {
         RemoveImageDialogFragment.newInstance(deviceId, name, imageId).show(activity.getSupportFragmentManager(), TAG);
     }
 
-    private static RemoveImageDialogFragment newInstance(String deviceId, String name, String imageId) {
-        Bundle args = new Bundle();
+    private static RemoveImageDialogFragment newInstance(final String deviceId, final String name, final String imageId) {
+        final Bundle args = new Bundle();
         args.putString(DEVICE_ID, deviceId);
         args.putString(NAME_ID, name);
         args.putString(IMAGE_ID, imageId);
-        RemoveImageDialogFragment fragment = new RemoveImageDialogFragment();
+        final RemoveImageDialogFragment fragment = new RemoveImageDialogFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
         deviceId = getArguments().getString(DEVICE_ID);
-        name = getArguments().getString(NAME_ID);
+        final String name = getArguments().getString(NAME_ID);
         imageId = getArguments().getString(IMAGE_ID);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         if (!TextUtils.isEmpty(name)) {
             builder.setTitle(name);
         } else {
@@ -74,9 +73,9 @@ public class RemoveImageDialogFragment extends DialogFragment {
     }
 
     private void initializeInjector() {
-        BaseComponentActivity activity = (BaseComponentActivity) getActivity();
+        final BaseComponentActivity activity = (BaseComponentActivity) getActivity();
 
-        ActivityComponent activityComponent = DaggerActivityComponent.builder()
+        final ActivityComponent activityComponent = DaggerActivityComponent.builder()
                 .applicationComponent(activity.getApplicationComponent())
                 .activityModule(activity.getActivityModule())
                 .build();
@@ -84,7 +83,7 @@ public class RemoveImageDialogFragment extends DialogFragment {
     }
 
     private void removeImage() {
-        RemoveImageUseCase removeImageUseCase = new RemoveImageUseCase(imageRepository, threadExecutor, postExecutionThread);
+        final RemoveImageUseCase removeImageUseCase = new RemoveImageUseCase(imageRepository, threadExecutor, postExecutionThread);
         removeImageUseCase.execute(new DefaultObserver<>(), RemoveImageUseCase.Params.forParams(deviceId, imageId));
     }
 }

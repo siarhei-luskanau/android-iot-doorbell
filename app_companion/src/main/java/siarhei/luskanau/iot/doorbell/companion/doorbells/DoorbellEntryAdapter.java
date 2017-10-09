@@ -14,15 +14,15 @@ import siarhei.luskanau.iot.doorbell.ui.BindableViewHolder;
 public class DoorbellEntryAdapter extends BaseRecyclerArrayAdapter<DoorbellEntry, BindableViewHolder> {
 
     @Override
-    public BindableViewHolder onCreateViewHolder(LayoutInflater inflater, ViewGroup parent, int viewType) {
-        ViewDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.list_item_doorbell_entry, parent, false);
+    public BindableViewHolder onCreateViewHolder(final LayoutInflater inflater, final ViewGroup parent, final int viewType) {
+        final ViewDataBinding binding = DataBindingUtil.inflate(inflater, R.layout.list_item_doorbell_entry, parent, false);
         return new BindableViewHolder<>(binding);
     }
 
     @Override
-    public void onBindViewHolder(BindableViewHolder holder, int position) {
-        ListItemDoorbellEntryBinding binding = (ListItemDoorbellEntryBinding) holder.getBindings();
-        DoorbellEntry item = getItem(position);
+    public void onBindViewHolder(final BindableViewHolder holder, final int position) {
+        final ListItemDoorbellEntryBinding binding = (ListItemDoorbellEntryBinding) holder.getBindings();
+        final DoorbellEntry item = getItem(position);
         binding.item.setItem(item);
     }
 }

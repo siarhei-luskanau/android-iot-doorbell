@@ -13,26 +13,26 @@ public class ListenImageListUseCase extends UseCase<List<ImageEntry>, ListenImag
 
     private final ImageRepository imageRepository;
 
-    public ListenImageListUseCase(ImageRepository imageRepository,
-                                  ThreadExecutor threadExecutor,
-                                  PostExecutionThread postExecutionThread) {
+    public ListenImageListUseCase(final ImageRepository imageRepository,
+                                  final ThreadExecutor threadExecutor,
+                                  final PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.imageRepository = imageRepository;
     }
 
     @Override
-    public Observable<List<ImageEntry>> buildUseCaseObservable(Params params) {
+    public Observable<List<ImageEntry>> buildUseCaseObservable(final Params params) {
         return this.imageRepository.listenImagesList(params.deviceId);
     }
 
     public static final class Params {
         private final String deviceId;
 
-        private Params(String deviceId) {
+        private Params(final String deviceId) {
             this.deviceId = deviceId;
         }
 
-        public static Params forParams(String deviceId) {
+        public static Params forParams(final String deviceId) {
             return new Params(deviceId);
         }
     }

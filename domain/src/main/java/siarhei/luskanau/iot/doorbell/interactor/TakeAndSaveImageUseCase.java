@@ -12,17 +12,17 @@ public class TakeAndSaveImageUseCase extends UseCase<Void, TakeAndSaveImageUseCa
     private final TakePictureRepository takePictureRepository;
     private final ImageRepository imageRepository;
 
-    public TakeAndSaveImageUseCase(TakePictureRepository takePictureRepository,
-                                   ImageRepository imageRepository,
-                                   ThreadExecutor threadExecutor,
-                                   PostExecutionThread postExecutionThread) {
+    public TakeAndSaveImageUseCase(final TakePictureRepository takePictureRepository,
+                                   final ImageRepository imageRepository,
+                                   final ThreadExecutor threadExecutor,
+                                   final PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.takePictureRepository = takePictureRepository;
         this.imageRepository = imageRepository;
     }
 
     @Override
-    public Observable<Void> buildUseCaseObservable(Params params) {
+    public Observable<Void> buildUseCaseObservable(final Params params) {
         return this.takePictureRepository.takePicture(params.cameraId)
                 .flatMap(bytes -> this.imageRepository.saveImage(params.deviceId, bytes));
     }
@@ -31,12 +31,12 @@ public class TakeAndSaveImageUseCase extends UseCase<Void, TakeAndSaveImageUseCa
         private final String deviceId;
         private final String cameraId;
 
-        private Params(String deviceId, String cameraId) {
+        private Params(final String deviceId, final String cameraId) {
             this.deviceId = deviceId;
             this.cameraId = cameraId;
         }
 
-        public static Params forParams(String deviceId, String cameraId) {
+        public static Params forParams(final String deviceId, final String cameraId) {
             return new Params(deviceId, cameraId);
         }
     }

@@ -11,26 +11,26 @@ public class SendDeviceInfoUseCase extends UseCase<Void, SendDeviceInfoUseCase.P
 
     private final ImageRepository imageRepository;
 
-    public SendDeviceInfoUseCase(ImageRepository imageRepository,
-                                 ThreadExecutor threadExecutor,
-                                 PostExecutionThread postExecutionThread) {
+    public SendDeviceInfoUseCase(final ImageRepository imageRepository,
+                                 final ThreadExecutor threadExecutor,
+                                 final PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.imageRepository = imageRepository;
     }
 
     @Override
-    public Observable<Void> buildUseCaseObservable(Params params) {
+    public Observable<Void> buildUseCaseObservable(final Params params) {
         return this.imageRepository.sendDeviceInfo(params.deviceInfo);
     }
 
     public static final class Params {
         private final DeviceInfo deviceInfo;
 
-        private Params(DeviceInfo deviceInfo) {
+        private Params(final DeviceInfo deviceInfo) {
             this.deviceInfo = deviceInfo;
         }
 
-        public static Params forParams(DeviceInfo deviceInfo) {
+        public static Params forParams(final DeviceInfo deviceInfo) {
             return new Params(deviceInfo);
         }
     }

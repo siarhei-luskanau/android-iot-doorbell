@@ -22,7 +22,7 @@ import io.reactivex.observers.DisposableObserver;
  */
 public class DefaultObserver<T> extends DisposableObserver<T> {
     @Override
-    public void onNext(T t) {
+    public void onNext(final T t) {
         // no-op by default.
     }
 
@@ -32,7 +32,7 @@ public class DefaultObserver<T> extends DisposableObserver<T> {
     }
 
     @Override
-    public void onError(Throwable exception) {
+    public void onError(final Throwable exception) {
         // no-op by default.
     }
 }

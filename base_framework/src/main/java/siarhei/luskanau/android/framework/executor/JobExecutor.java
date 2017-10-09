@@ -35,7 +35,7 @@ public class JobExecutor implements ThreadExecutor {
     }
 
     @Override
-    public void execute(@NonNull Runnable runnable) {
+    public void execute(@NonNull final Runnable runnable) {
         this.threadPoolExecutor.execute(runnable);
     }
 
@@ -43,7 +43,7 @@ public class JobExecutor implements ThreadExecutor {
         private int counter = 0;
 
         @Override
-        public Thread newThread(@NonNull Runnable runnable) {
+        public Thread newThread(@NonNull final Runnable runnable) {
             return new Thread(runnable, "android_" + counter++);
         }
     }

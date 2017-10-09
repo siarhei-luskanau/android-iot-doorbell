@@ -24,7 +24,7 @@ public class ActivityModule {
 
     private final GrantPermissionsActivity activity;
 
-    public ActivityModule(GrantPermissionsActivity activity) {
+    public ActivityModule(final GrantPermissionsActivity activity) {
         this.activity = activity;
     }
 
@@ -41,30 +41,30 @@ public class ActivityModule {
     }
 
     @Provides
-    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(TakeAndSaveImageUseCase takeAndSaveImageUseCase,
-                                                               DeviceInfo deviceInfo,
-                                                               ErrorMessageFactory errorMessageFactory) {
+    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+                                                               final DeviceInfo deviceInfo,
+                                                               final ErrorMessageFactory errorMessageFactory) {
         return new TakeAndSaveImagePresenter(takeAndSaveImageUseCase, deviceInfo, errorMessageFactory);
     }
 
     @Provides
-    DoorbellListPresenter provideDoorbellListsPresenter(ImageRepository imageRepository,
-                                                        ThreadExecutor threadExecutor,
-                                                        PostExecutionThread postExecutionThread,
-                                                        ErrorMessageFactory errorMessageFactory) {
-        ListenDoorbellListUseCase doorbellsUseCase = new ListenDoorbellListUseCase(imageRepository,
+    DoorbellListPresenter provideDoorbellListsPresenter(final ImageRepository imageRepository,
+                                                        final ThreadExecutor threadExecutor,
+                                                        final PostExecutionThread postExecutionThread,
+                                                        final ErrorMessageFactory errorMessageFactory) {
+        final ListenDoorbellListUseCase doorbellsUseCase = new ListenDoorbellListUseCase(imageRepository,
                 threadExecutor, postExecutionThread);
         return new DoorbellListPresenter(doorbellsUseCase, errorMessageFactory);
     }
 
     @Provides
-    ImagesPresenter provideDoorbellPresenter(ImageRepository imageRepository,
-                                             TakeAndSaveImageUseCase takeAndSaveImageUseCase,
-                                             DeviceInfo deviceInfo,
-                                             ThreadExecutor threadExecutor,
-                                             PostExecutionThread postExecutionThread,
-                                             ErrorMessageFactory errorMessageFactory) {
-        ListenImageListUseCase listenImageListUseCase = new ListenImageListUseCase(imageRepository,
+    ImagesPresenter provideDoorbellPresenter(final ImageRepository imageRepository,
+                                             final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+                                             final DeviceInfo deviceInfo,
+                                             final ThreadExecutor threadExecutor,
+                                             final PostExecutionThread postExecutionThread,
+                                             final ErrorMessageFactory errorMessageFactory) {
+        final ListenImageListUseCase listenImageListUseCase = new ListenImageListUseCase(imageRepository,
                 threadExecutor, postExecutionThread);
         return new ImagesPresenter(listenImageListUseCase, takeAndSaveImageUseCase, deviceInfo, errorMessageFactory);
     }
