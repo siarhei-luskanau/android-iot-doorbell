@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.iot;
 import android.app.Application;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -19,10 +18,9 @@ import siarhei.luskanau.iot.doorbell.interactor.SendDeviceNameUseCase;
 import siarhei.luskanau.iot.doorbell.iot.dagger.component.ApplicationComponent;
 import siarhei.luskanau.iot.doorbell.iot.dagger.component.DaggerApplicationComponent;
 import siarhei.luskanau.iot.doorbell.iot.dagger.modules.ApplicationModule;
+import timber.log.Timber;
 
 public class AppApplication extends Application {
-
-    private static final String TAG = AppApplication.class.getSimpleName();
 
     @Inject
     protected DeviceInfo deviceInfo;
@@ -40,7 +38,7 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i(TAG, "Starting AppApplication");
+        Timber.i("Starting AppApplication");
         this.initializeInjector();
         this.initializeLeakDetection();
 

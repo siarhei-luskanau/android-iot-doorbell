@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion project.ANDROID_BUILD_SDK_VERSION
@@ -7,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "siarhei.luskanau.iot.doorbell.iot"
-        minSdkVersion 24
-        targetSdkVersion 24
+        minSdkVersion project.ANDROID_THINGS_BUILD_MIN_SDK_VERSION
+        targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
         versionCode 1
         versionName "1.0"
     }
@@ -27,24 +26,21 @@ android {
 }
 
 dependencies {
-    def iotDependencies = rootProject.ext.iotDependencies
-    def developmentDependencies = rootProject.ext.developmentDependencies
+    def appDependencies = rootProject.ext.appDependencies
 
     compile project(':domain')
     compile project(':base_firebase')
     compile project(':base_camera')
     compile project(':base_camera_usb')
 
-    annotationProcessor iotDependencies.daggerCompiler
-    compile iotDependencies.dagger
-    compile iotDependencies.javaxInject
+    annotationProcessor appDependencies.daggerCompiler
 
-    provided iotDependencies.androidThings
-    compile iotDependencies.driverButton
-    compile iotDependencies.supportDesign
+    provided appDependencies.androidThings
+    compile appDependencies.driverButton
+    compile appDependencies.supportDesign
 
     //Development
-    debugCompile developmentDependencies.leakCanary
-    releaseCompile developmentDependencies.leakCanaryNoOp
-    testCompile developmentDependencies.leakCanaryNoOp
+    debugCompile appDependencies.leakCanary
+    releaseCompile appDependencies.leakCanaryNoOp
+    testCompile appDependencies.leakCanaryNoOp
 }

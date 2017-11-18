@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.companion;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -21,10 +20,9 @@ import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListPresenter;
 import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListView;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImageView;
+import timber.log.Timber;
 
 public class MainActivity extends BaseComponentActivity implements TakeAndSaveImageView, DoorbellListView {
-
-    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Inject
     protected DoorbellListPresenter doorbellListPresenter;
@@ -88,7 +86,7 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
 
             @Override
             public void onPermissionsGranted() {
-                Log.d(TAG, "onPermissionsGranted");
+                Timber.d("onPermissionsGranted");
                 try {
 //                    final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
 //                    final String[] cameraIdList = cameraManager.getCameraIdList();
@@ -97,13 +95,13 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
 //                    }
                     takeAndSaveImagePresenter.takeAndSaveImage(null);
                 } catch (final Exception e) {
-                    Log.d(TAG, e.getMessage(), e);
+                    Timber.d(e);
                 }
             }
 
             @Override
             public void onPermissionsDenied() {
-                Log.d(TAG, "onPermissionsDenied");
+                Timber.d("onPermissionsDenied");
             }
         });
     }

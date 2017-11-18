@@ -10,9 +10,8 @@ import android.text.TextUtils;
 
 import javax.inject.Inject;
 
-import siarhei.luskanau.android.framework.executor.PostExecutionThread;
-import siarhei.luskanau.android.framework.executor.ThreadExecutor;
 import siarhei.luskanau.android.framework.interactor.DefaultObserver;
+import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
 import siarhei.luskanau.iot.doorbell.companion.BaseComponentActivity;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.ActivityComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerActivityComponent;
@@ -29,9 +28,7 @@ public class RemoveImageDialogFragment extends DialogFragment {
     @Inject
     protected ImageRepository imageRepository;
     @Inject
-    protected ThreadExecutor threadExecutor;
-    @Inject
-    protected PostExecutionThread postExecutionThread;
+    protected ISchedulerSet schedulerSet;
 
     private String deviceId;
     private String imageId;
@@ -83,7 +80,7 @@ public class RemoveImageDialogFragment extends DialogFragment {
     }
 
     private void removeImage() {
-        final RemoveImageUseCase removeImageUseCase = new RemoveImageUseCase(imageRepository, threadExecutor, postExecutionThread);
+        final RemoveImageUseCase removeImageUseCase = new RemoveImageUseCase(imageRepository, schedulerSet);
         removeImageUseCase.execute(new DefaultObserver<>(), RemoveImageUseCase.Params.forParams(deviceId, imageId));
     }
 }

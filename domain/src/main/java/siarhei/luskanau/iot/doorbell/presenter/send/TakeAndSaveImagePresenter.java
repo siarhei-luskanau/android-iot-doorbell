@@ -1,26 +1,29 @@
 package siarhei.luskanau.iot.doorbell.presenter.send;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
 import siarhei.luskanau.android.framework.interactor.DefaultObserver;
 import siarhei.luskanau.android.framework.presenter.Presenter;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
+import timber.log.Timber;
 
 public class TakeAndSaveImagePresenter implements Presenter {
 
-    private static final String TAG = TakeAndSaveImagePresenter.class.getSimpleName();
-
+    @NonNull
     private final TakeAndSaveImageUseCase takeAndSaveImageUseCase;
+    @NonNull
     private final DeviceInfo deviceInfo;
+    @NonNull
     private final ErrorMessageFactory errorMessageFactory;
     private TakeAndSaveImageView takeAndSaveImageView;
 
-    public TakeAndSaveImagePresenter(final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
-                                     final DeviceInfo deviceInfo,
-                                     final ErrorMessageFactory errorMessageFactory) {
+    public TakeAndSaveImagePresenter(
+            @NonNull final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+            @NonNull final DeviceInfo deviceInfo,
+            @NonNull final ErrorMessageFactory errorMessageFactory
+    ) {
         this.takeAndSaveImageUseCase = takeAndSaveImageUseCase;
         this.deviceInfo = deviceInfo;
         this.errorMessageFactory = errorMessageFactory;
@@ -49,9 +52,10 @@ public class TakeAndSaveImagePresenter implements Presenter {
     }
 
     private final class TakePictureObserver extends DefaultObserver<Void> {
+
         @Override
         public void onError(final Throwable e) {
-            Log.d(TAG, "onError: " + e);
+            Timber.d(e);
             final CharSequence errorMessage = errorMessageFactory.create(e);
             TakeAndSaveImagePresenter.this.takeAndSaveImageView.showErrorMessage(errorMessage);
         }

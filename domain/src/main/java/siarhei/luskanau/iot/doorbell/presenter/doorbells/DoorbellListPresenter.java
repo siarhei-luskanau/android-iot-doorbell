@@ -1,7 +1,6 @@
 package siarhei.luskanau.iot.doorbell.presenter.doorbells;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.List;
 
@@ -10,17 +9,20 @@ import siarhei.luskanau.android.framework.interactor.DefaultObserver;
 import siarhei.luskanau.android.framework.presenter.Presenter;
 import siarhei.luskanau.iot.doorbell.DoorbellEntry;
 import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellListUseCase;
+import timber.log.Timber;
 
 public class DoorbellListPresenter implements Presenter {
 
-    private static final String TAG = DoorbellListPresenter.class.getSimpleName();
-
+    @NonNull
     private final ListenDoorbellListUseCase listenDoorbellListUseCase;
+    @NonNull
     private final ErrorMessageFactory errorMessageFactory;
     private DoorbellListView doorbellListView;
 
-    public DoorbellListPresenter(final ListenDoorbellListUseCase listenDoorbellListUseCase,
-                                 final ErrorMessageFactory errorMessageFactory) {
+    public DoorbellListPresenter(
+            @NonNull  final ListenDoorbellListUseCase listenDoorbellListUseCase,
+            @NonNull final ErrorMessageFactory errorMessageFactory
+    ) {
         this.listenDoorbellListUseCase = listenDoorbellListUseCase;
         this.errorMessageFactory = errorMessageFactory;
     }
@@ -48,6 +50,7 @@ public class DoorbellListPresenter implements Presenter {
     }
 
     private final class DoorbellsObserver extends DefaultObserver<List<DoorbellEntry>> {
+
         @Override
         public void onNext(final List<DoorbellEntry> doorbellEntries) {
             DoorbellListPresenter.this.doorbellListView.onDoorbellListUpdated(doorbellEntries);
@@ -55,7 +58,7 @@ public class DoorbellListPresenter implements Presenter {
 
         @Override
         public void onError(final Throwable e) {
-            Log.d(TAG, "onError: " + e);
+            Timber.d(e);
             final CharSequence errorMessage = errorMessageFactory.create(e);
             DoorbellListPresenter.this.doorbellListView.showErrorMessage(errorMessage);
         }

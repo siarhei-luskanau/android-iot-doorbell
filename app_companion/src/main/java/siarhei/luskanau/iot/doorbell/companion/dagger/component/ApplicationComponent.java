@@ -4,8 +4,7 @@ import android.app.Application;
 
 import dagger.Component;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
-import siarhei.luskanau.android.framework.executor.PostExecutionThread;
-import siarhei.luskanau.android.framework.executor.ThreadExecutor;
+import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.companion.AppApplication;
 import siarhei.luskanau.iot.doorbell.companion.dagger.modules.ApplicationModule;
@@ -23,9 +22,7 @@ public interface ApplicationComponent {
 
     DeviceInfo deviceInfo();
 
-    ThreadExecutor threadExecutor();
-
-    PostExecutionThread postExecutionThread();
+    ISchedulerSet schedulerSet();
 
     TakeAndSaveImageUseCase takeAndSaveImageUseCase();
 

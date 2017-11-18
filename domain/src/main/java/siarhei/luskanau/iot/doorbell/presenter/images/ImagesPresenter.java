@@ -1,7 +1,6 @@
 package siarhei.luskanau.iot.doorbell.presenter.images;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.util.List;
 
@@ -12,21 +11,26 @@ import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.ImageEntry;
 import siarhei.luskanau.iot.doorbell.interactor.ListenImageListUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
+import timber.log.Timber;
 
 public class ImagesPresenter implements Presenter {
 
-    private static final String TAG = ImagesPresenter.class.getSimpleName();
-
+    @NonNull
     private final ListenImageListUseCase listenImageListUseCase;
+    @NonNull
     private final TakeAndSaveImageUseCase takeAndSaveImageUseCase;
+    @NonNull
     private final DeviceInfo deviceInfo;
+    @NonNull
     private final ErrorMessageFactory errorMessageFactory;
     private ImagesView view;
 
-    public ImagesPresenter(final ListenImageListUseCase listenImageListUseCase,
-                           final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
-                           final DeviceInfo deviceInfo,
-                           final ErrorMessageFactory errorMessageFactory) {
+    public ImagesPresenter(
+            @NonNull final ListenImageListUseCase listenImageListUseCase,
+            @NonNull final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+            @NonNull final DeviceInfo deviceInfo,
+            @NonNull final ErrorMessageFactory errorMessageFactory
+    ) {
         this.listenImageListUseCase = listenImageListUseCase;
         this.takeAndSaveImageUseCase = takeAndSaveImageUseCase;
         this.deviceInfo = deviceInfo;
@@ -62,6 +66,7 @@ public class ImagesPresenter implements Presenter {
     }
 
     private final class DoorbellObserver extends DefaultObserver<List<ImageEntry>> {
+
         @Override
         public void onNext(final List<ImageEntry> list) {
             ImagesPresenter.this.view.onImageListUpdated(list);
@@ -69,16 +74,17 @@ public class ImagesPresenter implements Presenter {
 
         @Override
         public void onError(final Throwable e) {
-            Log.d(TAG, "onError: " + e);
+            Timber.d(e);
             final CharSequence errorMessage = errorMessageFactory.create(e);
             ImagesPresenter.this.view.showErrorMessage(errorMessage);
         }
     }
 
     private final class TakePictureObserver extends DefaultObserver<Void> {
+
         @Override
         public void onError(final Throwable e) {
-            Log.d(TAG, "onError: " + e);
+            Timber.d(e);
             final CharSequence errorMessage = errorMessageFactory.create(e);
             ImagesPresenter.this.view.showErrorMessage(errorMessage);
         }

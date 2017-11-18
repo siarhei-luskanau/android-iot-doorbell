@@ -1,7 +1,6 @@
 package siarhei.luskanau.iot.doorbell.repository;
 
 import android.support.v4.util.Pair;
-import android.util.Log;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -13,10 +12,9 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import timber.log.Timber;
 
 public class IpAddressSource {
-
-    private static final String TAG = IpAddressSource.class.getSimpleName();
 
     public Observable<Pair<String, String>> listenIpAddress() {
         return Observable.interval(0, 1, TimeUnit.MINUTES)
@@ -33,7 +31,7 @@ public class IpAddressSource {
                             }
                         }
                     } catch (final Exception e) {
-                        Log.e(TAG, e.toString(), e);
+                        Timber.e(e);
                     }
                     return Observable.fromIterable(ipAddressList);
                 });

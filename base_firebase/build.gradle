@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion project.ANDROID_BUILD_SDK_VERSION
@@ -21,12 +20,12 @@ android {
 }
 
 dependencies {
-    def baseFirebaseDependencies = rootProject.ext.baseFirebaseDependencies
+    def appDependencies = rootProject.ext.appDependencies
 
     compile project(':domain')
 
-    compile baseFirebaseDependencies.firebaseDatabase
-    compile baseFirebaseDependencies.playServicesVision
+    compile appDependencies.firebaseDatabase
+    compile appDependencies.playServicesVision
 }
 
 // ADD THIS AT THE BOTTOM

@@ -7,7 +7,6 @@ import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -23,10 +22,9 @@ import siarhei.luskanau.iot.doorbell.companion.dagger.component.ActivityComponen
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerActivityComponent;
 import siarhei.luskanau.iot.doorbell.presenter.images.ImagesPresenter;
 import siarhei.luskanau.iot.doorbell.presenter.images.ImagesView;
+import timber.log.Timber;
 
 public class ImagesActivity extends BaseComponentActivity implements ImagesView {
-
-    private static final String TAG = ImagesActivity.class.getSimpleName();
 
     @Inject
     protected ImagesPresenter imagesPresenter;
@@ -69,8 +67,8 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
                 for (final String cameraId : cameraIdList) {
                     imagesPresenter.takeAndSaveImage(cameraId);
                 }
-            } catch (CameraAccessException e) {
-                Log.d(TAG, e.getMessage(), e);
+            } catch (final CameraAccessException e) {
+                Timber.d(e);
             }
         });
     }

@@ -1,12 +1,12 @@
 package siarhei.luskanau.iot.doorbell.iot.dagger.modules;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 
 import dagger.Module;
 import dagger.Provides;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
-import siarhei.luskanau.android.framework.executor.PostExecutionThread;
-import siarhei.luskanau.android.framework.executor.ThreadExecutor;
+import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
@@ -25,27 +25,38 @@ public class ActivityModule {
         this.activity = activity;
     }
 
+    @NonNull
     @Provides
     @ActivityScope
     Activity activity() {
         return this.activity;
     }
 
+    @NonNull
     @Provides
     @ActivityScope
     CameraPermissionsListener provideCameraPermissionsListener() {
         return new CameraPermissionsListener(activity.getPermissionsGranter());
     }
 
+    @NonNull
     @Provides
-    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(final TakePictureRepository takePictureRepository,
-                                                               final ImageRepository imageRepository,
-                                                               final ThreadExecutor threadExecutor,
-                                                               final PostExecutionThread postExecutionThread,
-                                                               final DeviceInfo deviceInfo,
-                                                               final ErrorMessageFactory errorMessageFactory) {
-        final TakeAndSaveImageUseCase takeAndSaveImageUseCase = new TakeAndSaveImageUseCase(takePictureRepository,
-                imageRepository, threadExecutor, postExecutionThread);
-        return new TakeAndSaveImagePresenter(takeAndSaveImageUseCase, deviceInfo, errorMessageFactory);
+    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(
+            @NonNull final TakePictureRepository takePictureRepository,
+            @NonNull final ImageRepository imageRepository,
+            @NonNull final ISchedulerSet schedulerSet,
+            @NonNull final DeviceInfo deviceInfo,
+            @NonNull final ErrorMessageFactory errorMessageFactory
+    ) {
+        final TakeAndSaveImageUseCase takeAndSaveImageUseCase = new TakeAndSaveImageUseCase(
+                takePictureRepository,
+                imageRepository,
+                schedulerSet
+        );
+        return new TakeAndSaveImagePresenter(
+                takeAndSaveImageUseCase,
+                deviceInfo,
+                errorMessageFactory
+        );
     }
 }

@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
@@ -17,10 +16,10 @@ import java.util.List;
 import siarhei.luskanau.iot.doorbell.ImageEntry;
 import siarhei.luskanau.iot.doorbell.companion.R;
 import siarhei.luskanau.iot.doorbell.companion.databinding.ViewImageEntryBinding;
+import timber.log.Timber;
 
 public class ImageEntryView extends LinearLayout {
 
-    private static final String TAG = ImageEntryView.class.getSimpleName();
     private final ViewImageEntryBinding binding;
 
     {
@@ -54,7 +53,7 @@ public class ImageEntryView extends LinearLayout {
                     final byte[] imageBytes = Base64.decode(imageEntry.getImage(), Base64.DEFAULT);
                     bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
                 } catch (final Exception e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
             }
             if (bitmap != null) {

@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
 
@@ -32,23 +31,20 @@ android {
 }
 
 dependencies {
-    def remoteControlDependencies = rootProject.ext.remoteControlDependencies
-    def developmentDependencies = rootProject.ext.developmentDependencies
+    def appDependencies = rootProject.ext.appDependencies
 
     compile project(':domain')
     compile project(':base_firebase')
     compile project(':base_camera')
     compile project(':base_camera_usb')
 
-    annotationProcessor remoteControlDependencies.daggerCompiler
-    compile remoteControlDependencies.dagger
-    compile remoteControlDependencies.javaxInject
+    annotationProcessor appDependencies.daggerCompiler
 
-    compile remoteControlDependencies.supportDesign
-    compile remoteControlDependencies.supportCardview
+    compile appDependencies.supportDesign
+    compile appDependencies.supportCardview
 
     //Development
-    debugCompile developmentDependencies.leakCanary
-    releaseCompile developmentDependencies.leakCanaryNoOp
-    testCompile developmentDependencies.leakCanaryNoOp
+    debugCompile appDependencies.leakCanary
+    releaseCompile appDependencies.leakCanaryNoOp
+    testCompile appDependencies.leakCanaryNoOp
 }

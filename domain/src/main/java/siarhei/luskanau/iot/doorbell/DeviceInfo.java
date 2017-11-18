@@ -8,12 +8,12 @@ import java.util.Map;
 
 public class DeviceInfo {
 
-    private String deviceId;
+    private final String deviceId;
     private String name;
-    private String buildDevice = Build.DEVICE;
-    private String buildModel = Build.MODEL;
-    private int buildVersionSdkInt = Build.VERSION.SDK_INT;
-    private String buildVersionRelease = Build.VERSION.RELEASE;
+    private final String buildDevice = Build.DEVICE;
+    private final String buildModel = Build.MODEL;
+    private final int buildVersionSdkInt = Build.VERSION.SDK_INT;
+    private final String buildVersionRelease = Build.VERSION.RELEASE;
 
     private final Map<String, Object> additionalInfo;
 

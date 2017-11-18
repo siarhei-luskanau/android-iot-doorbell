@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.iot;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.things.contrib.driver.button.Button;
@@ -18,10 +17,10 @@ import siarhei.luskanau.iot.doorbell.iot.dagger.component.ActivityComponent;
 import siarhei.luskanau.iot.doorbell.iot.dagger.component.DaggerActivityComponent;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImageView;
+import timber.log.Timber;
 
 public class IotActivity extends BaseComponentActivity implements TakeAndSaveImageView {
 
-    private static final String TAG = IotActivity.class.getSimpleName();
     private static final String GPIO_BUTTON = "BCM22";
 
     @Inject
@@ -42,7 +41,7 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
             setContentView(R.layout.activity_main);
             findViewById(R.id.cameraButton).setOnClickListener(v -> takeAndSaveImage());
         } catch (final Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
 
         // Initialize the doorbell button driver
@@ -51,12 +50,12 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
             button.setOnButtonEventListener((button1, pressed) -> {
                 if (pressed) {
                     // Doorbell rang!
-                    Log.d(TAG, "button pressed");
+                    Timber.d("button pressed");
                     takeAndSaveImage();
                 }
             });
         } catch (final IOException e) {
-            Log.e(TAG, "button driver error", e);
+            Timber.e(e, "button driver error");
         }
     }
 
@@ -77,7 +76,7 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
         try {
             button.close();
         } catch (final IOException e) {
-            Log.e(TAG, "button driver error", e);
+            Timber.e(e, "button driver error");
         }
     }
 
@@ -91,7 +90,7 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
 
             @Override
             public void onPermissionsGranted() {
-                Log.d(TAG, "onPermissionsGranted");
+                Timber.d("onPermissionsGranted");
                 try {
                     final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
                     final String[] cameraIdList = cameraManager.getCameraIdList();
@@ -100,13 +99,13 @@ public class IotActivity extends BaseComponentActivity implements TakeAndSaveIma
                     }
                     takeAndSaveImagePresenter.takeAndSaveImage(null);
                 } catch (final CameraAccessException e) {
-                    Log.d(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
             }
 
             @Override
             public void onPermissionsDenied() {
-                Log.d(TAG, "onPermissionsDenied");
+                Timber.d("onPermissionsDenied");
             }
         });
     }

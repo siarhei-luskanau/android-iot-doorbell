@@ -1,22 +1,26 @@
 package siarhei.luskanau.iot.doorbell.interactor;
 
+import android.support.annotation.NonNull;
+
 import io.reactivex.Observable;
-import siarhei.luskanau.android.framework.executor.PostExecutionThread;
-import siarhei.luskanau.android.framework.executor.ThreadExecutor;
+import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
 import siarhei.luskanau.android.framework.interactor.UseCase;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.iot.doorbell.repository.IpAddressSource;
 
 public class SendDeviceIpAddressUseCase extends UseCase<Void, SendDeviceIpAddressUseCase.Params> {
 
+    @NonNull
     private final ImageRepository imageRepository;
+    @NonNull
     private final IpAddressSource ipAddressSource;
 
-    public SendDeviceIpAddressUseCase(final ImageRepository imageRepository,
-                                      final IpAddressSource ipAddressSource,
-                                      final ThreadExecutor threadExecutor,
-                                      final PostExecutionThread postExecutionThread) {
-        super(threadExecutor, postExecutionThread);
+    public SendDeviceIpAddressUseCase(
+            @NonNull final ImageRepository imageRepository,
+            @NonNull final IpAddressSource ipAddressSource,
+            @NonNull final ISchedulerSet schedulerSet
+    ) {
+        super(schedulerSet);
         this.imageRepository = imageRepository;
         this.ipAddressSource = ipAddressSource;
     }
@@ -28,6 +32,7 @@ public class SendDeviceIpAddressUseCase extends UseCase<Void, SendDeviceIpAddres
     }
 
     public static final class Params {
+
         private final String deviceId;
 
         private Params(final String deviceId) {

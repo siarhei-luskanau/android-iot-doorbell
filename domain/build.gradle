@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion project.ANDROID_BUILD_SDK_VERSION
@@ -25,10 +24,10 @@ android {
 }
 
 dependencies {
-    def domainDependencies = rootProject.ext.domainDependencies
+    def appDependencies = rootProject.ext.appDependencies
 
     compile project(':base_framework')
 
-    compile domainDependencies.gson
-    compile domainDependencies.supportRecyclerview
+    compile appDependencies.gson
+    compile appDependencies.supportRecyclerview
 }

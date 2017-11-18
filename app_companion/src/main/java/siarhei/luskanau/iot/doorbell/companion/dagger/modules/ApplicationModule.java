@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.companion.dagger.modules;
 import android.app.Application;
 import android.content.Context;
 import android.hardware.camera2.CameraManager;
-import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +11,11 @@ import dagger.Module;
 import dagger.Provides;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
 import siarhei.luskanau.android.framework.exception.SimpleErrorMessageFactory;
-import siarhei.luskanau.android.framework.executor.JobExecutor;
-import siarhei.luskanau.android.framework.executor.PostExecutionThread;
-import siarhei.luskanau.android.framework.executor.ThreadExecutor;
-import siarhei.luskanau.android.framework.executor.UIThread;
+import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
+import siarhei.luskanau.android.framework.interactor.SchedulerSet;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
-import siarhei.luskanau.iot.doorbell.camera.usb.CameraUsbRepository;
+import siarhei.luskanau.iot.doorbell.camera.CameraRepository;
+import siarhei.luskanau.iot.doorbell.camera.ImageCompressor;
 import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ApplicationScope;
 import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
 import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellUseCase;
@@ -26,6 +24,7 @@ import siarhei.luskanau.iot.doorbell.interactor.SendDeviceNameUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
+import timber.log.Timber;
 
 @Module
 public class ApplicationModule {
@@ -52,21 +51,15 @@ public class ApplicationModule {
             final CameraManager cameraManager = (CameraManager) this.application.getSystemService(Context.CAMERA_SERVICE);
             additionalInfo.put("CameraIdList", cameraManager.getCameraIdList());
         } catch (final Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
         return new DeviceInfo(this.application, additionalInfo);
     }
 
     @Provides
     @ApplicationScope
-    ThreadExecutor provideThreadExecutor() {
-        return new JobExecutor();
-    }
-
-    @Provides
-    @ApplicationScope
-    PostExecutionThread providePostExecutionThread() {
-        return new UIThread();
+    ISchedulerSet provideSchedulerSet() {
+        return new SchedulerSet();
     }
 
     @Provides
@@ -83,35 +76,43 @@ public class ApplicationModule {
 
     @Provides
     @ApplicationScope
-    SendDeviceInfoUseCase provideSendDeviceInfoUseCase(final ImageRepository imageRepository,
-                                                       final ThreadExecutor threadExecutor,
-                                                       final PostExecutionThread postExecutionThread) {
-        return new SendDeviceInfoUseCase(imageRepository, threadExecutor, postExecutionThread);
+    SendDeviceInfoUseCase provideSendDeviceInfoUseCase(
+            final ImageRepository imageRepository,
+            final ISchedulerSet schedulerSet
+    ) {
+        return new SendDeviceInfoUseCase(imageRepository, schedulerSet);
     }
 
     @Provides
     @ApplicationScope
-    TakeAndSaveImageUseCase provideTakeAndSaveImageUseCase(final ImageRepository imageRepository,
-                                                           final ThreadExecutor threadExecutor,
-                                                           final PostExecutionThread postExecutionThread) {
-        //final TakePictureRepository takePictureRepository = new CameraRepository(this.application, new ImageCompressor());
-        final TakePictureRepository takePictureRepository = new CameraUsbRepository(this.application);
-        return new TakeAndSaveImageUseCase(takePictureRepository, imageRepository, threadExecutor, postExecutionThread);
+    TakeAndSaveImageUseCase provideTakeAndSaveImageUseCase(
+            final ImageRepository imageRepository,
+            final ISchedulerSet schedulerSet
+    ) {
+        final TakePictureRepository takePictureRepository = new CameraRepository(this.application, new ImageCompressor());
+        //final TakePictureRepository takePictureRepository = new CameraUsbRepository(this.application);
+        return new TakeAndSaveImageUseCase(
+                takePictureRepository,
+                imageRepository,
+                schedulerSet
+        );
     }
 
     @Provides
     @ApplicationScope
-    ListenDoorbellUseCase provideListenDoorbellUseCase(final ImageRepository imageRepository,
-                                                       final ThreadExecutor threadExecutor,
-                                                       final PostExecutionThread postExecutionThread) {
-        return new ListenDoorbellUseCase(imageRepository, threadExecutor, postExecutionThread);
+    ListenDoorbellUseCase provideListenDoorbellUseCase(
+            final ImageRepository imageRepository,
+            final ISchedulerSet schedulerSet
+    ) {
+        return new ListenDoorbellUseCase(imageRepository, schedulerSet);
     }
 
     @Provides
     @ApplicationScope
-    SendDeviceNameUseCase provideSendDeviceNameUseCase(final ImageRepository imageRepository,
-                                                       final ThreadExecutor threadExecutor,
-                                                       final PostExecutionThread postExecutionThread) {
-        return new SendDeviceNameUseCase(imageRepository, threadExecutor, postExecutionThread);
+    SendDeviceNameUseCase provideSendDeviceNameUseCase(
+            final ImageRepository imageRepository,
+            final ISchedulerSet schedulerSet
+    ) {
+        return new SendDeviceNameUseCase(imageRepository, schedulerSet);
     }
 }

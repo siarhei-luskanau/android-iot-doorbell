@@ -15,9 +15,11 @@ public class BindableViewHolder<T extends ViewDataBinding> extends RecyclerView.
         this.bindings = bindings;
     }
 
-    public static <B extends ViewDataBinding> BindableViewHolder<B> create(final LayoutInflater inflater,
-                                                                           final int layoutResId,
-                                                                           final ViewGroup parent) {
+    public static <B extends ViewDataBinding> BindableViewHolder<B> create(
+            final LayoutInflater inflater,
+            final int layoutResId,
+            final ViewGroup parent
+    ) {
         final B binding = DataBindingUtil.inflate(inflater, layoutResId, parent, false);
         return new BindableViewHolder<>(binding);
     }

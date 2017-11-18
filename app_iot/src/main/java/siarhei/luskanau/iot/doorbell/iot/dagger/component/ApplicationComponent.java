@@ -2,18 +2,18 @@ package siarhei.luskanau.iot.doorbell.iot.dagger.component;
 
 import android.app.Application;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
-import siarhei.luskanau.android.framework.executor.PostExecutionThread;
-import siarhei.luskanau.android.framework.executor.ThreadExecutor;
+import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.iot.AppApplication;
 import siarhei.luskanau.iot.doorbell.iot.dagger.modules.ApplicationModule;
-import siarhei.luskanau.iot.doorbell.iot.dagger.scope.ApplicationScope;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
 
-@ApplicationScope
+@Singleton
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
 
@@ -23,13 +23,18 @@ public interface ApplicationComponent {
 
     DeviceInfo deviceInfo();
 
-    ThreadExecutor threadExecutor();
-
-    PostExecutionThread postExecutionThread();
+    ISchedulerSet schedulerSet();
 
     TakePictureRepository takePictureRepository();
 
     ImageRepository lampRepository();
 
     ErrorMessageFactory errorMessageFactory();
+
+    /*
+     * SubComponents
+     */
+
+    //LampComponent subLampComponent();
+
 }

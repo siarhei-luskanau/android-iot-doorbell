@@ -1,22 +1,25 @@
 package siarhei.luskanau.iot.doorbell.interactor;
 
+import android.support.annotation.NonNull;
+
 import io.reactivex.Observable;
-import siarhei.luskanau.android.framework.executor.PostExecutionThread;
-import siarhei.luskanau.android.framework.executor.ThreadExecutor;
+import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
 import siarhei.luskanau.android.framework.interactor.UseCase;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
 
 public class TakeAndSaveImageUseCase extends UseCase<Void, TakeAndSaveImageUseCase.Params> {
 
+    @NonNull
     private final TakePictureRepository takePictureRepository;
+    @NonNull
     private final ImageRepository imageRepository;
 
-    public TakeAndSaveImageUseCase(final TakePictureRepository takePictureRepository,
-                                   final ImageRepository imageRepository,
-                                   final ThreadExecutor threadExecutor,
-                                   final PostExecutionThread postExecutionThread) {
-        super(threadExecutor, postExecutionThread);
+    public TakeAndSaveImageUseCase(
+            @NonNull final TakePictureRepository takePictureRepository,
+            @NonNull final ImageRepository imageRepository,
+            @NonNull final ISchedulerSet schedulerSet) {
+        super(schedulerSet);
         this.takePictureRepository = takePictureRepository;
         this.imageRepository = imageRepository;
     }
@@ -28,6 +31,7 @@ public class TakeAndSaveImageUseCase extends UseCase<Void, TakeAndSaveImageUseCa
     }
 
     public static final class Params {
+
         private final String deviceId;
         private final String cameraId;
 

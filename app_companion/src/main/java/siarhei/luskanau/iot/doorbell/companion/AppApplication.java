@@ -5,7 +5,6 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.squareup.leakcanary.LeakCanary;
 
@@ -21,10 +20,10 @@ import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceInfoUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceNameUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
+import timber.log.Timber;
 
 public class AppApplication extends Application {
 
-    private static final String TAG = "AppApplication";
     @Inject
     protected DeviceInfo deviceInfo;
     @Inject
@@ -84,7 +83,7 @@ public class AppApplication extends Application {
                                 TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraIdList[0]));
                     }
                 } catch (final CameraAccessException e) {
-                    Log.d(TAG, e.getMessage(), e);
+                    Timber.d(e);
                 }
             }
         }

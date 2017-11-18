@@ -5,8 +5,7 @@ import android.app.Activity;
 import dagger.Module;
 import dagger.Provides;
 import siarhei.luskanau.android.framework.exception.ErrorMessageFactory;
-import siarhei.luskanau.android.framework.executor.PostExecutionThread;
-import siarhei.luskanau.android.framework.executor.ThreadExecutor;
+import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.companion.GrantPermissionsActivity;
@@ -41,31 +40,47 @@ public class ActivityModule {
     }
 
     @Provides
-    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
-                                                               final DeviceInfo deviceInfo,
-                                                               final ErrorMessageFactory errorMessageFactory) {
-        return new TakeAndSaveImagePresenter(takeAndSaveImageUseCase, deviceInfo, errorMessageFactory);
+    TakeAndSaveImagePresenter provideTakeAndSaveImagePresenter(
+            final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+            final DeviceInfo deviceInfo,
+            final ErrorMessageFactory errorMessageFactory) {
+        return new TakeAndSaveImagePresenter(
+                takeAndSaveImageUseCase,
+                deviceInfo,
+                errorMessageFactory
+        );
     }
 
     @Provides
-    DoorbellListPresenter provideDoorbellListsPresenter(final ImageRepository imageRepository,
-                                                        final ThreadExecutor threadExecutor,
-                                                        final PostExecutionThread postExecutionThread,
-                                                        final ErrorMessageFactory errorMessageFactory) {
-        final ListenDoorbellListUseCase doorbellsUseCase = new ListenDoorbellListUseCase(imageRepository,
-                threadExecutor, postExecutionThread);
+    DoorbellListPresenter provideDoorbellListsPresenter(
+            final ImageRepository imageRepository,
+            final ISchedulerSet schedulerSet,
+            final ErrorMessageFactory errorMessageFactory
+    ) {
+        final ListenDoorbellListUseCase doorbellsUseCase = new ListenDoorbellListUseCase(
+                imageRepository,
+                schedulerSet
+        );
         return new DoorbellListPresenter(doorbellsUseCase, errorMessageFactory);
     }
 
     @Provides
-    ImagesPresenter provideDoorbellPresenter(final ImageRepository imageRepository,
-                                             final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
-                                             final DeviceInfo deviceInfo,
-                                             final ThreadExecutor threadExecutor,
-                                             final PostExecutionThread postExecutionThread,
-                                             final ErrorMessageFactory errorMessageFactory) {
-        final ListenImageListUseCase listenImageListUseCase = new ListenImageListUseCase(imageRepository,
-                threadExecutor, postExecutionThread);
-        return new ImagesPresenter(listenImageListUseCase, takeAndSaveImageUseCase, deviceInfo, errorMessageFactory);
+    ImagesPresenter provideDoorbellPresenter(
+            final ImageRepository imageRepository,
+            final TakeAndSaveImageUseCase takeAndSaveImageUseCase,
+            final DeviceInfo deviceInfo,
+            final ISchedulerSet schedulerSet,
+            final ErrorMessageFactory errorMessageFactory
+    ) {
+        final ListenImageListUseCase listenImageListUseCase = new ListenImageListUseCase(
+                imageRepository,
+                schedulerSet
+        );
+        return new ImagesPresenter(
+                listenImageListUseCase,
+                takeAndSaveImageUseCase,
+                deviceInfo,
+                errorMessageFactory
+        );
     }
 }

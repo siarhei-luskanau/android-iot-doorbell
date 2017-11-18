@@ -1,22 +1,25 @@
 package siarhei.luskanau.iot.doorbell.interactor;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 import io.reactivex.Observable;
-import siarhei.luskanau.android.framework.executor.PostExecutionThread;
-import siarhei.luskanau.android.framework.executor.ThreadExecutor;
+import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
 import siarhei.luskanau.android.framework.interactor.UseCase;
 import siarhei.luskanau.iot.doorbell.ImageEntry;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
 
 public class ListenImageListUseCase extends UseCase<List<ImageEntry>, ListenImageListUseCase.Params> {
 
+    @NonNull
     private final ImageRepository imageRepository;
 
-    public ListenImageListUseCase(final ImageRepository imageRepository,
-                                  final ThreadExecutor threadExecutor,
-                                  final PostExecutionThread postExecutionThread) {
-        super(threadExecutor, postExecutionThread);
+    public ListenImageListUseCase(
+            @NonNull final ImageRepository imageRepository,
+            @NonNull final ISchedulerSet schedulerSet
+    ) {
+        super(schedulerSet);
         this.imageRepository = imageRepository;
     }
 
@@ -26,6 +29,7 @@ public class ListenImageListUseCase extends UseCase<List<ImageEntry>, ListenImag
     }
 
     public static final class Params {
+
         private final String deviceId;
 
         private Params(final String deviceId) {
