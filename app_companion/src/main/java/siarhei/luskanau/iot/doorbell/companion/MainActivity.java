@@ -1,8 +1,6 @@
 package siarhei.luskanau.iot.doorbell.companion;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -14,15 +12,15 @@ import siarhei.luskanau.iot.doorbell.DoorbellEntry;
 import siarhei.luskanau.iot.doorbell.camera.CameraPermissionsListener;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.ActivityComponent;
 import siarhei.luskanau.iot.doorbell.companion.dagger.component.DaggerActivityComponent;
-import siarhei.luskanau.iot.doorbell.companion.doorbells.DoorbellEntryAdapter;
 import siarhei.luskanau.iot.doorbell.companion.images.ImagesActivity;
-import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListPresenter;
-import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListView;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImageView;
+import siarhei.luskanau.iot.doorbell.ui.doorbells.DoorbellListPresenter;
+import siarhei.luskanau.iot.doorbell.ui.doorbells.view.DoorbellListView;
+import siarhei.luskanau.iot.doorbell.ui.doorbells.view.IDoorbellListView;
 import timber.log.Timber;
 
-public class MainActivity extends BaseComponentActivity implements TakeAndSaveImageView, DoorbellListView {
+public class MainActivity extends BaseComponentActivity implements TakeAndSaveImageView, IDoorbellListView {
 
     @Inject
     protected DoorbellListPresenter doorbellListPresenter;
@@ -31,25 +29,21 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
     @Inject
     protected CameraPermissionsListener cameraPermissionsListener;
 
-    private DoorbellEntryAdapter adapter;
+    private DoorbellListView doorbellListView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        doorbellListView = findViewById(R.id.doorbellListView);
+        doorbellListView.setOnDoorbellEntryClickListener(doorbellEntry -> {
+            startActivity(ImagesActivity.buildIntent(this, doorbellEntry.getDeviceId()));
+        });
 
         this.initializeInjector();
         takeAndSaveImagePresenter.setView(this);
         doorbellListPresenter.setView(this);
-        adapter = new DoorbellEntryAdapter();
-        recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener((context, holder, position) -> {
-            final DoorbellEntry item = adapter.getItem(position);
-            context.startActivity(ImagesActivity.buildIntent(context, item.getDeviceId()));
-        });
 
         findViewById(R.id.cameraButton).setOnClickListener(v -> takeAndSaveImage());
         doorbellListPresenter.listenDoorbellList();
@@ -73,7 +67,12 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
 
     @Override
     public void onDoorbellListUpdated(final List<DoorbellEntry> doorbellEntries) {
-        adapter.setData(doorbellEntries);
+        doorbellListView.onDoorbellListUpdated(doorbellEntries);
+    }
+
+    @Override
+    public void showErrorMessage(String errorMessage) {
+        doorbellListView.showErrorMessage(errorMessage);
     }
 
     @Override

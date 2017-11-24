@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.presenter.doorbells;
+package siarhei.luskanau.iot.doorbell.ui.doorbells;
 
 import android.support.annotation.NonNull;
 
@@ -9,6 +9,7 @@ import siarhei.luskanau.android.framework.interactor.DefaultObserver;
 import siarhei.luskanau.android.framework.presenter.Presenter;
 import siarhei.luskanau.iot.doorbell.DoorbellEntry;
 import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellListUseCase;
+import siarhei.luskanau.iot.doorbell.ui.doorbells.view.IDoorbellListView;
 import timber.log.Timber;
 
 public class DoorbellListPresenter implements Presenter {
@@ -17,7 +18,7 @@ public class DoorbellListPresenter implements Presenter {
     private final ListenDoorbellListUseCase listenDoorbellListUseCase;
     @NonNull
     private final ErrorMessageFactory errorMessageFactory;
-    private DoorbellListView doorbellListView;
+    private IDoorbellListView doorbellListView;
 
     public DoorbellListPresenter(
             @NonNull  final ListenDoorbellListUseCase listenDoorbellListUseCase,
@@ -27,7 +28,7 @@ public class DoorbellListPresenter implements Presenter {
         this.errorMessageFactory = errorMessageFactory;
     }
 
-    public void setView(@NonNull final DoorbellListView view) {
+    public void setView(@NonNull final IDoorbellListView view) {
         this.doorbellListView = view;
     }
 
@@ -59,7 +60,7 @@ public class DoorbellListPresenter implements Presenter {
         @Override
         public void onError(final Throwable e) {
             Timber.d(e);
-            final CharSequence errorMessage = errorMessageFactory.create(e);
+            final String errorMessage = errorMessageFactory.create(e);
             DoorbellListPresenter.this.doorbellListView.showErrorMessage(errorMessage);
         }
     }

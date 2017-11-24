@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.companion.doorbells;
+package siarhei.luskanau.iot.doorbell.ui.doorbells.view;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import siarhei.luskanau.iot.doorbell.DoorbellEntry;
-import siarhei.luskanau.iot.doorbell.companion.R;
-import siarhei.luskanau.iot.doorbell.companion.databinding.ViewDoorbellEntryBinding;
+import siarhei.luskanau.iot.doorbell.domain.R;
+import siarhei.luskanau.iot.doorbell.domain.databinding.ViewDoorbellEntryBinding;
 
 public class DoorbellEntryView extends LinearLayout {
 

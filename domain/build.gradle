@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion project.ANDROID_BUILD_SDK_VERSION
@@ -28,6 +29,8 @@ dependencies {
 
     compile project(':base_framework')
 
-    compile appDependencies.gson
+    compile appDependencies.supportDesign
     compile appDependencies.supportRecyclerview
+    compile appDependencies.supportCardview
+    compile appDependencies.gson
 }

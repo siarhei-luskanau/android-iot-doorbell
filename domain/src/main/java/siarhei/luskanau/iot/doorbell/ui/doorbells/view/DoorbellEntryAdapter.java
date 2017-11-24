@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.companion.doorbells;
+package siarhei.luskanau.iot.doorbell.ui.doorbells.view;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import siarhei.luskanau.iot.doorbell.DoorbellEntry;
-import siarhei.luskanau.iot.doorbell.companion.R;
-import siarhei.luskanau.iot.doorbell.companion.databinding.ListItemDoorbellEntryBinding;
+import siarhei.luskanau.iot.doorbell.domain.R;
+import siarhei.luskanau.iot.doorbell.domain.databinding.ListItemDoorbellEntryBinding;
 import siarhei.luskanau.iot.doorbell.ui.BaseRecyclerArrayAdapter;
 import siarhei.luskanau.iot.doorbell.ui.BindableViewHolder;
 

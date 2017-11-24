@@ -13,10 +13,10 @@ import siarhei.luskanau.iot.doorbell.companion.dagger.scope.ActivityScope;
 import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellListUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.ListenImageListUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.TakeAndSaveImageUseCase;
-import siarhei.luskanau.iot.doorbell.presenter.doorbells.DoorbellListPresenter;
 import siarhei.luskanau.iot.doorbell.presenter.images.ImagesPresenter;
 import siarhei.luskanau.iot.doorbell.presenter.send.TakeAndSaveImagePresenter;
 import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
+import siarhei.luskanau.iot.doorbell.ui.doorbells.DoorbellListPresenter;
 
 @Module
 public class ActivityModule {

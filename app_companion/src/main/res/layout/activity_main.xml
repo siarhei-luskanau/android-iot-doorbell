@@ -18,8 +18,8 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <siarhei.luskanau.iot.doorbell.ui.doorbells.view.DoorbellListView
+        android:id="@+id/doorbellListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
