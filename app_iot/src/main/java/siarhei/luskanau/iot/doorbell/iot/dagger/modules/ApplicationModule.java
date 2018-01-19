@@ -18,7 +18,8 @@ import siarhei.luskanau.android.framework.exception.SimpleErrorMessageFactory;
 import siarhei.luskanau.android.framework.interactor.ISchedulerSet;
 import siarhei.luskanau.android.framework.interactor.SchedulerSet;
 import siarhei.luskanau.iot.doorbell.DeviceInfo;
-import siarhei.luskanau.iot.doorbell.camera.usb.CameraUsbRepository;
+import siarhei.luskanau.iot.doorbell.camera.CameraRepository;
+import siarhei.luskanau.iot.doorbell.camera.ImageCompressor;
 import siarhei.luskanau.iot.doorbell.data.firebase.FirebaseImageRepository;
 import siarhei.luskanau.iot.doorbell.interactor.ListenDoorbellUseCase;
 import siarhei.luskanau.iot.doorbell.interactor.SendDeviceInfoUseCase;
@@ -72,8 +73,8 @@ public class ApplicationModule {
     @Provides
     @Singleton
     TakePictureRepository provideTakePictureRepository() {
-        //return new CameraRepository(this.application, new ImageCompressor());
-        return new CameraUsbRepository(this.application);
+        return new CameraRepository(this.application, new ImageCompressor());
+        //return new CameraUsbRepository(this.application);
     }
 
     @Provides

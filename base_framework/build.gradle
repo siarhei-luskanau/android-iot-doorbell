@@ -10,10 +10,6 @@ android {
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
     }
 
-    lintOptions {
-        abortOnError false
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -23,14 +19,11 @@ android {
 dependencies {
     def appDependencies = rootProject.ext.appDependencies
 
-    compile appDependencies.kotlinStdlib
+    implementation appDependencies.kotlinStdlib
 
-    compile appDependencies.dagger
-    compile appDependencies.javaxInject
+    implementation appDependencies.rxJava
+    implementation appDependencies.rxAndroid
 
-    compile appDependencies.timber
-    compile appDependencies.rxJava
-    compile appDependencies.rxAndroid
-    compile appDependencies.supportAnnotations
-    compile appDependencies.supportCompat
+    implementation appDependencies.supportAnnotations
+    implementation appDependencies.supportCompat
 }

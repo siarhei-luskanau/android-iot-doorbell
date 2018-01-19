@@ -10,10 +10,6 @@ android {
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
     }
 
-    lintOptions {
-        abortOnError false
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -23,5 +19,10 @@ android {
 dependencies {
     def appDependencies = rootProject.ext.appDependencies
 
-    compile project(':domain')
+    implementation project(':base_framework')
+    implementation project(':domain')
+
+    implementation appDependencies.rxJava
+    implementation appDependencies.rxAndroid
+
 }

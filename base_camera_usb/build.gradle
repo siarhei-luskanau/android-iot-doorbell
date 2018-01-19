@@ -10,10 +10,6 @@ android {
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
     }
 
-    lintOptions {
-        abortOnError false
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -23,12 +19,16 @@ android {
 dependencies {
     def appDependencies = rootProject.ext.appDependencies
 
-    compile project(':domain')
+    implementation project(':domain')
 
-    compile project(':base_camera_usb:aars:libuvccamera-release')
-    compile project(':base_camera_usb:aars:usbCameraCommon-release')
+    implementation project(':base_camera_usb:aars:libuvccamera-release')
+    implementation project(':base_camera_usb:aars:usbCameraCommon-release')
 
-    compile(appDependencies.serenegiantCommon) {
+    implementation(appDependencies.serenegiantCommon) {
         exclude module: 'support-v4'
     }
+
+    implementation appDependencies.rxJava
+    implementation appDependencies.rxAndroid
+
 }

@@ -34,15 +34,27 @@ android {
 dependencies {
     def appDependencies = rootProject.ext.appDependencies
 
-    compile project(':domain')
-    compile project(':base_firebase')
-    compile project(':base_camera')
-    compile project(':base_camera_usb')
+    implementation project(':base_framework')
+    implementation project(':domain')
+    implementation project(':base_firebase')
+    implementation project(':base_camera')
+    implementation project(':base_camera_usb')
 
     annotationProcessor appDependencies.daggerCompiler
 
+    implementation appDependencies.dagger
+    implementation appDependencies.javaxInject
+
+    implementation appDependencies.rxJava
+    implementation appDependencies.rxAndroid
+
+    implementation appDependencies.timber
+
+    implementation appDependencies.supportDesign
+    implementation appDependencies.supportCardview
+
     //Development
-    debugCompile appDependencies.leakCanary
-    releaseCompile appDependencies.leakCanaryNoOp
-    testCompile appDependencies.leakCanaryNoOp
+    debugImplementation appDependencies.leakCanary
+    releaseImplementation appDependencies.leakCanaryNoOp
+    testImplementation appDependencies.leakCanaryNoOp
 }

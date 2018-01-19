@@ -14,10 +14,6 @@ android {
         enabled = true
     }
 
-    lintOptions {
-        abortOnError false
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -27,10 +23,18 @@ android {
 dependencies {
     def appDependencies = rootProject.ext.appDependencies
 
-    compile project(':base_framework')
+    implementation project(':base_framework')
 
-    compile appDependencies.supportDesign
-    compile appDependencies.supportRecyclerview
-    compile appDependencies.supportCardview
-    compile appDependencies.gson
+    implementation appDependencies.dagger
+    implementation appDependencies.javaxInject
+
+    implementation appDependencies.rxJava
+    implementation appDependencies.rxAndroid
+
+    implementation appDependencies.timber
+
+    implementation appDependencies.supportRecyclerview
+    implementation appDependencies.supportCardview
+
+    implementation appDependencies.gson
 }
