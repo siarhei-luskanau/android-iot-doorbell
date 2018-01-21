@@ -37,13 +37,14 @@ dependencies {
 
     annotationProcessor appDependencies.daggerCompiler
 
+    implementation appDependencies.kotlinStdlib
+    implementation appDependencies.timber
+
     implementation appDependencies.dagger
     implementation appDependencies.javaxInject
 
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid
-
-    implementation appDependencies.timber
 
     compileOnly appDependencies.androidThings
     implementation appDependencies.driverButton

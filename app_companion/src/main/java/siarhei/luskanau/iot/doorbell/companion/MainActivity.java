@@ -38,7 +38,11 @@ public class MainActivity extends BaseComponentActivity implements TakeAndSaveIm
 
         doorbellListView = findViewById(R.id.doorbellListView);
         doorbellListView.setOnDoorbellEntryClickListener(doorbellEntry -> {
-            startActivity(ImagesActivity.buildIntent(this, doorbellEntry.getDeviceId()));
+            startActivity(ImagesActivity.buildIntent(
+                    this,
+                    doorbellEntry.getDeviceId(),
+                    doorbellEntry.getName()
+            ));
         });
 
         this.initializeInjector();

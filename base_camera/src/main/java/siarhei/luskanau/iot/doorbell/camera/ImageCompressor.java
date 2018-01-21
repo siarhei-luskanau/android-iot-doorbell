@@ -2,15 +2,13 @@ package siarhei.luskanau.iot.doorbell.camera;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 
 import io.reactivex.Observable;
+import timber.log.Timber;
 
 public class ImageCompressor {
-
-    private static final String TAG = ImageCompressor.class.getSimpleName();
 
     public static int calculateInSampleSize(final BitmapFactory.Options options, final int reqWidth, final int reqHeight) {
         final int height = options.outHeight;
@@ -49,7 +47,7 @@ public class ImageCompressor {
                     return outputStream.toByteArray();
                 }
             } catch (final Exception e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
             return bytes;
         });

@@ -22,6 +22,9 @@ dependencies {
     implementation project(':base_framework')
     implementation project(':domain')
 
+    implementation appDependencies.kotlinStdlib
+    implementation appDependencies.timber
+
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid
 

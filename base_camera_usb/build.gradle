@@ -24,6 +24,9 @@ dependencies {
     implementation project(':base_camera_usb:aars:libuvccamera-release')
     implementation project(':base_camera_usb:aars:usbCameraCommon-release')
 
+    implementation appDependencies.kotlinStdlib
+    implementation appDependencies.timber
+
     implementation(appDependencies.serenegiantCommon) {
         exclude module: 'support-v4'
     }

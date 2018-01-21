@@ -77,10 +77,12 @@ public class AppApplication extends Application {
             if (doorbellEntry.getRing() != null && doorbellEntry.getRing()) {
                 try {
                     final CameraManager cameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
-                    final String[] cameraIdList = cameraManager.getCameraIdList();
-                    if (cameraIdList.length > 0) {
-                        takeAndSaveImageUseCase.execute(new DefaultObserver<>(),
-                                TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraIdList[0]));
+                    if (cameraManager != null) {
+                        final String[] cameraIdList = cameraManager.getCameraIdList();
+                        if (cameraIdList.length > 0) {
+                            takeAndSaveImageUseCase.execute(new DefaultObserver<>(),
+                                    TakeAndSaveImageUseCase.Params.forParams(deviceInfo.getDeviceId(), cameraIdList[0]));
+                        }
                     }
                 } catch (final CameraAccessException e) {
                     Timber.d(e);

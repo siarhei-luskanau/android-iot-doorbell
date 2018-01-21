@@ -32,8 +32,14 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
     private String deviceId;
     private ImageEntryAdapter adapter;
 
-    public static Intent buildIntent(final Context context, final String deviceId) {
-        return new Intent(context, ImagesActivity.class).putExtra(DomainConstants.DEVICE_ID, deviceId);
+    public static Intent buildIntent(
+            final Context context,
+            final String deviceId,
+            final String name
+    ) {
+        return new Intent(context, ImagesActivity.class)
+                .putExtra(DomainConstants.DEVICE_ID, deviceId)
+                .putExtra(DomainConstants.NAME, name);
     }
 
     @Override
@@ -42,8 +48,13 @@ public class ImagesActivity extends BaseComponentActivity implements ImagesView 
         setContentView(R.layout.activity_images);
 
         deviceId = getIntent().getStringExtra(DomainConstants.DEVICE_ID);
+        final String name = getIntent().getStringExtra(DomainConstants.NAME);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(deviceId);
+            if (name != null) {
+                getSupportActionBar().setTitle(name);
+            } else {
+                getSupportActionBar().setTitle(deviceId);
+            }
         }
 
         final RecyclerView recyclerView = findViewById(R.id.recyclerView);

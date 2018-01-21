@@ -2,6 +2,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
         maven { url 'http://raw.github.com/saki4510t/libcommon/master/repository/' }
     }
 }
@@ -23,7 +24,7 @@ ext {
     timberVersion = '4.6.0'
     rxJavaVersion = '2.1.8'
     rxAndroidVersion = '2.0.1'
-    rx2firebaseVersion = '1.3.0'
+    rx2firebaseVersion = '1.4.0'
     gsonVersion = '2.8.2'
     serenegiantCommonVersion = '1.9.4'
 

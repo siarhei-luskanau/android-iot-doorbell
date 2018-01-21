@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.camera;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
@@ -16,7 +17,6 @@ import android.media.ImageReader;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Display;
@@ -30,13 +30,13 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import siarhei.luskanau.iot.doorbell.repository.TakePictureRepository;
+import timber.log.Timber;
 
 import static android.content.Context.CAMERA_SERVICE;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class CameraRepository implements TakePictureRepository {
 
-    private static final String TAG = CameraRepository.class.getSimpleName();
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int IMAGE_WIDTH = 320;
     private static final int IMAGE_HEIGHT = 240;
@@ -68,9 +68,10 @@ public class CameraRepository implements TakePictureRepository {
         return imageCompressor.scale(observable, IMAGE_WIDTH);
     }
 
+    @SuppressLint("MissingPermission")
     private Observable<byte[]> createCameraObservable(final CameraManager cameraManager, final String cameraId) {
         return Observable.create(emitter -> {
-            Log.d(TAG, "Using camera id " + cameraId);
+            Timber.d("Using camera id %s", cameraId);
 
             // Initialize the image processor
             final ImageReader imageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES);
@@ -96,7 +97,7 @@ public class CameraRepository implements TakePictureRepository {
 
                 @Override
                 public void onOpened(@NonNull final CameraDevice cameraDevice) {
-                    Log.d(TAG, "Opened camera.");
+                    Timber.d("Opened camera.");
                     // Here, we create a CameraCaptureSession for capturing still images.
                     try {
                         final CameraCaptureSession.StateCallback sessionCallback =
@@ -110,12 +111,15 @@ public class CameraRepository implements TakePictureRepository {
                                                     cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
                                             captureBuilder.addTarget(imageReader.getSurface());
 
-                                            final Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-                                            final int rotation = display.getRotation();
-                                            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+                                            final WindowManager windowManager = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
+                                            if (windowManager != null) {
+                                                final Display display = windowManager.getDefaultDisplay();
+                                                final int rotation = display.getRotation();
+                                                captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+                                            }
 
                                             captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON);
-                                            Log.d(TAG, "Session initialized.");
+                                            Timber.d("Session initialized.");
 
                                             final CameraCaptureSession.CaptureCallback mCaptureCallback =
                                                     new CameraCaptureSession.CaptureCallback() {
@@ -124,7 +128,7 @@ public class CameraRepository implements TakePictureRepository {
                                                         public void onCaptureProgressed(@NonNull final CameraCaptureSession session,
                                                                                         @NonNull final CaptureRequest request,
                                                                                         @NonNull final CaptureResult partialResult) {
-                                                            Log.d(TAG, "Partial result");
+                                                            Timber.d("Partial result");
                                                         }
 
                                                         @Override
@@ -132,19 +136,19 @@ public class CameraRepository implements TakePictureRepository {
                                                                                        @NonNull final CaptureRequest request,
                                                                                        @NonNull final TotalCaptureResult result) {
                                                             session.close();
-                                                            Log.d(TAG, "CaptureSession closed");
+                                                            Timber.d("CaptureSession closed");
                                                         }
                                                     };
 
                                             cameraCaptureSession.capture(captureBuilder.build(), mCaptureCallback, null);
                                         } catch (final CameraAccessException cae) {
-                                            Log.d(TAG, "camera capture exception");
+                                            Timber.d("camera capture exception");
                                         }
                                     }
 
                                     @Override
                                     public void onConfigureFailed(@NonNull final CameraCaptureSession cameraCaptureSession) {
-                                        Log.w(TAG, "Failed to configure camera");
+                                        Timber.w("Failed to configure camera");
                                     }
                                 };
 
@@ -153,26 +157,26 @@ public class CameraRepository implements TakePictureRepository {
                                 sessionCallback,
                                 null);
                     } catch (final CameraAccessException cae) {
-                        Log.d(TAG, "access exception while preparing pic", cae);
+                        Timber.d(cae, "access exception while preparing pic");
                     }
                 }
 
                 @Override
                 public void onDisconnected(@NonNull final CameraDevice cameraDevice) {
-                    Log.d(TAG, "Camera disconnected, closing.");
+                    Timber.d("Camera disconnected, closing.");
                     cameraDevice.close();
                 }
 
                 @Override
                 public void onError(@NonNull final CameraDevice cameraDevice, final int i) {
-                    Log.d(TAG, "Camera device error, closing.");
+                    Timber.d("Camera device error, closing.");
                     emitter.onError(new RuntimeException("CameraDevice:StateCallback:onError " + i));
                     cameraDevice.close();
                 }
 
                 @Override
                 public void onClosed(@NonNull final CameraDevice cameraDevice) {
-                    Log.d(TAG, "Closed camera, releasing");
+                    Timber.d("Closed camera, releasing");
                 }
             };
 
@@ -181,7 +185,7 @@ public class CameraRepository implements TakePictureRepository {
                 //noinspection MissingPermission
                 cameraManager.openCamera(cameraId, stateCallback, backgroundHandler);
             } catch (final CameraAccessException cae) {
-                Log.d(TAG, "Camera access exception", cae);
+                Timber.d(cae, "Camera access exception");
                 emitter.onError(cae);
             }
         });
@@ -192,33 +196,35 @@ public class CameraRepository implements TakePictureRepository {
         final Map<String, Object> map = new HashMap<>();
         try {
             final CameraManager cameraManager = (CameraManager) context.getSystemService(CAMERA_SERVICE);
-            final String[] cameraIdList = cameraManager.getCameraIdList();
-            for (final String cameraId : cameraIdList) {
-                final Map<String, Object> cameraMap = new HashMap<>();
-                map.put(cameraId, cameraMap);
-                final CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
+            if (cameraManager != null) {
+                final String[] cameraIdList = cameraManager.getCameraIdList();
+                for (final String cameraId : cameraIdList) {
+                    final Map<String, Object> cameraMap = new HashMap<>();
+                    map.put(cameraId, cameraMap);
+                    final CameraCharacteristics characteristics = cameraManager.getCameraCharacteristics(cameraId);
 
-                cameraMap.put("CONTROL_AVAILABLE_EFFECTS", characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS));
+                    cameraMap.put("CONTROL_AVAILABLE_EFFECTS", characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS));
 
-                final StreamConfigurationMap streamConfigurationMap = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                final Map<String, Object> outputFormatsMap = new HashMap<>();
-                if (streamConfigurationMap != null) {
-                    cameraMap.put("OutputFormats", outputFormatsMap);
-                    final int[] outputFormats = streamConfigurationMap.getOutputFormats();
-                    for (final int outputFormat : outputFormats) {
-                        final StringBuilder builder = new StringBuilder();
-                        for (final Size size : streamConfigurationMap.getOutputSizes(outputFormat)) {
-                            if (builder.length() > 0) {
-                                builder.append(", ");
+                    final StreamConfigurationMap streamConfigurationMap = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+                    final Map<String, Object> outputFormatsMap = new HashMap<>();
+                    if (streamConfigurationMap != null) {
+                        cameraMap.put("OutputFormats", outputFormatsMap);
+                        final int[] outputFormats = streamConfigurationMap.getOutputFormats();
+                        for (final int outputFormat : outputFormats) {
+                            final StringBuilder builder = new StringBuilder();
+                            for (final Size size : streamConfigurationMap.getOutputSizes(outputFormat)) {
+                                if (builder.length() > 0) {
+                                    builder.append(", ");
+                                }
+                                builder.append(size);
                             }
-                            builder.append(size);
+                            outputFormatsMap.put(String.valueOf(outputFormat), builder.toString());
                         }
-                        outputFormatsMap.put(String.valueOf(outputFormat), builder.toString());
                     }
                 }
             }
         } catch (final CameraAccessException e) {
-            Log.d(TAG, e.getMessage(), e);
+            Timber.d(e);
         }
         return map;
     }

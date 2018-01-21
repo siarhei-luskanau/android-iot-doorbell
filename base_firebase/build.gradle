@@ -21,10 +21,14 @@ dependencies {
 
     implementation project(':domain')
 
+    implementation appDependencies.kotlinStdlib
+    implementation appDependencies.timber
+
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid
 
     implementation appDependencies.firebaseDatabase
+    implementation appDependencies.rx2firebase
     implementation appDependencies.playServicesVision
 
     implementation appDependencies.gson

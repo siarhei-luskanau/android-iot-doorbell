@@ -25,6 +25,8 @@ dependencies {
 
     implementation project(':base_framework')
 
+    implementation appDependencies.kotlinStdlib
+
     implementation appDependencies.dagger
     implementation appDependencies.javaxInject
 
