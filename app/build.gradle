@@ -1,0 +1,102 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+// junit5 doesn't support android projects out of the box
+apply plugin: "de.mannodermaus.android-junit5"
+
+android {
+
+    compileSdkVersion project.ANDROID_BUILD_SDK_VERSION
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        applicationId "siarhei.luskanau.iot.doorbell"
+        minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION
+        targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+        }
+    }
+    details org.junit.platform.console.options.Details.FLAT
+}
+
+dependencies {
+    def appDependencies = rootProject.ext.appDependencies
+
+    implementation project(':app_base')
+    implementation project(':base_firebase')
+
+    kapt appDependencies.databindingCompiler
+
+    kapt appDependencies.daggerCompiler
+    kapt appDependencies.daggerAndroidProcessor
+    implementation appDependencies.dagger
+    implementation appDependencies.daggerAndroidSupport
+
+    implementation appDependencies.kotlinStdlib
+    implementation appDependencies.timber
+    implementation appDependencies.supportV4
+
+    implementation appDependencies.rxJava
+    implementation appDependencies.rxAndroid
+
+    annotationProcessor appDependencies.archLifecycleCompiler
+    implementation appDependencies.archLifecycleExtensions
+    implementation appDependencies.archLifecycleReactivestreams
+    implementation appDependencies.supportDesign
+    implementation appDependencies.supportCardview
+    implementation appDependencies.constraintLayout
+
+    implementation appDependencies.gson
+
+    //Development
+    debugImplementation appDependencies.leakCanary
+    releaseImplementation appDependencies.leakCanaryNoOp
+    testImplementation appDependencies.leakCanaryNoOp
+
+    testImplementation(appDependencies.mockitoKotlin) {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+
+    testImplementation appDependencies.archCoreTesting
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+dependencies {
+    testImplementation("org.jetbrains.spek:spek-api:$project.spekVersion") {
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation("org.jetbrains.spek:spek-junit-platform-engine:$project.spekVersion") {
+        exclude group: "org.junit.platform"
+        exclude group: "org.jetbrains.kotlin"
+    }
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$project.kotlinVersion"
+    testImplementation "org.junit.platform:junit-platform-engine:${project.junitPlatformVersion}"
+}

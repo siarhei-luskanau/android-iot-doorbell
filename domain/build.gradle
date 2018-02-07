@@ -25,16 +25,20 @@ dependencies {
 
     implementation project(':base_framework')
 
+    kapt appDependencies.databindingCompiler
+
     implementation appDependencies.kotlinStdlib
 
     implementation appDependencies.dagger
-    implementation appDependencies.javaxInject
 
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid
 
     implementation appDependencies.timber
 
+    annotationProcessor appDependencies.archLifecycleCompiler
+    implementation appDependencies.archLifecycleExtensions
+    implementation appDependencies.supportDesign
     implementation appDependencies.supportRecyclerview
     implementation appDependencies.supportCardview
 

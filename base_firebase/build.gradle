@@ -19,10 +19,11 @@ android {
 dependencies {
     def appDependencies = rootProject.ext.appDependencies
 
-    implementation project(':domain')
+    implementation project(':app_base')
 
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.timber
+    implementation appDependencies.supportV4
 
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid

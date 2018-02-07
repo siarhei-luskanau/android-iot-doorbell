@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
 
@@ -40,17 +41,21 @@ dependencies {
     implementation project(':base_camera')
     implementation project(':base_camera_usb')
 
-    annotationProcessor appDependencies.daggerCompiler
+    kapt appDependencies.databindingCompiler
+
+    kapt appDependencies.daggerCompiler
+    kapt appDependencies.daggerAndroidProcessor
+    implementation appDependencies.dagger
+    implementation appDependencies.daggerAndroidSupport
 
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.timber
 
-    implementation appDependencies.dagger
-    implementation appDependencies.javaxInject
-
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid
 
+    annotationProcessor appDependencies.archLifecycleCompiler
+    implementation appDependencies.archLifecycleExtensions
     implementation appDependencies.supportDesign
     implementation appDependencies.supportCardview
 

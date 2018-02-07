@@ -10,6 +10,8 @@ buildscript {
         def buildscriptDependencies = rootProject.ext.buildscriptDependencies
         classpath buildscriptDependencies.gradle
         classpath buildscriptDependencies.kotlinGradlePlugin
+        classpath buildscriptDependencies.junitPlatformPlugin
+        classpath buildscriptDependencies.androidJunit5Plugin
         classpath buildscriptDependencies.googleServices
     }
 }

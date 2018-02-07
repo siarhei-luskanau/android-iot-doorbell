@@ -74,8 +74,8 @@ class CameraUsbRepository(private val context: Context) : TakePictureRepository 
                     try {
                         // get image bytes
                         val planes = image.getPlanes()
-                        if (planes != null && planes!!.size > 0) {
-                            val imageBuf = planes!![0].getBuffer()
+                        if (planes != null && planes.isNotEmpty()) {
+                            val imageBuf = planes[0].getBuffer()
                             val imageBytes = ByteArray(imageBuf.remaining())
                             imageBuf.get(imageBytes)
                             image.close()

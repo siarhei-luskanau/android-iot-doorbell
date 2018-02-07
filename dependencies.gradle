@@ -14,16 +14,20 @@ ext {
     ANDROID_BUILD_TOOLS_VERSION = "27.0.3"
     ANDROID_BUILD_MIN_SDK_VERSION = 21
     ANDROID_THINGS_BUILD_MIN_SDK_VERSION = 26
-    SUPPORT_LIBRARY_VERSION = "27.0.2"
+    SUPPORT_LIBRARY_VERSION = "27.1.0"
     PLAY_SERVICES_VERSION = "11.8.0"
 
     //Libraries
-    kotlinVersion = '1.2.20'
+    gradleBuildToolsVersion = '3.0.1'
+    kotlinVersion = '1.2.30'
+    androidxKtxVersion = '0.1'
+    googleServicesVersion = '3.2.0'
+    archLifecycleVersion = '1.1.0'
     daggerVersion = '2.14.1'
-    javaxInjectVersion = '1'
-    timberVersion = '4.6.0'
-    rxJavaVersion = '2.1.8'
-    rxAndroidVersion = '2.0.1'
+    timberVersion = '4.6.1'
+    constraintLayoutVersion = '1.0.2'
+    rxJavaVersion = '2.1.10'
+    rxAndroidVersion = '2.0.2'
     rx2firebaseVersion = '1.4.0'
     gsonVersion = '2.8.2'
     serenegiantCommonVersion = '1.9.4'
@@ -35,42 +39,63 @@ ext {
     androidthingsVersion = '0.6.1-devpreview'
     driverButtonVersion = '0.5'
 
+    //Testing
+    mockitoKotlinVersion = '1.5.0'
+    spekVersion = '1.1.5'
+    androidJunit5Version = '1.0.12'
+    junitPlatformVersion = '1.0.1'
+
     buildscriptDependencies = [
-            gradle            : "com.android.tools.build:gradle:3.0.1",
-            kotlinGradlePlugin: "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
-            googleServices    : "com.google.gms:google-services:3.1.2",
+            gradle             : "com.android.tools.build:gradle:${gradleBuildToolsVersion}",
+            kotlinGradlePlugin : "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
+            junitPlatformPlugin: "org.junit.platform:junit-platform-gradle-plugin:${junitPlatformVersion}",
+            androidJunit5Plugin: "de.mannodermaus.gradle.plugins:android-junit5:${androidJunit5Version}",
+            googleServices     : "com.google.gms:google-services:${googleServicesVersion}",
     ]
 
     appDependencies = [
 
-            kotlinStdlib       : "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}",
+            kotlinStdlib                : "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}",
+            androidxKtx                 : "androidx.core:core-ktx:${androidxKtxVersion}",
 
-            daggerCompiler     : "com.google.dagger:dagger-compiler:${daggerVersion}",
-            dagger             : "com.google.dagger:dagger:${daggerVersion}",
-            javaxInject        : "javax.inject:javax.inject:${javaxInjectVersion}",
+            databindingCompiler         : "com.android.databinding:compiler:${gradleBuildToolsVersion}",
 
-            androidThings      : "com.google.android.things:androidthings:${androidthingsVersion}",
-            driverButton       : "com.google.android.things.contrib:driver-button:${driverButtonVersion}",
+            daggerCompiler              : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            daggerAndroidProcessor      : "com.google.dagger:dagger-android-processor:${daggerVersion}",
+            dagger                      : "com.google.dagger:dagger:${daggerVersion}",
+            daggerAndroidSupport        : "com.google.dagger:dagger-android-support:${daggerVersion}",
 
-            timber             : "com.jakewharton.timber:timber:${timberVersion}",
-            supportDesign      : "com.android.support:design:${SUPPORT_LIBRARY_VERSION}",
-            supportCardview    : "com.android.support:cardview-v7:${SUPPORT_LIBRARY_VERSION}",
-            supportRecyclerview: "com.android.support:recyclerview-v7:${SUPPORT_LIBRARY_VERSION}",
-            supportAnnotations : "com.android.support:support-annotations:${SUPPORT_LIBRARY_VERSION}",
-            supportCompat      : "com.android.support:support-compat:${SUPPORT_LIBRARY_VERSION}",
+            archCoreTesting             : "android.arch.core:core-testing:${archLifecycleVersion}",
+            archLifecycleCompiler       : "android.arch.lifecycle:compiler:${archLifecycleVersion}",
+            archLifecycleExtensions     : "android.arch.lifecycle:extensions:${archLifecycleVersion}",
+            archLifecycleReactivestreams: "android.arch.lifecycle:reactivestreams:${archLifecycleVersion}",
 
-            rxJava             : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
-            rxAndroid          : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
+            androidThings               : "com.google.android.things:androidthings:${androidthingsVersion}",
+            driverButton                : "com.google.android.things.contrib:driver-button:${driverButtonVersion}",
 
-            serenegiantCommon  : "com.serenegiant:common:${serenegiantCommonVersion}",
+            timber                      : "com.jakewharton.timber:timber:${timberVersion}",
+            supportV4                   : "com.android.support:support-v4:${SUPPORT_LIBRARY_VERSION}",
+            supportDesign               : "com.android.support:design:${SUPPORT_LIBRARY_VERSION}",
+            supportCardview             : "com.android.support:cardview-v7:${SUPPORT_LIBRARY_VERSION}",
+            supportRecyclerview         : "com.android.support:recyclerview-v7:${SUPPORT_LIBRARY_VERSION}",
+            supportAnnotations          : "com.android.support:support-annotations:${SUPPORT_LIBRARY_VERSION}",
+            supportCompat               : "com.android.support:support-compat:${SUPPORT_LIBRARY_VERSION}",
+            constraintLayout            : "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}",
 
-            firebaseDatabase   : "com.google.firebase:firebase-database:${PLAY_SERVICES_VERSION}",
-            rx2firebase        : "com.github.frangsierra:rx2firebase:${rx2firebaseVersion}",
-            playServicesVision : "com.google.android.gms:play-services-vision:${PLAY_SERVICES_VERSION}",
+            rxJava                      : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+            rxAndroid                   : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
 
-            gson               : "com.google.code.gson:gson:${gsonVersion}",
+            serenegiantCommon           : "com.serenegiant:common:${serenegiantCommonVersion}",
 
-            leakCanary         : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
-            leakCanaryNoOp     : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
+            firebaseDatabase            : "com.google.firebase:firebase-database:${PLAY_SERVICES_VERSION}",
+            rx2firebase                 : "com.github.frangsierra:rx2firebase:${rx2firebaseVersion}",
+            playServicesVision          : "com.google.android.gms:play-services-vision:${PLAY_SERVICES_VERSION}",
+
+            gson                        : "com.google.code.gson:gson:${gsonVersion}",
+
+            leakCanary                  : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
+            leakCanaryNoOp              : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
+
+            mockitoKotlin               : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
     ]
 }
