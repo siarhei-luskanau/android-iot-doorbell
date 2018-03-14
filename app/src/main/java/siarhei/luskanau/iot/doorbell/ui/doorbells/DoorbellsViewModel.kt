@@ -17,29 +17,25 @@ class DoorbellsViewModel @Inject constructor(
         thisDeviceRepository: ThisDeviceRepository
 ) : ViewModel() {
 
-    val camerasLiveData: LiveData<List<CameraData>>
-    val doorbellsLiveData: LiveData<List<DoorbellData>>
     val cameraIdLiveData = MutableLiveData<String>()
     val cameraImageRequestLiveData: LiveData<String>
+    val camerasLiveData: LiveData<List<CameraData>> = LiveDataReactiveStreams.fromPublisher(
+            Single.just(thisDeviceRepository.getCamerasList())
+                    .doOnError { Timber.e(it) }
+                    .onErrorResumeNext(Single.just(emptyList()))
+                    .subscribeOn(schedulerSet.io)
+                    .observeOn(schedulerSet.ui)
+                    .toFlowable()
+    )
+    val doorbellsLiveData: LiveData<List<DoorbellData>> = LiveDataReactiveStreams.fromPublisher(
+            doorbellRepository.listenDoorbellsList()
+                    .doOnError { Timber.e(it) }
+                    .onErrorResumeNext(Flowable.empty())
+                    .subscribeOn(schedulerSet.io)
+                    .observeOn(schedulerSet.ui)
+    )
 
     init {
-        camerasLiveData = LiveDataReactiveStreams.fromPublisher(
-                thisDeviceRepository.getCamerasList()
-                        .doOnError { Timber.e(it) }
-                        .onErrorResumeNext(Single.just(emptyList()))
-                        .subscribeOn(schedulerSet.io)
-                        .observeOn(schedulerSet.ui)
-                        .toFlowable()
-        )
-
-        doorbellsLiveData = LiveDataReactiveStreams.fromPublisher(
-                doorbellRepository.listenDoorbellsList()
-                        .doOnError { Timber.e(it) }
-                        .onErrorResumeNext(Flowable.empty())
-                        .subscribeOn(schedulerSet.io)
-                        .observeOn(schedulerSet.ui)
-        )
-
         cameraImageRequestLiveData = Transformations.switchMap(cameraIdLiveData) { cameraId: String ->
             LiveDataReactiveStreams.fromPublisher(
                     doorbellRepository.sendCameraImageRequest(

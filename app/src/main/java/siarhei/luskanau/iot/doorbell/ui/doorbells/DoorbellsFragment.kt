@@ -43,7 +43,8 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
         )
 
         doorbellsAdapter.onItemClickListener = { _, _, position ->
-            navigationController.navigateToImages(doorbellsAdapter.getItem(position).doorbellId)
+            val doorbellData = doorbellsAdapter.getItem(position)
+            navigationController.navigateToImages(doorbellData.doorbellId, doorbellData.name)
         }
         binding.doorbellsRecyclerView.adapter = doorbellsAdapter
 

@@ -57,7 +57,7 @@ object ImagesViewModelTest : Spek({
             it("should call observer.onChanged") {
                 val captor = argumentCaptor<List<CameraData>>()
                 verify(observer, atLeastOnce()).onChanged(captor.capture())
-                Assert.assertEquals(captor.lastValue, cameraList)
+                Assert.assertEquals(cameraList, captor.lastValue)
             }
         }
 
@@ -74,7 +74,7 @@ object ImagesViewModelTest : Spek({
             it("should call observer.onChanged") {
                 val captor = argumentCaptor<List<ImageData>>()
                 verify(observer, atLeastOnce()).onChanged(captor.capture())
-                Assert.assertEquals(captor.lastValue, imagesList)
+                Assert.assertEquals(imagesList, captor.lastValue)
             }
         }
 
@@ -92,7 +92,7 @@ object ImagesViewModelTest : Spek({
             it("should call observer.onChanged") {
                 val captor = argumentCaptor<String>()
                 verify(observer, atLeastOnce()).onChanged(captor.capture())
-                Assert.assertEquals(captor.lastValue, cameraId)
+                Assert.assertEquals(cameraId, captor.lastValue)
             }
         }
 

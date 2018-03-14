@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Single
 import junit.framework.Assert.assertEquals
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
@@ -38,7 +37,7 @@ object DoorbellsViewModelTest : Spek({
     val mockThisDeviceRepository by memoized {
         mock<ThisDeviceRepository> {
             on { doorbellId() }.doReturn(deviceId)
-            on { getCamerasList() }.doReturn(Single.just(cameraList))
+            on { getCamerasList() }.doReturn(cameraList)
         }
     }
 
@@ -66,7 +65,7 @@ object DoorbellsViewModelTest : Spek({
             it("should call observer.onChanged") {
                 val captor = argumentCaptor<List<CameraData>>()
                 verify(observer, atLeastOnce()).onChanged(captor.capture())
-                assertEquals(captor.lastValue, cameraList)
+                assertEquals(cameraList, captor.lastValue)
             }
         }
 
@@ -82,7 +81,7 @@ object DoorbellsViewModelTest : Spek({
             it("should call observer.onChanged") {
                 val captor = argumentCaptor<List<DoorbellData>>()
                 verify(observer, atLeastOnce()).onChanged(captor.capture())
-                assertEquals(captor.lastValue, doorbellsList)
+                assertEquals(doorbellsList, captor.lastValue)
             }
         }
 
@@ -102,7 +101,7 @@ object DoorbellsViewModelTest : Spek({
             it("should call observer.onChanged") {
                 val captor = argumentCaptor<String>()
                 verify(observer, atLeastOnce()).onChanged(captor.capture())
-                assertEquals(captor.lastValue, cameraId)
+                assertEquals(cameraId, captor.lastValue)
             }
         }
 

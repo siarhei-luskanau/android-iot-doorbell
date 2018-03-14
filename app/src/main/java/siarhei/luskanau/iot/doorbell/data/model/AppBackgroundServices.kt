@@ -3,6 +3,7 @@ package siarhei.luskanau.iot.doorbell.data.model
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -64,7 +65,7 @@ class AppBackgroundServices @Inject constructor(
         Flowable
                 .interval(initial_delay, period, unit, schedulerSet.computation)
                 .flatMapCompletable {
-                    thisDeviceRepository.getCamerasList()
+                    Single.just(thisDeviceRepository.getCamerasList())
                             .doOnError { Timber.e(it) }
                             .flatMapCompletable { list: List<CameraData> ->
                                 doorbellRepository.sendCamerasList(
@@ -85,8 +86,7 @@ class AppBackgroundServices @Inject constructor(
         Flowable
                 .interval(initial_delay, period, unit, schedulerSet.computation)
                 .flatMapCompletable {
-                    thisDeviceRepository
-                            .getIpAddressMap()
+                    Single.just(thisDeviceRepository.getIpAddressList().associate { it })
                             .doOnError { Timber.e(it) }
                             .flatMapCompletable { ipAddressMap: Map<String, String> ->
                                 doorbellRepository.sendIpAddressMap(
