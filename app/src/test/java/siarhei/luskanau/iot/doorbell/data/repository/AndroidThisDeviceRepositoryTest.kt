@@ -12,18 +12,22 @@ import org.jetbrains.spek.api.dsl.it
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.camera.CameraDataProvider
-import siarhei.luskanau.iot.doorbell.data.model.device.DoorbellDataBuilder
+import siarhei.luskanau.iot.doorbell.data.model.device.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.data.model.ipaddress.IpAddressProvider
 
 object AndroidThisDeviceRepositoryTest : Spek({
 
     val deviceId = "deviceId"
-    val doorbellData = DoorbellData(deviceId)
+    val deviceName = "deviceName"
+    val deviceInfo = emptyMap<String, Any>()
+    val doorbellData = DoorbellData(deviceId, deviceName, deviceInfo)
     val camerasList = listOf(CameraData("cameraId"))
     val ipAddressList = listOf(Pair("InterfaceName", "IpAddress"))
-    val doorbellDataBuilder by memoized {
-        mock<DoorbellDataBuilder> {
-            on { buildDoorbellData() }.doReturn(doorbellData)
+    val deviceInfoProvider by memoized {
+        mock<DeviceInfoProvider> {
+            on { buildDeviceId() }.doReturn(deviceId)
+            on { buildDeviceName() }.doReturn(deviceName)
+            on { buildDeviceInfo() }.doReturn(deviceInfo)
         }
     }
     val cameraDataProvider by memoized {
@@ -39,7 +43,7 @@ object AndroidThisDeviceRepositoryTest : Spek({
 
     val androidThisDeviceRepository by memoized {
         AndroidThisDeviceRepository(
-                doorbellDataBuilder,
+                deviceInfoProvider,
                 cameraDataProvider,
                 ipAddressProvider
         )
@@ -58,8 +62,14 @@ object AndroidThisDeviceRepositoryTest : Spek({
             beforeEachTest {
                 resultDoorbellData = androidThisDeviceRepository.doorbellData()
             }
-            it("should invoke buildDoorbellData") {
-                verify(doorbellDataBuilder, times(1)).buildDoorbellData()
+            it("should invoke buildDeviceId") {
+                verify(deviceInfoProvider, times(1)).buildDeviceId()
+            }
+            it("should invoke buildDeviceName") {
+                verify(deviceInfoProvider, times(1)).buildDeviceName()
+            }
+            it("should invoke buildDeviceInfo") {
+                verify(deviceInfoProvider, times(1)).buildDeviceInfo()
             }
             it("should be the same DoorbellData") {
                 Assert.assertEquals(doorbellData, resultDoorbellData)
