@@ -42,13 +42,11 @@ ext {
     //Testing
     mockitoKotlinVersion = '1.5.0'
     spekVersion = '1.1.5'
-    androidJunit5Version = '1.0.12'
-    junitPlatformVersion = '1.0.1'
+    androidJunit5Version = '1.0.31'
 
     buildscriptDependencies = [
             gradle             : "com.android.tools.build:gradle:${gradleBuildToolsVersion}",
             kotlinGradlePlugin : "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
-            junitPlatformPlugin: "org.junit.platform:junit-platform-gradle-plugin:${junitPlatformVersion}",
             androidJunit5Plugin: "de.mannodermaus.gradle.plugins:android-junit5:${androidJunit5Version}",
             googleServices     : "com.google.gms:google-services:${googleServicesVersion}",
     ]
@@ -65,7 +63,6 @@ ext {
             dagger                      : "com.google.dagger:dagger:${daggerVersion}",
             daggerAndroidSupport        : "com.google.dagger:dagger-android-support:${daggerVersion}",
 
-            archCoreTesting             : "android.arch.core:core-testing:${archLifecycleVersion}",
             archLifecycleCompiler       : "android.arch.lifecycle:compiler:${archLifecycleVersion}",
             archLifecycleExtensions     : "android.arch.lifecycle:extensions:${archLifecycleVersion}",
             archLifecycleReactivestreams: "android.arch.lifecycle:reactivestreams:${archLifecycleVersion}",
