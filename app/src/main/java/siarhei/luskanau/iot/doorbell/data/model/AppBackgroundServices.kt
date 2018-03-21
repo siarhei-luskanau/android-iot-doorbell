@@ -1,9 +1,12 @@
 package siarhei.luskanau.iot.doorbell.data.model
 
+import android.content.Context
+import android.content.Intent
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import siarhei.luskanau.iot.doorbell.CameraService
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -15,7 +18,8 @@ class AppBackgroundServices @Inject constructor(
         private val schedulerSet: SchedulerSet,
         private val doorbellRepository: DoorbellRepository,
         private val thisDeviceRepository: ThisDeviceRepository,
-        val gson: Gson
+        val gson: Gson,
+        val context: Context
 ) {
 
     companion object {
@@ -112,7 +116,12 @@ class AppBackgroundServices @Inject constructor(
                                 entry.value
                             }
                             .map { entry: Map.Entry<String, Boolean> -> makeAndSendImage(entry.key) }
-                    Completable.merge(list)
+
+                    if (list.isNotEmpty()) {
+                        context.startService(Intent(context, CameraService::class.java))
+                    }
+
+                    Completable.complete()
                 }
                 .doOnError { Timber.e(it) }
                 .subscribeOn(schedulerSet.io)
