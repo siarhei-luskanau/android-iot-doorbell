@@ -15,6 +15,7 @@ import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 
 object ImagesViewModelTest : Spek({
 
@@ -33,12 +34,19 @@ object ImagesViewModelTest : Spek({
         }
     }
 
+    val mockUptimeRepository by memoized {
+        mock<UptimeRepository> {
+            on { uptimeRebootRequest(any(), any(), any()) }.doReturn(Completable.complete())
+        }
+    }
+
     val testSchedulerSet = SchedulerSet.test()
 
     val imagesViewModel by memoized {
         ImagesViewModel(
                 testSchedulerSet,
-                mockDoorbellRepository
+                mockDoorbellRepository,
+                mockUptimeRepository
         )
     }
 

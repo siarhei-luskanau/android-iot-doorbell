@@ -17,6 +17,13 @@
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             tools:listitem="@layout/view_camera_item"/>
 
+        <include
+            android:id="@+id/uptimeView"
+            layout="@layout/view_uptime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/camerasRecyclerView"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/imagesRecyclerView"
             android:layout_width="0dp"
@@ -26,7 +33,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/camerasRecyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/uptimeView"
             tools:listitem="@layout/view_image_item"/>
 
     </android.support.constraint.ConstraintLayout>

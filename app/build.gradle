@@ -76,6 +76,8 @@ dependencies {
 
     implementation appDependencies.gson
 
+    compileOnly appDependencies.androidThings
+
     //Development
     debugImplementation appDependencies.leakCanary
     releaseImplementation appDependencies.leakCanaryNoOp

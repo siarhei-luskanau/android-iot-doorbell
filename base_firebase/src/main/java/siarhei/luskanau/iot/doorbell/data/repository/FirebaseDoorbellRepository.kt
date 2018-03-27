@@ -1,8 +1,5 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import io.reactivex.Completable
@@ -11,13 +8,16 @@ import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
-class FirebaseDoorbellRepository(val gson: Gson) : DoorbellRepository {
+class FirebaseDoorbellRepository(
+        override val gson: Gson
+) : BaseFirebaseRepository(gson), DoorbellRepository {
 
-    init {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+    companion object {
+        private const val DOORBELLS_KEY = "doorbells"
+        private const val CAMERAS_KEY = "cameras"
+        private const val IMAGES_KEY = "images"
+        private const val IMAGE_REQUEST_KEY = "image_request"
     }
-
-    override fun ping(deviceId: String): Completable = Completable.complete()
 
     override fun listenDoorbellsList(): Flowable<List<DoorbellData>> = RxFirebaseDatabase
             .observeValueEvent(
@@ -49,12 +49,6 @@ class FirebaseDoorbellRepository(val gson: Gson) : DoorbellRepository {
                     serializeByGson(list)
             )
 
-    override fun sendIpAddressMap(deviceId: String, ipAddressMap: Map<String, String>): Completable = RxFirebaseDatabase
-            .setValue(
-                    getAppDatabase().child(IP_ADDRESS_KEY).child(deviceId),
-                    serializeByGson(ipAddressMap)
-            )
-
     override fun sendCameraImageRequest(
             deviceId: String,
             cameraId: String,
@@ -70,29 +64,5 @@ class FirebaseDoorbellRepository(val gson: Gson) : DoorbellRepository {
                     getAppDatabase().child(IMAGE_REQUEST_KEY).child(deviceId)
             )
             .map { dataSnapshotToMap(it, Boolean::class.java) }
-
-    private fun getAppDatabase(): DatabaseReference =
-            FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY)
-
-    private fun <T> dataSnapshotToList(dataSnapshot: DataSnapshot, type: Class<T>): List<T> =
-            dataSnapshot.children.map { gson.fromJson(gson.toJson(it.value), type) }
-
-    private fun <T> dataSnapshotToMap(dataSnapshot: DataSnapshot, type: Class<T>): Map<String, T> =
-            dataSnapshot.children.associateBy(
-                    { it.key },
-                    { gson.fromJson(gson.toJson(it.value), type) }
-            )
-
-    private fun serializeByGson(src: Any?): Any? =
-            gson.fromJson(gson.toJson(src), Object::class.java)
-
-    companion object {
-        private const val DOORBELL_APP_KEY = "doorbell_app"
-        private const val DOORBELLS_KEY = "doorbells"
-        private const val CAMERAS_KEY = "cameras"
-        private const val IMAGES_KEY = "images"
-        private const val IP_ADDRESS_KEY = "ip_address"
-        private const val IMAGE_REQUEST_KEY = "image_request"
-    }
 
 }

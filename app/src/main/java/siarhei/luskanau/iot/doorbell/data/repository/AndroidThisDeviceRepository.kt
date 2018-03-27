@@ -4,6 +4,7 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.camera.CameraDataProvider
 import siarhei.luskanau.iot.doorbell.data.model.device.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.data.model.ipaddress.IpAddressProvider
+import timber.log.Timber
 import javax.inject.Inject
 
 class AndroidThisDeviceRepository @Inject constructor(
@@ -15,6 +16,7 @@ class AndroidThisDeviceRepository @Inject constructor(
     private val doorbellData = DoorbellData(
             deviceInfoProvider.buildDeviceId(),
             deviceInfoProvider.buildDeviceName(),
+            deviceInfoProvider.isAndroidThings(),
             deviceInfoProvider.buildDeviceInfo()
     )
 
@@ -25,5 +27,14 @@ class AndroidThisDeviceRepository @Inject constructor(
     override fun getCamerasList() = cameraDataProvider.getCamerasList()
 
     override fun getIpAddressList() = ipAddressProvider.getIpAddressList()
+
+    override fun reboot() {
+        try {
+            Timber.d("reboot")
+            Runtime.getRuntime().exec("reboot")
+        } catch (t: Throwable) {
+            Timber.e(t)
+        }
+    }
 
 }

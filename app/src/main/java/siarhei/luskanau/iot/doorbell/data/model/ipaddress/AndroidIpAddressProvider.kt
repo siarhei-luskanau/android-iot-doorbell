@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.data.model.ipaddress
 
+import siarhei.luskanau.iot.doorbell.AppConstants
 import timber.log.Timber
 import java.net.Inet4Address
 import java.net.InetAddress
@@ -19,7 +20,7 @@ class AndroidIpAddressProvider @Inject constructor() : IpAddressProvider {
                             !inetAddress.isLoopbackAddress && inetAddress is Inet4Address
                         }
                         .map { inetAddress: InetAddress ->
-                            inetAddress.hostAddress + " " + Date()
+                            inetAddress.hostAddress + " " + AppConstants.DATE_FORMAT.format(System.currentTimeMillis())
                         }
                         .forEach { hostAddress: String ->
                             ipAddressList.add(Pair(networkInterface.name, hostAddress))

@@ -1,5 +1,6 @@
 <resources>
 
     <string name="app_name">IoT Doorbell</string>
+    <string name="reboot">Reboot</string>
 
 </resources>

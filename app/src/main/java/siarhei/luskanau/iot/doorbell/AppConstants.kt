@@ -1,5 +1,8 @@
 package siarhei.luskanau.iot.doorbell
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 object AppConstants {
 
     val DEVICE_ID = "device_id"
@@ -12,5 +15,8 @@ object AppConstants {
     val IMAGE = "image"
     val ANNOTATIONS = "annotations"
     val IMAGE_LENGTH = "image_length"
+
+    val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.ENGLISH)
+
 
 }

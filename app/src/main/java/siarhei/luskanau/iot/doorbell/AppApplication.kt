@@ -11,6 +11,7 @@ import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerApplication
 import dagger.android.support.HasSupportFragmentInjector
 import siarhei.luskanau.iot.doorbell.data.model.AppBackgroundServices
+import siarhei.luskanau.iot.doorbell.data.model.UptimeService
 import siarhei.luskanau.iot.doorbell.di.common.AppComponent
 import siarhei.luskanau.iot.doorbell.di.common.DaggerAppComponent
 import siarhei.luskanau.iot.doorbell.di.common.Injectable
@@ -19,6 +20,8 @@ import javax.inject.Inject
 
 class AppApplication : DaggerApplication() {
 
+    @Inject
+    lateinit var uptimeService: UptimeService
     @Inject
     lateinit var appBackgroundServices: AppBackgroundServices
 
@@ -29,6 +32,7 @@ class AppApplication : DaggerApplication() {
         }
         init(this)
 
+        uptimeService.startUptimeNotifications()
         appBackgroundServices.startServices()
     }
 

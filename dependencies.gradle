@@ -15,28 +15,28 @@ ext {
     ANDROID_BUILD_MIN_SDK_VERSION = 21
     ANDROID_THINGS_BUILD_MIN_SDK_VERSION = 26
     SUPPORT_LIBRARY_VERSION = "27.1.0"
-    PLAY_SERVICES_VERSION = "11.8.0"
+    PLAY_SERVICES_VERSION = "12.0.0"
 
     //Libraries
-    gradleBuildToolsVersion = '3.0.1'
-    kotlinVersion = '1.2.30'
+    gradleBuildToolsVersion = '3.1.0'
+    kotlinVersion = '1.2.31'
     androidxKtxVersion = '0.1'
     googleServicesVersion = '3.2.0'
     archLifecycleVersion = '1.1.0'
-    daggerVersion = '2.14.1'
+    daggerVersion = '2.15'
     timberVersion = '4.6.1'
     constraintLayoutVersion = '1.0.2'
-    rxJavaVersion = '2.1.10'
+    rxJavaVersion = '2.1.12'
     rxAndroidVersion = '2.0.2'
-    rx2firebaseVersion = '1.4.0'
+    rx2firebaseVersion = '1.4.1'
     gsonVersion = '2.8.2'
-    serenegiantCommonVersion = '1.9.4'
+    serenegiantCommonVersion = '2.1.0'
 
     //Development
     leakCanaryVersion = '1.5.4'
 
     //Android Things
-    androidthingsVersion = '0.6.1-devpreview'
+    androidthingsVersion = '0.7-devpreview'
     driverButtonVersion = '0.5'
 
     //Testing

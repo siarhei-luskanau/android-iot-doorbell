@@ -13,4 +13,6 @@ interface ThisDeviceRepository {
 
     fun getIpAddressList(): List<Pair<String, String>>
 
+    fun reboot()
+
 }

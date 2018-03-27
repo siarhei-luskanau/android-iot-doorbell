@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.widget.Toast
 import siarhei.luskanau.iot.doorbell.AppConstants
+import siarhei.luskanau.iot.doorbell.AppConstants.DATE_FORMAT
 import siarhei.luskanau.iot.doorbell.R
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
@@ -69,6 +70,15 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
         viewModel.imagesLiveData.observe(this,
                 Observer<List<ImageData>> { list: List<ImageData>? ->
                     imagesAdapter.setItems(list)
+                }
+        )
+
+        binding.uptimeView?.name?.setOnClickListener({
+            viewModel.uptimeRebootRequestClickLiveData.value = System.currentTimeMillis()
+        })
+        viewModel.uptimeRebootRequestUpdateLiveData.observe(this,
+                Observer<Long> {
+                    Toast.makeText(context, DATE_FORMAT.format(it), Toast.LENGTH_SHORT).show()
                 }
         )
 

@@ -8,8 +8,6 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 interface DoorbellRepository {
 
-    fun ping(deviceId: String): Completable
-
     fun listenDoorbellsList(): Flowable<List<DoorbellData>>
 
     fun listenCamerasList(deviceId: String): Flowable<List<CameraData>>
@@ -19,8 +17,6 @@ interface DoorbellRepository {
     fun sendDoorbellData(doorbellData: DoorbellData): Completable
 
     fun sendCamerasList(deviceId: String, list: List<CameraData>): Completable
-
-    fun sendIpAddressMap(deviceId: String, ipAddressMap: Map<String, String>): Completable
 
     fun sendCameraImageRequest(deviceId: String, cameraId: String, isRequested: Boolean): Completable
 

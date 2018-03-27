@@ -3,6 +3,8 @@ package siarhei.luskanau.iot.doorbell.data.model.device
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
+import com.google.android.things.pio.PeripheralManager
+import timber.log.Timber
 import javax.inject.Inject
 
 class AndroidDeviceInfoProvider @Inject constructor(
@@ -15,6 +17,16 @@ class AndroidDeviceInfoProvider @Inject constructor(
             ) + "_" + Build.MODEL
 
     override fun buildDeviceName() = Build.MODEL
+
+    override fun isAndroidThings(): Boolean {
+        try {
+            PeripheralManager.getInstance()
+            return true
+        } catch (t: Throwable) {
+            Timber.e(t)
+        }
+        return false
+    }
 
     override fun buildDeviceInfo() = mapOf<String, Any>(
             Pair("DEVICE", Build.DEVICE),

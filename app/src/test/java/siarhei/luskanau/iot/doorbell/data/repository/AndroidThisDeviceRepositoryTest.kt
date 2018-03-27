@@ -20,13 +20,14 @@ object AndroidThisDeviceRepositoryTest : Spek({
     val deviceId = "deviceId"
     val deviceName = "deviceName"
     val deviceInfo = emptyMap<String, Any>()
-    val doorbellData = DoorbellData(deviceId, deviceName, deviceInfo)
+    val doorbellData = DoorbellData(deviceId, deviceName, false, deviceInfo)
     val camerasList = listOf(CameraData("cameraId"))
     val ipAddressList = listOf(Pair("InterfaceName", "IpAddress"))
     val deviceInfoProvider by memoized {
         mock<DeviceInfoProvider> {
             on { buildDeviceId() }.doReturn(deviceId)
             on { buildDeviceName() }.doReturn(deviceName)
+            on { isAndroidThings() }.doReturn(false)
             on { buildDeviceInfo() }.doReturn(deviceInfo)
         }
     }
@@ -67,6 +68,9 @@ object AndroidThisDeviceRepositoryTest : Spek({
             }
             it("should invoke buildDeviceName") {
                 verify(deviceInfoProvider, times(1)).buildDeviceName()
+            }
+            it("should invoke isAndroidThings") {
+                verify(deviceInfoProvider, times(1)).isAndroidThings()
             }
             it("should invoke buildDeviceInfo") {
                 verify(deviceInfoProvider, times(1)).buildDeviceInfo()
