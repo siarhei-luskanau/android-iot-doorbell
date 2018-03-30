@@ -75,7 +75,7 @@ class AppApplication : DaggerApplication() {
                 AndroidInjection.inject(activity)
             }
 
-            (activity as FragmentActivity).supportFragmentManager.registerFragmentLifecycleCallbacks(
+            (activity as? FragmentActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(
                     object : FragmentManager.FragmentLifecycleCallbacks() {
                         override fun onFragmentCreated(
                                 fragmentManager: FragmentManager,

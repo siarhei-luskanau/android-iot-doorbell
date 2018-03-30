@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import siarhei.luskanau.iot.doorbell.CameraService
+import siarhei.luskanau.iot.doorbell.PermissionActivity
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -78,7 +78,7 @@ class AppBackgroundServices @Inject constructor(
                             Completable.merge(list),
                             Completable.fromAction {
                                 if (list.isNotEmpty()) {
-                                    context.startService(Intent(context, CameraService::class.java))
+                                    context.startActivity(Intent(context, PermissionActivity::class.java))
                                 }
                             }
                     )
