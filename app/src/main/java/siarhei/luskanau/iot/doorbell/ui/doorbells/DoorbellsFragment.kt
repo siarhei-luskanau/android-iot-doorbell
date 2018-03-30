@@ -9,10 +9,14 @@ import siarhei.luskanau.iot.doorbell.NavigationController
 import siarhei.luskanau.iot.doorbell.R
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
+import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.databinding.FragmentDoorbellsBinding
 import siarhei.luskanau.iot.doorbell.ui.base.BaseAppFragment
 import siarhei.luskanau.iot.doorbell.ui.widget.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.widget.DoorbellsAdapter
+import siarhei.luskanau.iot.doorbell.viewmodel.CameraImageRequestVewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.CamerasViewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.DoorbellsViewModel
 import javax.inject.Inject
 
 class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
@@ -21,9 +25,16 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     @Inject
     lateinit var navigationController: NavigationController
+    @Inject
+    lateinit var thisDeviceRepository: ThisDeviceRepository
+
     private lateinit var viewModel: DoorbellsViewModel
+    private lateinit var camerasViewModel: CamerasViewModel
+    private lateinit var cameraImageRequestVewModel: CameraImageRequestVewModel
+
     private val camerasAdapter = CameraAdapter()
     private val doorbellsAdapter = DoorbellsAdapter()
+    private val deviceId: String by lazy { thisDeviceRepository.doorbellId() }
 
     override fun getViewLayout(): Int = R.layout.fragment_doorbells
 
@@ -31,12 +42,15 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DoorbellsViewModel::class.java)
+        camerasViewModel = ViewModelProviders.of(this, viewModelFactory).get(CamerasViewModel::class.java)
+        cameraImageRequestVewModel = ViewModelProviders.of(this, viewModelFactory).get(CameraImageRequestVewModel::class.java)
 
         camerasAdapter.onItemClickListener = { _, _, position ->
-            viewModel.cameraIdLiveData.value = camerasAdapter.getItem(position).cameraId
+            cameraImageRequestVewModel.deviceIdCameraIdLiveData.value =
+                    Pair(deviceId, camerasAdapter.getItem(position).cameraId)
         }
         binding.camerasRecyclerView.adapter = camerasAdapter
-        viewModel.cameraImageRequestLiveData.observe(this,
+        cameraImageRequestVewModel.cameraImageRequestLiveData.observe(this,
                 Observer<String> { cameraId: String? ->
                     Toast.makeText(context, cameraId, Toast.LENGTH_SHORT).show()
                 }
@@ -48,7 +62,7 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
         }
         binding.doorbellsRecyclerView.adapter = doorbellsAdapter
 
-        viewModel.camerasLiveData.observe(this,
+        camerasViewModel.camerasLiveData.observe(this,
                 Observer<List<CameraData>> { list: List<CameraData>? ->
                     camerasAdapter.setItems(list)
                 }
@@ -59,6 +73,8 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
                     doorbellsAdapter.setItems(list)
                 }
         )
+
+        camerasViewModel.deviceIdLiveData.value = deviceId
     }
 
 }

@@ -7,8 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import siarhei.luskanau.iot.doorbell.di.common.AppViewModelFactory
 import siarhei.luskanau.iot.doorbell.di.common.ViewModelKey
-import siarhei.luskanau.iot.doorbell.ui.doorbells.DoorbellsViewModel
-import siarhei.luskanau.iot.doorbell.ui.images.ImagesViewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.*
 
 @Module
 abstract class ViewModelModule {
@@ -22,6 +21,21 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ImagesViewModel::class)
     internal abstract fun bindImagesViewModel(viewModel: ImagesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CamerasViewModel::class)
+    internal abstract fun bindCamerasViewModel(viewModel: CamerasViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CameraImageRequestVewModel::class)
+    internal abstract fun bindCameraImageRequestVewModel(viewModel: CameraImageRequestVewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RebootRequestViewModel::class)
+    internal abstract fun bindRebootRequestViewModel(viewModel: RebootRequestViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory

@@ -14,6 +14,10 @@ import siarhei.luskanau.iot.doorbell.databinding.FragmentImagesBinding
 import siarhei.luskanau.iot.doorbell.ui.base.BaseAppFragment
 import siarhei.luskanau.iot.doorbell.ui.widget.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.widget.ImageAdapter
+import siarhei.luskanau.iot.doorbell.viewmodel.CameraImageRequestVewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.CamerasViewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.ImagesViewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.RebootRequestViewModel
 import javax.inject.Inject
 
 class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
@@ -32,7 +36,12 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private lateinit var viewModel: ImagesViewModel
+    private lateinit var camerasViewModel: CamerasViewModel
+    private lateinit var cameraImageRequestVewModel: CameraImageRequestVewModel
+    private lateinit var rebootRequestViewModel: RebootRequestViewModel
+
     private val camerasAdapter = CameraAdapter()
     private val imagesAdapter = ImageAdapter()
 
@@ -45,12 +54,16 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ImagesViewModel::class.java)
+        camerasViewModel = ViewModelProviders.of(this, viewModelFactory).get(CamerasViewModel::class.java)
+        cameraImageRequestVewModel = ViewModelProviders.of(this, viewModelFactory).get(CameraImageRequestVewModel::class.java)
+        rebootRequestViewModel = ViewModelProviders.of(this, viewModelFactory).get(RebootRequestViewModel::class.java)
 
         camerasAdapter.onItemClickListener = { _, _, position ->
-            viewModel.cameraIdLiveData.value = camerasAdapter.getItem(position).cameraId
+            cameraImageRequestVewModel.deviceIdCameraIdLiveData.value =
+                    Pair(deviceId, camerasAdapter.getItem(position).cameraId)
         }
         binding.camerasRecyclerView.adapter = camerasAdapter
-        viewModel.cameraImageRequestLiveData.observe(this,
+        cameraImageRequestVewModel.cameraImageRequestLiveData.observe(this,
                 Observer<String> { cameraId: String? ->
                     Toast.makeText(context, cameraId, Toast.LENGTH_SHORT).show()
                 }
@@ -61,7 +74,7 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
         }
         binding.imagesRecyclerView.adapter = imagesAdapter
 
-        viewModel.camerasLiveData.observe(this,
+        camerasViewModel.camerasLiveData.observe(this,
                 Observer<List<CameraData>> { list: List<CameraData>? ->
                     camerasAdapter.setItems(list)
                 }
@@ -74,15 +87,17 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
         )
 
         binding.uptimeView?.name?.setOnClickListener({
-            viewModel.uptimeRebootRequestClickLiveData.value = System.currentTimeMillis()
+            rebootRequestViewModel.deviceIdRebootRequestTimeLiveData.value =
+                    Pair(deviceId, System.currentTimeMillis())
         })
-        viewModel.uptimeRebootRequestUpdateLiveData.observe(this,
+        rebootRequestViewModel.uptimeRebootRequestUpdateLiveData.observe(this,
                 Observer<Long> {
                     Toast.makeText(context, DATE_FORMAT.format(it), Toast.LENGTH_SHORT).show()
                 }
         )
 
         viewModel.deviceIdLiveData.value = deviceId
+        camerasViewModel.deviceIdLiveData.value = deviceId
     }
 
     override fun getActionBarTitle(): String =
