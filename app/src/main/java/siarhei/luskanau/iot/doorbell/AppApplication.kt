@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
 import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerApplication
 import dagger.android.support.HasSupportFragmentInjector

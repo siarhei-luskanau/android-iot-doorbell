@@ -6,7 +6,7 @@ import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import siarhei.luskanau.iot.doorbell.PermissionActivity
+import siarhei.luskanau.iot.doorbell.CameraService
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -69,19 +69,16 @@ class AppBackgroundServices @Inject constructor(
         doorbellRepository.listenCameraImageRequest(thisDeviceRepository.doorbellId())
                 .flatMapCompletable { requestMap: Map<String, Boolean>? ->
                     Timber.d("listenCameraImageRequest:%s", gson.toJson(requestMap))
-                    val list: List<Completable> = requestMap.orEmpty()
+                    val map: Map<String, Boolean> = requestMap.orEmpty()
                             .filter { entry: Map.Entry<String, Boolean> ->
                                 entry.value
                             }
-                            .map { entry: Map.Entry<String, Boolean> -> makeAndSendImage(entry.key) }
-                    Completable.concatArray(
-                            Completable.merge(list),
-                            Completable.fromAction {
-                                if (list.isNotEmpty()) {
-                                    context.startActivity(Intent(context, PermissionActivity::class.java))
-                                }
-                            }
-                    )
+
+                    Completable.fromAction {
+                        if (map.isNotEmpty()) {
+                            context.startService(Intent(context, CameraService::class.java))
+                        }
+                    }
 
                 }
                 .doOnError { Timber.e(it) }
@@ -89,12 +86,5 @@ class AppBackgroundServices @Inject constructor(
                 .observeOn(schedulerSet.computation)
                 .subscribe()
     }
-
-    private fun makeAndSendImage(cameraId: String): Completable =
-            doorbellRepository.sendCameraImageRequest(
-                    deviceId = thisDeviceRepository.doorbellId(),
-                    cameraId = cameraId,
-                    isRequested = false
-            )
 
 }

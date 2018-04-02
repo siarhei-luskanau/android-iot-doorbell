@@ -1,6 +1,5 @@
 package siarhei.luskanau.iot.doorbell
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -13,7 +12,6 @@ class PermissionActivity : AppCompatActivity() {
 
     companion object {
         private const val PERMISSIONS_REQUEST_CODE = 201
-        private val PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +19,7 @@ class PermissionActivity : AppCompatActivity() {
         Timber.d("onCreate")
 
         val permissions = mutableListOf<String>()
-        for (permission in PERMISSIONS) {
+        for (permission in AppConstants.PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(permission)
             }

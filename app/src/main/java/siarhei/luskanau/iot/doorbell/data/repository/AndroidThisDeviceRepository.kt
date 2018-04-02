@@ -1,5 +1,9 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import android.content.Context
+import android.content.pm.PackageManager
+import android.support.v4.content.ContextCompat
+import siarhei.luskanau.iot.doorbell.AppConstants
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.camera.CameraDataProvider
 import siarhei.luskanau.iot.doorbell.data.model.device.DeviceInfoProvider
@@ -8,6 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AndroidThisDeviceRepository @Inject constructor(
+        private val context: Context,
         private val deviceInfoProvider: DeviceInfoProvider,
         private val cameraDataProvider: CameraDataProvider,
         private val ipAddressProvider: IpAddressProvider
@@ -35,6 +40,15 @@ class AndroidThisDeviceRepository @Inject constructor(
         } catch (t: Throwable) {
             Timber.e(t)
         }
+    }
+
+    override fun isPermissionsGranted(): Boolean {
+        for (permission in AppConstants.PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
     }
 
 }
