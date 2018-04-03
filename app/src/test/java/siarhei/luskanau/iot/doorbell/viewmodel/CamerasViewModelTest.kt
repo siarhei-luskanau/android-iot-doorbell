@@ -2,14 +2,13 @@ package siarhei.luskanau.iot.doorbell.viewmodel
 
 import android.arch.lifecycle.Observer
 import com.nhaarman.mockito_kotlin.*
-import io.reactivex.Completable
 import io.reactivex.Flowable
-import junit.framework.Assert
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.include
+import org.junit.Assert.assertEquals
 import siarhei.luskanau.iot.doorbell.ArchTaskExecutorOverrideSpek
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
@@ -53,7 +52,7 @@ object CamerasViewModelTest : Spek({
             it("should call observer.onChanged") {
                 val captor = argumentCaptor<List<CameraData>>()
                 verify(observer, atLeastOnce()).onChanged(captor.capture())
-                Assert.assertEquals(cameraList, captor.lastValue)
+                assertEquals(cameraList, captor.lastValue)
             }
         }
 

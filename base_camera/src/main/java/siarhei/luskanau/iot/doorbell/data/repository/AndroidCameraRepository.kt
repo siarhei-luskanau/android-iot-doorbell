@@ -18,9 +18,9 @@ class AndroidCameraRepository(
 ) : CameraRepository {
 
     companion object {
-        private val IMAGE_WIDTH = 320
-        private val IMAGE_HEIGHT = 240
-        private val MAX_IMAGES = 1
+        private const val IMAGE_WIDTH = 320
+        private const val IMAGE_HEIGHT = 240
+        private const val MAX_IMAGES = 1
         private val ORIENTATIONS = mapOf(
                 Pair(Surface.ROTATION_0, 90),
                 Pair(Surface.ROTATION_90, 0),
@@ -33,7 +33,7 @@ class AndroidCameraRepository(
             Completable.fromObservable(
                     ImageCompressor().scale(
                             createCameraObservable(cameraId).map {
-                                Timber.d("image: " + it.size)
+                                Timber.d("image: %d", it.size)
                                 it
                             },
                             IMAGE_WIDTH
@@ -41,7 +41,7 @@ class AndroidCameraRepository(
             )
 
     @SuppressLint("MissingPermission")
-    fun createCameraObservable(cameraId: String): Observable<ByteArray> {
+    private fun createCameraObservable(cameraId: String): Observable<ByteArray> {
         return Observable.create { emitter ->
             Timber.d("Using camera id %s", cameraId)
 
@@ -55,7 +55,7 @@ class AndroidCameraRepository(
             val onImageAvailableListener = ImageReader.OnImageAvailableListener { reader ->
                 val image = reader.acquireLatestImage()
                 // get image bytes
-                val imageBuf = image.getPlanes()[0].getBuffer()
+                val imageBuf = image.planes[0].buffer
                 val imageBytes = ByteArray(imageBuf.remaining())
                 imageBuf.get(imageBytes)
                 image.close()

@@ -16,6 +16,7 @@ android {
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "siarhei.luskanau.iot.doorbell.MockTestRunner"
     }
 
     buildTypes {
@@ -69,7 +70,7 @@ dependencies {
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid
 
-    annotationProcessor appDependencies.archLifecycleCompiler
+    kapt appDependencies.archLifecycleCompiler
     implementation appDependencies.archLifecycleExtensions
     implementation appDependencies.archLifecycleReactivestreams
     implementation appDependencies.supportDesign
@@ -85,6 +86,15 @@ dependencies {
     releaseImplementation appDependencies.leakCanaryNoOp
     testImplementation appDependencies.leakCanaryNoOp
 
+    //test instrumentation
+    testImplementation appDependencies.junit4
+    androidTestImplementation appDependencies.androidTestRunner
+    androidTestImplementation appDependencies.espresso
+    androidTestImplementation(appDependencies.mockitoKotlin) {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+
+    //test
     testImplementation(appDependencies.mockitoKotlin) {
         exclude group: 'org.jetbrains.kotlin'
     }

@@ -5,11 +5,11 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
-import junit.framework.Assert
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
+import org.junit.Assert.assertEquals
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.camera.CameraDataProvider
@@ -57,7 +57,7 @@ object AndroidThisDeviceRepositoryTest : Spek({
 
         context("check doorbellId") {
             it("should be the same deviceId") {
-                Assert.assertEquals(deviceId, androidThisDeviceRepository.doorbellId())
+                assertEquals(deviceId, androidThisDeviceRepository.doorbellId())
             }
         }
 
@@ -79,7 +79,7 @@ object AndroidThisDeviceRepositoryTest : Spek({
                 verify(deviceInfoProvider, times(1)).buildDeviceInfo()
             }
             it("should be the same DoorbellData") {
-                Assert.assertEquals(doorbellData, resultDoorbellData)
+                assertEquals(doorbellData, resultDoorbellData)
             }
         }
 
@@ -92,7 +92,7 @@ object AndroidThisDeviceRepositoryTest : Spek({
                 verify(cameraDataProvider, times(1)).getCamerasList()
             }
             it("should be the same list") {
-                Assert.assertEquals(camerasList, resultCamerasList)
+                assertEquals(camerasList, resultCamerasList)
             }
         }
 
@@ -105,7 +105,7 @@ object AndroidThisDeviceRepositoryTest : Spek({
                 verify(ipAddressProvider, times(1)).getIpAddressList()
             }
             it("should be the same list") {
-                Assert.assertEquals(ipAddressList, resultIpAddressList)
+                assertEquals(ipAddressList, resultIpAddressList)
             }
         }
 

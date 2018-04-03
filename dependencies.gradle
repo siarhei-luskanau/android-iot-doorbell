@@ -39,6 +39,10 @@ ext {
     androidthingsVersion = '0.7-devpreview'
     driverButtonVersion = '0.5'
 
+    //test instrumentation
+    junit4Version = '4.12'
+    androidTestRunnerVersion = '1.0.1'
+    espressoVersion = '3.0.1'
     //Testing
     mockitoKotlinVersion = '1.5.0'
     spekVersion = '1.1.5'
@@ -92,6 +96,10 @@ ext {
 
             leakCanary                  : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
             leakCanaryNoOp              : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
+
+            junit4                      : "junit:junit:${junit4Version}",
+            androidTestRunner           : "com.android.support.test:runner:${androidTestRunnerVersion}",
+            espresso                    : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
 
             mockitoKotlin               : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
     ]

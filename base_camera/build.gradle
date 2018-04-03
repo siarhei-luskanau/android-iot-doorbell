@@ -26,6 +26,5 @@ dependencies {
     implementation appDependencies.supportV4
 
     implementation appDependencies.rxJava
-    implementation appDependencies.rxAndroid
 
 }

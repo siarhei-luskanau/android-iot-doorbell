@@ -3,12 +3,12 @@ package siarhei.luskanau.iot.doorbell.viewmodel
 import android.arch.lifecycle.Observer
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Completable
-import junit.framework.Assert.assertEquals
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.context
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.include
+import org.junit.Assert.assertEquals
 import siarhei.luskanau.iot.doorbell.ArchTaskExecutorOverrideSpek
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
