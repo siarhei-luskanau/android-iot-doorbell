@@ -6,10 +6,7 @@ import dagger.Module
 import dagger.Provides
 import siarhei.luskanau.iot.doorbell.AppApplication
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
-import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
-import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
-import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
-import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
+import siarhei.luskanau.iot.doorbell.data.repository.*
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class, BindsModule::class])
@@ -31,6 +28,11 @@ class AppModule {
     @Singleton
     fun provideDoorbellRepository(gson: Gson): DoorbellRepository =
             FirebaseDoorbellRepository(gson)
+
+    @Provides
+    @Singleton
+    fun provideCameraRepository(context: Context): CameraRepository =
+            AndroidCameraRepository(context)
 
     @Provides
     @Singleton

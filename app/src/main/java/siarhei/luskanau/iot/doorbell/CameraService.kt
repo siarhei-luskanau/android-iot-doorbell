@@ -7,6 +7,7 @@ import dagger.android.AndroidInjection
 import io.reactivex.Completable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import timber.log.Timber
@@ -19,6 +20,8 @@ class CameraService : Service() {
     lateinit var thisDeviceRepository: ThisDeviceRepository
     @Inject
     lateinit var doorbellRepository: DoorbellRepository
+    @Inject
+    lateinit var cameraRepository: CameraRepository
     private val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
     private var disposable: Disposable? = null
 
@@ -82,5 +85,11 @@ class CameraService : Service() {
                     deviceId = thisDeviceRepository.doorbellId(),
                     cameraId = cameraId,
                     isRequested = false
+            ).andThen(
+                    cameraRepository.makeAndSendImage(
+                            deviceId = thisDeviceRepository.doorbellId(),
+                            cameraId = cameraId
+                    )
             )
+
 }

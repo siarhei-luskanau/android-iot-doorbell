@@ -1,11 +1,7 @@
-//include ':base_framework'
-//include ':base_camera'
-//include ':domain'
-//include ':app_companion'
-//include ':app_iot'
 include ':app'
 include ':app_base'
 include ':base_firebase'
+include ':base_camera'
 
 //include ':base_camera_usb'
 //include ':base_camera_usb:aars:libuvccamera-release'

@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import android.content.Context
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
@@ -23,6 +24,7 @@ object AndroidThisDeviceRepositoryTest : Spek({
     val doorbellData = DoorbellData(deviceId, deviceName, false, deviceInfo)
     val camerasList = listOf(CameraData("cameraId"))
     val ipAddressList = listOf(Pair("InterfaceName", "IpAddress"))
+    val context by memoized { mock<Context> {} }
     val deviceInfoProvider by memoized {
         mock<DeviceInfoProvider> {
             on { buildDeviceId() }.doReturn(deviceId)
@@ -44,6 +46,7 @@ object AndroidThisDeviceRepositoryTest : Spek({
 
     val androidThisDeviceRepository by memoized {
         AndroidThisDeviceRepository(
+                context,
                 deviceInfoProvider,
                 cameraDataProvider,
                 ipAddressProvider
