@@ -3,6 +3,8 @@ package siarhei.luskanau.iot.doorbell.data.repository
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 
 abstract class BaseFirebaseRepository(open val gson: Gson) {
@@ -20,6 +22,9 @@ abstract class BaseFirebaseRepository(open val gson: Gson) {
 
     protected fun getAppDatabase(): DatabaseReference =
             FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY)
+
+    protected fun getAppStorage(): StorageReference =
+            FirebaseStorage.getInstance().getReference(DOORBELL_APP_KEY)
 
     protected fun <T> dataSnapshotObject(dataSnapshot: DataSnapshot, type: Class<T>): T =
             gson.fromJson(gson.toJson(dataSnapshot.value), type)

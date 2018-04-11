@@ -29,6 +29,7 @@ dependencies {
     implementation appDependencies.rxAndroid
 
     implementation appDependencies.firebaseDatabase
+    implementation appDependencies.firebaseStorage
     implementation appDependencies.rx2firebase
     implementation appDependencies.playServicesVision
 

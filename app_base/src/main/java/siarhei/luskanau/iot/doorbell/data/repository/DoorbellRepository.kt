@@ -22,4 +22,6 @@ interface DoorbellRepository {
 
     fun listenCameraImageRequest(deviceId: String): Flowable<Map<String, Boolean>>
 
+    fun sendImage(deviceId: String, cameraId: String, imageBytes:ByteArray): Completable
+
 }

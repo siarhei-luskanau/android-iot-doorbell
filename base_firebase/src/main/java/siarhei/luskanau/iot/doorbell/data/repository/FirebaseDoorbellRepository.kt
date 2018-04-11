@@ -1,7 +1,10 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import com.google.firebase.database.ServerValue
+import com.google.firebase.storage.UploadTask
 import com.google.gson.Gson
 import durdinapps.rxfirebase2.RxFirebaseDatabase
+import durdinapps.rxfirebase2.RxFirebaseStorage
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
@@ -64,5 +67,14 @@ class FirebaseDoorbellRepository(
                     getAppDatabase().child(IMAGE_REQUEST_KEY).child(deviceId)
             )
             .map { dataSnapshotToMap(it, Boolean::class.java) }
+
+    override fun sendImage(deviceId: String, cameraId: String, imageBytes: ByteArray): Completable {
+        val log = getAppDatabase().child("logs").push()
+        return RxFirebaseStorage.putBytes(getAppStorage().child(log.key), imageBytes)
+                .flatMapCompletable { taskSnapshot: UploadTask.TaskSnapshot ->
+                    RxFirebaseDatabase.setValue(log, ServerValue.TIMESTAMP)
+                            .andThen(RxFirebaseDatabase.setValue(log, taskSnapshot.downloadUrl))
+                }
+    }
 
 }

@@ -14,7 +14,8 @@ import io.reactivex.Observable
 import timber.log.Timber
 
 class AndroidCameraRepository(
-        private val context: Context
+        private val context: Context,
+        private val doorbellRepository: DoorbellRepository
 ) : CameraRepository {
 
     companion object {
@@ -30,15 +31,17 @@ class AndroidCameraRepository(
     }
 
     override fun makeAndSendImage(deviceId: String, cameraId: String): Completable =
-            Completable.fromObservable(
-                    ImageCompressor().scale(
-                            createCameraObservable(cameraId).map {
-                                Timber.d("image: %d", it.size)
-                                it
-                            },
-                            IMAGE_WIDTH
-                    )
+
+            ImageCompressor().scale(
+                    createCameraObservable(cameraId).map {
+                        Timber.d("image: %d", it.size)
+                        it
+                    },
+                    IMAGE_WIDTH
             )
+                    .flatMapCompletable { imageBytes: ByteArray ->
+                        doorbellRepository.sendImage(deviceId, cameraId, imageBytes)
+                    }
 
     @SuppressLint("MissingPermission")
     private fun createCameraObservable(cameraId: String): Observable<ByteArray> {
