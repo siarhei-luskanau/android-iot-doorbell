@@ -86,10 +86,20 @@ class CameraService : Service() {
                     cameraId = cameraId,
                     isRequested = false
             ).andThen(
-                    cameraRepository.makeAndSendImage(
-                            deviceId = thisDeviceRepository.doorbellId(),
-                            cameraId = cameraId
-                    )
+                    cameraRepository
+                            .makeImage(
+                                    deviceId = thisDeviceRepository.doorbellId(),
+                                    cameraId = cameraId
+                            )
+                            .filter { it.isNotEmpty() }
+                            .flatMap { imageBytes: ByteArray ->
+                                doorbellRepository.sendImage(
+                                        deviceId = thisDeviceRepository.doorbellId(),
+                                        cameraId = cameraId,
+                                        imageBytes = imageBytes)
+                                        .toObservable<Nothing>()
+                            }
+                            .ignoreElements()
             )
 
 }

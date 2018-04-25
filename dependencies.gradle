@@ -3,7 +3,6 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-        maven { url 'http://raw.github.com/saki4510t/libcommon/master/repository/' }
     }
 }
 
@@ -15,29 +14,32 @@ ext {
     ANDROID_BUILD_MIN_SDK_VERSION = 21
     ANDROID_THINGS_BUILD_MIN_SDK_VERSION = 26
     SUPPORT_LIBRARY_VERSION = "27.1.1"
-    PLAY_SERVICES_VERSION = "12.0.1"
+
+    // Play services versions
+    firebaseDatabaseVersion = '11.6.0'
+    firebaseStorageVersion = '11.6.0'
+    playServicesVisionVersion = '11.6.0'
 
     //Libraries
-    gradleBuildToolsVersion = '3.1.1'
-    kotlinVersion = '1.2.31'
+    gradleBuildToolsVersion = '3.1.2'
+    kotlinVersion = '1.2.41'
     androidxKtxVersion = '0.2'
     googleServicesVersion = '3.2.1'
     archLifecycleVersion = '1.1.1'
     daggerVersion = '2.15'
     timberVersion = '4.6.1'
     constraintLayoutVersion = '1.0.2'
-    rxJavaVersion = '2.1.12'
+    rxJavaVersion = '2.1.13'
     rxAndroidVersion = '2.0.2'
     rx2firebaseVersion = '1.4.1'
-    gsonVersion = '2.8.2'
-    serenegiantCommonVersion = '2.1.0'
+    gsonVersion = '2.8.4'
 
     //Development
     leakCanaryVersion = '1.5.4'
 
     //Android Things
-    androidthingsVersion = '0.7-devpreview'
-    driverButtonVersion = '0.5'
+    androidthingsVersion = '0.8-devpreview'
+    driverButtonVersion = '0.6'
 
     //test instrumentation
     junit4Version = '4.12'
@@ -57,7 +59,7 @@ ext {
 
     appDependencies = [
 
-            kotlinStdlib                : "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlinVersion}",
+            kotlinStdlib                : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
             androidxKtx                 : "androidx.core:core-ktx:${androidxKtxVersion}",
 
             databindingCompiler         : "com.android.databinding:compiler:${gradleBuildToolsVersion}",
@@ -86,12 +88,10 @@ ext {
             rxJava                      : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
             rxAndroid                   : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
 
-            serenegiantCommon           : "com.serenegiant:common:${serenegiantCommonVersion}",
-
-            firebaseDatabase            : "com.google.firebase:firebase-database:${PLAY_SERVICES_VERSION}",
-            firebaseStorage             : "com.google.firebase:firebase-storage:${PLAY_SERVICES_VERSION}",
+            firebaseDatabase            : "com.google.firebase:firebase-database:${firebaseDatabaseVersion}",
+            firebaseStorage             : "com.google.firebase:firebase-storage:${firebaseStorageVersion}",
             rx2firebase                 : "com.github.frangsierra:rx2firebase:${rx2firebaseVersion}",
-            playServicesVision          : "com.google.android.gms:play-services-vision:${PLAY_SERVICES_VERSION}",
+            playServicesVision          : "com.google.android.gms:play-services-vision:${playServicesVisionVersion}",
 
             gson                        : "com.google.code.gson:gson:${gsonVersion}",
 
