@@ -1,9 +1,12 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.ImageFormat
-import android.hardware.camera2.*
+import android.hardware.camera2.CameraCaptureSession
+import android.hardware.camera2.CameraDevice
+import android.hardware.camera2.CameraManager
+import android.hardware.camera2.CaptureRequest
+import android.media.Image
 import android.media.ImageReader
 import android.os.Handler
 import android.os.HandlerThread
@@ -11,11 +14,17 @@ import android.view.Surface
 import android.view.WindowManager
 import io.reactivex.Completable
 import io.reactivex.Observable
+import siarhei.luskanau.iot.doorbell.data.repository.rx.capture.RxCaptureEvent
+import siarhei.luskanau.iot.doorbell.data.repository.rx.capture.RxCaptureManager
+import siarhei.luskanau.iot.doorbell.data.repository.rx.configure.RxConfigureSessionEvent
+import siarhei.luskanau.iot.doorbell.data.repository.rx.configure.RxConfigureSessionManager
+import siarhei.luskanau.iot.doorbell.data.repository.rx.open.RxOpenCameraEvent
+import siarhei.luskanau.iot.doorbell.data.repository.rx.open.RxOpenCameraManager
 import timber.log.Timber
+import java.nio.ByteBuffer
 
 class AndroidCameraRepository(
-        private val context: Context,
-        private val doorbellRepository: DoorbellRepository
+        private val context: Context
 ) : CameraRepository {
 
     companion object {
@@ -30,131 +39,127 @@ class AndroidCameraRepository(
         )
     }
 
-    override fun makeAndSendImage(deviceId: String, cameraId: String): Completable =
-
-            ImageCompressor().scale(
-                    createCameraObservable(cameraId).map {
-                        Timber.d("image: %d", it.size)
-                        it
-                    },
-                    IMAGE_WIDTH
-            )
-                    .flatMapCompletable { imageBytes: ByteArray ->
-                        doorbellRepository.sendImage(deviceId, cameraId, imageBytes)
+    override fun makeImage(deviceId: String, cameraId: String): Observable<ByteArray> =
+            ImageCompressor()
+                    .scale(
+                            openCamera(cameraId),
+                            IMAGE_WIDTH
+                    )
+                    .doOnNext { image: ByteArray ->
+                        Timber.d("makeAndSendImage image:${image.size}")
+                    }
+                    .onErrorResumeNext(Observable.empty())
+                    .doOnComplete {
+                        Timber.d("Camera $cameraId makeAndSendImage.doOnComplete")
                     }
 
-    @SuppressLint("MissingPermission")
-    private fun createCameraObservable(cameraId: String): Observable<ByteArray> {
-        return Observable.create { emitter ->
-            Timber.d("Using camera id %s", cameraId)
+    private fun openCamera(cameraId: String): Observable<ByteArray> {
 
-            // Initialize the image processor
-            val imageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES)
+        val backgroundThread = HandlerThread("CameraBackground:$cameraId")
+        backgroundThread.start()
+        val backgroundHandler = Handler(backgroundThread.looper)
 
-            val backgroundThread = HandlerThread("CameraBackground:$cameraId")
-            backgroundThread.start()
-            val backgroundHandler = Handler(backgroundThread.looper)
-
-            val onImageAvailableListener = ImageReader.OnImageAvailableListener { reader ->
-                val image = reader.acquireLatestImage()
-                // get image bytes
-                val imageBuf = image.planes[0].buffer
-                val imageBytes = ByteArray(imageBuf.remaining())
-                imageBuf.get(imageBytes)
-                image.close()
-
-                emitter.onNext(imageBytes)
-                emitter.onComplete()
-            }
-            imageReader.setOnImageAvailableListener(onImageAvailableListener, backgroundHandler)
-
-            val stateCallback = object : CameraDevice.StateCallback() {
-
-                override fun onOpened(cameraDevice: CameraDevice) {
-                    Timber.d("Opened camera.")
-                    // Here, we create a CameraCaptureSession for capturing still images.
-                    try {
-                        val sessionCallback = object : CameraCaptureSession.StateCallback() {
-
-                            override fun onConfigured(cameraCaptureSession: CameraCaptureSession) {
-                                // When the session is ready, we start capture.
-                                try {
-                                    val captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
-                                    captureBuilder.addTarget(imageReader.surface)
-
-                                    val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager?
-                                    windowManager?.let {
-                                        val display = windowManager.defaultDisplay
-                                        val rotation = display.rotation
-                                        captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS[rotation])
-                                    }
-
-                                    captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
-                                    Timber.d("Session initialized.")
-
-                                    val mCaptureCallback = object : CameraCaptureSession.CaptureCallback() {
-
-                                        override fun onCaptureProgressed(session: CameraCaptureSession,
-                                                                         request: CaptureRequest,
-                                                                         partialResult: CaptureResult) {
-                                            Timber.d("Partial result")
-                                        }
-
-                                        override fun onCaptureCompleted(session: CameraCaptureSession,
-                                                                        request: CaptureRequest,
-                                                                        result: TotalCaptureResult) {
-                                            session.close()
-                                            Timber.d("CaptureSession closed")
-                                        }
-                                    }
-
-                                    cameraCaptureSession.capture(captureBuilder.build(), mCaptureCallback, null)
-                                } catch (cae: CameraAccessException) {
-                                    Timber.d("camera capture exception")
-                                }
-
-                            }
-
-                            override fun onConfigureFailed(cameraCaptureSession: CameraCaptureSession) {
-                                Timber.w("Failed to configure camera")
-                            }
-                        }
-
-                        cameraDevice.createCaptureSession(
-                                listOf(imageReader.surface),
-                                sessionCallback, null)
-                    } catch (cae: CameraAccessException) {
-                        Timber.d(cae, "access exception while preparing pic")
+        return RxOpenCameraManager()
+                .openCamera(
+                        context.getSystemService(Context.CAMERA_SERVICE) as CameraManager?,
+                        cameraId,
+                        backgroundHandler
+                )
+                .flatMap { rxOpenCameraEvent: RxOpenCameraEvent ->
+                    Timber.d("Camera ${rxOpenCameraEvent.camera.id} openCamera: ${rxOpenCameraEvent.eventType}")
+                    when (rxOpenCameraEvent.eventType) {
+                        RxOpenCameraEvent.OPENED -> createCaptureSession(rxOpenCameraEvent.camera)
+                        else -> Observable.empty<ByteArray>()
                     }
-
+                }
+                .doOnError {
+                    Timber.e(it)
+                }
+                .doOnComplete {
+                    Timber.d("Camera $cameraId openCamera.doOnComplete")
                 }
 
-                override fun onDisconnected(cameraDevice: CameraDevice) {
-                    Timber.d("Camera disconnected, closing.")
-                    cameraDevice.close()
-                }
-
-                override fun onError(cameraDevice: CameraDevice, i: Int) {
-                    Timber.d("Camera device error, closing.")
-                    emitter.onError(RuntimeException("CameraDevice:StateCallback:onError $i"))
-                    cameraDevice.close()
-                }
-
-                override fun onClosed(cameraDevice: CameraDevice) {
-                    Timber.d("Closed camera, releasing")
-                }
-            }
-
-            // Open the camera resource
-            try {
-                val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-
-                cameraManager.openCamera(cameraId, stateCallback, backgroundHandler)
-            } catch (cae: CameraAccessException) {
-                Timber.d(cae, "Camera access exception")
-                emitter.onError(cae)
-            }
-        }
     }
+
+    private fun createCaptureSession(camera: CameraDevice): Observable<ByteArray> {
+        // Initialize the image processor
+        val imageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES)
+
+        return RxConfigureSessionManager()
+                .createCaptureSession(camera, listOf(imageReader.surface))
+                .flatMap { rxConfigureSessionEvent: RxConfigureSessionEvent ->
+                    Timber.d("Camera ${camera.id} createCaptureSession: ${rxConfigureSessionEvent.eventType}")
+                    when (rxConfigureSessionEvent.eventType) {
+                        RxConfigureSessionEvent.CONFIGURED -> capture(camera, rxConfigureSessionEvent.captureSession, imageReader)
+                        else -> Observable.empty<ByteArray>()
+                    }
+                }
+                .flatMap {
+                    close(camera).andThen(Observable.just(it))
+                }
+                .doOnError {
+                    Timber.e(it)
+                }
+                .doOnComplete {
+                    Timber.d("Camera ${camera.id} createCaptureSession.doOnComplete")
+                }
+    }
+
+    private fun capture(
+            camera: CameraDevice,
+            captureSession: CameraCaptureSession,
+            imageReader: ImageReader
+    ): Observable<ByteArray> {
+
+        val captureBuilder = camera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
+        captureBuilder.addTarget(imageReader.surface)
+        captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
+
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager?
+        windowManager?.let {
+            val display = windowManager.defaultDisplay
+            val rotation = display.rotation
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS[rotation])
+        }
+
+        return RxCaptureManager()
+                .capture(camera, captureSession, captureBuilder.build())
+                .flatMap { rxCaptureEvent: RxCaptureEvent ->
+                    Timber.d("Camera ${camera.id} capture: ${rxCaptureEvent.eventType}")
+                    when (rxCaptureEvent.eventType) {
+                        RxCaptureEvent.CAPTURE_COMPLETED -> acquireLatestImage(camera, imageReader)
+                        else -> Observable.empty<ByteArray>()
+                    }
+                }
+                .doOnComplete {
+                    Timber.d("Camera ${camera.id} capture.doOnComplete")
+                }
+    }
+
+    private fun acquireLatestImage(
+            camera: CameraDevice,
+            imageReader: ImageReader
+    ): Observable<ByteArray> = Observable
+            .fromCallable {
+                val image: Image? = imageReader.acquireLatestImage()
+                // get image bytes
+                val imageBuf: ByteBuffer? = image?.planes?.get(0)?.buffer
+                val imageBytes = ByteArray(imageBuf?.remaining() ?: 0)
+                imageBuf?.get(imageBytes)
+                image?.close()
+
+                imageBytes
+            }
+            .doOnComplete {
+                Timber.d("Camera ${camera.id} acquireLatestImage.doOnComplete")
+            }
+
+    private fun close(camera: CameraDevice): Completable =
+            Completable.fromAction {
+                Timber.d("Camera ${camera.id} close")
+                camera.close()
+            }.doOnError {
+                Timber.e(it)
+            }
 
 }

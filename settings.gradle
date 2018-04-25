@@ -2,7 +2,3 @@ include ':app'
 include ':app_base'
 include ':base_firebase'
 include ':base_camera'
-
-//include ':base_camera_usb'
-//include ':base_camera_usb:aars:libuvccamera-release'
-//include ':base_camera_usb:aars:usbCameraCommon-release'

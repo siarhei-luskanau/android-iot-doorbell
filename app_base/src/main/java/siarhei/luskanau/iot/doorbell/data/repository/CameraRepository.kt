@@ -1,12 +1,12 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import io.reactivex.Completable
+import io.reactivex.Observable
 
 interface CameraRepository {
 
-    fun makeAndSendImage(
+    fun makeImage(
             deviceId: String,
             cameraId: String
-    ): Completable
+    ): Observable<ByteArray>
 
 }

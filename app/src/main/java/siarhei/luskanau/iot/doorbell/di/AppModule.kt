@@ -32,11 +32,9 @@ class AppModule {
     @Provides
     @Singleton
     fun provideCameraRepository(
-            context: Context,
-            doorbellRepository: DoorbellRepository
+            context: Context
     ): CameraRepository = AndroidCameraRepository(
-            context,
-            doorbellRepository
+            context
     )
 
     @Provides
