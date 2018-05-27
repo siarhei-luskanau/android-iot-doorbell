@@ -14,6 +14,7 @@ import android.view.Surface
 import android.view.WindowManager
 import io.reactivex.Completable
 import io.reactivex.Observable
+import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 import siarhei.luskanau.iot.doorbell.data.repository.rx.capture.RxCaptureEvent
 import siarhei.luskanau.iot.doorbell.data.repository.rx.capture.RxCaptureManager
 import siarhei.luskanau.iot.doorbell.data.repository.rx.configure.RxConfigureSessionEvent
@@ -21,10 +22,10 @@ import siarhei.luskanau.iot.doorbell.data.repository.rx.configure.RxConfigureSes
 import siarhei.luskanau.iot.doorbell.data.repository.rx.open.RxOpenCameraEvent
 import siarhei.luskanau.iot.doorbell.data.repository.rx.open.RxOpenCameraManager
 import timber.log.Timber
-import java.nio.ByteBuffer
 
 class AndroidCameraRepository(
-        private val context: Context
+        private val context: Context,
+        private val imageRepository: ImageRepository
 ) : CameraRepository {
 
     companion object {
@@ -39,13 +40,14 @@ class AndroidCameraRepository(
         )
     }
 
-    override fun makeImage(deviceId: String, cameraId: String): Observable<ByteArray> =
-            ImageCompressor()
-                    .scale(
-                            openCamera(cameraId),
-                            IMAGE_WIDTH
-                    )
-                    .doOnNext { image: ByteArray ->
+    override fun makeImage(deviceId: String, cameraId: String): Observable<ImageFile> =
+//            ImageCompressor()
+//                    .scale(
+//                            openCamera(cameraId),
+//                            IMAGE_WIDTH
+//                    )
+            openCamera(cameraId)
+                    .doOnNext { image: ImageFile ->
                         Timber.d("makeAndSendImage image:${image.size}")
                     }
                     .onErrorResumeNext(Observable.empty())
@@ -53,7 +55,7 @@ class AndroidCameraRepository(
                         Timber.d("Camera $cameraId makeAndSendImage.doOnComplete")
                     }
 
-    private fun openCamera(cameraId: String): Observable<ByteArray> {
+    private fun openCamera(cameraId: String): Observable<ImageFile> {
 
         val backgroundThread = HandlerThread("CameraBackground:$cameraId")
         backgroundThread.start()
@@ -69,7 +71,7 @@ class AndroidCameraRepository(
                     Timber.d("Camera ${rxOpenCameraEvent.camera.id} openCamera: ${rxOpenCameraEvent.eventType}")
                     when (rxOpenCameraEvent.eventType) {
                         RxOpenCameraEvent.OPENED -> createCaptureSession(rxOpenCameraEvent.camera)
-                        else -> Observable.empty<ByteArray>()
+                        else -> Observable.empty<ImageFile>()
                     }
                 }
                 .doOnError {
@@ -81,7 +83,7 @@ class AndroidCameraRepository(
 
     }
 
-    private fun createCaptureSession(camera: CameraDevice): Observable<ByteArray> {
+    private fun createCaptureSession(camera: CameraDevice): Observable<ImageFile> {
         // Initialize the image processor
         val imageReader = ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES)
 
@@ -91,7 +93,7 @@ class AndroidCameraRepository(
                     Timber.d("Camera ${camera.id} createCaptureSession: ${rxConfigureSessionEvent.eventType}")
                     when (rxConfigureSessionEvent.eventType) {
                         RxConfigureSessionEvent.CONFIGURED -> capture(camera, rxConfigureSessionEvent.captureSession, imageReader)
-                        else -> Observable.empty<ByteArray>()
+                        else -> Observable.empty<ImageFile>()
                     }
                 }
                 .flatMap {
@@ -109,7 +111,7 @@ class AndroidCameraRepository(
             camera: CameraDevice,
             captureSession: CameraCaptureSession,
             imageReader: ImageReader
-    ): Observable<ByteArray> {
+    ): Observable<ImageFile> {
 
         val captureBuilder = camera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
         captureBuilder.addTarget(imageReader.surface)
@@ -128,7 +130,7 @@ class AndroidCameraRepository(
                     Timber.d("Camera ${camera.id} capture: ${rxCaptureEvent.eventType}")
                     when (rxCaptureEvent.eventType) {
                         RxCaptureEvent.CAPTURE_COMPLETED -> acquireLatestImage(camera, imageReader)
-                        else -> Observable.empty<ByteArray>()
+                        else -> Observable.empty<ImageFile>()
                     }
                 }
                 .doOnComplete {
@@ -139,16 +141,10 @@ class AndroidCameraRepository(
     private fun acquireLatestImage(
             camera: CameraDevice,
             imageReader: ImageReader
-    ): Observable<ByteArray> = Observable
+    ): Observable<ImageFile> = Observable
             .fromCallable {
                 val image: Image? = imageReader.acquireLatestImage()
-                // get image bytes
-                val imageBuf: ByteBuffer? = image?.planes?.get(0)?.buffer
-                val imageBytes = ByteArray(imageBuf?.remaining() ?: 0)
-                imageBuf?.get(imageBytes)
-                image?.close()
-
-                imageBytes
+                imageRepository.saveImage(image?.planes?.get(0)?.buffer, camera.id)
             }
             .doOnComplete {
                 Timber.d("Camera ${camera.id} acquireLatestImage.doOnComplete")

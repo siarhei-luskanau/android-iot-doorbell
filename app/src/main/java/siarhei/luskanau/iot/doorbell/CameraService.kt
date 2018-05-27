@@ -7,6 +7,7 @@ import dagger.android.AndroidInjection
 import io.reactivex.Completable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -91,12 +92,13 @@ class CameraService : Service() {
                                     deviceId = thisDeviceRepository.doorbellId(),
                                     cameraId = cameraId
                             )
-                            .filter { it.isNotEmpty() }
-                            .flatMap { imageBytes: ByteArray ->
+                            .filter { it.size ?: 0 > 0 }
+                            .flatMap { imageFile: ImageFile ->
                                 doorbellRepository.sendImage(
                                         deviceId = thisDeviceRepository.doorbellId(),
                                         cameraId = cameraId,
-                                        imageBytes = imageBytes)
+                                        imageFile = imageFile
+                                )
                                         .toObservable<Nothing>()
                             }
                             .ignoreElements()

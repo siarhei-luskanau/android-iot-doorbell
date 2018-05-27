@@ -1,13 +1,13 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 import java.io.InputStream
+import java.nio.ByteBuffer
 
 interface ImageRepository {
 
-    fun saveInputStream(inputStream: InputStream, name: String): String
+    fun saveImage(byteBuffer: ByteBuffer?, name: String): ImageFile
 
-    fun openInputStream(name: String): InputStream
-
-    fun deleteFile(fileName: String): Boolean
+    fun openInputStream(imageFile: ImageFile): InputStream
 
 }

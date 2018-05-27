@@ -5,6 +5,7 @@ import io.reactivex.Flowable
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
+import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 
 interface DoorbellRepository {
 
@@ -22,6 +23,6 @@ interface DoorbellRepository {
 
     fun listenCameraImageRequest(deviceId: String): Flowable<Map<String, Boolean>>
 
-    fun sendImage(deviceId: String, cameraId: String, imageBytes:ByteArray): Completable
+    fun sendImage(deviceId: String, cameraId: String, imageFile: ImageFile): Completable
 
 }

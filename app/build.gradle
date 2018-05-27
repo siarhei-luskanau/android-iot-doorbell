@@ -55,6 +55,7 @@ dependencies {
     implementation project(':app_base')
     implementation project(':base_firebase')
     implementation project(':base_camera')
+    implementation project(':base_file')
 
     kapt appDependencies.databindingCompiler
 

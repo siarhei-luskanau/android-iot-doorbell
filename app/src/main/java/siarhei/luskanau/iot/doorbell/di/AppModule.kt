@@ -26,15 +26,28 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDoorbellRepository(gson: Gson): DoorbellRepository =
-            FirebaseDoorbellRepository(gson)
+    fun provideImageRepository(context: Context): ImageRepository =
+            InternalStorageImageRepository(context)
+
+    @Provides
+    @Singleton
+    fun provideDoorbellRepository(
+            gson: Gson,
+            imageRepository: ImageRepository
+    ): DoorbellRepository =
+            FirebaseDoorbellRepository(
+                    gson,
+                    imageRepository
+            )
 
     @Provides
     @Singleton
     fun provideCameraRepository(
-            context: Context
+            context: Context,
+            imageRepository: ImageRepository
     ): CameraRepository = AndroidCameraRepository(
-            context
+            context,
+            imageRepository
     )
 
     @Provides

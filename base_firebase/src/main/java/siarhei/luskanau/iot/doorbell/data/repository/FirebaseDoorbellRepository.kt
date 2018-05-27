@@ -9,10 +9,12 @@ import io.reactivex.Flowable
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
+import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 import timber.log.Timber
 
 class FirebaseDoorbellRepository(
-        override val gson: Gson
+        override val gson: Gson,
+        val imageRepository: ImageRepository
 ) : BaseFirebaseRepository(gson), DoorbellRepository {
 
     companion object {
@@ -68,9 +70,9 @@ class FirebaseDoorbellRepository(
             )
             .map { dataSnapshotToMap(it, Boolean::class.java) }
 
-    override fun sendImage(deviceId: String, cameraId: String, imageBytes: ByteArray): Completable {
+    override fun sendImage(deviceId: String, cameraId: String, imageFile: ImageFile): Completable {
         val log = getAppDatabase().child("logs").push()
-        return RxFirebaseStorage.putBytes(getAppStorage().child(log.key), imageBytes)
+        return RxFirebaseStorage.putStream(getAppStorage().child(log.key), imageRepository.openInputStream(imageFile))
                 .flatMapCompletable { taskSnapshot: UploadTask.TaskSnapshot ->
                     // RxFirebaseDatabase.setValue(log, ServerValue.TIMESTAMP)
                     // .andThen(RxFirebaseDatabase.setValue(log, taskSnapshot.downloadUrl))
