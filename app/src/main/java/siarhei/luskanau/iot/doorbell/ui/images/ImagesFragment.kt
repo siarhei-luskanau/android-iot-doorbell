@@ -9,7 +9,6 @@ import siarhei.luskanau.iot.doorbell.AppConstants
 import siarhei.luskanau.iot.doorbell.AppConstants.DATE_FORMAT
 import siarhei.luskanau.iot.doorbell.R
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.databinding.FragmentImagesBinding
 import siarhei.luskanau.iot.doorbell.ui.base.BaseAppFragment
 import siarhei.luskanau.iot.doorbell.ui.widget.CameraAdapter
@@ -70,7 +69,8 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
         )
 
         imagesAdapter.onItemClickListener = { context, _, position ->
-            Toast.makeText(context, imagesAdapter.getItem(position).imageId, Toast.LENGTH_SHORT).show()
+            val imageId = imagesAdapter.currentList?.get(position)?.imageId
+            Toast.makeText(context, imageId, Toast.LENGTH_SHORT).show()
         }
         binding.imagesRecyclerView.adapter = imagesAdapter
 
@@ -80,11 +80,7 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
                 }
         )
 
-        viewModel.imagesLiveData.observe(this,
-                Observer<List<ImageData>> { list: List<ImageData>? ->
-                    imagesAdapter.setItems(list)
-                }
-        )
+        viewModel.imagesLiveData.observe(this, Observer { imagesAdapter.submitList(it) })
 
         binding.uptimeView?.name?.setOnClickListener({
             rebootRequestViewModel.deviceIdRebootRequestTimeLiveData.value =

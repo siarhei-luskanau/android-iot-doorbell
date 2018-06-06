@@ -13,10 +13,6 @@ abstract class BaseFirebaseRepository(open val gson: Gson) {
         protected const val DOORBELL_APP_KEY = "doorbell_app"
     }
 
-    init {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
-    }
-
     protected fun serializeByGson(src: Any?): Any? =
             gson.fromJson(gson.toJson(src), Object::class.java)
 

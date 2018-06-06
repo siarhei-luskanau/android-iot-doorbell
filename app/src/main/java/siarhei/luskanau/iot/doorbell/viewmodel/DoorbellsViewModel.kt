@@ -1,27 +1,24 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.LiveDataReactiveStreams
 import android.arch.lifecycle.ViewModel
-import io.reactivex.Flowable
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
+import android.arch.paging.DataSource
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
-import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
-import timber.log.Timber
+import siarhei.luskanau.iot.doorbell.datasource.doorbells.DoorbellsDataSource
 import javax.inject.Inject
 
 class DoorbellsViewModel @Inject constructor(
-        schedulerSet: SchedulerSet,
-        doorbellRepository: DoorbellRepository
+        doorbellsDataSource: DoorbellsDataSource
 ) : ViewModel() {
 
-    val doorbellsLiveData: LiveData<List<DoorbellData>> =
-            LiveDataReactiveStreams.fromPublisher(
-                    doorbellRepository.listenDoorbellsList()
-                            .doOnError { Timber.e(it) }
-                            .onErrorResumeNext(Flowable.empty())
-                            .subscribeOn(schedulerSet.io)
-                            .observeOn(schedulerSet.ui)
-            )
+    val doorbellsLiveData: LiveData<PagedList<DoorbellData>> =
+            LivePagedListBuilder(
+                    object : DataSource.Factory<String, DoorbellData>() {
+                        override fun create() = doorbellsDataSource
+                    },
+                    20
+            ).build()
 
 }

@@ -74,6 +74,7 @@ dependencies {
     kapt appDependencies.archLifecycleCompiler
     implementation appDependencies.archLifecycleExtensions
     implementation appDependencies.archLifecycleReactivestreams
+    implementation appDependencies.archPaging
     implementation appDependencies.supportDesign
     implementation appDependencies.supportCardview
     implementation appDependencies.constraintLayout

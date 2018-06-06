@@ -57,8 +57,8 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
         )
 
         doorbellsAdapter.onItemClickListener = { _, _, position ->
-            val doorbellData = doorbellsAdapter.getItem(position)
-            navigationController.navigateToImages(doorbellData.doorbellId, doorbellData.name)
+            val doorbellData = doorbellsAdapter.currentList?.get(position)
+            navigationController.navigateToImages(doorbellData?.doorbellId.orEmpty(), doorbellData?.name)
         }
         binding.doorbellsRecyclerView.adapter = doorbellsAdapter
 
@@ -68,11 +68,7 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
                 }
         )
 
-        viewModel.doorbellsLiveData.observe(this,
-                Observer<List<DoorbellData>> { list: List<DoorbellData>? ->
-                    doorbellsAdapter.setItems(list)
-                }
-        )
+        viewModel.doorbellsLiveData.observe(this, Observer { pagedList -> doorbellsAdapter.submitList(pagedList) })
 
         camerasViewModel.deviceIdLiveData.value = deviceId
     }

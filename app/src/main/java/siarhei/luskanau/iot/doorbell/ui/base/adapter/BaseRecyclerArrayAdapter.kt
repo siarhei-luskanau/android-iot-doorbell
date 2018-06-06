@@ -3,7 +3,7 @@ package siarhei.luskanau.iot.doorbell.ui.base.adapter
 import android.support.v7.widget.RecyclerView
 import java.util.*
 
-abstract class BaseRecyclerArrayAdapter<T, V : RecyclerView.ViewHolder> : BaseRecyclerClickableAdapter<V>() {
+abstract class BaseRecyclerArrayAdapter<T, V : RecyclerView.ViewHolder> : RecyclerView.Adapter<V>() {
 
     private val items = ArrayList<T>()
 

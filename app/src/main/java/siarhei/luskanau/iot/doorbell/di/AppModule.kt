@@ -7,6 +7,10 @@ import dagger.Provides
 import siarhei.luskanau.iot.doorbell.AppApplication
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.*
+import siarhei.luskanau.iot.doorbell.datasource.doorbells.DefaultDoorbellsDataSource
+import siarhei.luskanau.iot.doorbell.datasource.doorbells.DoorbellsDataSource
+import siarhei.luskanau.iot.doorbell.datasource.images.DefaultImagesDataSourceFactory
+import siarhei.luskanau.iot.doorbell.datasource.images.ImagesDataSourceFactory
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class, BindsModule::class])
@@ -54,5 +58,25 @@ class AppModule {
     @Singleton
     fun provideUptimeRepository(gson: Gson): UptimeRepository =
             UptimeFirebaseRepository(gson)
+
+    @Provides
+    @Singleton
+    fun provideDoorbellsDataSource(
+            schedulerSet: SchedulerSet,
+            doorbellRepository: DoorbellRepository
+    ): DoorbellsDataSource = DefaultDoorbellsDataSource(
+            schedulerSet,
+            doorbellRepository
+    )
+
+    @Provides
+    @Singleton
+    fun provideImagesDataSourceFactory(
+            schedulerSet: SchedulerSet,
+            doorbellRepository: DoorbellRepository
+    ): ImagesDataSourceFactory = DefaultImagesDataSourceFactory(
+            schedulerSet,
+            doorbellRepository
+    )
 
 }
