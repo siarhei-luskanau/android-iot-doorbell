@@ -64,7 +64,7 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
 
         camerasViewModel.camerasLiveData.observe(this,
                 Observer<List<CameraData>> { list: List<CameraData>? ->
-                    camerasAdapter.setItems(list)
+                    camerasAdapter.submitList(list)
                 }
         )
 
