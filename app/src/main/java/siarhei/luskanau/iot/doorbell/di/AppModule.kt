@@ -5,12 +5,15 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import siarhei.luskanau.iot.doorbell.AppApplication
+import siarhei.luskanau.iot.doorbell.cache.StubCachedRepository
+import siarhei.luskanau.iot.doorbell.data.DefaultSchedulerSet
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.*
 import siarhei.luskanau.iot.doorbell.datasource.doorbells.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.datasource.doorbells.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.datasource.images.DefaultImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.datasource.images.ImagesDataSourceFactory
+import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class, BindsModule::class])
@@ -26,7 +29,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideSchedulerSet(): SchedulerSet =
-            SchedulerSet()
+            DefaultSchedulerSet()
 
     @Provides
     @Singleton
@@ -43,6 +46,20 @@ class AppModule {
                     gson,
                     imageRepository
             )
+
+    @Provides
+    @Singleton
+    fun providePersistenceRepository(context: Context): PersistenceRepository =
+            DefaultPersistenceRepository(context)
+
+    @Provides
+    @Singleton
+    fun provideCachedRepository(
+            schedulerSet: SchedulerSet,
+            doorbellRepository: DoorbellRepository,
+            persistenceRepository: PersistenceRepository
+    ): CachedRepository =
+            StubCachedRepository()
 
     @Provides
     @Singleton
@@ -71,12 +88,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideImagesDataSourceFactory(
-            schedulerSet: SchedulerSet,
-            doorbellRepository: DoorbellRepository
-    ): ImagesDataSourceFactory = DefaultImagesDataSourceFactory(
-            schedulerSet,
-            doorbellRepository
-    )
+    fun provideImagesDataSourceFactory(cachedRepository: CachedRepository): ImagesDataSourceFactory =
+            DefaultImagesDataSourceFactory(cachedRepository)
 
 }

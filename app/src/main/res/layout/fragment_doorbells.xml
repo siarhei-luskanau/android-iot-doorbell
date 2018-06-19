@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="doorbellsViewModel"
+            type="siarhei.luskanau.iot.doorbell.viewmodel.DoorbellsViewModel" />
+
+        <variable
+            name="camerasViewModel"
+            type="siarhei.luskanau.iot.doorbell.viewmodel.CamerasViewModel" />
+
+        <variable
+            name="cameraImageRequestVewModel"
+            type="siarhei.luskanau.iot.doorbell.viewmodel.CameraImageRequestVewModel" />
+
+    </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,7 +30,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-            tools:listitem="@layout/view_camera_item"/>
+            tools:listitem="@layout/view_camera_item" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/doorbellsRecyclerView"
@@ -27,7 +42,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/camerasRecyclerView"
-            tools:listitem="@layout/view_doorbell_item"/>
+            tools:listitem="@layout/view_doorbell_item" />
 
     </android.support.constraint.ConstraintLayout>
 

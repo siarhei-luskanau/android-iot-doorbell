@@ -20,7 +20,7 @@ class DefaultDoorbellsDataSource(
 
     override fun getKey(item: DoorbellData) = item.doorbellId
 
-    private fun getDoorbellsList(callback: LoadCallback<DoorbellData>, size: Int? = null, startAt: String? = null) {
+    private fun getDoorbellsList(callback: LoadCallback<DoorbellData>, size: Int, startAt: String? = null) {
         doorbellRepository.listenDoorbellsList(size, startAt)
                 .subscribeOn(schedulerSet.io)
                 .observeOn(schedulerSet.ui)

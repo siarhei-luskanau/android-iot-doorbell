@@ -1,35 +1,41 @@
 package siarhei.luskanau.iot.doorbell.datasource.images
 
 import android.arch.paging.ItemKeyedDataSource
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
-import timber.log.Timber
+import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 
 class ImagesDataSource(
-        private val schedulerSet: SchedulerSet,
-        private val doorbellRepository: DoorbellRepository,
+        private val cachedRepository: CachedRepository,
         private val deviceId: String
 ) : ItemKeyedDataSource<String, ImageData>() {
 
-    override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<ImageData>) =
-            getImagesList(callback, params.requestedLoadSize, params.requestedInitialKey)
+    override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<ImageData>): Unit =
+            cachedRepository.loadAfterImages(
+                    deviceId,
+                    params.requestedLoadSize,
+                    params.requestedInitialKey,
+                    { callback.onResult(it) },
+                    { invalidate() }
+            )
 
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<ImageData>) =
-            getImagesList(callback, params.requestedLoadSize, params.key)
+            cachedRepository.loadAfterImages(
+                    deviceId,
+                    params.requestedLoadSize,
+                    params.key,
+                    { callback.onResult(it) },
+                    { invalidate() }
+            )
 
-    override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<ImageData>) {}
+    override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<ImageData>) =
+            cachedRepository.loadAfterBeforeImages(
+                    deviceId,
+                    params.requestedLoadSize,
+                    params.key,
+                    { callback.onResult(it) },
+                    { invalidate() }
+            )
 
     override fun getKey(item: ImageData): String = item.imageId
-
-    private fun getImagesList(callback: LoadCallback<ImageData>, size: Int? = null, startAt: String? = null) {
-        doorbellRepository.listenImagesList(deviceId, size, startAt)
-                .subscribeOn(schedulerSet.io)
-                .observeOn(schedulerSet.ui)
-                .subscribe(
-                        { callback.onResult(it) },
-                        { Timber.e(it) }
-                )
-    }
 
 }

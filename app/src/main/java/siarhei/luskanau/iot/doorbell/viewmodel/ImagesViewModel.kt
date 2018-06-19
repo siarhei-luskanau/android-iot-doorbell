@@ -8,6 +8,7 @@ import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.datasource.images.ImagesDataSourceFactory
+import timber.log.Timber
 import javax.inject.Inject
 
 class ImagesViewModel @Inject constructor(
@@ -19,8 +20,25 @@ class ImagesViewModel @Inject constructor(
             Transformations.switchMap(deviceIdLiveData) { deviceId: String ->
                 LivePagedListBuilder(
                         imagesDataSourceFactory.createDataSourceFactory(deviceId),
-                        20
-                ).build()
+                        PagedList.Config.Builder()
+                                .setPageSize(2)
+                                .setInitialLoadSizeHint(3)
+                                .build()
+                )
+                        .setBoundaryCallback(object : PagedList.BoundaryCallback<ImageData>() {
+                            override fun onZeroItemsLoaded() {
+                                Timber.d("onZeroItemsLoaded")
+                            }
+
+                            override fun onItemAtFrontLoaded(itemAtFront: ImageData) {
+                                Timber.d("onItemAtFrontLoaded: $itemAtFront")
+                            }
+
+                            override fun onItemAtEndLoaded(itemAtEnd: ImageData) {
+                                Timber.d("onItemAtEndLoaded: $itemAtEnd")
+                            }
+                        })
+                        .build()
             }
 
 }

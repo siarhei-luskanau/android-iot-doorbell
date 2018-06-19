@@ -8,7 +8,6 @@ import android.widget.Toast
 import siarhei.luskanau.iot.doorbell.NavigationController
 import siarhei.luskanau.iot.doorbell.R
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.databinding.FragmentDoorbellsBinding
 import siarhei.luskanau.iot.doorbell.ui.base.BaseAppFragment
@@ -28,7 +27,7 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
     @Inject
     lateinit var thisDeviceRepository: ThisDeviceRepository
 
-    private lateinit var viewModel: DoorbellsViewModel
+    private lateinit var doorbellsViewModel: DoorbellsViewModel
     private lateinit var camerasViewModel: CamerasViewModel
     private lateinit var cameraImageRequestVewModel: CameraImageRequestVewModel
 
@@ -41,7 +40,7 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(DoorbellsViewModel::class.java)
+        doorbellsViewModel = ViewModelProviders.of(this, viewModelFactory).get(DoorbellsViewModel::class.java)
         camerasViewModel = ViewModelProviders.of(this, viewModelFactory).get(CamerasViewModel::class.java)
         cameraImageRequestVewModel = ViewModelProviders.of(this, viewModelFactory).get(CameraImageRequestVewModel::class.java)
 
@@ -68,7 +67,7 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
                 }
         )
 
-        viewModel.doorbellsLiveData.observe(this, Observer { pagedList -> doorbellsAdapter.submitList(pagedList) })
+        doorbellsViewModel.doorbellsLiveData.observe(this, Observer { pagedList -> doorbellsAdapter.submitList(pagedList) })
 
         camerasViewModel.deviceIdLiveData.value = deviceId
     }

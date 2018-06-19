@@ -13,7 +13,6 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 import timber.log.Timber
-import java.util.*
 
 class FirebaseDoorbellRepository(
         override val gson: Gson,
@@ -28,15 +27,12 @@ class FirebaseDoorbellRepository(
     }
 
     override fun listenDoorbellsList(
-            size: Int?,
+            size: Int,
             startAt: String?
     ): Single<List<DoorbellData>> {
         var query: Query = getAppDatabase().child(DOORBELLS_KEY)
         query = query.orderByChild("doorbell_id")
-
-        size?.let {
-            query = query.limitToFirst(it)
-        }
+        query = query.limitToFirst(size)
 
         startAt?.let {
             query = query.startAt(it, startAt)
@@ -59,15 +55,12 @@ class FirebaseDoorbellRepository(
 
     override fun listenImagesList(
             deviceId: String,
-            size: Int?,
+            size: Int,
             startAt: String?
     ): Single<List<ImageData>> {
         var query: Query = getAppDatabase().child(IMAGES_KEY).child(deviceId)
         query = query.orderByChild("image_id")
-
-        size?.let {
-            query = query.limitToFirst(it)
-        }
+        query = query.limitToFirst(size)
 
         startAt?.let {
             query = query.startAt(it, startAt)
@@ -76,8 +69,14 @@ class FirebaseDoorbellRepository(
         return RxFirebaseDatabase
                 .observeValueEvent(query)
                 .map {
-                    dataSnapshotToList(it, ImageData::class.java)
-                        .filter { it.imageId != startAt }
+                    val list = dataSnapshotToList(it, ImageData::class.java)
+                            .filter { it.imageId != startAt }
+
+                    if (size > 0 && list.size > size) {
+                        list.subList(0, size)
+                    } else {
+                        list
+                    }
                 }
                 .firstOrError()
     }
@@ -106,7 +105,7 @@ class FirebaseDoorbellRepository(
             .andThen(
                     RxFirebaseDatabase.setValue(
                             getAppDatabase().child(IMAGES_KEY).child(deviceId).push(),
-                            serializeByGson(ImageData(Date().toString()))
+                            serializeByGson(ImageData(System.currentTimeMillis().toString()))
                     ))
 
     override fun listenCameraImageRequest(deviceId: String): Flowable<Map<String, Boolean>> = RxFirebaseDatabase

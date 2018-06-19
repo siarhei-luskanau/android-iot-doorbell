@@ -1,0 +1,7 @@
+<manifest
+    package="siarhei.luskanau.iot.doorbell.persistence"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application/>
+
+</manifest>

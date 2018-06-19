@@ -1,6 +1,0 @@
-<manifest package="siarhei.luskanau.iot.doorbell.camera.usb"
-          xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <application android:allowBackup="true"/>
-
-</manifest>

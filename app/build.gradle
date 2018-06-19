@@ -53,9 +53,11 @@ dependencies {
     def appDependencies = rootProject.ext.appDependencies
 
     implementation project(':app_base')
-    implementation project(':base_firebase')
     implementation project(':base_camera')
     implementation project(':base_file')
+    implementation project(':base_firebase')
+    implementation project(':base_persistence')
+    implementation project(':base_cache')
 
     kapt appDependencies.databindingCompiler
 
