@@ -2,13 +2,12 @@ package siarhei.luskanau.iot.doorbell
 
 import android.app.Service
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.IBinder
 import dagger.android.AndroidInjection
 import io.reactivex.Completable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import siarhei.luskanau.iot.doorbell.data.model.ImageFile
-import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import timber.log.Timber
@@ -21,8 +20,6 @@ class CameraService : Service() {
     lateinit var thisDeviceRepository: ThisDeviceRepository
     @Inject
     lateinit var doorbellRepository: DoorbellRepository
-    @Inject
-    lateinit var cameraRepository: CameraRepository
     private val scheduler = Schedulers.from(Executors.newSingleThreadExecutor())
     private var disposable: Disposable? = null
 
@@ -39,19 +36,17 @@ class CameraService : Service() {
                                 entry.value
                             }
 
-                    if (filteredRequestMap.isEmpty()) {
-                        Completable.fromAction {
+                    when {
+                        filteredRequestMap.isEmpty() -> Completable.fromAction {
                             Timber.d("ImageRequests is empty")
                         }
-                    } else if (thisDeviceRepository.isPermissionsGranted()) {
-                        Completable.merge(filteredRequestMap.map { entry: Map.Entry<String, Boolean> ->
+                        thisDeviceRepository.isPermissionsGranted() -> Completable.merge(filteredRequestMap.map { entry: Map.Entry<String, Boolean> ->
                             Timber.d("makeAndSendImage:%s", entry.key)
                             makeAndSendImage(entry.key)
                         })
-                    } else {
-                        Completable.fromAction {
+                        else -> Completable.fromAction {
                             Timber.d("Permissions is not granted")
-                            startActivity(Intent(this, PermissionActivity::class.java))
+                            startActivity(Intent(this, PermissionActivity::class.java).setFlags(FLAG_ACTIVITY_NEW_TASK))
                         }
                     }
                 }
@@ -86,22 +81,6 @@ class CameraService : Service() {
                     deviceId = thisDeviceRepository.doorbellId(),
                     cameraId = cameraId,
                     isRequested = false
-            ).andThen(
-                    cameraRepository
-                            .makeImage(
-                                    deviceId = thisDeviceRepository.doorbellId(),
-                                    cameraId = cameraId
-                            )
-                            .filter { it.size ?: 0 > 0 }
-                            .flatMap { imageFile: ImageFile ->
-                                doorbellRepository.sendImage(
-                                        deviceId = thisDeviceRepository.doorbellId(),
-                                        cameraId = cameraId,
-                                        imageFile = imageFile
-                                )
-                                        .toObservable<Nothing>()
-                            }
-                            .ignoreElements()
             )
 
 }

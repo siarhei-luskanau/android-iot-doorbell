@@ -6,16 +6,16 @@ import java.util.*
 
 object AppConstants {
 
-    val DEVICE_ID = "device_id"
-    val NAME = "name"
-    val RING = "ring"
-    val IMAGES = "images"
+    const val DEVICE_ID = "device_id"
+    const val NAME = "name"
+    const val RING = "ring"
+    const val IMAGES = "images"
 
-    val IMAGE_ID = "image_id"
-    val TIMESTAMP = "timestamp"
-    val IMAGE = "image"
-    val ANNOTATIONS = "annotations"
-    val IMAGE_LENGTH = "image_length"
+    const val IMAGE_ID = "image_id"
+    const val TIMESTAMP = "timestamp"
+    const val IMAGE = "image"
+    const val ANNOTATIONS = "annotations"
+    const val IMAGE_LENGTH = "image_length"
 
     val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.ENGLISH)
 

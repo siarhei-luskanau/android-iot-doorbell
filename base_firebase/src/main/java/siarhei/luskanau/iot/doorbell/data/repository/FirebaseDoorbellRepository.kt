@@ -116,7 +116,7 @@ class FirebaseDoorbellRepository(
 
     override fun sendImage(deviceId: String, cameraId: String, imageFile: ImageFile): Completable {
         val log = getAppDatabase().child("logs").push()
-        return RxFirebaseStorage.putStream(getAppStorage().child(log.key), imageRepository.openInputStream(imageFile))
+        return RxFirebaseStorage.putStream(getAppStorage().child(log.key.orEmpty()), imageRepository.openInputStream(imageFile))
                 .flatMapCompletable { taskSnapshot: UploadTask.TaskSnapshot ->
                     // RxFirebaseDatabase.setValue(log, ServerValue.TIMESTAMP)
                     // .andThen(RxFirebaseDatabase.setValue(log, taskSnapshot.downloadUrl))

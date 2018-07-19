@@ -6,25 +6,30 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
+import androidx.work.Worker
 import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.DaggerApplication
 import dagger.android.support.HasSupportFragmentInjector
+import siarhei.luskanau.iot.doorbell.data.UptimeService
 import siarhei.luskanau.iot.doorbell.data.model.AppBackgroundServices
-import siarhei.luskanau.iot.doorbell.data.model.UptimeService
 import siarhei.luskanau.iot.doorbell.di.common.AppComponent
 import siarhei.luskanau.iot.doorbell.di.common.DaggerAppComponent
 import siarhei.luskanau.iot.doorbell.di.common.Injectable
+import siarhei.luskanau.iot.doorbell.work_manager.dagger.HasWorkerInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class AppApplication : DaggerApplication() {
+class AppApplication : DaggerApplication(), HasWorkerInjector {
 
     @Inject
     lateinit var uptimeService: UptimeService
     @Inject
     lateinit var appBackgroundServices: AppBackgroundServices
+
+    @Inject
+    lateinit var workerInjector: DispatchingAndroidInjector<Worker>
 
     override fun onCreate() {
         super.onCreate()
@@ -41,6 +46,8 @@ class AppApplication : DaggerApplication() {
             .builder()
             .application(this)
             .build()
+
+    override fun workerInjector() = workerInjector
 
     companion object {
 

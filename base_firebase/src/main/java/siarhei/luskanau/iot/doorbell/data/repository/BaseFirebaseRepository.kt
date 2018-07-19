@@ -30,7 +30,7 @@ abstract class BaseFirebaseRepository(open val gson: Gson) {
 
     protected fun <T> dataSnapshotToMap(dataSnapshot: DataSnapshot, type: Class<T>): Map<String, T> =
             dataSnapshot.children.associateBy(
-                    { it.key },
+                    { it.key.orEmpty() },
                     { gson.fromJson(gson.toJson(it.value), type) }
             )
 

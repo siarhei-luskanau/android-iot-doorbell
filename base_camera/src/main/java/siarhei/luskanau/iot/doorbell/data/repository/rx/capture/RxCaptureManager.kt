@@ -15,7 +15,7 @@ class RxCaptureManager {
             captureRequest: CaptureRequest,
             handler: Handler? = null
     ): Observable<RxCaptureEvent> =
-            Observable.create({ emitter: ObservableEmitter<RxCaptureEvent> ->
+            Observable.create { emitter: ObservableEmitter<RxCaptureEvent> ->
                 try {
                     captureSession.capture(captureRequest,
                             object : CameraCaptureSession.CaptureCallback() {
@@ -70,6 +70,6 @@ class RxCaptureManager {
                 } catch (t: Throwable) {
                     emitter.onError(t)
                 }
-            })
+            }
 
 }

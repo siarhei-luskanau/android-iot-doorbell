@@ -16,7 +16,7 @@ class RxOpenCameraManager {
             cameraId: String,
             handler: Handler
     ): Observable<RxOpenCameraEvent> =
-            Observable.create({ emitter: ObservableEmitter<RxOpenCameraEvent> ->
+            Observable.create { emitter: ObservableEmitter<RxOpenCameraEvent> ->
                 try {
                     cameraManager?.openCamera(
                             cameraId,
@@ -49,6 +49,6 @@ class RxOpenCameraManager {
                 } catch (t: Throwable) {
                     emitter.onError(t)
                 }
-            })
+            }
 
 }

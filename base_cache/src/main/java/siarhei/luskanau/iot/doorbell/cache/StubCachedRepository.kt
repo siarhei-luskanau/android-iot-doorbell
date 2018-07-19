@@ -41,7 +41,9 @@ class StubCachedRepository() : CachedRepository {
             0
         }
         for (i in 1..limit) {
-            list.add(ImageData((id - i).toString()))
+            if ((id - i) > 0) {
+                list.add(ImageData((id - i).toString()))
+            }
         }
 
         onResult(list)

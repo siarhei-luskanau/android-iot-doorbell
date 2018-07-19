@@ -15,7 +15,7 @@ class RxConfigureSessionManager {
             outputs: List<Surface>,
             handler: Handler? = null
     ): Observable<RxConfigureSessionEvent> =
-            Observable.create({ emitter: ObservableEmitter<RxConfigureSessionEvent> ->
+            Observable.create { emitter: ObservableEmitter<RxConfigureSessionEvent> ->
                 try {
                     camera.createCaptureSession(
                             outputs,
@@ -37,5 +37,5 @@ class RxConfigureSessionManager {
                 } catch (t: Throwable) {
                     emitter.onError(t)
                 }
-            })
+            }
 }

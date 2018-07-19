@@ -5,17 +5,18 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import siarhei.luskanau.iot.doorbell.AppConstants.DATE_FORMAT
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
+import siarhei.luskanau.iot.doorbell.data.UptimeService
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class UptimeService @Inject constructor(
+class RxUptimeService @Inject constructor(
         private val schedulerSet: SchedulerSet,
         private val uptimeRepository: UptimeRepository,
         private val thisDeviceRepository: ThisDeviceRepository
-) {
+) : UptimeService {
 
     companion object {
         private const val initial_delay: Long = 0
@@ -23,7 +24,7 @@ class UptimeService @Inject constructor(
         private val unit = TimeUnit.SECONDS
     }
 
-    fun startUptimeNotifications() {
+    override fun startUptimeNotifications() {
         uptimeStartupNotifications()
         uptimePingNotifications()
         listenRebootRequest()
@@ -39,9 +40,9 @@ class UptimeService @Inject constructor(
                 )
                 .subscribeOn(schedulerSet.io)
                 .observeOn(schedulerSet.computation)
-                .subscribe({
+                .subscribe {
                     Timber.d("onComplete:uptimeStartupNotifications")
-                })
+                }
     }
 
     private fun uptimePingNotifications() {
@@ -97,10 +98,10 @@ class UptimeService @Inject constructor(
                                     currentTimeMillis,
                                     DATE_FORMAT.format(currentTimeMillis)
                             )
-                            .andThen({
+                            .andThen {
                                 Timber.d("reboot")
                                 thisDeviceRepository.reboot()
-                            })
+                            }
                     else Completable.complete()
                 }
                 .doOnError { Timber.e(it) }

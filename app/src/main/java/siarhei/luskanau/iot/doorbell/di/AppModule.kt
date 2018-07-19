@@ -8,15 +8,20 @@ import siarhei.luskanau.iot.doorbell.AppApplication
 import siarhei.luskanau.iot.doorbell.cache.StubCachedRepository
 import siarhei.luskanau.iot.doorbell.data.DefaultSchedulerSet
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
+import siarhei.luskanau.iot.doorbell.data.UptimeService
 import siarhei.luskanau.iot.doorbell.data.repository.*
 import siarhei.luskanau.iot.doorbell.datasource.doorbells.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.datasource.doorbells.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.datasource.images.DefaultImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.datasource.images.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
+import siarhei.luskanau.iot.doorbell.work_manager.DefaultUptimeService
 import javax.inject.Singleton
 
-@Module(includes = [ViewModelModule::class, BindsModule::class])
+@Module(includes = [
+    ViewModelModule::class,
+    BindsModule::class
+])
 class AppModule {
 
     @Provides
@@ -51,6 +56,11 @@ class AppModule {
     @Singleton
     fun providePersistenceRepository(context: Context): PersistenceRepository =
             DefaultPersistenceRepository(context)
+
+    @Provides
+    @Singleton
+    fun provideUptimeService(): UptimeService =
+            DefaultUptimeService()
 
     @Provides
     @Singleton

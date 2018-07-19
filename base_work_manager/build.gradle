@@ -24,19 +24,16 @@ dependencies {
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.timber
     implementation appDependencies.supportV4
+    implementation appDependencies.supportDesign
+
+    implementation appDependencies.dagger
+    implementation appDependencies.daggerAndroidSupport
 
     implementation appDependencies.rxJava
-    implementation appDependencies.rxAndroid
 
-    implementation appDependencies.firebaseDatabase
-    implementation appDependencies.firebaseStorage
-    implementation(appDependencies.rx2firebase) {
-        exclude group: 'com.google.firebase'
+    implementation(appDependencies.archWorkManager) {
+        exclude group: 'android.arch.persistence.room'
+        exclude group: 'android.arch.lifecycle'
     }
-    implementation appDependencies.playServicesVision
 
-    implementation appDependencies.gson
 }
-
-// ADD THIS AT THE BOTTOM
-apply plugin: 'com.google.gms.google-services'

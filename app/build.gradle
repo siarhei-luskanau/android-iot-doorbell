@@ -38,13 +38,8 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
         junitPlatform {
-            filters {
-                engines {
-                    include 'spek'
-                }
-            }
             //noinspection UnnecessaryQualifiedReference
-            details org.junit.platform.console.options.Details.FLAT
+            details org.junit.platform.console.options.Details.TREE
         }
     }
 }
@@ -58,6 +53,7 @@ dependencies {
     implementation project(':base_firebase')
     implementation project(':base_persistence')
     implementation project(':base_cache')
+    implementation project(':base_work_manager')
 
     kapt appDependencies.databindingCompiler
 
@@ -85,6 +81,11 @@ dependencies {
 
     compileOnly appDependencies.androidThings
 
+    implementation(appDependencies.archWorkManager) {
+        exclude group: 'android.arch.persistence.room'
+        exclude group: 'android.arch.lifecycle'
+    }
+
     //Development
     debugImplementation appDependencies.leakCanary
     releaseImplementation appDependencies.leakCanaryNoOp
@@ -105,10 +106,10 @@ dependencies {
 
     testImplementation junit5.unitTests()
 
-    testImplementation("org.jetbrains.spek:spek-api:$project.spekVersion") {
+    testImplementation("org.spekframework.spek2:spek-dsl-jvm:$project.spekVersion") {
         exclude group: "org.jetbrains.kotlin"
     }
-    testImplementation("org.jetbrains.spek:spek-junit-platform-engine:$project.spekVersion") {
+    testImplementation("org.spekframework.spek2:spek-runner-junit5:$project.spekVersion") {
         exclude group: "org.junit.platform"
         exclude group: "org.jetbrains.kotlin"
     }

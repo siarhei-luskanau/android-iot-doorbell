@@ -1,24 +1,34 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
+import android.arch.core.executor.ArchTaskExecutor
+import android.arch.core.executor.TaskExecutor
 import android.arch.lifecycle.Observer
 import android.arch.paging.PagedList
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.context
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.include
-import siarhei.luskanau.iot.doorbell.ArchTaskExecutorOverrideSpek
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.datasource.doorbells.DoorbellsDataSource
 
 object DoorbellsViewModelTest : Spek({
 
-    include(ArchTaskExecutorOverrideSpek)
+    beforeGroup {
+        ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor() {
+            override fun executeOnDiskIO(runnable: Runnable) {
+                runnable.run()
+            }
+
+            override fun postToMainThread(runnable: Runnable) {
+                runnable.run()
+            }
+
+            override fun isMainThread(): Boolean = true
+        })
+    }
 
     val mockDoorbellsDataSource by memoized { mock<DoorbellsDataSource>() }
 
