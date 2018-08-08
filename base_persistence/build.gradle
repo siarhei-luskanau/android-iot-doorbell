@@ -24,7 +24,6 @@ dependencies {
 
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.timber
-    implementation appDependencies.supportV4
 
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid

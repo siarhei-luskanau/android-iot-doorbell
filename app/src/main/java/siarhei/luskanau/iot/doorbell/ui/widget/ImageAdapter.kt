@@ -1,6 +1,6 @@
 package siarhei.luskanau.iot.doorbell.ui.widget
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import siarhei.luskanau.iot.doorbell.R
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.databinding.ViewImageItemBinding

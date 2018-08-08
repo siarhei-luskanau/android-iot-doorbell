@@ -1,12 +1,12 @@
 package siarhei.luskanau.iot.doorbell.ui.base.adapter
 
-import android.arch.paging.PagedListAdapter
 import android.content.Context
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerClickablePagingAdapter<T, V : RecyclerView.ViewHolder>(
         diffCallback: DiffUtil.ItemCallback<T>

@@ -2,10 +2,10 @@ package siarhei.luskanau.iot.doorbell.data.model
 
 import android.content.Context
 import android.content.Intent
-import com.google.gson.Gson
 import io.reactivex.Completable
-import siarhei.luskanau.iot.doorbell.CameraService
+import siarhei.luskanau.iot.doorbell.PermissionActivity
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
+import siarhei.luskanau.iot.doorbell.data.UptimeService
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import timber.log.Timber
@@ -15,14 +15,14 @@ class AppBackgroundServices @Inject constructor(
         private val schedulerSet: SchedulerSet,
         private val doorbellRepository: DoorbellRepository,
         private val thisDeviceRepository: ThisDeviceRepository,
-        val gson: Gson,
+        private val uptimeService: UptimeService,
         val context: Context
 ) {
 
     fun startServices() {
         doorbellRepository.listenCameraImageRequest(thisDeviceRepository.doorbellId())
                 .flatMapCompletable { requestMap: Map<String, Boolean>? ->
-                    Timber.d("listenCameraImageRequest:%s", gson.toJson(requestMap))
+                    Timber.d("listenCameraImageRequest:%s", requestMap)
                     val map: Map<String, Boolean> = requestMap.orEmpty()
                             .filter { entry: Map.Entry<String, Boolean> ->
                                 entry.value
@@ -30,7 +30,12 @@ class AppBackgroundServices @Inject constructor(
 
                     Completable.fromAction {
                         if (map.isNotEmpty()) {
-                            context.startService(Intent(context, CameraService::class.java))
+                            if (thisDeviceRepository.isPermissionsGranted()) {
+                                uptimeService.cameraWorker()
+                            } else {
+                                Timber.d("Permissions is not granted")
+                                context.startActivity(Intent(context, PermissionActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                            }
                         }
                     }
 

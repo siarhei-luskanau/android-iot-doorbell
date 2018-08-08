@@ -1,10 +1,10 @@
 package siarhei.luskanau.iot.doorbell.ui.base.adapter
 
-import android.databinding.ViewDataBinding
-import android.support.annotation.LayoutRes
-import android.support.v7.util.DiffUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 
 abstract class BaseRecyclerBindingListAdapter<T, B : ViewDataBinding>(
         diffCallback: DiffUtil.ItemCallback<T>

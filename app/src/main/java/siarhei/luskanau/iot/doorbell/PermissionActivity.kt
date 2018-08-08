@@ -1,18 +1,30 @@
 package siarhei.luskanau.iot.doorbell
 
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasAndroidxFragmentInjector
+import siarhei.luskanau.iot.doorbell.data.UptimeService
 import timber.log.Timber
+import javax.inject.Inject
 
-class PermissionActivity : AppCompatActivity() {
+class PermissionActivity : AppCompatActivity(), HasAndroidxFragmentInjector {
+
+    @Inject
+    lateinit var androidxFragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    @Inject
+    lateinit var uptimeService: UptimeService
 
     companion object {
         private const val PERMISSIONS_REQUEST_CODE = 201
     }
+
+    override fun androidxFragmentInjector() = androidxFragmentInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +67,7 @@ class PermissionActivity : AppCompatActivity() {
 
     private fun onPermissionsGranted() {
         Timber.d("onPermissionsGranted")
-        startService(Intent(this, CameraService::class.java))
+        uptimeService.cameraWorker()
         finish()
     }
 

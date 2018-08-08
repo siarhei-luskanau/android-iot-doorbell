@@ -1,10 +1,10 @@
 package siarhei.luskanau.iot.doorbell.ui.images
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import siarhei.luskanau.iot.doorbell.AppConstants
 import siarhei.luskanau.iot.doorbell.AppConstants.DATE_FORMAT
 import siarhei.luskanau.iot.doorbell.R
@@ -82,10 +82,10 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
 
         viewModel.imagesLiveData.observe(this, Observer { imagesAdapter.submitList(it) })
 
-        binding.uptimeView?.name?.setOnClickListener({
+        binding.uptimeView.name.setOnClickListener {
             rebootRequestViewModel.deviceIdRebootRequestTimeLiveData.value =
                     Pair(deviceId, System.currentTimeMillis())
-        })
+        }
         rebootRequestViewModel.uptimeRebootRequestUpdateLiveData.observe(this,
                 Observer<Long> {
                     Toast.makeText(context, DATE_FORMAT.format(it), Toast.LENGTH_SHORT).show()

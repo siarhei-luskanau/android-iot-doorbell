@@ -2,7 +2,7 @@ package siarhei.luskanau.iot.doorbell.data.repository
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import siarhei.luskanau.iot.doorbell.AppConstants
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.camera.CameraDataProvider

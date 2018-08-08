@@ -1,6 +1,6 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import android.arch.lifecycle.*
+import androidx.lifecycle.*
 import io.reactivex.Flowable
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData

@@ -1,16 +1,16 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import android.arch.core.executor.ArchTaskExecutor
-import android.arch.core.executor.TaskExecutor
-import android.arch.lifecycle.Observer
+import androidx.arch.core.executor.ArchTaskExecutor
+import androidx.arch.core.executor.TaskExecutor
+import androidx.lifecycle.Observer
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Completable
-import org.junit.Assert.assertEquals
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.AppConstants
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
+import kotlin.test.assertEquals
 
 object RebootRequestViewModelTest : Spek({
 

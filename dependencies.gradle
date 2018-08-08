@@ -11,10 +11,9 @@ ext {
     //Android
     ANDROID_BUILD_SDK_VERSION = 28
     ANDROID_BUILD_TARGET_SDK_VERSION = 28
-    ANDROID_BUILD_TOOLS_VERSION = "28.0.1"
+    ANDROID_BUILD_TOOLS_VERSION = "28.0.2"
     ANDROID_BUILD_MIN_SDK_VERSION = 21
     ANDROID_THINGS_BUILD_MIN_SDK_VERSION = 26
-    SUPPORT_LIBRARY_VERSION = "28.0.0-beta01"
 
     // Play services versions
     firebaseDatabaseVersion = '16.0.1'
@@ -22,19 +21,18 @@ ext {
     playServicesVisionVersion = '15.0.2'
 
     //Libraries
-    gradleBuildToolsVersion = '3.1.3'
-    kotlinVersion = '1.2.60'
+    gradleBuildToolsVersion = '3.3.0-alpha08'
     googleServicesVersion = '4.0.2'
-    archLifecycleVersion = '1.1.1'
-    archPagingVersion = '1.0.1'
-    archWorkManagerVersion = '1.0.0-alpha06'
-    archRoomVersion = '1.1.1'
+    androidxVersion = "1.0.0-rc02"
+    archVersion = '2.0.0-rc01'
+    archWorkManagerVersion = '1.0.0-alpha08'
+    constraintLayoutVersion = '2.0.0-alpha2'
+    kotlinVersion = '1.2.61'
     daggerVersion = '2.16'
+    rxJavaVersion = '2.2.1'
+    rxAndroidVersion = '2.1.0'
+    rx2firebaseVersion = '1.5.1'
     timberVersion = '4.7.1'
-    constraintLayoutVersion = '2.0.0-alpha1'
-    rxJavaVersion = '2.1.17'
-    rxAndroidVersion = '2.0.2'
-    rx2firebaseVersion = '1.5.0'
     gsonVersion = '2.8.5'
 
     //Development
@@ -46,12 +44,12 @@ ext {
 
     //test instrumentation
     junit4Version = '4.12'
-    androidTestRunnerVersion = '1.0.1'
-    espressoVersion = '3.0.1'
+    androidTestRunnerVersion = '1.1.0-alpha4'
+    espressoVersion = '3.1.0-alpha4'
     //Testing
     mockitoKotlinVersion = '1.5.0'
     spekVersion = '2.0.0-alpha.1'
-    androidJunit5Version = '1.0.32'
+    androidJunit5Version = '1.2.0.0'
 
     buildscriptDependencies = [
             gradle             : "com.android.tools.build:gradle:${gradleBuildToolsVersion}",
@@ -64,33 +62,28 @@ ext {
 
             kotlinStdlib                : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
 
-            databindingCompiler         : "com.android.databinding:compiler:${gradleBuildToolsVersion}",
-
             daggerCompiler              : "com.google.dagger:dagger-compiler:${daggerVersion}",
             daggerAndroidProcessor      : "com.google.dagger:dagger-android-processor:${daggerVersion}",
             dagger                      : "com.google.dagger:dagger:${daggerVersion}",
-            daggerAndroidSupport        : "com.google.dagger:dagger-android-support:${daggerVersion}",
+            daggerAndroid               : "com.google.dagger:dagger-android:${daggerVersion}",
 
-            archLifecycleCompiler       : "android.arch.lifecycle:compiler:${archLifecycleVersion}",
-            archLifecycleExtensions     : "android.arch.lifecycle:extensions:${archLifecycleVersion}",
-            archLifecycleReactivestreams: "android.arch.lifecycle:reactivestreams:${archLifecycleVersion}",
-            archPaging                  : "android.arch.paging:runtime:${archPagingVersion}",
+            supportDesign               : "com.google.android.material:material:1.0.0-rc01",
+            androidxAnnotation          : "androidx.annotation:annotation:${androidxVersion}",
+            supportRecyclerview         : "androidx.recyclerview:recyclerview:${androidxVersion}",
+            supportCardview             : "androidx.cardview:cardview:${androidxVersion}",
+
+            archLifecycleCompiler       : "androidx.lifecycle:lifecycle-compiler:${archVersion}",
+            archLifecycleExtensions     : "androidx.lifecycle:lifecycle-extensions:${archVersion}",
+            archLifecycleReactivestreams: "androidx.lifecycle:lifecycle-reactivestreams:${archVersion}",
+            archRoomCompiler            : "androidx.room:room-compiler:${archVersion}",
+            archRoomRuntime             : "androidx.room:room-runtime:${archVersion}",
+            archPaging                  : "androidx.paging:paging-runtime:${archVersion}",
+
             archWorkManager             : "android.arch.work:work-runtime:${archWorkManagerVersion}",
-
-            archRoomCompiler            : "android.arch.persistence.room:compiler:${archRoomVersion}",
-            archRoomRuntime             : "android.arch.persistence.room:runtime:${archRoomVersion}",
+            constraintLayout            : "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}",
 
             androidThings               : "com.google.android.things:androidthings:${androidthingsVersion}",
             driverButton                : "com.google.android.things.contrib:driver-button:${driverButtonVersion}",
-
-            timber                      : "com.jakewharton.timber:timber:${timberVersion}",
-            supportV4                   : "com.android.support:support-v4:${SUPPORT_LIBRARY_VERSION}",
-            supportDesign               : "com.android.support:design:${SUPPORT_LIBRARY_VERSION}",
-            supportCardview             : "com.android.support:cardview-v7:${SUPPORT_LIBRARY_VERSION}",
-            supportRecyclerview         : "com.android.support:recyclerview-v7:${SUPPORT_LIBRARY_VERSION}",
-            supportAnnotations          : "com.android.support:support-annotations:${SUPPORT_LIBRARY_VERSION}",
-            supportCompat               : "com.android.support:support-compat:${SUPPORT_LIBRARY_VERSION}",
-            constraintLayout            : "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}",
 
             rxJava                      : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
             rxAndroid                   : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
@@ -100,14 +93,15 @@ ext {
             rx2firebase                 : "com.github.FrangSierra:RxFirebase:${rx2firebaseVersion}",
             playServicesVision          : "com.google.android.gms:play-services-vision:${playServicesVisionVersion}",
 
+            timber                      : "com.jakewharton.timber:timber:${timberVersion}",
             gson                        : "com.google.code.gson:gson:${gsonVersion}",
 
             leakCanary                  : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
             leakCanaryNoOp              : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
 
             junit4                      : "junit:junit:${junit4Version}",
-            androidTestRunner           : "com.android.support.test:runner:${androidTestRunnerVersion}",
-            espresso                    : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            androidTestRunner           : "androidx.test:runner:${androidTestRunnerVersion}",
+            espresso                    : "androidx.test.espresso:espresso-core:${espressoVersion}",
 
             mockitoKotlin               : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
     ]

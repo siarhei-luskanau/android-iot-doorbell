@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.Query
 import com.google.firebase.storage.UploadTask
 import com.google.gson.Gson
@@ -28,11 +29,15 @@ class FirebaseDoorbellRepository(
 
     override fun listenDoorbellsList(
             size: Int,
-            startAt: String?
+            startAt: String?,
+            orderAsc: Boolean
     ): Single<List<DoorbellData>> {
         var query: Query = getAppDatabase().child(DOORBELLS_KEY)
         query = query.orderByChild("doorbell_id")
-        query = query.limitToFirst(size)
+        query = if (orderAsc)
+            query.limitToFirst(size)
+        else
+            query.limitToLast(size)
 
         startAt?.let {
             query = query.startAt(it, startAt)
@@ -40,9 +45,11 @@ class FirebaseDoorbellRepository(
 
         return RxFirebaseDatabase
                 .observeValueEvent(query)
-                .map {
-                    dataSnapshotToList(it, DoorbellData::class.java)
-                            .filter { it.doorbellId != startAt }
+                .map { dataSnapshot: DataSnapshot ->
+                    dataSnapshotToList(dataSnapshot, DoorbellData::class.java)
+                            .filter { doorbellData: DoorbellData ->
+                                doorbellData.doorbellId != startAt
+                            }
                 }
                 .firstOrError()
     }
@@ -56,11 +63,16 @@ class FirebaseDoorbellRepository(
     override fun listenImagesList(
             deviceId: String,
             size: Int,
-            startAt: String?
+            startAt: String?,
+            orderAsc: Boolean
     ): Single<List<ImageData>> {
         var query: Query = getAppDatabase().child(IMAGES_KEY).child(deviceId)
         query = query.orderByChild("image_id")
-        query = query.limitToFirst(size)
+
+        query = if (orderAsc)
+            query.limitToFirst(size)
+        else
+            query.limitToLast(size)
 
         startAt?.let {
             query = query.startAt(it, startAt)
@@ -68,9 +80,11 @@ class FirebaseDoorbellRepository(
 
         return RxFirebaseDatabase
                 .observeValueEvent(query)
-                .map {
-                    val list = dataSnapshotToList(it, ImageData::class.java)
-                            .filter { it.imageId != startAt }
+                .map { dataSnapshot: DataSnapshot ->
+                    val list = dataSnapshotToList(dataSnapshot, ImageData::class.java)
+                            .filter { imageData: ImageData ->
+                                imageData.imageId != startAt
+                            }
 
                     if (size > 0 && list.size > size) {
                         list.subList(0, size)
@@ -117,7 +131,7 @@ class FirebaseDoorbellRepository(
     override fun sendImage(deviceId: String, cameraId: String, imageFile: ImageFile): Completable {
         val log = getAppDatabase().child("logs").push()
         return RxFirebaseStorage.putStream(getAppStorage().child(log.key.orEmpty()), imageRepository.openInputStream(imageFile))
-                .flatMapCompletable { taskSnapshot: UploadTask.TaskSnapshot ->
+                .flatMapCompletable { _: UploadTask.TaskSnapshot ->
                     // RxFirebaseDatabase.setValue(log, ServerValue.TIMESTAMP)
                     // .andThen(RxFirebaseDatabase.setValue(log, taskSnapshot.downloadUrl))
                     Completable.complete()

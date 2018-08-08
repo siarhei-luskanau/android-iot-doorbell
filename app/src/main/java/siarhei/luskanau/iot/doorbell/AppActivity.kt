@@ -1,17 +1,16 @@
 package siarhei.luskanau.iot.doorbell
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import dagger.android.AndroidInjector
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.support.HasAndroidxFragmentInjector
 import javax.inject.Inject
 
-class AppActivity : AppCompatActivity(), HasSupportFragmentInjector {
+class AppActivity : AppCompatActivity(), HasAndroidxFragmentInjector {
 
     @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var androidxFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var navigationController: NavigationController
@@ -22,6 +21,6 @@ class AppActivity : AppCompatActivity(), HasSupportFragmentInjector {
         navigationController.navigateToDoorbells()
     }
 
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
+    override fun androidxFragmentInjector() = androidxFragmentInjector
 
 }

@@ -1,10 +1,10 @@
 package siarhei.luskanau.iot.doorbell.ui.doorbells
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import siarhei.luskanau.iot.doorbell.NavigationController
 import siarhei.luskanau.iot.doorbell.R
 import siarhei.luskanau.iot.doorbell.data.model.CameraData

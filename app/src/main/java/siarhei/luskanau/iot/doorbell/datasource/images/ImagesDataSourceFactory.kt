@@ -1,6 +1,6 @@
 package siarhei.luskanau.iot.doorbell.datasource.images
 
-import android.arch.paging.DataSource
+import androidx.paging.DataSource
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 interface ImagesDataSourceFactory {

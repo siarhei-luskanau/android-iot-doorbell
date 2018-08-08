@@ -1,12 +1,9 @@
 package siarhei.luskanau.iot.doorbell
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
-import org.junit.Assert.assertEquals
+import androidx.test.InstrumentationRegistry
 import org.junit.Test
-import org.junit.runner.RunWith
+import kotlin.test.assertEquals
 
-@RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
 
     @Test

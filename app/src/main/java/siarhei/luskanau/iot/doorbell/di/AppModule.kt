@@ -1,11 +1,12 @@
 package siarhei.luskanau.iot.doorbell.di
 
 import android.content.Context
+import androidx.work.WorkManager
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import siarhei.luskanau.iot.doorbell.AppApplication
-import siarhei.luskanau.iot.doorbell.cache.StubCachedRepository
+import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.data.DefaultSchedulerSet
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.UptimeService
@@ -29,6 +30,11 @@ class AppModule {
             application.applicationContext
 
     @Provides
+    @Singleton
+    fun provideWorkManager(): WorkManager = WorkManager.getInstance()
+
+    @Provides
+    @Singleton
     fun provideGson(): Gson = Gson()
 
     @Provides
@@ -59,8 +65,10 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideUptimeService(): UptimeService =
-            DefaultUptimeService()
+    fun provideUptimeService(
+            workManager: WorkManager
+    ): UptimeService =
+            DefaultUptimeService(workManager)
 
     @Provides
     @Singleton
@@ -69,7 +77,11 @@ class AppModule {
             doorbellRepository: DoorbellRepository,
             persistenceRepository: PersistenceRepository
     ): CachedRepository =
-            StubCachedRepository()
+            DefaultCachedRepository(
+                    schedulerSet,
+                    doorbellRepository,
+                    persistenceRepository
+            )
 
     @Provides
     @Singleton

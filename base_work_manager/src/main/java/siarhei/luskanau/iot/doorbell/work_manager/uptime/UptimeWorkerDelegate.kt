@@ -7,7 +7,6 @@ import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
-import siarhei.luskanau.iot.doorbell.work_manager.base.WorkerDelegate
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,13 +16,13 @@ class UptimeWorkerDelegate @Inject constructor(
         private val uptimeRepository: UptimeRepository,
         private val thisDeviceRepository: ThisDeviceRepository,
         private val doorbellRepository: DoorbellRepository
-) : WorkerDelegate {
+) {
 
     companion object {
         private val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.ENGLISH)
     }
 
-    override fun doWork(): Worker.Result =
+    fun doWork(): Worker.Result =
             try {
                 val currentTimeMillis = System.currentTimeMillis()
                 Completable.mergeArray(

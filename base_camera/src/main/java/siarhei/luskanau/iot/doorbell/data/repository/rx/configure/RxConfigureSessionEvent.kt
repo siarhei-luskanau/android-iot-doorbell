@@ -1,7 +1,7 @@
 package siarhei.luskanau.iot.doorbell.data.repository.rx.configure
 
 import android.hardware.camera2.CameraCaptureSession
-import android.support.annotation.StringDef
+import androidx.annotation.StringDef
 
 data class RxConfigureSessionEvent(
         @ConfigureSessionEventType val eventType: String,

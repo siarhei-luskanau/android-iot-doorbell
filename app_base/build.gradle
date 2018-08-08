@@ -11,10 +11,6 @@ android {
         targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
     }
 
-    dataBinding {
-        enabled = true
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -24,11 +20,8 @@ android {
 dependencies {
     def appDependencies = rootProject.ext.appDependencies
 
-    kapt appDependencies.databindingCompiler
-
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.timber
-    implementation appDependencies.supportV4
 
     implementation appDependencies.rxJava
 

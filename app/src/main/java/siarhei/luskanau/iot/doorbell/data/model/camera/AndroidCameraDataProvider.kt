@@ -52,9 +52,9 @@ class AndroidCameraDataProvider @Inject constructor(private val context: Context
                                 }
 
                                 info["CONTROL_AVAILABLE_EFFECTS"] = characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS)
-                                        .associate { effect: Int ->
+                                        ?.associate { effect: Int ->
                                             Pair(getEffectName(effect), effect)
-                                        }
+                                        } ?: emptyArray<Pair<String, String>>()
 
                             } catch (e: Throwable) {
                                 info["error"] = e.message as Any
@@ -62,7 +62,7 @@ class AndroidCameraDataProvider @Inject constructor(private val context: Context
                             }
 
                             val maxSize: Size? = sizes.values.sortedWith(
-                                    compareBy({ size -> size.height * size.width })
+                                    compareBy { size -> size.height * size.width }
                             ).last()
                             val name: String? = maxSize?.let {
                                 cameraId + ":" + it.toString()

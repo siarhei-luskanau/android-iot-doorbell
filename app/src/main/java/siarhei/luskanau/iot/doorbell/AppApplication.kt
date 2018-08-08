@@ -3,15 +3,15 @@ package siarhei.luskanau.iot.doorbell
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.work.Worker
 import dagger.android.AndroidInjection
+import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.DaggerApplication
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.support.AndroidxInjection
+import dagger.android.support.HasAndroidxFragmentInjector
 import siarhei.luskanau.iot.doorbell.data.UptimeService
 import siarhei.luskanau.iot.doorbell.data.model.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.di.common.AppComponent
@@ -21,7 +21,7 @@ import siarhei.luskanau.iot.doorbell.work_manager.dagger.HasWorkerInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-class AppApplication : DaggerApplication(), HasWorkerInjector {
+class AppApplication : DaggerApplication(), HasAndroidxFragmentInjector, HasWorkerInjector {
 
     @Inject
     lateinit var uptimeService: UptimeService
@@ -30,6 +30,8 @@ class AppApplication : DaggerApplication(), HasWorkerInjector {
 
     @Inject
     lateinit var workerInjector: DispatchingAndroidInjector<Worker>
+    @Inject
+    lateinit var androidxFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     override fun onCreate() {
         super.onCreate()
@@ -48,6 +50,8 @@ class AppApplication : DaggerApplication(), HasWorkerInjector {
             .build()
 
     override fun workerInjector() = workerInjector
+
+    override fun androidxFragmentInjector() = androidxFragmentInjector
 
     companion object {
 
@@ -79,7 +83,7 @@ class AppApplication : DaggerApplication(), HasWorkerInjector {
         }
 
         fun handleActivity(activity: Activity) {
-            if (activity is HasSupportFragmentInjector) {
+            if (activity is HasAndroidxFragmentInjector) {
                 AndroidInjection.inject(activity)
             }
 
@@ -91,7 +95,7 @@ class AppApplication : DaggerApplication(), HasWorkerInjector {
                                 savedInstanceState: Bundle?
                         ) {
                             if (fragment is Injectable) {
-                                AndroidSupportInjection.inject(fragment)
+                                AndroidxInjection.inject(fragment)
                             }
                         }
                     },

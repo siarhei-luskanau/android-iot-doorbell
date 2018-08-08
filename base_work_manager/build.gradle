@@ -23,11 +23,10 @@ dependencies {
 
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.timber
-    implementation appDependencies.supportV4
     implementation appDependencies.supportDesign
 
     implementation appDependencies.dagger
-    implementation appDependencies.daggerAndroidSupport
+    implementation appDependencies.daggerAndroid
 
     implementation appDependencies.rxJava
 

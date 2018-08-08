@@ -5,6 +5,7 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
+import timber.log.Timber
 
 class DefaultCachedRepository(
         private val schedulerSet: SchedulerSet,
@@ -19,6 +20,20 @@ class DefaultCachedRepository(
             onResult: (List<ImageData>) -> Unit,
             invalidate: () -> Unit
     ) {
+        doorbellRepository.listenImagesList(
+                deviceId = deviceId,
+                size = limit,
+                startAt = afterImageId,
+                orderAsc = true
+        )
+                .subscribeOn(schedulerSet.io)
+                .observeOn(schedulerSet.ui)
+                .subscribe(
+                        {
+                            onResult.invoke(it)
+                        },
+                        { Timber.e(it) }
+                )
     }
 
     override fun loadAfterBeforeImages(
@@ -28,6 +43,20 @@ class DefaultCachedRepository(
             onResult: (List<ImageData>) -> Unit,
             invalidate: () -> Unit
     ) {
+        doorbellRepository.listenImagesList(
+                deviceId = deviceId,
+                size = limit,
+                startAt = afterImageId,
+                orderAsc = false
+        )
+                .subscribeOn(schedulerSet.io)
+                .observeOn(schedulerSet.ui)
+                .subscribe(
+                        {
+                            onResult.invoke(it)
+                        },
+                        { Timber.e(it) }
+                )
     }
 
 //    private fun getAfterImagesList(deviceId: String, callback: ItemKeyedDataSource.LoadCallback<ImageData>, size: Int, startAt: String? = null) {

@@ -10,11 +10,11 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 
 interface DoorbellRepository {
 
-    fun listenDoorbellsList(size: Int, startAt: String? = null): Single<List<DoorbellData>>
+    fun listenDoorbellsList(size: Int, startAt: String? = null, orderAsc: Boolean = true): Single<List<DoorbellData>>
 
     fun listenCamerasList(deviceId: String): Flowable<List<CameraData>>
 
-    fun listenImagesList(deviceId: String, size: Int, startAt: String? = null): Single<List<ImageData>>
+    fun listenImagesList(deviceId: String, size: Int, startAt: String? = null, orderAsc: Boolean = true): Single<List<ImageData>>
 
     fun sendDoorbellData(doorbellData: DoorbellData): Completable
 

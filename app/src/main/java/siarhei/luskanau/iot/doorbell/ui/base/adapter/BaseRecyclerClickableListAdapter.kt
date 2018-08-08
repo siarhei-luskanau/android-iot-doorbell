@@ -1,12 +1,12 @@
 package siarhei.luskanau.iot.doorbell.ui.base.adapter
 
 import android.content.Context
-import android.support.v7.recyclerview.extensions.ListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerClickableListAdapter<T, V : RecyclerView.ViewHolder>(
         diffCallback: DiffUtil.ItemCallback<T>

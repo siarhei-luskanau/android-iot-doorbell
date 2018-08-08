@@ -1,7 +1,7 @@
 package siarhei.luskanau.iot.doorbell.persistence
 
-import android.arch.persistence.room.Room
 import android.content.Context
+import androidx.room.Room
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 

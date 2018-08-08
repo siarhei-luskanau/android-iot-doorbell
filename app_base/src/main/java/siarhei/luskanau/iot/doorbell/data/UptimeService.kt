@@ -4,4 +4,6 @@ interface UptimeService {
 
     fun startUptimeNotifications()
 
+    fun cameraWorker()
+
 }

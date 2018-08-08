@@ -23,8 +23,8 @@ dependencies {
 
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.timber
-    implementation appDependencies.supportV4
 
+    implementation appDependencies.androidxAnnotation
     implementation appDependencies.rxJava
 
 }

@@ -1,10 +1,10 @@
 package siarhei.luskanau.iot.doorbell.ui.base.adapter
 
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 
 class BindingViewHolder<T : ViewDataBinding>(val binding: T) : RecyclerView.ViewHolder(binding.root) {
 

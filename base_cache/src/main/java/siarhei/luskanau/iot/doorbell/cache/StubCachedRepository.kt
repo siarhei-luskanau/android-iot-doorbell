@@ -3,7 +3,7 @@ package siarhei.luskanau.iot.doorbell.cache
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 
-class StubCachedRepository() : CachedRepository {
+class StubCachedRepository : CachedRepository {
 
     override fun loadAfterImages(
             deviceId: String,

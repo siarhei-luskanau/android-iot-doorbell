@@ -22,6 +22,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.rx.configure.RxConfigureSes
 import siarhei.luskanau.iot.doorbell.data.repository.rx.open.RxOpenCameraEvent
 import siarhei.luskanau.iot.doorbell.data.repository.rx.open.RxOpenCameraManager
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class AndroidCameraRepository(
         private val context: Context,
@@ -141,10 +142,15 @@ class AndroidCameraRepository(
     private fun acquireLatestImage(
             camera: CameraDevice,
             imageReader: ImageReader
-    ): Observable<ImageFile> = Observable
-            .fromCallable {
+    ): Observable<ImageFile> = Completable.complete()
+            .delay(200, TimeUnit.MILLISECONDS)
+            .andThen(Observable.fromCallable {
                 val image: Image? = imageReader.acquireLatestImage()
+                Timber.d("Camera ${camera.id} acquireLatestImage image:$image")
                 imageRepository.saveImage(image?.planes?.get(0)?.buffer, camera.id)
+            })
+            .flatMap {
+                close(camera).andThen(Observable.just(it))
             }
             .doOnComplete {
                 Timber.d("Camera ${camera.id} acquireLatestImage.doOnComplete")

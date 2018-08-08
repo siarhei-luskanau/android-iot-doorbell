@@ -4,7 +4,7 @@ import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CaptureRequest
 import android.hardware.camera2.CaptureResult
 import android.hardware.camera2.TotalCaptureResult
-import android.support.annotation.StringDef
+import androidx.annotation.StringDef
 
 data class RxCaptureEvent(
         @CaptureEventType val eventType: String,

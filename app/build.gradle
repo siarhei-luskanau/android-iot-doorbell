@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-
-// junit5 doesn't support android projects out of the box
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
@@ -37,9 +35,8 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
-        junitPlatform {
-            //noinspection UnnecessaryQualifiedReference
-            details org.junit.platform.console.options.Details.TREE
+        unitTests.all {
+            testLogging.events = ["passed", "skipped", "failed"]
         }
     }
 }
@@ -55,16 +52,12 @@ dependencies {
     implementation project(':base_cache')
     implementation project(':base_work_manager')
 
-    kapt appDependencies.databindingCompiler
-
     kapt appDependencies.daggerCompiler
     kapt appDependencies.daggerAndroidProcessor
     implementation appDependencies.dagger
-    implementation appDependencies.daggerAndroidSupport
+    implementation appDependencies.daggerAndroid
 
     implementation appDependencies.kotlinStdlib
-    implementation appDependencies.timber
-    implementation appDependencies.supportV4
 
     implementation appDependencies.rxJava
     implementation appDependencies.rxAndroid
@@ -78,36 +71,37 @@ dependencies {
     implementation appDependencies.constraintLayout
 
     implementation appDependencies.gson
+    implementation appDependencies.timber
 
     compileOnly appDependencies.androidThings
 
-    implementation(appDependencies.archWorkManager) {
-        exclude group: 'android.arch.persistence.room'
-        exclude group: 'android.arch.lifecycle'
-    }
+    implementation appDependencies.archWorkManager
 
     //Development
     debugImplementation appDependencies.leakCanary
     releaseImplementation appDependencies.leakCanaryNoOp
     testImplementation appDependencies.leakCanaryNoOp
 
-    //test instrumentation
-    testImplementation appDependencies.junit4
-    androidTestImplementation appDependencies.androidTestRunner
-    androidTestImplementation appDependencies.espresso
-    androidTestImplementation(appDependencies.mockitoKotlin) {
-        exclude group: 'org.jetbrains.kotlin'
-    }
-
     //test
+    testImplementation appDependencies.junit4
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.2.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.2.0"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$project.kotlinVersion"
+
     testImplementation(appDependencies.mockitoKotlin) {
         exclude group: 'org.jetbrains.kotlin'
     }
-
-    testImplementation junit5.unitTests()
-
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$project.spekVersion") {
         exclude group: "org.jetbrains.kotlin"
+    }
+
+    //test instrumentation
+    androidTestImplementation appDependencies.espresso
+    androidTestImplementation appDependencies.androidTestRunner
+    androidTestImplementation("org.jetbrains.kotlin:kotlin-test-junit:$project.kotlinVersion")
+    androidTestImplementation("org.jetbrains.kotlin:kotlin-reflect:$project.kotlinVersion")
+    androidTestImplementation(appDependencies.mockitoKotlin) {
+        exclude group: 'org.jetbrains.kotlin'
     }
     testImplementation("org.spekframework.spek2:spek-runner-junit5:$project.spekVersion") {
         exclude group: "org.junit.platform"

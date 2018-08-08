@@ -1,9 +1,9 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import android.arch.core.executor.ArchTaskExecutor
-import android.arch.core.executor.TaskExecutor
-import android.arch.lifecycle.Observer
-import android.arch.paging.PagedList
+import androidx.arch.core.executor.ArchTaskExecutor
+import androidx.arch.core.executor.TaskExecutor
+import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times

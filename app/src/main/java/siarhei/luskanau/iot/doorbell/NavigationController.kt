@@ -1,14 +1,15 @@
 package siarhei.luskanau.iot.doorbell
 
-import android.support.v4.app.FragmentManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import siarhei.luskanau.iot.doorbell.ui.doorbells.DoorbellsFragment
 import siarhei.luskanau.iot.doorbell.ui.images.ImagesFragment
 import javax.inject.Inject
 
-class NavigationController @Inject constructor(appActivity: AppActivity) {
+class NavigationController @Inject constructor(activity: AppCompatActivity) {
 
     val containerId: Int = R.id.container
-    val fragmentManager: FragmentManager = appActivity.supportFragmentManager
+    val fragmentManager: FragmentManager = activity.supportFragmentManager
 
     fun navigateToDoorbells() {
         val fragment = DoorbellsFragment()

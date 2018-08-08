@@ -5,7 +5,6 @@ import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
-import org.junit.Assert.assertEquals
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
@@ -13,6 +12,7 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.camera.CameraDataProvider
 import siarhei.luskanau.iot.doorbell.data.model.device.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.data.model.ipaddress.IpAddressProvider
+import kotlin.test.assertEquals
 
 object AndroidThisDeviceRepositoryTest : Spek({
 

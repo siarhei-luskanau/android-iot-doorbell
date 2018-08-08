@@ -1,7 +1,7 @@
 package siarhei.luskanau.iot.doorbell.data.repository.rx.open
 
 import android.hardware.camera2.CameraDevice
-import android.support.annotation.StringDef
+import androidx.annotation.StringDef
 
 data class RxOpenCameraEvent(
         @OpenCameraEventType val eventType: String,
