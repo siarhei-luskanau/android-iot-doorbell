@@ -1,17 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'jacoco'
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
 
-    compileSdkVersion project.ANDROID_BUILD_SDK_VERSION
-    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion rootProject.ANDROID_BUILD_SDK_VERSION
+    buildToolsVersion rootProject.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
         applicationId "siarhei.luskanau.iot.doorbell"
-        minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION
-        targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
+        minSdkVersion rootProject.ANDROID_BUILD_MIN_SDK_VERSION
+        targetSdkVersion rootProject.ANDROID_BUILD_TARGET_SDK_VERSION
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "siarhei.luskanau.iot.doorbell.MockTestRunner"
@@ -34,9 +35,21 @@ android {
     }
 
     testOptions {
-        unitTests.returnDefaultValues = true
-        unitTests.all {
-            testLogging.events = ["passed", "skipped", "failed"]
+        junitPlatform {
+            filters {
+                engines {
+                    include 'spek2'
+                }
+            }
+            jacocoOptions {
+                // here goes all jacoco config, for example
+                html.enabled = true
+                xml.enabled = false
+                csv.enabled = false
+                unitTests.all {
+                    testLogging.events = ["passed", "skipped", "failed"]
+                }
+            }
         }
     }
 }
@@ -67,7 +80,6 @@ dependencies {
     implementation appDependencies.archLifecycleReactivestreams
     implementation appDependencies.archPaging
     implementation appDependencies.supportDesign
-    implementation appDependencies.supportCardview
     implementation appDependencies.constraintLayout
 
     implementation appDependencies.gson
@@ -75,37 +87,33 @@ dependencies {
 
     compileOnly appDependencies.androidThings
 
-    implementation appDependencies.archWorkManager
+    implementation(appDependencies.archWorkManager) {
+        exclude group: 'androidx.lifecycle'
+        exclude group: 'androidx.sqlite'
+        exclude group: 'androidx.room'
+    }
 
     //Development
     debugImplementation appDependencies.leakCanary
     releaseImplementation appDependencies.leakCanaryNoOp
     testImplementation appDependencies.leakCanaryNoOp
 
-    //test
-    testImplementation appDependencies.junit4
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.2.0"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.2.0"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$project.kotlinVersion"
-
+    //unit test
+    testRuntimeOnly(appDependencies.spekRunnerJunit5) {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+    testImplementation(appDependencies.spekDslJvm) {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+    testImplementation appDependencies.kotlinTest
+    testImplementation appDependencies.kotlinKotlinReflect
     testImplementation(appDependencies.mockitoKotlin) {
         exclude group: 'org.jetbrains.kotlin'
     }
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:$project.spekVersion") {
-        exclude group: "org.jetbrains.kotlin"
-    }
 
-    //test instrumentation
+    //android test
     androidTestImplementation appDependencies.espresso
     androidTestImplementation appDependencies.androidTestRunner
-    androidTestImplementation("org.jetbrains.kotlin:kotlin-test-junit:$project.kotlinVersion")
-    androidTestImplementation("org.jetbrains.kotlin:kotlin-reflect:$project.kotlinVersion")
-    androidTestImplementation(appDependencies.mockitoKotlin) {
-        exclude group: 'org.jetbrains.kotlin'
-    }
-    testImplementation("org.spekframework.spek2:spek-runner-junit5:$project.spekVersion") {
-        exclude group: "org.junit.platform"
-        exclude group: "org.jetbrains.kotlin"
-    }
-    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$project.kotlinVersion"
+    androidTestImplementation appDependencies.kotlinTest
+    androidTestImplementation appDependencies.kotlinKotlinReflect
 }

@@ -11,25 +11,25 @@ ext {
     //Android
     ANDROID_BUILD_SDK_VERSION = 28
     ANDROID_BUILD_TARGET_SDK_VERSION = 28
-    ANDROID_BUILD_TOOLS_VERSION = "28.0.2"
+    ANDROID_BUILD_TOOLS_VERSION = "28.0.3"
     ANDROID_BUILD_MIN_SDK_VERSION = 21
     ANDROID_THINGS_BUILD_MIN_SDK_VERSION = 26
 
     // Play services versions
-    firebaseDatabaseVersion = '16.0.1'
-    firebaseStorageVersion = '16.0.1'
+    firebaseDatabaseVersion = '16.0.2'
+    firebaseStorageVersion = '16.0.2'
     playServicesVisionVersion = '15.0.2'
 
     //Libraries
-    gradleBuildToolsVersion = '3.3.0-alpha08'
-    googleServicesVersion = '4.0.2'
-    androidxVersion = "1.0.0-rc02"
-    archVersion = '2.0.0-rc01'
-    archWorkManagerVersion = '1.0.0-alpha08'
+    gradleBuildToolsVersion = '3.2.0'
+    googleServicesVersion = '4.1.0'
+    androidxVersion = "1.0.0"
+    archVersion = '2.0.0'
+    archWorkManagerVersion = '1.0.0-alpha09'
     constraintLayoutVersion = '2.0.0-alpha2'
-    kotlinVersion = '1.2.61'
+    kotlinVersion = '1.2.71'
     daggerVersion = '2.16'
-    rxJavaVersion = '2.2.1'
+    rxJavaVersion = '2.2.2'
     rxAndroidVersion = '2.1.0'
     rx2firebaseVersion = '1.5.1'
     timberVersion = '4.7.1'
@@ -42,42 +42,43 @@ ext {
     androidthingsVersion = '1.0'
     driverButtonVersion = '1.0'
 
+    //Testing
+    mockitoKotlinVersion = '2.0.0-RC2'
+    spekVersion = '2.0.0-alpha.2'
+    androidJunit5Version = '1.2.0.0'
+    jacocoVersion = '0.8.2'
+
     //test instrumentation
-    junit4Version = '4.12'
     androidTestRunnerVersion = '1.1.0-alpha4'
     espressoVersion = '3.1.0-alpha4'
-    //Testing
-    mockitoKotlinVersion = '1.5.0'
-    spekVersion = '2.0.0-alpha.1'
-    androidJunit5Version = '1.2.0.0'
 
     buildscriptDependencies = [
             gradle             : "com.android.tools.build:gradle:${gradleBuildToolsVersion}",
             kotlinGradlePlugin : "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
             androidJunit5Plugin: "de.mannodermaus.gradle.plugins:android-junit5:${androidJunit5Version}",
+            jacocoPlugin       : "org.jacoco:org.jacoco.core:${jacocoVersion}",
             googleServices     : "com.google.gms:google-services:${googleServicesVersion}",
     ]
 
     appDependencies = [
 
-            kotlinStdlib                : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
+            kotlinStdlib                : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}",
 
             daggerCompiler              : "com.google.dagger:dagger-compiler:${daggerVersion}",
             daggerAndroidProcessor      : "com.google.dagger:dagger-android-processor:${daggerVersion}",
             dagger                      : "com.google.dagger:dagger:${daggerVersion}",
             daggerAndroid               : "com.google.dagger:dagger-android:${daggerVersion}",
 
-            supportDesign               : "com.google.android.material:material:1.0.0-rc01",
+            supportDesign               : "com.google.android.material:material:${androidxVersion}",
             androidxAnnotation          : "androidx.annotation:annotation:${androidxVersion}",
             supportRecyclerview         : "androidx.recyclerview:recyclerview:${androidxVersion}",
-            supportCardview             : "androidx.cardview:cardview:${androidxVersion}",
 
             archLifecycleCompiler       : "androidx.lifecycle:lifecycle-compiler:${archVersion}",
             archLifecycleExtensions     : "androidx.lifecycle:lifecycle-extensions:${archVersion}",
             archLifecycleReactivestreams: "androidx.lifecycle:lifecycle-reactivestreams:${archVersion}",
-            archRoomCompiler            : "androidx.room:room-compiler:${archVersion}",
-            archRoomRuntime             : "androidx.room:room-runtime:${archVersion}",
-            archPaging                  : "androidx.paging:paging-runtime:${archVersion}",
+            archRoomCompiler            : "androidx.room:room-compiler:+",
+            archRoomRuntime             : "androidx.room:room-runtime:+",
+            archPaging                  : "androidx.paging:paging-runtime:+",
 
             archWorkManager             : "android.arch.work:work-runtime:${archWorkManagerVersion}",
             constraintLayout            : "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}",
@@ -99,10 +100,15 @@ ext {
             leakCanary                  : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
             leakCanaryNoOp              : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
 
-            junit4                      : "junit:junit:${junit4Version}",
             androidTestRunner           : "androidx.test:runner:${androidTestRunnerVersion}",
             espresso                    : "androidx.test.espresso:espresso-core:${espressoVersion}",
 
-            mockitoKotlin               : "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}",
+            kotlinTest                  : "org.jetbrains.kotlin:kotlin-test:${kotlinVersion}",
+            kotlinKotlinReflect         : "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}",
+            mockitoKotlin               : "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}",
+
+
+            spekRunnerJunit5            : "org.spekframework.spek2:spek-runner-junit5:${spekVersion}",
+            spekDslJvm                  : "org.spekframework.spek2:spek-dsl-jvm:${spekVersion}",
     ]
 }

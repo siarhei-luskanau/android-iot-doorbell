@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion project.ANDROID_BUILD_SDK_VERSION
-    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion rootProject.ANDROID_BUILD_SDK_VERSION
+    buildToolsVersion rootProject.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION
-        targetSdkVersion project.ANDROID_BUILD_TARGET_SDK_VERSION
+        minSdkVersion rootProject.ANDROID_BUILD_MIN_SDK_VERSION
+        targetSdkVersion rootProject.ANDROID_BUILD_TARGET_SDK_VERSION
     }
 
     compileOptions {

@@ -1,12 +1,20 @@
 package siarhei.luskanau.iot.doorbell.work_manager.base
 
+import android.content.Context
 import androidx.work.Worker
+import androidx.work.WorkerParameters
 import dagger.android.AndroidInjector
 import siarhei.luskanau.iot.doorbell.work_manager.dagger.HasWorkerInjector
 import timber.log.Timber
 import javax.inject.Inject
 
-abstract class BaseWorker<T : Any> : Worker() {
+abstract class BaseWorker<T : Any>(
+        context: Context,
+        workerParams: WorkerParameters
+) : Worker(
+        context,
+        workerParams
+) {
 
     @Inject
     protected lateinit var workerDelegate: T

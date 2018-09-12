@@ -12,6 +12,7 @@ buildscript {
         classpath buildscriptDependencies.gradle
         classpath buildscriptDependencies.kotlinGradlePlugin
         classpath buildscriptDependencies.androidJunit5Plugin
+        classpath buildscriptDependencies.jacocoPlugin
         classpath buildscriptDependencies.googleServices
     }
 }

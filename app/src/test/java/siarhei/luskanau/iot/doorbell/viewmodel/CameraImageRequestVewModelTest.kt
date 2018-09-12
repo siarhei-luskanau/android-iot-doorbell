@@ -3,7 +3,7 @@ package siarhei.luskanau.iot.doorbell.viewmodel
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.Observer
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Completable
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
