@@ -1,6 +1,7 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
 import androidx.lifecycle.*
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
@@ -16,11 +17,13 @@ class CameraImageRequestVewModel @Inject constructor(
     val cameraImageRequestLiveData: LiveData<String> =
             Transformations.switchMap(deviceIdCameraIdLiveData) { deviceIdCameraId: Pair<String, String> ->
                 LiveDataReactiveStreams.fromPublisher(
-                        doorbellRepository.sendCameraImageRequest(
-                                deviceId = deviceIdCameraId.first,
-                                cameraId = deviceIdCameraId.second,
-                                isRequested = true
-                        )
+                        Completable.fromAction {
+                            doorbellRepository.sendCameraImageRequest(
+                                    deviceId = deviceIdCameraId.first,
+                                    cameraId = deviceIdCameraId.second,
+                                    isRequested = true
+                            )
+                        }
                                 .subscribeOn(schedulerSet.io)
                                 .observeOn(schedulerSet.ui)
                                 .andThen(Flowable.just(deviceIdCameraId.second))

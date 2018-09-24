@@ -4,7 +4,6 @@ import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.*
-import io.reactivex.Flowable
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
@@ -36,7 +35,7 @@ object CamerasViewModelTest : Spek({
 
     val mockDoorbellRepository by memoized {
         mock<DoorbellRepository> {
-            on { listenCamerasList(deviceId) }.doReturn(Flowable.just(cameraList))
+            on { getCamerasList(deviceId) }.doReturn(cameraList)
         }
     }
 
@@ -57,7 +56,7 @@ object CamerasViewModelTest : Spek({
                 testSchedulerSet.triggerActions()
             }
             it("should load cameras") {
-                verify(mockDoorbellRepository, times(1)).listenCamerasList(eq(deviceId))
+                verify(mockDoorbellRepository, times(1)).getCamerasList(eq(deviceId))
             }
             it("should call observer.onChanged") {
                 val captor = argumentCaptor<List<CameraData>>()

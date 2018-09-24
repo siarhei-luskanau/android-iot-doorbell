@@ -23,8 +23,5 @@ dependencies {
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.timber
 
-    implementation appDependencies.rxJava
-
-    implementation appDependencies.gson
-
+    implementation appDependencies.rxKotlin
 }

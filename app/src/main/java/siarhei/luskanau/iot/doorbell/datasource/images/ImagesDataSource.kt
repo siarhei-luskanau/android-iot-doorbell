@@ -28,7 +28,7 @@ class ImagesDataSource(
             )
 
     override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<ImageData>) =
-            cachedRepository.loadAfterBeforeImages(
+            cachedRepository.loadBeforeImages(
                     deviceId,
                     params.requestedLoadSize,
                     params.key,

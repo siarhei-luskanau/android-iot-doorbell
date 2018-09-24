@@ -18,7 +18,7 @@ class CamerasViewModel @Inject constructor(
             Transformations.switchMap(deviceIdLiveData)
             { deviceId: String ->
                 LiveDataReactiveStreams.fromPublisher(
-                        doorbellRepository.listenCamerasList(deviceId)
+                        Flowable.fromCallable { doorbellRepository.getCamerasList(deviceId) }
                                 .doOnError { Timber.e(it) }
                                 .onErrorResumeNext(Flowable.empty())
                                 .subscribeOn(schedulerSet.io)

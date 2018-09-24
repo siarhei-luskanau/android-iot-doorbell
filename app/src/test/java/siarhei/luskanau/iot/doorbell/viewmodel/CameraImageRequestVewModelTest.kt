@@ -4,7 +4,6 @@ import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.*
-import io.reactivex.Completable
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
@@ -30,11 +29,7 @@ object CameraImageRequestVewModelTest : Spek({
     val deviceId by memoized { "deviceId" }
     val cameraId by memoized { "cameraId" }
 
-    val mockDoorbellRepository by memoized {
-        mock<DoorbellRepository> {
-            on { sendCameraImageRequest(deviceId, cameraId, true) }.doReturn(Completable.complete())
-        }
-    }
+    val mockDoorbellRepository by memoized { mock<DoorbellRepository>() }
 
     val testSchedulerSet by memoized { SchedulerSet.test() }
 

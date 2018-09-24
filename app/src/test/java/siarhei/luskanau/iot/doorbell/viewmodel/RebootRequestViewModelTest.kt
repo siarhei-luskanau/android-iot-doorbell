@@ -4,7 +4,6 @@ import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.*
-import io.reactivex.Completable
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.AppConstants
@@ -34,18 +33,9 @@ object RebootRequestViewModelTest : Spek({
 
     val testSchedulerSet by memoized { SchedulerSet.test() }
 
-    val mockUptimeRepository by memoized {
-        mock<UptimeRepository> {
-            on { uptimeRebootRequest(any(), any(), any()) }.doReturn(Completable.complete())
-        }
-    }
+    val mockUptimeRepository by memoized { mock<UptimeRepository>() }
 
-    val rebootRequestViewModel by memoized {
-        RebootRequestViewModel(
-                testSchedulerSet,
-                mockUptimeRepository
-        )
-    }
+    val rebootRequestViewModel by memoized { RebootRequestViewModel(mockUptimeRepository) }
 
     describe("a rebootRequestViewModel") {
 

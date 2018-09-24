@@ -28,7 +28,7 @@ dependencies {
     implementation appDependencies.dagger
     implementation appDependencies.daggerAndroid
 
-    implementation appDependencies.rxJava
+    implementation appDependencies.rxKotlin
 
     implementation(appDependencies.archWorkManager) {
         exclude group: 'androidx.lifecycle'

@@ -1,14 +1,11 @@
 package siarhei.luskanau.iot.doorbell.cache
 
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
-import timber.log.Timber
 
 class DefaultCachedRepository(
-        private val schedulerSet: SchedulerSet,
         private val doorbellRepository: DoorbellRepository,
         private val persistenceRepository: PersistenceRepository
 ) : CachedRepository {
@@ -20,43 +17,27 @@ class DefaultCachedRepository(
             onResult: (List<ImageData>) -> Unit,
             invalidate: () -> Unit
     ) {
-        doorbellRepository.listenImagesList(
+        onResult.invoke(doorbellRepository.getImagesList(
                 deviceId = deviceId,
                 size = limit,
-                startAt = afterImageId,
+                imageIdAt = afterImageId,
                 orderAsc = true
-        )
-                .subscribeOn(schedulerSet.io)
-                .observeOn(schedulerSet.ui)
-                .subscribe(
-                        {
-                            onResult.invoke(it)
-                        },
-                        { Timber.e(it) }
-                )
+        ))
     }
 
-    override fun loadAfterBeforeImages(
+    override fun loadBeforeImages(
             deviceId: String,
             limit: Int,
-            afterImageId: String?,
+            beforeImageId: String?,
             onResult: (List<ImageData>) -> Unit,
             invalidate: () -> Unit
     ) {
-        doorbellRepository.listenImagesList(
+        onResult.invoke(doorbellRepository.getImagesList(
                 deviceId = deviceId,
                 size = limit,
-                startAt = afterImageId,
+                imageIdAt = beforeImageId,
                 orderAsc = false
-        )
-                .subscribeOn(schedulerSet.io)
-                .observeOn(schedulerSet.ui)
-                .subscribe(
-                        {
-                            onResult.invoke(it)
-                        },
-                        { Timber.e(it) }
-                )
+        ))
     }
 
 //    private fun getAfterImagesList(deviceId: String, callback: ItemKeyedDataSource.LoadCallback<ImageData>, size: Int, startAt: String? = null) {

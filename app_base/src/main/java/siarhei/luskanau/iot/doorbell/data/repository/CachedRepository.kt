@@ -12,10 +12,10 @@ interface CachedRepository {
             invalidate: () -> Unit
     )
 
-    fun loadAfterBeforeImages(
+    fun loadBeforeImages(
             deviceId: String,
             limit: Int,
-            afterImageId: String?,
+            beforeImageId: String?,
             onResult: (List<ImageData>) -> Unit,
             invalidate: () -> Unit
     )

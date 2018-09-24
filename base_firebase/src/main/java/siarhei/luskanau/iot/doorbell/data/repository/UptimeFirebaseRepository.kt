@@ -1,14 +1,9 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import com.google.gson.Gson
-import durdinapps.rxfirebase2.RxFirebaseDatabase
-import io.reactivex.Completable
-import io.reactivex.Flowable
+import kotlinx.coroutines.experimental.runBlocking
 import siarhei.luskanau.iot.doorbell.data.model.Uptime
 
-class UptimeFirebaseRepository(
-        override val gson: Gson
-) : BaseFirebaseRepository(gson), UptimeRepository {
+class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
 
     companion object {
         private const val UPTIME_KEY = "uptime"
@@ -19,88 +14,119 @@ class UptimeFirebaseRepository(
             deviceId: String,
             startupTimeMillis: Long,
             startupTimeString: String
-    ): Completable = Completable.mergeArray(
-            RxFirebaseDatabase
-                    .setValue(
-                            getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                                    .child(Uptime.STARTUP_TIME_MILLIS_KEY),
-                            startupTimeMillis
-                    ),
-            RxFirebaseDatabase
-                    .setValue(
-                            getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                                    .child(Uptime.STARTUP_TIME_STRING_KEY),
-                            startupTimeString
-                    )
-    )
+    ) {
+        runBlocking {
+            setValueToDatabase(
+                    getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                            .child(UptimeDto.STARTUP_TIME_MILLIS_KEY),
+                    startupTimeMillis
+            )
+        }
+
+        runBlocking {
+            setValueToDatabase(
+                    getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                            .child(UptimeDto.STARTUP_TIME_STRING_KEY),
+                    startupTimeString
+            )
+        }
+    }
 
     override fun uptimePing(
             deviceId: String,
             pingTimeMillis: Long,
             pingTimeString: String
-    ): Completable = Completable.mergeArray(
-            RxFirebaseDatabase
-                    .setValue(
-                            getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                                    .child(Uptime.PING_TIME_MILLIS_KEY),
-                            pingTimeMillis
-                    ),
-            RxFirebaseDatabase
-                    .setValue(
-                            getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                                    .child(Uptime.PING_TIME_STRING_KEY),
-                            pingTimeString
-                    )
-    )
+    ) {
+        runBlocking {
+            setValueToDatabase(
+                    getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                            .child(UptimeDto.PING_TIME_MILLIS_KEY),
+                    pingTimeMillis
+            )
+        }
+
+        runBlocking {
+            setValueToDatabase(
+                    getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                            .child(UptimeDto.PING_TIME_STRING_KEY),
+                    pingTimeString
+            )
+        }
+    }
 
     override fun uptimeRebootRequest(
             deviceId: String,
             rebootRequestTimeMillis: Long,
             rebootRequestTimeString: String
-    ): Completable = Completable.mergeArray(
-            RxFirebaseDatabase
-                    .setValue(
-                            getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                                    .child(Uptime.REBOOT_REQUEST_TIME_MILLIS_KEY),
-                            rebootRequestTimeMillis
-                    ),
-            RxFirebaseDatabase
-                    .setValue(
-                            getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                                    .child(Uptime.REBOOT_REQUEST_TIME_STRING_KEY),
-                            rebootRequestTimeString
-                    )
-    )
+    ) {
+        runBlocking {
+            setValueToDatabase(
+                    getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                            .child(UptimeDto.REBOOT_REQUEST_TIME_MILLIS_KEY),
+                    rebootRequestTimeMillis
+            )
+        }
+
+        runBlocking {
+            setValueToDatabase(
+                    getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                            .child(UptimeDto.REBOOT_REQUEST_TIME_STRING_KEY),
+                    rebootRequestTimeString
+            )
+        }
+    }
 
     override fun uptimeRebooting(
             deviceId: String,
             rebootingTimeMillis: Long,
             rebootingTimeString: String
-    ): Completable = Completable.mergeArray(
-            RxFirebaseDatabase
-                    .setValue(
-                            getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                                    .child(Uptime.REBOOTING_TIME_MILLIS_KEY),
-                            rebootingTimeMillis
-                    ),
-            RxFirebaseDatabase
-                    .setValue(
-                            getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                                    .child(Uptime.REBOOTING_TIME_STRING_KEY),
-                            rebootingTimeString
-                    )
-    )
-
-    override fun listenUptime(deviceId: String): Flowable<Uptime> = RxFirebaseDatabase
-            .observeValueEvent(
+    ) {
+        runBlocking {
+            setValueToDatabase(
                     getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                            .child(UptimeDto.REBOOTING_TIME_MILLIS_KEY),
+                    rebootingTimeMillis
             )
-            .map { dataSnapshotObject(it, Uptime::class.java) }
+        }
 
-    override fun sendIpAddressMap(deviceId: String, ipAddressMap: Map<String, String>): Completable = RxFirebaseDatabase
-            .setValue(
-                    getAppDatabase().child(UPTIME_KEY).child(deviceId).child(IP_ADDRESS_KEY),
-                    serializeByGson(ipAddressMap)
+        runBlocking {
+            setValueToDatabase(
+                    getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                            .child(UptimeDto.REBOOTING_TIME_STRING_KEY),
+                    rebootingTimeString
             )
+        }
+    }
+
+    override fun getUptime(deviceId: String): Uptime {
+        val uptimeDto = dataSnapshotObject(
+                runBlocking {
+                    getValueFromDatabase(getAppDatabase().child(UPTIME_KEY).child(deviceId))
+                },
+                UptimeDto::class.java
+        )
+
+        return Uptime(
+                startupTimeMillis = uptimeDto.startupTimeMillis,
+                startupTimeString = uptimeDto.startupTimeString,
+                pingTimeMillis = uptimeDto.pingTimeMillis,
+                pingTimeString = uptimeDto.pingTimeString,
+                rebootRequestTimeMillis = uptimeDto.rebootRequestTimeMillis,
+                rebootRequestTimeString = uptimeDto.rebootRequestTimeString,
+                rebootingTimeMillis = uptimeDto.rebootingTimeMillis,
+                rebootingTimeString = uptimeDto.rebootingTimeString
+
+
+        )
+    }
+
+
+    override fun sendIpAddressMap(deviceId: String, ipAddressMap: Map<String, String>) =
+            runBlocking {
+                setValueToDatabase(
+                        getAppDatabase().child(UPTIME_KEY).child(deviceId).child(IP_ADDRESS_KEY),
+                        serializeByGson(ipAddressMap)
+                )
+            }
 
 }

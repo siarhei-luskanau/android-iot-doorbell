@@ -1,9 +1,6 @@
 package siarhei.luskanau.iot.doorbell.work_manager.uptime
 
 import androidx.work.Worker
-import io.reactivex.Completable
-import io.reactivex.Single
-import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
@@ -24,37 +21,25 @@ class UptimeWorkerDelegate @Inject constructor(
 
     fun doWork(): Worker.Result =
             try {
+
+                uptimeRepository.sendIpAddressMap(
+                        thisDeviceRepository.doorbellId(),
+                        thisDeviceRepository.getIpAddressList().associate { it }
+                )
+
                 val currentTimeMillis = System.currentTimeMillis()
-                Completable.mergeArray(
-                        Single.just(thisDeviceRepository.getIpAddressList().associate { it })
-                                .doOnError { Timber.e(it) }
-                                .flatMapCompletable { ipAddressMap: Map<String, String> ->
-                                    uptimeRepository.sendIpAddressMap(
-                                            thisDeviceRepository.doorbellId(),
-                                            ipAddressMap
-                                    )
-                                },
-                        uptimeRepository.uptimePing(
-                                thisDeviceRepository.doorbellId(),
-                                currentTimeMillis,
-                                DATE_FORMAT.format(currentTimeMillis)
-                        )
-                ).blockingGet()
+                uptimeRepository.uptimePing(
+                        thisDeviceRepository.doorbellId(),
+                        currentTimeMillis,
+                        DATE_FORMAT.format(currentTimeMillis)
+                )
 
                 doorbellRepository.sendDoorbellData(thisDeviceRepository.doorbellData())
-                        .doOnError { Timber.e(it) }
-                        .blockingGet()
 
-                Single.just(thisDeviceRepository.getCamerasList())
-                        .doOnError { Timber.e(it) }
-                        .flatMapCompletable { list: List<CameraData> ->
-                            doorbellRepository.sendCamerasList(
-                                    thisDeviceRepository.doorbellId(),
-                                    list
-                            )
-                        }
-                        .doOnError { Timber.e(it) }
-                        .blockingGet()
+                doorbellRepository.sendCamerasList(
+                        thisDeviceRepository.doorbellId(),
+                        thisDeviceRepository.getCamerasList()
+                )
 
                 Worker.Result.SUCCESS
             } catch (t: Throwable) {

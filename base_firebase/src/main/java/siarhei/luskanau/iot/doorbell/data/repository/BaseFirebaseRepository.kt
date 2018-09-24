@@ -1,13 +1,15 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import android.net.Uri
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
+import java.io.InputStream
+import kotlin.coroutines.experimental.Continuation
+import kotlin.coroutines.experimental.suspendCoroutine
 
-abstract class BaseFirebaseRepository(open val gson: Gson) {
+abstract class BaseFirebaseRepository(private val gson: Gson = Gson()) {
 
     companion object {
         protected const val DOORBELL_APP_KEY = "doorbell_app"
@@ -29,9 +31,48 @@ abstract class BaseFirebaseRepository(open val gson: Gson) {
             dataSnapshot.children.map { gson.fromJson(gson.toJson(it.value), type) }
 
     protected fun <T> dataSnapshotToMap(dataSnapshot: DataSnapshot, type: Class<T>): Map<String, T> =
+    //if (dataSnapshot.exists())
             dataSnapshot.children.associateBy(
                     { it.key.orEmpty() },
                     { gson.fromJson(gson.toJson(it.value), type) }
             )
+
+    protected suspend fun putStreamToStorage(storageRef: StorageReference, stream: InputStream): Uri? =
+            suspendCoroutine { continuation ->
+                storageRef.putStream(stream)
+                        .continueWithTask {
+                            storageRef.downloadUrl
+                        }
+                        .addOnCompleteListener {
+                            continuation.resume(it.result)
+                        }
+                        .addOnFailureListener {
+                            continuation.resumeWithException(it)
+                        }
+            }
+
+    protected suspend fun setValueToDatabase(ref: DatabaseReference, value: Any?) =
+            suspendCoroutine { continuation: Continuation<Unit> ->
+                ref.setValue(value)
+                        .addOnSuccessListener {
+                            continuation.resume(Unit)
+                        }
+                        .addOnFailureListener {
+                            continuation.resumeWithException(it)
+                        }
+            }
+
+    protected suspend fun getValueFromDatabase(query: Query): DataSnapshot =
+            suspendCoroutine { continuation: Continuation<DataSnapshot> ->
+                query.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        continuation.resume(dataSnapshot)
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        continuation.resumeWithException(databaseError.toException())
+                    }
+                })
+            }
 
 }

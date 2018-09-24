@@ -16,9 +16,9 @@ ext {
     ANDROID_THINGS_BUILD_MIN_SDK_VERSION = 26
 
     // Play services versions
-    firebaseDatabaseVersion = '16.0.2'
-    firebaseStorageVersion = '16.0.2'
-    playServicesVisionVersion = '15.0.2'
+    firebaseDatabaseVersion = '16.0.3'
+    firebaseStorageVersion = '16.0.3'
+    playServicesVisionVersion = '16.2.0'
 
     //Libraries
     gradleBuildToolsVersion = '3.2.0'
@@ -28,12 +28,13 @@ ext {
     archWorkManagerVersion = '1.0.0-alpha09'
     constraintLayoutVersion = '2.0.0-alpha2'
     kotlinVersion = '1.2.71'
+    kotlinCoroutinesVersion = '0.30.0'
     daggerVersion = '2.16'
-    rxJavaVersion = '2.2.2'
+    rxKotlinVersion = '2.3.0'
     rxAndroidVersion = '2.1.0'
-    rx2firebaseVersion = '1.5.1'
     timberVersion = '4.7.1'
     gsonVersion = '2.8.5'
+    glideVersion = '4.8.0'
 
     //Development
     leakCanaryVersion = '1.6.1'
@@ -63,6 +64,7 @@ ext {
     appDependencies = [
 
             kotlinStdlib                : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}",
+            kotlinxCoroutinesCore       : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinCoroutinesVersion}",
 
             daggerCompiler              : "com.google.dagger:dagger-compiler:${daggerVersion}",
             daggerAndroidProcessor      : "com.google.dagger:dagger-android-processor:${daggerVersion}",
@@ -76,26 +78,26 @@ ext {
             archLifecycleCompiler       : "androidx.lifecycle:lifecycle-compiler:${archVersion}",
             archLifecycleExtensions     : "androidx.lifecycle:lifecycle-extensions:${archVersion}",
             archLifecycleReactivestreams: "androidx.lifecycle:lifecycle-reactivestreams:${archVersion}",
-            archRoomCompiler            : "androidx.room:room-compiler:+",
-            archRoomRuntime             : "androidx.room:room-runtime:+",
-            archPaging                  : "androidx.paging:paging-runtime:+",
+            archRoomCompiler            : "androidx.room:room-compiler:${archVersion}",
+            archRoomRuntime             : "androidx.room:room-runtime:${archVersion}",
+            archPaging                  : "androidx.paging:paging-runtime:${archVersion}",
 
-            archWorkManager             : "android.arch.work:work-runtime:${archWorkManagerVersion}",
+            archWorkManager             : "android.arch.work:work-runtime-ktx:${archWorkManagerVersion}",
             constraintLayout            : "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}",
 
             androidThings               : "com.google.android.things:androidthings:${androidthingsVersion}",
             driverButton                : "com.google.android.things.contrib:driver-button:${driverButtonVersion}",
 
-            rxJava                      : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+            rxKotlin                    : "io.reactivex.rxjava2:rxkotlin:${rxKotlinVersion}",
             rxAndroid                   : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
 
             firebaseDatabase            : "com.google.firebase:firebase-database:${firebaseDatabaseVersion}",
             firebaseStorage             : "com.google.firebase:firebase-storage:${firebaseStorageVersion}",
-            rx2firebase                 : "com.github.FrangSierra:RxFirebase:${rx2firebaseVersion}",
             playServicesVision          : "com.google.android.gms:play-services-vision:${playServicesVisionVersion}",
 
             timber                      : "com.jakewharton.timber:timber:${timberVersion}",
             gson                        : "com.google.code.gson:gson:${gsonVersion}",
+            glide                       : "com.github.bumptech.glide:glide:${glideVersion}",
 
             leakCanary                  : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
             leakCanaryNoOp              : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
@@ -106,7 +108,6 @@ ext {
             kotlinTest                  : "org.jetbrains.kotlin:kotlin-test:${kotlinVersion}",
             kotlinKotlinReflect         : "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}",
             mockitoKotlin               : "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}",
-
 
             spekRunnerJunit5            : "org.spekframework.spek2:spek-runner-junit5:${spekVersion}",
             spekDslJvm                  : "org.spekframework.spek2:spek-dsl-jvm:${spekVersion}",

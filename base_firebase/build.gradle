@@ -22,16 +22,11 @@ dependencies {
     implementation project(':app_base')
 
     implementation appDependencies.kotlinStdlib
+    implementation appDependencies.kotlinxCoroutinesCore
     implementation appDependencies.timber
-
-    implementation appDependencies.rxJava
-    implementation appDependencies.rxAndroid
 
     implementation appDependencies.firebaseDatabase
     implementation appDependencies.firebaseStorage
-    implementation(appDependencies.rx2firebase) {
-        exclude group: 'com.google.firebase'
-    }
     implementation appDependencies.playServicesVision
 
     implementation appDependencies.gson

@@ -72,7 +72,7 @@ dependencies {
 
     implementation appDependencies.kotlinStdlib
 
-    implementation appDependencies.rxJava
+    implementation appDependencies.rxKotlin
     implementation appDependencies.rxAndroid
 
     kapt appDependencies.archLifecycleCompiler
@@ -82,8 +82,8 @@ dependencies {
     implementation appDependencies.supportDesign
     implementation appDependencies.constraintLayout
 
-    implementation appDependencies.gson
     implementation appDependencies.timber
+    implementation appDependencies.glide
 
     compileOnly appDependencies.androidThings
 

@@ -25,6 +25,6 @@ dependencies {
     implementation appDependencies.timber
 
     implementation appDependencies.androidxAnnotation
-    implementation appDependencies.rxJava
+    implementation appDependencies.rxKotlin
 
 }

@@ -15,7 +15,9 @@ class ImageEntityMapper {
     fun fromEntityList(images: List<ImageEntity>): List<ImageData> =
             images.map {
                 ImageData(
-                        imageId = it.imageId
+                        imageId = it.imageId,
+                        imageUri = "imageUri",
+                        timestampString = "timestampString"
                 )
             }
 

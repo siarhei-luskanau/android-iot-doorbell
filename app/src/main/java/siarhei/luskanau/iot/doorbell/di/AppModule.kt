@@ -2,7 +2,6 @@ package siarhei.luskanau.iot.doorbell.di
 
 import android.content.Context
 import androidx.work.WorkManager
-import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import siarhei.luskanau.iot.doorbell.AppApplication
@@ -35,10 +34,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideGson(): Gson = Gson()
-
-    @Provides
-    @Singleton
     fun provideSchedulerSet(): SchedulerSet =
             DefaultSchedulerSet()
 
@@ -50,11 +45,9 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDoorbellRepository(
-            gson: Gson,
             imageRepository: ImageRepository
     ): DoorbellRepository =
             FirebaseDoorbellRepository(
-                    gson,
                     imageRepository
             )
 
@@ -73,12 +66,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideCachedRepository(
-            schedulerSet: SchedulerSet,
             doorbellRepository: DoorbellRepository,
             persistenceRepository: PersistenceRepository
     ): CachedRepository =
             DefaultCachedRepository(
-                    schedulerSet,
                     doorbellRepository,
                     persistenceRepository
             )
@@ -95,16 +86,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideUptimeRepository(gson: Gson): UptimeRepository =
-            UptimeFirebaseRepository(gson)
+    fun provideUptimeRepository(): UptimeRepository =
+            UptimeFirebaseRepository()
 
     @Provides
     @Singleton
     fun provideDoorbellsDataSource(
-            schedulerSet: SchedulerSet,
             doorbellRepository: DoorbellRepository
     ): DoorbellsDataSource = DefaultDoorbellsDataSource(
-            schedulerSet,
             doorbellRepository
     )
 
