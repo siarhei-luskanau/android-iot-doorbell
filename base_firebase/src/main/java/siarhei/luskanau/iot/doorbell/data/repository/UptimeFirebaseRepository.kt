@@ -1,6 +1,6 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.model.Uptime
 
 class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {

@@ -1,6 +1,6 @@
 package siarhei.luskanau.iot.doorbell.work_manager.uptime
 
-import androidx.work.Worker
+import androidx.work.ListenableWorker
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
@@ -19,7 +19,7 @@ class UptimeWorkerDelegate @Inject constructor(
         private val DATE_FORMAT = SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.ENGLISH)
     }
 
-    fun doWork(): Worker.Result =
+    fun doWork(): ListenableWorker.Result =
             try {
 
                 uptimeRepository.sendIpAddressMap(
@@ -41,9 +41,9 @@ class UptimeWorkerDelegate @Inject constructor(
                         thisDeviceRepository.getCamerasList()
                 )
 
-                Worker.Result.SUCCESS
+                ListenableWorker.Result.SUCCESS
             } catch (t: Throwable) {
                 Timber.e(t)
-                Worker.Result.FAILURE
+                ListenableWorker.Result.FAILURE
             }
 }

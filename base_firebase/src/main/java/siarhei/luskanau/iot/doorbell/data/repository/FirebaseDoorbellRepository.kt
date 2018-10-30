@@ -3,7 +3,7 @@ package siarhei.luskanau.iot.doorbell.data.repository
 import android.net.Uri
 import com.google.firebase.database.Query
 import com.google.firebase.database.ServerValue
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData

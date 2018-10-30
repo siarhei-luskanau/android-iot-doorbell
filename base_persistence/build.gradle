@@ -29,6 +29,8 @@ dependencies {
     implementation appDependencies.rxAndroid
 
     kapt appDependencies.archRoomCompiler
-    implementation appDependencies.archRoomRuntime
+    implementation(appDependencies.archRoomRuntime) {
+        exclude group: 'androidx.arch.core'
+    }
 
 }

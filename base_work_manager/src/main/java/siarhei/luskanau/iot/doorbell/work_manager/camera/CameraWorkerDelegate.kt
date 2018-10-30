@@ -1,6 +1,6 @@
 package siarhei.luskanau.iot.doorbell.work_manager.camera
 
-import androidx.work.Worker
+import androidx.work.ListenableWorker
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -13,7 +13,7 @@ class CameraWorkerDelegate @Inject constructor(
         private val cameraRepository: CameraRepository
 ) {
 
-    fun doWork(): Worker.Result =
+    fun doWork(): ListenableWorker.Result =
             try {
                 doorbellRepository.getCameraImageRequest(thisDeviceRepository.doorbellId())
                         .filterValues { value -> value }
@@ -39,10 +39,10 @@ class CameraWorkerDelegate @Inject constructor(
                                     }
                         }
 
-                Worker.Result.SUCCESS
+                ListenableWorker.Result.SUCCESS
             } catch (t: Throwable) {
                 Timber.e(t)
-                Worker.Result.FAILURE
+                ListenableWorker.Result.FAILURE
             }
 
 }

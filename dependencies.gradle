@@ -2,8 +2,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "https://jitpack.io" }
-        maven { url "https://dl.bintray.com/spekframework/spek-dev" }
     }
 }
 
@@ -21,14 +19,15 @@ ext {
     playServicesVisionVersion = '16.2.0'
 
     //Libraries
-    gradleBuildToolsVersion = '3.2.0'
+    gradleBuildToolsVersion = '3.2.1'
     googleServicesVersion = '4.1.0'
     androidxVersion = "1.0.0"
     archVersion = '2.0.0'
-    archWorkManagerVersion = '1.0.0-alpha09'
+    archRoomVersion = '2.1.0-alpha01'
+    archWorkManagerVersion = '1.0.0-alpha10'
     constraintLayoutVersion = '2.0.0-alpha2'
-    kotlinVersion = '1.2.71'
-    kotlinCoroutinesVersion = '0.30.0'
+    kotlinVersion = '1.3.0'
+    kotlinCoroutinesVersion = '1.0.0'
     daggerVersion = '2.16'
     rxKotlinVersion = '2.3.0'
     rxAndroidVersion = '2.1.0'
@@ -44,14 +43,15 @@ ext {
     driverButtonVersion = '1.0'
 
     //Testing
-    mockitoKotlinVersion = '2.0.0-RC2'
-    spekVersion = '2.0.0-alpha.2'
-    androidJunit5Version = '1.2.0.0'
+    mockitoKotlinVersion = '2.0.0-RC3'
+    spekVersion = '2.0.0-rc.1'
+    androidJunit5Version = '1.3.1.0'
     jacocoVersion = '0.8.2'
 
     //test instrumentation
-    androidTestRunnerVersion = '1.1.0-alpha4'
-    espressoVersion = '3.1.0-alpha4'
+    androidTestCoreVersion = '1.0.0'
+    androidTestRunnerVersion = '1.1.0'
+    espressoVersion = '3.1.0'
 
     buildscriptDependencies = [
             gradle             : "com.android.tools.build:gradle:${gradleBuildToolsVersion}",
@@ -78,8 +78,8 @@ ext {
             archLifecycleCompiler       : "androidx.lifecycle:lifecycle-compiler:${archVersion}",
             archLifecycleExtensions     : "androidx.lifecycle:lifecycle-extensions:${archVersion}",
             archLifecycleReactivestreams: "androidx.lifecycle:lifecycle-reactivestreams:${archVersion}",
-            archRoomCompiler            : "androidx.room:room-compiler:${archVersion}",
-            archRoomRuntime             : "androidx.room:room-runtime:${archVersion}",
+            archRoomCompiler            : "androidx.room:room-compiler:${archRoomVersion}",
+            archRoomRuntime             : "androidx.room:room-runtime:${archRoomVersion}",
             archPaging                  : "androidx.paging:paging-runtime:${archVersion}",
 
             archWorkManager             : "android.arch.work:work-runtime-ktx:${archWorkManagerVersion}",
@@ -102,6 +102,7 @@ ext {
             leakCanary                  : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
             leakCanaryNoOp              : "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
 
+            androidTestCore             : "androidx.test:core:${androidTestCoreVersion}",
             androidTestRunner           : "androidx.test:runner:${androidTestRunnerVersion}",
             espresso                    : "androidx.test.espresso:espresso-core:${espressoVersion}",
 
