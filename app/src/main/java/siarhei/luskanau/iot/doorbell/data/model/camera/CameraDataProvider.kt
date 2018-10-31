@@ -5,5 +5,4 @@ import siarhei.luskanau.iot.doorbell.data.model.CameraData
 interface CameraDataProvider {
 
     fun getCamerasList(): List<CameraData>
-
 }

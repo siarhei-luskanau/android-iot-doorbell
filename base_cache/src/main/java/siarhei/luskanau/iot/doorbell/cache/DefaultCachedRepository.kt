@@ -6,16 +6,16 @@ import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 
 class DefaultCachedRepository(
-        private val doorbellRepository: DoorbellRepository,
-        private val persistenceRepository: PersistenceRepository
+    private val doorbellRepository: DoorbellRepository,
+    private val persistenceRepository: PersistenceRepository
 ) : CachedRepository {
 
     override fun loadAfterImages(
-            deviceId: String,
-            limit: Int,
-            afterImageId: String?,
-            onResult: (List<ImageData>) -> Unit,
-            invalidate: () -> Unit
+        deviceId: String,
+        limit: Int,
+        afterImageId: String?,
+        onResult: (List<ImageData>) -> Unit,
+        invalidate: () -> Unit
     ) {
         onResult.invoke(doorbellRepository.getImagesList(
                 deviceId = deviceId,
@@ -26,11 +26,11 @@ class DefaultCachedRepository(
     }
 
     override fun loadBeforeImages(
-            deviceId: String,
-            limit: Int,
-            beforeImageId: String?,
-            onResult: (List<ImageData>) -> Unit,
-            invalidate: () -> Unit
+        deviceId: String,
+        limit: Int,
+        beforeImageId: String?,
+        onResult: (List<ImageData>) -> Unit,
+        invalidate: () -> Unit
     ) {
         onResult.invoke(doorbellRepository.getImagesList(
                 deviceId = deviceId,
@@ -70,5 +70,4 @@ class DefaultCachedRepository(
 //                            },
 //                            { Timber.e(it) }
 //                    )
-
 }

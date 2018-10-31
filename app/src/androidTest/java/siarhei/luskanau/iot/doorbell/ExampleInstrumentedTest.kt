@@ -13,5 +13,4 @@ class ExampleInstrumentedTest {
         val appContext: Context = ApplicationProvider.getApplicationContext()
         assertEquals(BuildConfig.APPLICATION_ID + "", appContext.packageName)
     }
-
 }

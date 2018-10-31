@@ -9,10 +9,10 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 import java.text.DateFormat
-import java.util.*
+import java.util.Calendar
 
 class FirebaseDoorbellRepository(
-        val imageRepository: ImageRepository
+    val imageRepository: ImageRepository
 ) : BaseFirebaseRepository(), DoorbellRepository {
 
     companion object {
@@ -25,9 +25,9 @@ class FirebaseDoorbellRepository(
     }
 
     override fun getDoorbellsList(
-            size: Int,
-            startAt: String?,
-            orderAsc: Boolean
+        size: Int,
+        startAt: String?,
+        orderAsc: Boolean
     ): List<DoorbellData> {
         var query: Query = getAppDatabase().child(DOORBELLS_KEY)
         query = query.orderByChild("doorbell_id")
@@ -102,9 +102,9 @@ class FirebaseDoorbellRepository(
     }
 
     override fun sendCameraImageRequest(
-            deviceId: String,
-            cameraId: String,
-            isRequested: Boolean
+        deviceId: String,
+        cameraId: String,
+        isRequested: Boolean
     ) = runBlocking {
         setValueToDatabase(
                 getAppDatabase().child(IMAGE_REQUEST_KEY).child(deviceId).child(cameraId),
@@ -149,10 +149,10 @@ class FirebaseDoorbellRepository(
     }
 
     override fun getImagesList(
-            deviceId: String,
-            size: Int,
-            imageIdAt: String?,
-            orderAsc: Boolean
+        deviceId: String,
+        size: Int,
+        imageIdAt: String?,
+        orderAsc: Boolean
     ): List<ImageData> {
         var query: Query = getAppDatabase().child(IMAGES_KEY).child(deviceId)
 
@@ -190,5 +190,4 @@ class FirebaseDoorbellRepository(
                     )
                 }
     }
-
 }

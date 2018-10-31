@@ -25,5 +25,4 @@ class NavigationController @Inject constructor(activity: AppCompatActivity) {
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
     }
-
 }

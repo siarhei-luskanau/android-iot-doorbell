@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.work_manager.dagger
+package siarhei.luskanau.iot.doorbell.workmanager.dagger
 
 import androidx.work.Worker
 import dagger.android.AndroidInjector

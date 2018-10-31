@@ -7,7 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 
 abstract class BaseRecyclerBindingListAdapter<T, B : ViewDataBinding>(
-        diffCallback: DiffUtil.ItemCallback<T>
+    diffCallback: DiffUtil.ItemCallback<T>
 ) : BaseRecyclerClickableListAdapter<T, BindingViewHolder<B>>(
         diffCallback
 ) {
@@ -19,5 +19,4 @@ abstract class BaseRecyclerBindingListAdapter<T, B : ViewDataBinding>(
     protected abstract fun getViewLayout(): Int
 
     public override fun getItem(position: Int): T = super.getItem(position)
-
 }

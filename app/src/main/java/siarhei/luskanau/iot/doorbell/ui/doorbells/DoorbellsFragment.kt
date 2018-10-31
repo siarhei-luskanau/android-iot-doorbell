@@ -71,5 +71,4 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
 
         camerasViewModel.deviceIdLiveData.value = deviceId
     }
-
 }

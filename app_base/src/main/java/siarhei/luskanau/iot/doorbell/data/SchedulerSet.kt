@@ -4,9 +4,9 @@ import io.reactivex.Scheduler
 import io.reactivex.schedulers.TestScheduler
 
 open class SchedulerSet(
-        open val io: Scheduler,
-        open val ui: Scheduler,
-        open val computation: Scheduler
+    open val io: Scheduler,
+    open val ui: Scheduler,
+    open val computation: Scheduler
 ) {
 
     companion object {
@@ -22,5 +22,4 @@ open class SchedulerSet(
         (ui as TestScheduler?)?.triggerActions()
         (computation as TestScheduler?)?.triggerActions()
     }
-
 }

@@ -23,7 +23,5 @@ class ImageAdapter : BaseRecyclerBindingPagingAdapter<ImageData, ViewImageItemBi
             override fun areItemsTheSame(oldItem: ImageData, newItem: ImageData) = oldItem.imageId == newItem.imageId
             override fun areContentsTheSame(oldItem: ImageData, newItem: ImageData) = oldItem == newItem
         }
-
     }
-
 }

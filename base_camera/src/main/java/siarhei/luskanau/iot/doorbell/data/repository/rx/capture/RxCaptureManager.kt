@@ -1,6 +1,11 @@
 package siarhei.luskanau.iot.doorbell.data.repository.rx.capture
 
-import android.hardware.camera2.*
+import android.hardware.camera2.CameraCaptureSession
+import android.hardware.camera2.CameraDevice
+import android.hardware.camera2.CaptureFailure
+import android.hardware.camera2.CaptureRequest
+import android.hardware.camera2.CaptureResult
+import android.hardware.camera2.TotalCaptureResult
 import android.os.Handler
 import android.view.Surface
 import io.reactivex.Observable
@@ -10,10 +15,10 @@ import timber.log.Timber
 class RxCaptureManager {
 
     fun capture(
-            camera: CameraDevice,
-            captureSession: CameraCaptureSession,
-            captureRequest: CaptureRequest,
-            handler: Handler? = null
+        camera: CameraDevice,
+        captureSession: CameraCaptureSession,
+        captureRequest: CaptureRequest,
+        handler: Handler? = null
     ): Observable<RxCaptureEvent> =
             Observable.create { emitter: ObservableEmitter<RxCaptureEvent> ->
                 try {
@@ -71,5 +76,4 @@ class RxCaptureManager {
                     emitter.onError(t)
                 }
             }
-
 }

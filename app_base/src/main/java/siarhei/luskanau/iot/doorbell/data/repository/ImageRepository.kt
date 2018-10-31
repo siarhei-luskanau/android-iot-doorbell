@@ -9,5 +9,4 @@ interface ImageRepository {
     fun saveImage(byteBuffer: ByteBuffer?, name: String): ImageFile
 
     fun openInputStream(imageFile: ImageFile): InputStream
-
 }

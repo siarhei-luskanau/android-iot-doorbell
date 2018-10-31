@@ -22,5 +22,4 @@ class AppActivity : AppCompatActivity(), HasAndroidxFragmentInjector {
     }
 
     override fun androidxFragmentInjector() = androidxFragmentInjector
-
 }

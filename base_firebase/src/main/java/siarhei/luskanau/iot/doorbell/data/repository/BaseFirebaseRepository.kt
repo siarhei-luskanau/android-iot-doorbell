@@ -1,13 +1,20 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
 import android.net.Uri
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import java.io.InputStream
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 abstract class BaseFirebaseRepository(private val gson: Gson = Gson()) {
 
@@ -31,7 +38,7 @@ abstract class BaseFirebaseRepository(private val gson: Gson = Gson()) {
             dataSnapshot.children.map { gson.fromJson(gson.toJson(it.value), type) }
 
     protected fun <T> dataSnapshotToMap(dataSnapshot: DataSnapshot, type: Class<T>): Map<String, T> =
-    //if (dataSnapshot.exists())
+    // if (dataSnapshot.exists())
             dataSnapshot.children.associateBy(
                     { it.key.orEmpty() },
                     { gson.fromJson(gson.toJson(it.value), type) }
@@ -74,5 +81,4 @@ abstract class BaseFirebaseRepository(private val gson: Gson = Gson()) {
                     }
                 })
             }
-
 }

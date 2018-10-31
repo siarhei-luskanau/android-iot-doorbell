@@ -20,5 +20,4 @@ class ImageEntityMapper {
                         timestampString = "timestampString"
                 )
             }
-
 }

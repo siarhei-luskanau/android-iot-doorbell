@@ -16,14 +16,13 @@
 
 package dagger.android.support;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
-import androidx.fragment.app.Fragment;
-import dagger.MapKey;
-import dagger.internal.Beta;
+import androidx.fragment.app.*;
+import dagger.*;
+import dagger.internal.*;
 
-import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.*;
 
 /** {@link MapKey} annotation to key bindings by a type of a {@link Fragment}. */
 @Beta

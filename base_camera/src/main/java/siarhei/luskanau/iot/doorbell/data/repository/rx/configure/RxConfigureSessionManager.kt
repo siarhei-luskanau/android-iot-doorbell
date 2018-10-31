@@ -11,9 +11,9 @@ import timber.log.Timber
 class RxConfigureSessionManager {
 
     fun createCaptureSession(
-            camera: CameraDevice,
-            outputs: List<Surface>,
-            handler: Handler? = null
+        camera: CameraDevice,
+        outputs: List<Surface>,
+        handler: Handler? = null
     ): Observable<RxConfigureSessionEvent> =
             Observable.create { emitter: ObservableEmitter<RxConfigureSessionEvent> ->
                 try {

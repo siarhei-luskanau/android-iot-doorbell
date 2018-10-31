@@ -17,7 +17,7 @@ import siarhei.luskanau.iot.doorbell.data.model.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.di.common.AppComponent
 import siarhei.luskanau.iot.doorbell.di.common.DaggerAppComponent
 import siarhei.luskanau.iot.doorbell.di.common.Injectable
-import siarhei.luskanau.iot.doorbell.work_manager.dagger.HasWorkerInjector
+import siarhei.luskanau.iot.doorbell.workmanager.dagger.HasWorkerInjector
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -90,9 +90,9 @@ class AppApplication : DaggerApplication(), HasAndroidxFragmentInjector, HasWork
             (activity as? FragmentActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(
                     object : FragmentManager.FragmentLifecycleCallbacks() {
                         override fun onFragmentCreated(
-                                fragmentManager: FragmentManager,
-                                fragment: Fragment,
-                                savedInstanceState: Bundle?
+                            fragmentManager: FragmentManager,
+                            fragment: Fragment,
+                            savedInstanceState: Bundle?
                         ) {
                             if (fragment is Injectable) {
                                 AndroidxInjection.inject(fragment)
@@ -102,8 +102,5 @@ class AppApplication : DaggerApplication(), HasAndroidxFragmentInjector, HasWork
                     true
             )
         }
-
     }
-
 }
-

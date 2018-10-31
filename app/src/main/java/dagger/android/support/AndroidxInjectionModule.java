@@ -16,14 +16,13 @@
 
 package dagger.android.support;
 
-import java.util.Map;
+import java.util.*;
 
-import androidx.fragment.app.Fragment;
-import dagger.Module;
-import dagger.android.AndroidInjectionModule;
-import dagger.android.AndroidInjector;
-import dagger.internal.Beta;
-import dagger.multibindings.Multibinds;
+import androidx.fragment.app.*;
+import dagger.*;
+import dagger.android.*;
+import dagger.internal.*;
+import dagger.multibindings.*;
 
 /**
  * Configures bindings to ensure the usability of {@code dagger.android} and {@code

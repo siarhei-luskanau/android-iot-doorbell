@@ -53,6 +53,8 @@ ext {
     androidTestRunnerVersion = '1.1.0'
     espressoVersion = '3.1.0'
 
+    ktlintVersion = '0.29.0'
+
     buildscriptDependencies = [
             gradle             : "com.android.tools.build:gradle:${gradleBuildToolsVersion}",
             kotlinGradlePlugin : "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}",
@@ -112,5 +114,7 @@ ext {
 
             spekRunnerJunit5            : "org.spekframework.spek2:spek-runner-junit5:${spekVersion}",
             spekDslJvm                  : "org.spekframework.spek2:spek-dsl-jvm:${spekVersion}",
+
+            ktlint                      : "com.github.shyiko:ktlint:${ktlintVersion}",
     ]
 }

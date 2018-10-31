@@ -9,5 +9,4 @@ interface DeviceInfoProvider {
     fun isAndroidThings(): Boolean
 
     fun buildDeviceInfo(): Map<String, Any>
-
 }

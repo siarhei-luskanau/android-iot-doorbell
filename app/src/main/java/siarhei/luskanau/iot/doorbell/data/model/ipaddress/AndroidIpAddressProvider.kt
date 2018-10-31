@@ -5,7 +5,7 @@ import timber.log.Timber
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.NetworkInterface
-import java.util.*
+import java.util.Collections
 import javax.inject.Inject
 
 class AndroidIpAddressProvider @Inject constructor() : IpAddressProvider {
@@ -32,5 +32,4 @@ class AndroidIpAddressProvider @Inject constructor() : IpAddressProvider {
 
         return ipAddressList
     }
-
 }

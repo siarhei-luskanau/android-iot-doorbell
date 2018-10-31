@@ -9,13 +9,22 @@ import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.data.DefaultSchedulerSet
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.UptimeService
-import siarhei.luskanau.iot.doorbell.data.repository.*
+import siarhei.luskanau.iot.doorbell.data.repository.AndroidCameraRepository
+import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
+import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
+import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
+import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
+import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
+import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
+import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.datasource.doorbells.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.datasource.doorbells.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.datasource.images.DefaultImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.datasource.images.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
-import siarhei.luskanau.iot.doorbell.work_manager.DefaultUptimeService
+import siarhei.luskanau.iot.doorbell.workmanager.DefaultUptimeService
 import javax.inject.Singleton
 
 @Module(includes = [
@@ -45,7 +54,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDoorbellRepository(
-            imageRepository: ImageRepository
+        imageRepository: ImageRepository
     ): DoorbellRepository =
             FirebaseDoorbellRepository(
                     imageRepository
@@ -59,15 +68,15 @@ class AppModule {
     @Provides
     @Singleton
     fun provideUptimeService(
-            workManager: WorkManager
+        workManager: WorkManager
     ): UptimeService =
             DefaultUptimeService(workManager)
 
     @Provides
     @Singleton
     fun provideCachedRepository(
-            doorbellRepository: DoorbellRepository,
-            persistenceRepository: PersistenceRepository
+        doorbellRepository: DoorbellRepository,
+        persistenceRepository: PersistenceRepository
     ): CachedRepository =
             DefaultCachedRepository(
                     doorbellRepository,
@@ -77,8 +86,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideCameraRepository(
-            context: Context,
-            imageRepository: ImageRepository
+        context: Context,
+        imageRepository: ImageRepository
     ): CameraRepository = AndroidCameraRepository(
             context,
             imageRepository
@@ -92,7 +101,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideDoorbellsDataSource(
-            doorbellRepository: DoorbellRepository
+        doorbellRepository: DoorbellRepository
     ): DoorbellsDataSource = DefaultDoorbellsDataSource(
             doorbellRepository
     )
@@ -101,5 +110,4 @@ class AppModule {
     @Singleton
     fun provideImagesDataSourceFactory(cachedRepository: CachedRepository): ImagesDataSourceFactory =
             DefaultImagesDataSourceFactory(cachedRepository)
-
 }

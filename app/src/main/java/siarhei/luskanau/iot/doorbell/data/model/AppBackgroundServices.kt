@@ -14,11 +14,11 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AppBackgroundServices @Inject constructor(
-        private val schedulerSet: SchedulerSet,
-        private val doorbellRepository: DoorbellRepository,
-        private val thisDeviceRepository: ThisDeviceRepository,
-        private val uptimeService: UptimeService,
-        val context: Context
+    private val schedulerSet: SchedulerSet,
+    private val doorbellRepository: DoorbellRepository,
+    private val thisDeviceRepository: ThisDeviceRepository,
+    private val uptimeService: UptimeService,
+    val context: Context
 ) {
 
     fun startServices() {
@@ -45,12 +45,10 @@ class AppBackgroundServices @Inject constructor(
                             }
                         }
                     }
-
                 }
                 .doOnError { Timber.e(it) }
                 .subscribeOn(schedulerSet.io)
                 .observeOn(schedulerSet.computation)
                 .subscribe()
     }
-
 }

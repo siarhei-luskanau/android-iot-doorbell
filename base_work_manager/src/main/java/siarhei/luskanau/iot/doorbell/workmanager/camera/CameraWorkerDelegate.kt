@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.work_manager.camera
+package siarhei.luskanau.iot.doorbell.workmanager.camera
 
 import androidx.work.ListenableWorker
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
@@ -8,9 +8,9 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class CameraWorkerDelegate @Inject constructor(
-        private val thisDeviceRepository: ThisDeviceRepository,
-        private val doorbellRepository: DoorbellRepository,
-        private val cameraRepository: CameraRepository
+    private val thisDeviceRepository: ThisDeviceRepository,
+    private val doorbellRepository: DoorbellRepository,
+    private val cameraRepository: CameraRepository
 ) {
 
     fun doWork(): ListenableWorker.Result =
@@ -44,5 +44,4 @@ class CameraWorkerDelegate @Inject constructor(
                 Timber.e(t)
                 ListenableWorker.Result.FAILURE
             }
-
 }

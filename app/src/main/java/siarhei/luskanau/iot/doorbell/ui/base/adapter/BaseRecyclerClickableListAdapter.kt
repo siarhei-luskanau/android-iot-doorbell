@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerClickableListAdapter<T, V : RecyclerView.ViewHolder>(
-        diffCallback: DiffUtil.ItemCallback<T>
+    diffCallback: DiffUtil.ItemCallback<T>
 ) : ListAdapter<T, V>(
         diffCallback
 ) {
@@ -31,5 +31,4 @@ abstract class BaseRecyclerClickableListAdapter<T, V : RecyclerView.ViewHolder>(
     }
 
     abstract fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): V
-
 }

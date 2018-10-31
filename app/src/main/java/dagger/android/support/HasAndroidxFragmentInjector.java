@@ -15,9 +15,9 @@
  */
 package dagger.android.support;
 
-import androidx.fragment.app.Fragment;
-import dagger.android.AndroidInjector;
-import dagger.internal.Beta;
+import androidx.fragment.app.*;
+import dagger.android.*;
+import dagger.internal.*;
 
 /**
  * Provides an {@link AndroidInjector} of {@link Fragment}s.

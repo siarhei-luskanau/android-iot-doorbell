@@ -10,13 +10,12 @@ class BindingViewHolder<T : ViewDataBinding>(val binding: T) : RecyclerView.View
 
     companion object {
         fun <B : ViewDataBinding> create(
-                inflater: LayoutInflater,
-                layoutResId: Int,
-                parent: ViewGroup
+            inflater: LayoutInflater,
+            layoutResId: Int,
+            parent: ViewGroup
         ): BindingViewHolder<B> {
             val binding = DataBindingUtil.inflate<B>(inflater, layoutResId, parent, false)
             return BindingViewHolder(binding)
         }
     }
-
 }

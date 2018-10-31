@@ -11,9 +11,9 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
     }
 
     override fun uptimeStartup(
-            deviceId: String,
-            startupTimeMillis: Long,
-            startupTimeString: String
+        deviceId: String,
+        startupTimeMillis: Long,
+        startupTimeString: String
     ) {
         runBlocking {
             setValueToDatabase(
@@ -33,9 +33,9 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
     }
 
     override fun uptimePing(
-            deviceId: String,
-            pingTimeMillis: Long,
-            pingTimeString: String
+        deviceId: String,
+        pingTimeMillis: Long,
+        pingTimeString: String
     ) {
         runBlocking {
             setValueToDatabase(
@@ -55,9 +55,9 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
     }
 
     override fun uptimeRebootRequest(
-            deviceId: String,
-            rebootRequestTimeMillis: Long,
-            rebootRequestTimeString: String
+        deviceId: String,
+        rebootRequestTimeMillis: Long,
+        rebootRequestTimeString: String
     ) {
         runBlocking {
             setValueToDatabase(
@@ -77,9 +77,9 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
     }
 
     override fun uptimeRebooting(
-            deviceId: String,
-            rebootingTimeMillis: Long,
-            rebootingTimeString: String
+        deviceId: String,
+        rebootingTimeMillis: Long,
+        rebootingTimeString: String
     ) {
         runBlocking {
             setValueToDatabase(
@@ -116,10 +116,8 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
                 rebootingTimeMillis = uptimeDto.rebootingTimeMillis,
                 rebootingTimeString = uptimeDto.rebootingTimeString
 
-
         )
     }
-
 
     override fun sendIpAddressMap(deviceId: String, ipAddressMap: Map<String, String>) =
             runBlocking {
@@ -128,5 +126,4 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
                         serializeByGson(ipAddressMap)
                 )
             }
-
 }

@@ -12,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ImagesViewModel @Inject constructor(
-        imagesDataSourceFactory: ImagesDataSourceFactory
+    imagesDataSourceFactory: ImagesDataSourceFactory
 ) : ViewModel() {
 
     val deviceIdLiveData = MutableLiveData<String>()
@@ -40,5 +40,4 @@ class ImagesViewModel @Inject constructor(
                         })
                         .build()
             }
-
 }

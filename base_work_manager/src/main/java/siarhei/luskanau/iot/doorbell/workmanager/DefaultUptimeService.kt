@@ -1,15 +1,21 @@
-package siarhei.luskanau.iot.doorbell.work_manager
+package siarhei.luskanau.iot.doorbell.workmanager
 
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import siarhei.luskanau.iot.doorbell.data.UptimeService
-import siarhei.luskanau.iot.doorbell.work_manager.WorkManagerConstants.REPEAT_INTERVAL
-import siarhei.luskanau.iot.doorbell.work_manager.WorkManagerConstants.REPEAT_INTERVAL_TIME_UNIT
-import siarhei.luskanau.iot.doorbell.work_manager.WorkManagerConstants.UPTIME_WORK_NAME
-import siarhei.luskanau.iot.doorbell.work_manager.camera.CameraWorker
-import siarhei.luskanau.iot.doorbell.work_manager.uptime.UptimeWorker
+import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerConstants.REPEAT_INTERVAL
+import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerConstants.REPEAT_INTERVAL_TIME_UNIT
+import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerConstants.UPTIME_WORK_NAME
+import siarhei.luskanau.iot.doorbell.workmanager.camera.CameraWorker
+import siarhei.luskanau.iot.doorbell.workmanager.uptime.UptimeWorker
 
 class DefaultUptimeService(
-        private val workManager: WorkManager
+    private val workManager: WorkManager
 ) : UptimeService {
 
     override fun startUptimeNotifications() {
@@ -41,5 +47,4 @@ class DefaultUptimeService(
                         .build()
         ).enqueue()
     }
-
 }

@@ -1,8 +1,8 @@
-package siarhei.luskanau.iot.doorbell.work_manager.dagger
+package siarhei.luskanau.iot.doorbell.workmanager.dagger
 
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
-import siarhei.luskanau.iot.doorbell.work_manager.uptime.UptimeWorker
+import siarhei.luskanau.iot.doorbell.workmanager.uptime.UptimeWorker
 
 @Subcomponent
 interface WorkerSubcomponent : AndroidInjector<UptimeWorker> {

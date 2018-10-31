@@ -16,5 +16,4 @@ interface ThisDeviceRepository {
     fun reboot()
 
     fun isPermissionsGranted(): Boolean
-
 }

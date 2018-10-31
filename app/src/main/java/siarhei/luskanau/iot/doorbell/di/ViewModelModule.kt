@@ -7,7 +7,11 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import siarhei.luskanau.iot.doorbell.di.common.AppViewModelFactory
 import siarhei.luskanau.iot.doorbell.di.common.ViewModelKey
-import siarhei.luskanau.iot.doorbell.viewmodel.*
+import siarhei.luskanau.iot.doorbell.viewmodel.CameraImageRequestVewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.CamerasViewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.DoorbellsViewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.ImagesViewModel
+import siarhei.luskanau.iot.doorbell.viewmodel.RebootRequestViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -39,5 +43,4 @@ abstract class ViewModelModule {
 
     @Binds
     abstract fun bindViewModelFactory(factory: AppViewModelFactory): ViewModelProvider.Factory
-
 }

@@ -7,14 +7,14 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "images")
 data class ImageEntity(
 
-        @PrimaryKey(autoGenerate = true)
-        @ColumnInfo(name = "row_id")
-        val rowId: Int? = null,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "row_id")
+    val rowId: Int? = null,
 
-        @ColumnInfo(name = "image_id")
-        val imageId: String,
+    @ColumnInfo(name = "image_id")
+    val imageId: String,
 
-        @ColumnInfo(name = "device_id")
-        val deviceId: String
+    @ColumnInfo(name = "device_id")
+    val deviceId: String
 
 )

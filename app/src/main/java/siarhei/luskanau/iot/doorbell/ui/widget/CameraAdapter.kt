@@ -23,7 +23,5 @@ class CameraAdapter : BaseRecyclerBindingListAdapter<CameraData, ViewCameraItemB
             override fun areItemsTheSame(oldItem: CameraData, newItem: CameraData) = oldItem.cameraId == newItem.cameraId
             override fun areContentsTheSame(oldItem: CameraData, newItem: CameraData) = oldItem == newItem
         }
-
     }
-
 }

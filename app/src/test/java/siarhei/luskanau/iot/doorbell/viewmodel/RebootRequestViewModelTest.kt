@@ -3,7 +3,12 @@ package siarhei.luskanau.iot.doorbell.viewmodel
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.Observer
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.argumentCaptor
+import com.nhaarman.mockitokotlin2.atLeastOnce
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.AppConstants
@@ -55,7 +60,5 @@ object RebootRequestViewModelTest : Spek({
                 assertEquals(rebootRequestTimeMillis, captor.lastValue)
             }
         }
-
     }
-
 })

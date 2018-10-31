@@ -5,8 +5,8 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 
 class ImagesDataSource(
-        private val cachedRepository: CachedRepository,
-        private val deviceId: String
+    private val cachedRepository: CachedRepository,
+    private val deviceId: String
 ) : ItemKeyedDataSource<String, ImageData>() {
 
     override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<ImageData>): Unit =
@@ -37,5 +37,4 @@ class ImagesDataSource(
             )
 
     override fun getKey(item: ImageData): String = item.imageId
-
 }

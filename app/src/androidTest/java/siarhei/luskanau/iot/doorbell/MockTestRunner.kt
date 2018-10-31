@@ -7,13 +7,12 @@ import androidx.test.runner.AndroidJUnitRunner
 class MockTestRunner : AndroidJUnitRunner() {
 
     override fun newApplication(
-            classLoader: ClassLoader?,
-            className: String?,
-            context: Context?
+        classLoader: ClassLoader?,
+        className: String?,
+        context: Context?
     ): Application = super.newApplication(
             classLoader,
             MockAppApplication::class.qualifiedName,
             context
     )
-
 }

@@ -51,6 +51,5 @@ class ImageCompressor {
 
             return inSampleSize
         }
-
     }
 }

@@ -1,15 +1,15 @@
-package siarhei.luskanau.iot.doorbell.work_manager.uptime
+package siarhei.luskanau.iot.doorbell.workmanager.camera
 
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import dagger.android.AndroidInjector
-import siarhei.luskanau.iot.doorbell.work_manager.base.BaseWorker
+import siarhei.luskanau.iot.doorbell.workmanager.base.BaseWorker
 
-class UptimeWorker(
-        context: Context,
-        workerParams: WorkerParameters
-) : BaseWorker<UptimeWorkerDelegate>(
+class CameraWorker(
+    context: Context,
+    workerParams: WorkerParameters
+) : BaseWorker<CameraWorkerDelegate>(
         context,
         workerParams
 ) {
@@ -19,5 +19,4 @@ class UptimeWorker(
 
     override fun doDelegateWork(): () -> Result =
             { workerDelegate.doWork() }
-
 }

@@ -8,7 +8,7 @@ import java.io.InputStream
 import java.nio.ByteBuffer
 
 class InternalStorageImageRepository(
-        val context: Context
+    val context: Context
 ) : ImageRepository {
 
     override fun saveImage(byteBuffer: ByteBuffer?, name: String): ImageFile =
@@ -32,5 +32,4 @@ class InternalStorageImageRepository(
             File(imageFile.path.orEmpty()).inputStream()
 
     private fun createFile(name: String) = File.createTempFile("camera_${name}_", null, context.cacheDir)
-
 }

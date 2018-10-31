@@ -12,8 +12,8 @@ interface ImageDao {
             "ORDER BY image_id DESC " +
             "LIMIT :limit")
     fun getImages(
-            deviceId: String,
-            limit: Int
+        deviceId: String,
+        limit: Int
     ): List<ImageEntity>
 
     @Query("SELECT * FROM images " +
@@ -22,12 +22,11 @@ interface ImageDao {
             "ORDER BY image_id DESC " +
             "LIMIT :limit")
     fun getImages(
-            deviceId: String,
-            afterImageId: String,
-            limit: Int
+        deviceId: String,
+        afterImageId: String,
+        limit: Int
     ): List<ImageEntity>
 
     @Insert
     fun insertImages(images: List<ImageEntity>)
-
 }

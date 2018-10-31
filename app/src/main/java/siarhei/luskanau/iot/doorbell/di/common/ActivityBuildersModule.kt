@@ -17,5 +17,4 @@ interface ActivityBuildersModule {
 
     @ContributesAndroidInjector
     fun contributePermissionActivity(): PermissionActivity
-
 }

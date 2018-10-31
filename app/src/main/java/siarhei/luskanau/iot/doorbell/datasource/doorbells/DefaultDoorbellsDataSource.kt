@@ -4,7 +4,7 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
 class DefaultDoorbellsDataSource(
-        private val doorbellRepository: DoorbellRepository
+    private val doorbellRepository: DoorbellRepository
 ) : DoorbellsDataSource() {
 
     override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<DoorbellData>) =
@@ -20,5 +20,4 @@ class DefaultDoorbellsDataSource(
     private fun getDoorbellsList(callback: LoadCallback<DoorbellData>, size: Int, startAt: String? = null) {
         callback.onResult(doorbellRepository.getDoorbellsList(size, startAt))
     }
-
 }

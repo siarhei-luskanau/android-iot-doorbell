@@ -25,8 +25,8 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class AndroidCameraRepository(
-        private val context: Context,
-        private val imageRepository: ImageRepository
+    private val context: Context,
+    private val imageRepository: ImageRepository
 ) : CameraRepository {
 
     companion object {
@@ -81,7 +81,6 @@ class AndroidCameraRepository(
                 .doOnComplete {
                     Timber.d("Camera $cameraId openCamera.doOnComplete")
                 }
-
     }
 
     private fun createCaptureSession(camera: CameraDevice): Observable<ImageFile> {
@@ -109,9 +108,9 @@ class AndroidCameraRepository(
     }
 
     private fun capture(
-            camera: CameraDevice,
-            captureSession: CameraCaptureSession,
-            imageReader: ImageReader
+        camera: CameraDevice,
+        captureSession: CameraCaptureSession,
+        imageReader: ImageReader
     ): Observable<ImageFile> {
 
         val captureBuilder = camera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
@@ -140,8 +139,8 @@ class AndroidCameraRepository(
     }
 
     private fun acquireLatestImage(
-            camera: CameraDevice,
-            imageReader: ImageReader
+        camera: CameraDevice,
+        imageReader: ImageReader
     ): Observable<ImageFile> = Completable.complete()
             .delay(200, TimeUnit.MILLISECONDS)
             .andThen(Observable.fromCallable {
@@ -163,5 +162,4 @@ class AndroidCameraRepository(
             }.doOnError {
                 Timber.e(it)
             }
-
 }

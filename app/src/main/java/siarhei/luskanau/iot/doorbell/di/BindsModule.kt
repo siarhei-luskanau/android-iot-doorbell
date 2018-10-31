@@ -27,5 +27,4 @@ abstract class BindsModule {
     @Binds
     @Singleton
     abstract fun bindThisDeviceRepository(bind: AndroidThisDeviceRepository): ThisDeviceRepository
-
 }

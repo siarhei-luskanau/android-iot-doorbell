@@ -7,5 +7,4 @@ interface PersistenceRepository {
     fun getImages(deviceId: String, afterImageId: String?, limit: Int): List<ImageData>
 
     fun insertImages(deviceId: String, images: List<ImageData>)
-
 }

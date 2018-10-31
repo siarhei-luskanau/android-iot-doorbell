@@ -52,7 +52,5 @@ object DoorbellsViewModelTest : Spek({
                 verify(mockDoorbellsDataSource, times(1)).loadInitial(any(), any())
             }
         }
-
     }
-
 })

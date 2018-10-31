@@ -34,5 +34,4 @@ abstract class BaseAppFragment<B : ViewDataBinding> : Fragment(), Injectable {
 
     @LayoutRes
     protected abstract fun getViewLayout(): Int
-
 }

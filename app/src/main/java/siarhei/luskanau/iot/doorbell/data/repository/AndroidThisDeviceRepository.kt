@@ -12,10 +12,10 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AndroidThisDeviceRepository @Inject constructor(
-        private val context: Context,
-        private val deviceInfoProvider: DeviceInfoProvider,
-        private val cameraDataProvider: CameraDataProvider,
-        private val ipAddressProvider: IpAddressProvider
+    private val context: Context,
+    private val deviceInfoProvider: DeviceInfoProvider,
+    private val cameraDataProvider: CameraDataProvider,
+    private val ipAddressProvider: IpAddressProvider
 ) : ThisDeviceRepository {
 
     private val doorbellData = DoorbellData(
@@ -50,5 +50,4 @@ class AndroidThisDeviceRepository @Inject constructor(
         }
         return true
     }
-
 }

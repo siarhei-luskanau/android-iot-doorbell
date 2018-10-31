@@ -10,7 +10,7 @@ import siarhei.luskanau.iot.doorbell.datasource.doorbells.DoorbellsDataSource
 import javax.inject.Inject
 
 class DoorbellsViewModel @Inject constructor(
-        doorbellsDataSource: DoorbellsDataSource
+    doorbellsDataSource: DoorbellsDataSource
 ) : ViewModel() {
 
     val doorbellsLiveData: LiveData<PagedList<DoorbellData>> =
@@ -20,5 +20,4 @@ class DoorbellsViewModel @Inject constructor(
                     },
                     20
             ).build()
-
 }

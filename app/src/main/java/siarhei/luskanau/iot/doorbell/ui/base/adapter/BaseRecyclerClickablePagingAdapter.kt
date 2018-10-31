@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerClickablePagingAdapter<T, V : RecyclerView.ViewHolder>(
-        diffCallback: DiffUtil.ItemCallback<T>
+    diffCallback: DiffUtil.ItemCallback<T>
 ) : PagedListAdapter<T, V>(
         diffCallback
 ) {
@@ -31,5 +31,4 @@ abstract class BaseRecyclerClickablePagingAdapter<T, V : RecyclerView.ViewHolder
     }
 
     abstract fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): V
-
 }

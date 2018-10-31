@@ -16,15 +16,15 @@
 
 package dagger.android.support;
 
-import android.app.Activity;
-import android.util.Log;
+import android.app.*;
+import android.util.*;
 
 import androidx.fragment.app.Fragment;
-import dagger.android.AndroidInjector;
-import dagger.internal.Beta;
+import dagger.android.*;
+import dagger.internal.*;
 
-import static android.util.Log.DEBUG;
-import static dagger.internal.Preconditions.checkNotNull;
+import static android.util.Log.*;
+import static dagger.internal.Preconditions.*;
 
 /**
  * Injects core Android types from support libraries.

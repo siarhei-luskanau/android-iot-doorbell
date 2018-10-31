@@ -106,7 +106,5 @@ object AndroidThisDeviceRepositoryTest : Spek({
                 assertEquals(ipAddressList, resultIpAddressList)
             }
         }
-
     }
-
 })

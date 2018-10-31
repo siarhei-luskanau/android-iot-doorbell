@@ -13,5 +13,4 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeImagesFragment(): ImagesFragment
-
 }

@@ -22,5 +22,4 @@ interface DoorbellRepository {
     fun sendImage(deviceId: String, cameraId: String, imageFile: ImageFile)
 
     fun getImagesList(deviceId: String, size: Int, imageIdAt: String? = null, orderAsc: Boolean = true): List<ImageData>
-
 }

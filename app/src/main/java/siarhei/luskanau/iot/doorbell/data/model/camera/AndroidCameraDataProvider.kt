@@ -55,7 +55,6 @@ class AndroidCameraDataProvider @Inject constructor(private val context: Context
                                         ?.associate { effect: Int ->
                                             Pair(getEffectName(effect), effect)
                                         } ?: emptyArray<Pair<String, String>>()
-
                             } catch (e: Throwable) {
                                 info["error"] = e.message as Any
                                 Timber.d("Cam access exception getting characteristics.")
@@ -132,5 +131,4 @@ class AndroidCameraDataProvider @Inject constructor(private val context: Context
                 CameraMetadata.CONTROL_EFFECT_MODE_AQUA -> "CONTROL_EFFECT_MODE_AQUA"
                 else -> effect.toString()
             }
-
 }

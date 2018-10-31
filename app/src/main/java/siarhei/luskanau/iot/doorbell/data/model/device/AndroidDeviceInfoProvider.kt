@@ -8,7 +8,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AndroidDeviceInfoProvider @Inject constructor(
-        private val context: Context
+    private val context: Context
 ) : DeviceInfoProvider {
 
     override fun buildDeviceId() =
@@ -34,5 +34,4 @@ class AndroidDeviceInfoProvider @Inject constructor(
             Pair("SDK_INT", Build.VERSION.SDK_INT),
             Pair("RELEASE", Build.VERSION.RELEASE)
     )
-
 }

@@ -4,9 +4,9 @@ import android.hardware.camera2.CameraDevice
 import androidx.annotation.StringDef
 
 data class RxOpenCameraEvent(
-        @OpenCameraEventType val eventType: String,
-        val camera: CameraDevice,
-        val error: Int? = null
+    @OpenCameraEventType val eventType: String,
+    val camera: CameraDevice,
+    val error: Int? = null
 ) {
     companion object {
         @StringDef(

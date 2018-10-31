@@ -7,11 +7,11 @@ import android.hardware.camera2.TotalCaptureResult
 import androidx.annotation.StringDef
 
 data class RxCaptureEvent(
-        @CaptureEventType val eventType: String,
-        var session: CameraCaptureSession,
-        var request: CaptureRequest,
-        var partialResult: CaptureResult? = null,
-        var result: TotalCaptureResult? = null
+    @CaptureEventType val eventType: String,
+    var session: CameraCaptureSession,
+    var request: CaptureRequest,
+    var partialResult: CaptureResult? = null,
+    var result: TotalCaptureResult? = null
 ) {
     companion object {
         @StringDef(

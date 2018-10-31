@@ -1,7 +1,7 @@
-apply from: 'dependencies.gradle'
+apply from: "$rootDir/dependencies.gradle"
 
 buildscript {
-    apply from: 'dependencies.gradle'
+    apply from: "$rootDir/dependencies.gradle"
     repositories {
         google()
         jcenter()
@@ -14,6 +14,10 @@ buildscript {
         classpath buildscriptDependencies.jacocoPlugin
         classpath buildscriptDependencies.googleServices
     }
+}
+
+allprojects {
+    apply from: "$rootDir/ktlint.gradle"
 }
 
 task clean(type: Delete) {

@@ -10,8 +10,7 @@ class AppActivityModule {
 
     @Provides
     fun provideAppCompatActivity(
-            activity: AppActivity
+        activity: AppActivity
     ): AppCompatActivity =
             activity
-
 }

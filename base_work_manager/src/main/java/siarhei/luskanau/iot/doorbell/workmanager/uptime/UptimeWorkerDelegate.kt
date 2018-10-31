@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.work_manager.uptime
+package siarhei.luskanau.iot.doorbell.workmanager.uptime
 
 import androidx.work.ListenableWorker
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
@@ -6,13 +6,13 @@ import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 class UptimeWorkerDelegate @Inject constructor(
-        private val uptimeRepository: UptimeRepository,
-        private val thisDeviceRepository: ThisDeviceRepository,
-        private val doorbellRepository: DoorbellRepository
+    private val uptimeRepository: UptimeRepository,
+    private val thisDeviceRepository: ThisDeviceRepository,
+    private val doorbellRepository: DoorbellRepository
 ) {
 
     companion object {

@@ -99,5 +99,4 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
     override fun getActionBarTitle(): String =
             if (deviceName.isNotBlank()) deviceName
             else deviceId
-
 }

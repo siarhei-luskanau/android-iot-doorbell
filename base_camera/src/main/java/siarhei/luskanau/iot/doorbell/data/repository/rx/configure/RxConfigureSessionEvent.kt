@@ -4,8 +4,8 @@ import android.hardware.camera2.CameraCaptureSession
 import androidx.annotation.StringDef
 
 data class RxConfigureSessionEvent(
-        @ConfigureSessionEventType val eventType: String,
-        val captureSession: CameraCaptureSession
+    @ConfigureSessionEventType val eventType: String,
+    val captureSession: CameraCaptureSession
 ) {
     companion object {
         @StringDef(

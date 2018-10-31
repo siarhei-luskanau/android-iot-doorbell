@@ -75,5 +75,4 @@ class PermissionActivity : AppCompatActivity(), HasAndroidxFragmentInjector {
         Timber.d("onPermissionsDenied")
         finish()
     }
-
 }

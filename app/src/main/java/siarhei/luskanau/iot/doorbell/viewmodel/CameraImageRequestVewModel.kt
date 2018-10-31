@@ -1,6 +1,10 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
@@ -8,8 +12,8 @@ import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import javax.inject.Inject
 
 class CameraImageRequestVewModel @Inject constructor(
-        schedulerSet: SchedulerSet,
-        doorbellRepository: DoorbellRepository
+    schedulerSet: SchedulerSet,
+    doorbellRepository: DoorbellRepository
 ) : ViewModel() {
 
     val deviceIdCameraIdLiveData = MutableLiveData<Pair<String, String>>()
@@ -29,5 +33,4 @@ class CameraImageRequestVewModel @Inject constructor(
                                 .andThen(Flowable.just(deviceIdCameraId.second))
                 )
             }
-
 }

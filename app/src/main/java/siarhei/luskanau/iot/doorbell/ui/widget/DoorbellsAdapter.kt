@@ -23,7 +23,5 @@ class DoorbellsAdapter : BaseRecyclerBindingPagingAdapter<DoorbellData, ViewDoor
             override fun areItemsTheSame(oldItem: DoorbellData, newItem: DoorbellData) = oldItem.doorbellId == newItem.doorbellId
             override fun areContentsTheSame(oldItem: DoorbellData, newItem: DoorbellData) = oldItem == newItem
         }
-
     }
-
 }

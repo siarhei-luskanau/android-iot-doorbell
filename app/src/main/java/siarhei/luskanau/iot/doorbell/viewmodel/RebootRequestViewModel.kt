@@ -1,13 +1,17 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.LiveDataReactiveStreams
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import io.reactivex.Flowable
 import siarhei.luskanau.iot.doorbell.AppConstants
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import javax.inject.Inject
 
 class RebootRequestViewModel @Inject constructor(
-        uptimeRepository: UptimeRepository
+    uptimeRepository: UptimeRepository
 ) : ViewModel() {
 
     val deviceIdRebootRequestTimeLiveData = MutableLiveData<Pair<String, Long>>()
@@ -24,5 +28,4 @@ class RebootRequestViewModel @Inject constructor(
                         }
                 )
             }
-
 }

@@ -12,9 +12,9 @@ class RxOpenCameraManager {
 
     @SuppressLint("MissingPermission")
     fun openCamera(
-            cameraManager: CameraManager?,
-            cameraId: String,
-            handler: Handler
+        cameraManager: CameraManager?,
+        cameraId: String,
+        handler: Handler
     ): Observable<RxOpenCameraEvent> =
             Observable.create { emitter: ObservableEmitter<RxOpenCameraEvent> ->
                 try {
@@ -50,5 +50,4 @@ class RxOpenCameraManager {
                     emitter.onError(t)
                 }
             }
-
 }

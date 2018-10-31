@@ -6,8 +6,8 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidxInjectionModule
 import siarhei.luskanau.iot.doorbell.AppApplication
 import siarhei.luskanau.iot.doorbell.di.AppModule
-import siarhei.luskanau.iot.doorbell.work_manager.WorkerModule
-import siarhei.luskanau.iot.doorbell.work_manager.dagger.AndroidWorkerInjectionModule
+import siarhei.luskanau.iot.doorbell.workmanager.WorkerModule
+import siarhei.luskanau.iot.doorbell.workmanager.dagger.AndroidWorkerInjectionModule
 import javax.inject.Singleton
 
 @Singleton

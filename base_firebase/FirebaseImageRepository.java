@@ -1,36 +1,9 @@
 package siarhei.luskanau.iot.doorbell.data.firebase;
 
-import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.support.v4.util.Pair;
-import android.util.Base64;
-import android.util.SparseArray;
+import android.support.v4.util.*;
 
-import com.google.android.gms.vision.Frame;
-import com.google.android.gms.vision.face.Face;
-import com.google.android.gms.vision.face.FaceDetector;
-import com.google.android.gms.vision.text.TextBlock;
-import com.google.android.gms.vision.text.TextRecognizer;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ServerValue;
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import durdinapps.rxfirebase2.RxFirebaseDatabase;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import siarhei.luskanau.iot.doorbell.DeviceInfo;
-import siarhei.luskanau.iot.doorbell.DomainConstants;
-import siarhei.luskanau.iot.doorbell.DoorbellEntry;
-import siarhei.luskanau.iot.doorbell.ImageEntry;
-import siarhei.luskanau.iot.doorbell.repository.ImageRepository;
-import timber.log.Timber;
+import durdinapps.rxfirebase2.*;
+import siarhei.luskanau.iot.doorbell.repository.*;
 
 public class FirebaseImageRepository implements ImageRepository {
 
