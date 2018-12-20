@@ -1,11 +1,9 @@
-apply from: "$rootDir/dependencies.gradle"
-
 configurations {
     ktlint
 }
 
 dependencies {
-    ktlint rootProject.ext.appDependencies.ktlint
+    ktlint 'com.github.shyiko:ktlint:0.29.0'
 }
 
 task ktlint(type: JavaExec, group: "verification") {

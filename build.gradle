@@ -1,22 +1,81 @@
-apply from: "$rootDir/dependencies.gradle"
-
 buildscript {
-    apply from: "$rootDir/dependencies.gradle"
+
+    ext {
+        //Android
+        compileSdkVersion = 28
+        targetSdkVersion = 28
+        buildToolsVersion = '28.0.3'
+        minSdkVersion = 21
+        androidThingsMinSdkVersion = 26
+
+        // Play services versions
+        firebaseDatabaseVersion = '16.0.5'
+        firebaseStorageVersion = '16.0.5'
+        playServicesVisionVersion = '17.0.2'
+
+        //Libraries
+        androidxAnnotationVersion = '1.0.1'
+        materialVersion = '1.1.0-alpha02'
+        archLifecycleVersion = '2.0.0'
+        archPagingVersion = '2.1.0-rc01'
+        archRoomVersion = '2.1.0-alpha03'
+        archWorkManagerVersion = '1.0.0-beta01'
+        constraintLayoutVersion = '2.0.0-alpha3'
+        kotlinVersion = '1.3.11'
+        kotlinCoroutinesVersion = '1.0.0'
+        daggerVersion = '2.20'
+        rxKotlinVersion = '2.3.0'
+        rxAndroidVersion = '2.1.0'
+        timberVersion = '4.7.1'
+        gsonVersion = '2.8.5'
+        glideVersion = '4.8.0'
+
+        //Development
+        leakCanaryVersion = '1.6.1'
+
+        //Android Things
+        androidthingsVersion = '1.0'
+        driverButtonVersion = '1.0'
+
+        //Testing
+        mockitoKotlinVersion = '2.0.0'
+        spekVersion = '2.0.0-rc.1'
+
+        //test instrumentation
+        androidTestCoreVersion = '1.1.0'
+        androidTestRunnerVersion = '1.1.1'
+        espressoVersion = '3.1.1'
+
+        appDependencies = [
+                kotlinStdlib         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
+                kotlinxCoroutinesCore: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion",
+
+                kotlinTest           : "org.jetbrains.kotlin:kotlin-test:$kotlinVersion",
+                kotlinKotlinReflect  : "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
+                mockitoKotlin        : "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion",
+        ]
+    }
+
     repositories {
         google()
         jcenter()
     }
+
     dependencies {
-        def buildscriptDependencies = rootProject.ext.buildscriptDependencies
-        classpath buildscriptDependencies.gradle
-        classpath buildscriptDependencies.kotlinGradlePlugin
-        classpath buildscriptDependencies.androidJunit5Plugin
-        classpath buildscriptDependencies.jacocoPlugin
-        classpath buildscriptDependencies.googleServices
+        classpath 'com.android.tools.build:gradle:3.3.0-rc03'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1'
+        classpath 'org.jacoco:org.jacoco.core:0.8.2'
+        classpath 'com.google.gms:google-services:4.2.0'
     }
 }
 
 allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+
     apply from: "$rootDir/ktlint.gradle"
 }
 

@@ -3,7 +3,7 @@ package siarhei.luskanau.iot.doorbell.di.common
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
-import dagger.android.support.AndroidxInjectionModule
+import dagger.android.support.AndroidSupportInjectionModule
 import siarhei.luskanau.iot.doorbell.AppApplication
 import siarhei.luskanau.iot.doorbell.di.AppModule
 import siarhei.luskanau.iot.doorbell.workmanager.WorkerModule
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-    AndroidxInjectionModule::class,
+    AndroidSupportInjectionModule::class,
     ActivityBuildersModule::class,
     AppModule::class,
     AndroidWorkerInjectionModule::class,

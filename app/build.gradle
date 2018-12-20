@@ -6,13 +6,13 @@ apply plugin: "de.mannodermaus.android-junit5"
 
 android {
 
-    compileSdkVersion rootProject.ANDROID_BUILD_SDK_VERSION
-    buildToolsVersion rootProject.ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
         applicationId "siarhei.luskanau.iot.doorbell"
-        minSdkVersion rootProject.ANDROID_BUILD_MIN_SDK_VERSION
-        targetSdkVersion rootProject.ANDROID_BUILD_TARGET_SDK_VERSION
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "siarhei.luskanau.iot.doorbell.MockTestRunner"
@@ -55,8 +55,6 @@ android {
 }
 
 dependencies {
-    def appDependencies = rootProject.ext.appDependencies
-
     implementation project(':app_base')
     implementation project(':base_camera')
     implementation project(':base_file')
@@ -65,44 +63,44 @@ dependencies {
     implementation project(':base_cache')
     implementation project(':base_work_manager')
 
-    kapt appDependencies.daggerCompiler
-    kapt appDependencies.daggerAndroidProcessor
-    implementation appDependencies.dagger
-    implementation appDependencies.daggerAndroid
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
     implementation appDependencies.kotlinStdlib
 
-    implementation appDependencies.rxKotlin
-    implementation appDependencies.rxAndroid
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
 
-    kapt appDependencies.archLifecycleCompiler
-    implementation appDependencies.archLifecycleExtensions
-    implementation appDependencies.archLifecycleReactivestreams
-    implementation appDependencies.archPaging
-    implementation appDependencies.supportDesign
-    implementation appDependencies.constraintLayout
+    kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams:$archLifecycleVersion"
+    implementation "androidx.paging:paging-runtime:$archPagingVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
-    implementation appDependencies.timber
-    implementation appDependencies.glide
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
 
-    compileOnly appDependencies.androidThings
+    compileOnly "com.google.android.things:androidthings:$androidthingsVersion"
 
-    implementation(appDependencies.archWorkManager) {
+    implementation("android.arch.work:work-runtime-ktx:$archWorkManagerVersion") {
         exclude group: 'androidx.lifecycle'
         exclude group: 'androidx.sqlite'
         exclude group: 'androidx.room'
     }
 
     //Development
-    debugImplementation appDependencies.leakCanary
-    releaseImplementation appDependencies.leakCanaryNoOp
-    testImplementation appDependencies.leakCanaryNoOp
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     //unit test
-    testRuntimeOnly(appDependencies.spekRunnerJunit5) {
+    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion") {
         exclude group: 'org.jetbrains.kotlin'
     }
-    testImplementation(appDependencies.spekDslJvm) {
+    testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion") {
         exclude group: 'org.jetbrains.kotlin'
     }
     testImplementation appDependencies.kotlinTest
@@ -112,9 +110,12 @@ dependencies {
     }
 
     //android test
-    androidTestImplementation appDependencies.espresso
-    androidTestImplementation appDependencies.androidTestCore
-    androidTestImplementation appDependencies.androidTestRunner
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test:core:$androidTestCoreVersion"
+    androidTestImplementation "androidx.test:runner:$androidTestRunnerVersion"
     androidTestImplementation appDependencies.kotlinTest
     androidTestImplementation appDependencies.kotlinKotlinReflect
 }
+
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'

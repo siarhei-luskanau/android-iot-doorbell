@@ -33,7 +33,7 @@ abstract class BaseWorker<T : Any>(
             } catch (throwable: Throwable) {
                 Timber.e(throwable)
 
-                Result.FAILURE
+                Result.failure()
             }
 
     protected abstract fun injectThis(injector: AndroidInjector<Worker>): () -> Unit

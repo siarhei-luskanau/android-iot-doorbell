@@ -7,15 +7,15 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasAndroidxFragmentInjector
+import dagger.android.support.HasSupportFragmentInjector
 import siarhei.luskanau.iot.doorbell.data.UptimeService
 import timber.log.Timber
 import javax.inject.Inject
 
-class PermissionActivity : AppCompatActivity(), HasAndroidxFragmentInjector {
+class PermissionActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject
-    lateinit var androidxFragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var uptimeService: UptimeService
@@ -24,7 +24,7 @@ class PermissionActivity : AppCompatActivity(), HasAndroidxFragmentInjector {
         private const val PERMISSIONS_REQUEST_CODE = 201
     }
 
-    override fun androidxFragmentInjector() = androidxFragmentInjector
+    override fun supportFragmentInjector() = supportFragmentInjector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

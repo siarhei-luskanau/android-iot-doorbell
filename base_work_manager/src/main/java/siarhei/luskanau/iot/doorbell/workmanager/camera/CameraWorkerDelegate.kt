@@ -39,9 +39,9 @@ class CameraWorkerDelegate @Inject constructor(
                                     }
                         }
 
-                ListenableWorker.Result.SUCCESS
+                ListenableWorker.Result.success()
             } catch (t: Throwable) {
                 Timber.e(t)
-                ListenableWorker.Result.FAILURE
+                ListenableWorker.Result.failure()
             }
 }

@@ -41,9 +41,9 @@ class UptimeWorkerDelegate @Inject constructor(
                         thisDeviceRepository.getCamerasList()
                 )
 
-                ListenableWorker.Result.SUCCESS
+                ListenableWorker.Result.success()
             } catch (t: Throwable) {
                 Timber.e(t)
-                ListenableWorker.Result.FAILURE
+                ListenableWorker.Result.failure()
             }
 }

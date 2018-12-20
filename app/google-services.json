@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:123456789012:android:1234567890abdcef",
         "android_client_info": {
-          "package_name": "siarhei.luskanau.iot.doorbell.data.firebase"
+          "package_name": "siarhei.luskanau.iot.doorbell"
         }
       },
       "oauth_client": [

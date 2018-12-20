@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasAndroidxFragmentInjector
+import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class AppActivity : AppCompatActivity(), HasAndroidxFragmentInjector {
+class AppActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject
-    lateinit var androidxFragmentInjector: DispatchingAndroidInjector<Fragment>
+    lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var navigationController: NavigationController
@@ -21,5 +21,5 @@ class AppActivity : AppCompatActivity(), HasAndroidxFragmentInjector {
         navigationController.navigateToDoorbells()
     }
 
-    override fun androidxFragmentInjector() = androidxFragmentInjector
+    override fun supportFragmentInjector() = supportFragmentInjector
 }

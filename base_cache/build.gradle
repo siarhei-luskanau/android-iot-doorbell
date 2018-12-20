@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion rootProject.ANDROID_BUILD_SDK_VERSION
-    buildToolsVersion rootProject.ANDROID_BUILD_TOOLS_VERSION
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion rootProject.ANDROID_BUILD_MIN_SDK_VERSION
-        targetSdkVersion rootProject.ANDROID_BUILD_TARGET_SDK_VERSION
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
     }
 
     compileOptions {
@@ -17,16 +17,13 @@ android {
 }
 
 dependencies {
-    def appDependencies = rootProject.ext.appDependencies
-
     implementation project(':app_base')
 
     implementation appDependencies.kotlinStdlib
-    implementation appDependencies.timber
+    implementation "com.jakewharton.timber:timber:$timberVersion"
 
-    implementation appDependencies.rxKotlin
-    implementation appDependencies.rxAndroid
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
 
-    implementation appDependencies.archPaging
-
+    implementation "androidx.paging:paging-runtime:$archPagingVersion"
 }
