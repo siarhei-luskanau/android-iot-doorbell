@@ -25,12 +25,8 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
 
-    implementation("android.arch.work:work-runtime-ktx:$archWorkManagerVersion") {
-        exclude group: 'androidx.lifecycle'
-        exclude group: 'androidx.sqlite'
-        exclude group: 'androidx.room'
-    }
-
+    implementation "android.arch.work:work-runtime-ktx:$archWorkManagerVersion"
 }

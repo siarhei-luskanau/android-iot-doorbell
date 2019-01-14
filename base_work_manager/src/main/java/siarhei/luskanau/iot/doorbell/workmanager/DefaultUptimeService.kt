@@ -11,11 +11,10 @@ import siarhei.luskanau.iot.doorbell.data.UptimeService
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerConstants.REPEAT_INTERVAL
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerConstants.REPEAT_INTERVAL_TIME_UNIT
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerConstants.UPTIME_WORK_NAME
-import siarhei.luskanau.iot.doorbell.workmanager.camera.CameraWorker
-import siarhei.luskanau.iot.doorbell.workmanager.uptime.UptimeWorker
+import javax.inject.Provider
 
 class DefaultUptimeService(
-    private val workManager: WorkManager
+    private val workManager: Provider<WorkManager>
 ) : UptimeService {
 
     override fun startUptimeNotifications() {
@@ -32,15 +31,15 @@ class DefaultUptimeService(
                 .setConstraints(constraints)
                 .build()
 
-        workManager.enqueueUniquePeriodicWork(
+        workManager.get().enqueueUniquePeriodicWork(
                 UPTIME_WORK_NAME,
                 ExistingPeriodicWorkPolicy.REPLACE,
-                request/**/
+                request
         )
     }
 
     override fun cameraWorker() {
-        workManager.beginUniqueWork(
+        workManager.get().beginUniqueWork(
                 CameraWorker::class.java.simpleName,
                 ExistingWorkPolicy.KEEP,
                 OneTimeWorkRequest.Builder(CameraWorker::class.java)

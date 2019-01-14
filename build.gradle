@@ -9,21 +9,21 @@ buildscript {
         androidThingsMinSdkVersion = 26
 
         // Play services versions
-        firebaseDatabaseVersion = '16.0.5'
+        firebaseDatabaseVersion = '16.0.6'
         firebaseStorageVersion = '16.0.5'
-        playServicesVisionVersion = '17.0.2'
 
         //Libraries
         androidxAnnotationVersion = '1.0.1'
-        materialVersion = '1.1.0-alpha02'
-        archLifecycleVersion = '2.0.0'
-        archPagingVersion = '2.1.0-rc01'
-        archRoomVersion = '2.1.0-alpha03'
-        archWorkManagerVersion = '1.0.0-beta01'
+        materialVersion = '1.1.0-alpha03'
+        archLifecycleVersion = '2.1.0-alpha02'
+        archPagingVersion = '2.1.0'
+        archRoomVersion = '2.1.0-alpha04'
+        archWorkManagerVersion = '1.0.0-beta04'
         constraintLayoutVersion = '2.0.0-alpha3'
-        kotlinVersion = '1.3.11'
+        kotlinVersion = '1.3.20'
         kotlinCoroutinesVersion = '1.0.0'
-        daggerVersion = '2.20'
+        daggerVersion = '2.21'
+        rxJavaVersion = '2.2.6'
         rxKotlinVersion = '2.3.0'
         rxAndroidVersion = '2.1.0'
         timberVersion = '4.7.1'
@@ -38,13 +38,13 @@ buildscript {
         driverButtonVersion = '1.0'
 
         //Testing
-        mockitoKotlinVersion = '2.0.0'
-        spekVersion = '2.0.0-rc.1'
+        mockitoKotlinVersion = '2.1.0'
+        spekVersion = '2.0.0'
 
         //test instrumentation
-        androidTestCoreVersion = '1.1.0'
-        androidTestRunnerVersion = '1.1.1'
-        espressoVersion = '3.1.1'
+        androidTestCoreVersion = '1.1.1-alpha01'
+        androidTestRunnerVersion = '1.1.2-alpha01'
+        espressoVersion = '3.1.2-alpha01'
 
         appDependencies = [
                 kotlinStdlib         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
@@ -62,10 +62,10 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0-rc03'
+        classpath 'com.android.tools.build:gradle:3.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.3.1.1'
-        classpath 'org.jacoco:org.jacoco.core:0.8.2'
+        classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.3.2.0'
+        classpath 'org.jacoco:org.jacoco.core:0.8.3'
         classpath 'com.google.gms:google-services:4.2.0'
     }
 }

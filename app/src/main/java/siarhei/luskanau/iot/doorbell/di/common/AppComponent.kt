@@ -6,18 +6,18 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import siarhei.luskanau.iot.doorbell.AppApplication
 import siarhei.luskanau.iot.doorbell.di.AppModule
-import siarhei.luskanau.iot.doorbell.workmanager.WorkerModule
-import siarhei.luskanau.iot.doorbell.workmanager.dagger.AndroidWorkerInjectionModule
+import siarhei.luskanau.iot.doorbell.workmanager.dagger.WorkerModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [
-    AndroidSupportInjectionModule::class,
-    ActivityBuildersModule::class,
-    AppModule::class,
-    AndroidWorkerInjectionModule::class,
-    WorkerModule::class
-])
+@Component(
+    modules = [
+        AndroidSupportInjectionModule::class,
+        ActivityBuildersModule::class,
+        AppModule::class,
+        WorkerModule::class
+    ]
+)
 interface AppComponent : AndroidInjector<AppApplication> {
 
     @Component.Builder

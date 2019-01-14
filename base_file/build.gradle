@@ -21,6 +21,4 @@ dependencies {
 
     implementation appDependencies.kotlinStdlib
     implementation "com.jakewharton.timber:timber:$timberVersion"
-
-    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
 }

@@ -6,7 +6,8 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import androidx.work.Worker
+import androidx.work.Configuration
+import androidx.work.WorkManager
 import dagger.android.AndroidInjection
 import dagger.android.DaggerApplication
 import dagger.android.DispatchingAndroidInjector
@@ -17,11 +18,11 @@ import siarhei.luskanau.iot.doorbell.data.model.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.di.common.AppComponent
 import siarhei.luskanau.iot.doorbell.di.common.DaggerAppComponent
 import siarhei.luskanau.iot.doorbell.di.common.Injectable
-import siarhei.luskanau.iot.doorbell.workmanager.dagger.HasWorkerInjector
+import siarhei.luskanau.iot.doorbell.workmanager.dagger.DaggerAwareWorkerFactory
 import timber.log.Timber
 import javax.inject.Inject
 
-class AppApplication : DaggerApplication(), HasSupportFragmentInjector, HasWorkerInjector {
+class AppApplication : DaggerApplication(), HasSupportFragmentInjector {
 
     @Inject
     lateinit var uptimeService: UptimeService
@@ -29,16 +30,20 @@ class AppApplication : DaggerApplication(), HasSupportFragmentInjector, HasWorke
     lateinit var appBackgroundServices: AppBackgroundServices
 
     @Inject
-    lateinit var workerInjector: DispatchingAndroidInjector<Worker>
+    lateinit var daggerAwareWorkerFactory: DaggerAwareWorkerFactory
     @Inject
     lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
 
     override fun onCreate() {
         super.onCreate()
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
         init(this)
+
+        val config = Configuration.Builder().setWorkerFactory(daggerAwareWorkerFactory).build()
+        WorkManager.initialize(this, config)
 
         uptimeService.startUptimeNotifications()
         appBackgroundServices.startServices()
@@ -48,8 +53,6 @@ class AppApplication : DaggerApplication(), HasSupportFragmentInjector, HasWorke
         .builder()
         .application(this)
         .build()
-
-    override fun workerInjector() = workerInjector
 
     override fun supportFragmentInjector() = supportFragmentInjector
 

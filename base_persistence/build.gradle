@@ -23,12 +23,6 @@ dependencies {
     implementation appDependencies.kotlinStdlib
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
-    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-
     kapt "androidx.room:room-compiler:$archRoomVersion"
-    implementation("androidx.room:room-runtime:$archRoomVersion") {
-        exclude group: 'androidx.arch.core'
-    }
-
+    implementation "androidx.room:room-runtime:$archRoomVersion"
 }

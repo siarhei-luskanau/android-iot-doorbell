@@ -25,6 +25,7 @@ import siarhei.luskanau.iot.doorbell.datasource.images.DefaultImagesDataSourceFa
 import siarhei.luskanau.iot.doorbell.datasource.images.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultUptimeService
+import javax.inject.Provider
 import javax.inject.Singleton
 
 @Module(includes = [
@@ -68,7 +69,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideUptimeService(
-        workManager: WorkManager
+        workManager: Provider<WorkManager>
     ): UptimeService =
             DefaultUptimeService(workManager)
 

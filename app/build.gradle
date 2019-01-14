@@ -41,14 +41,13 @@ android {
                     include 'spek2'
                 }
             }
+            unitTests.all {
+                testLogging.events = ["passed", "skipped", "failed"]
+            }
             jacocoOptions {
-                // here goes all jacoco config, for example
                 html.enabled = true
                 xml.enabled = false
                 csv.enabled = false
-                unitTests.all {
-                    testLogging.events = ["passed", "skipped", "failed"]
-                }
             }
         }
     }
@@ -85,11 +84,7 @@ dependencies {
 
     compileOnly "com.google.android.things:androidthings:$androidthingsVersion"
 
-    implementation("android.arch.work:work-runtime-ktx:$archWorkManagerVersion") {
-        exclude group: 'androidx.lifecycle'
-        exclude group: 'androidx.sqlite'
-        exclude group: 'androidx.room'
-    }
+    implementation "android.arch.work:work-runtime-ktx:$archWorkManagerVersion"
 
     //Development
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
@@ -97,17 +92,11 @@ dependencies {
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     //unit test
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion") {
-        exclude group: 'org.jetbrains.kotlin'
-    }
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion") {
-        exclude group: 'org.jetbrains.kotlin'
-    }
+    testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
+    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testImplementation appDependencies.kotlinTest
     testImplementation appDependencies.kotlinKotlinReflect
-    testImplementation(appDependencies.mockitoKotlin) {
-        exclude group: 'org.jetbrains.kotlin'
-    }
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
 
     //android test
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"

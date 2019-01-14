@@ -1,5 +1,17 @@
-<manifest package="siarhei.luskanau.iot.doorbell.workmanager">
+<manifest
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="siarhei.luskanau.iot.doorbell.workmanager">
 
-    <application/>
+    <application>
+
+        <provider
+                android:name="androidx.work.impl.WorkManagerInitializer"
+                android:authorities="${applicationId}.workmanager-init"
+                android:enabled="false"
+                android:exported="false"
+                tools:replace="android:authorities"/>
+
+    </application>
 
 </manifest>
