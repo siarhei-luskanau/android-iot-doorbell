@@ -27,7 +27,7 @@ abstract class BaseAppFragment<B : ViewDataBinding> : Fragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        (activity as AppCompatActivity?)?.supportActionBar?.title = getActionBarTitle()
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = getActionBarTitle()
     }
 
     protected open fun getActionBarTitle(): String = getString(R.string.app_name)

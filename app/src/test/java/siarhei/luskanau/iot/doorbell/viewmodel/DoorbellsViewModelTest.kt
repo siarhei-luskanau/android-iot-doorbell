@@ -1,7 +1,5 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import androidx.arch.core.executor.ArchTaskExecutor
-import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.nhaarman.mockitokotlin2.any
@@ -13,22 +11,11 @@ import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.datasource.doorbells.DoorbellsDataSource
+import siarhei.luskanau.iot.doorbell.setArchTaskExecutor
 
 object DoorbellsViewModelTest : Spek({
 
-    beforeGroup {
-        ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor() {
-            override fun executeOnDiskIO(runnable: Runnable) {
-                runnable.run()
-            }
-
-            override fun postToMainThread(runnable: Runnable) {
-                runnable.run()
-            }
-
-            override fun isMainThread(): Boolean = true
-        })
-    }
+    setArchTaskExecutor()
 
     val mockDoorbellsDataSource by memoized { mock<DoorbellsDataSource>() }
 

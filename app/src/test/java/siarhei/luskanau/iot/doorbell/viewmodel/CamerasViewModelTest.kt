@@ -1,7 +1,5 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import androidx.arch.core.executor.ArchTaskExecutor
-import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.atLeastOnce
@@ -15,23 +13,12 @@ import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
+import siarhei.luskanau.iot.doorbell.setArchTaskExecutor
 import kotlin.test.assertEquals
 
 object CamerasViewModelTest : Spek({
 
-    beforeGroup {
-        ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor() {
-            override fun executeOnDiskIO(runnable: Runnable) {
-                runnable.run()
-            }
-
-            override fun postToMainThread(runnable: Runnable) {
-                runnable.run()
-            }
-
-            override fun isMainThread(): Boolean = true
-        })
-    }
+    setArchTaskExecutor()
 
     val deviceId by memoized { "deviceId" }
     val cameraId by memoized { "cameraId" }

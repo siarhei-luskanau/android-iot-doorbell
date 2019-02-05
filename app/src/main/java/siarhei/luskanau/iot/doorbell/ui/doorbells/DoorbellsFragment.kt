@@ -49,7 +49,7 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
                     Pair(deviceId, camerasAdapter.getItem(position).cameraId)
         }
         binding.camerasRecyclerView.adapter = camerasAdapter
-        cameraImageRequestVewModel.cameraImageRequestLiveData.observe(this,
+        cameraImageRequestVewModel.cameraImageRequestLiveData.observe(viewLifecycleOwner,
                 Observer<String> { cameraId: String? ->
                     Toast.makeText(context, cameraId, Toast.LENGTH_SHORT).show()
                 }
@@ -57,17 +57,17 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
 
         doorbellsAdapter.onItemClickListener = { _, _, position ->
             val doorbellData = doorbellsAdapter.currentList?.get(position)
-            navigationController.navigateToImages(doorbellData?.doorbellId.orEmpty(), doorbellData?.name)
+            navigationController.navigateToImages(doorbellData?.doorbellId.orEmpty(), doorbellData?.name.orEmpty())
         }
         binding.doorbellsRecyclerView.adapter = doorbellsAdapter
 
-        camerasViewModel.camerasLiveData.observe(this,
+        camerasViewModel.camerasLiveData.observe(viewLifecycleOwner,
                 Observer<List<CameraData>> { list: List<CameraData>? ->
                     camerasAdapter.submitList(list)
                 }
         )
 
-        doorbellsViewModel.doorbellsLiveData.observe(this, Observer { pagedList -> doorbellsAdapter.submitList(pagedList) })
+        doorbellsViewModel.doorbellsLiveData.observe(viewLifecycleOwner, Observer { pagedList -> doorbellsAdapter.submitList(pagedList) })
 
         camerasViewModel.deviceIdLiveData.value = deviceId
     }

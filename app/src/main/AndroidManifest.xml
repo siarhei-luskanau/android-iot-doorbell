@@ -19,7 +19,8 @@
             android:name="com.google.android.things"
             android:required="false"/>
 
-        <activity android:name=".AppActivity">
+        <activity android:name=".AppActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -1,7 +1,5 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import androidx.arch.core.executor.ArchTaskExecutor
-import androidx.arch.core.executor.TaskExecutor
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.atLeastOnce
@@ -14,23 +12,12 @@ import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.AppConstants
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
+import siarhei.luskanau.iot.doorbell.setArchTaskExecutor
 import kotlin.test.assertEquals
 
 object RebootRequestViewModelTest : Spek({
 
-    beforeGroup {
-        ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor() {
-            override fun executeOnDiskIO(runnable: Runnable) {
-                runnable.run()
-            }
-
-            override fun postToMainThread(runnable: Runnable) {
-                runnable.run()
-            }
-
-            override fun isMainThread(): Boolean = true
-        })
-    }
+    setArchTaskExecutor()
 
     val deviceId by memoized { "deviceId" }
     val rebootRequestTimeMillis: Long by memoized { 1L }

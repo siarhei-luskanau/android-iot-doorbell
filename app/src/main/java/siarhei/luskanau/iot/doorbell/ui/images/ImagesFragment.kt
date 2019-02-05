@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import siarhei.luskanau.iot.doorbell.AppConstants
 import siarhei.luskanau.iot.doorbell.AppConstants.DATE_FORMAT
 import siarhei.luskanau.iot.doorbell.R
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
@@ -21,18 +20,6 @@ import javax.inject.Inject
 
 class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
 
-    companion object {
-        fun create(deviceId: String, deviceName: String?): ImagesFragment {
-            val args = Bundle()
-            args.putString(AppConstants.DEVICE_ID, deviceId)
-            args.putString(AppConstants.NAME, deviceName)
-
-            val fragment = ImagesFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -44,8 +31,12 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
     private val camerasAdapter = CameraAdapter()
     private val imagesAdapter = ImageAdapter()
 
-    private val deviceId: String by lazy { arguments?.getString(AppConstants.DEVICE_ID) ?: "" }
-    private val deviceName: String by lazy { arguments?.getString(AppConstants.NAME) ?: "" }
+    private val deviceId: String by lazy {
+        ImagesFragmentArgs.fromBundle(arguments ?: Bundle()).doorbellId
+    }
+    private val deviceName: String by lazy {
+        ImagesFragmentArgs.fromBundle(arguments ?: Bundle()).deviceName
+    }
 
     override fun getViewLayout(): Int = R.layout.fragment_images
 
@@ -62,7 +53,7 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
                     Pair(deviceId, camerasAdapter.getItem(position).cameraId)
         }
         binding.camerasRecyclerView.adapter = camerasAdapter
-        cameraImageRequestVewModel.cameraImageRequestLiveData.observe(this,
+        cameraImageRequestVewModel.cameraImageRequestLiveData.observe(viewLifecycleOwner,
                 Observer<String> { cameraId: String? ->
                     Toast.makeText(context, cameraId, Toast.LENGTH_SHORT).show()
                 }
@@ -74,19 +65,19 @@ class ImagesFragment : BaseAppFragment<FragmentImagesBinding>() {
         }
         binding.imagesRecyclerView.adapter = imagesAdapter
 
-        camerasViewModel.camerasLiveData.observe(this,
+        camerasViewModel.camerasLiveData.observe(viewLifecycleOwner,
                 Observer<List<CameraData>> { list: List<CameraData>? ->
                     camerasAdapter.submitList(list)
                 }
         )
 
-        viewModel.imagesLiveData.observe(this, Observer { imagesAdapter.submitList(it) })
+        viewModel.imagesLiveData.observe(viewLifecycleOwner, Observer { imagesAdapter.submitList(it) })
 
         binding.uptimeView.name.setOnClickListener {
             rebootRequestViewModel.deviceIdRebootRequestTimeLiveData.value =
                     Pair(deviceId, System.currentTimeMillis())
         }
-        rebootRequestViewModel.uptimeRebootRequestUpdateLiveData.observe(this,
+        rebootRequestViewModel.uptimeRebootRequestUpdateLiveData.observe(viewLifecycleOwner,
                 Observer<Long> {
                     Toast.makeText(context, DATE_FORMAT.format(it), Toast.LENGTH_SHORT).show()
                 }
