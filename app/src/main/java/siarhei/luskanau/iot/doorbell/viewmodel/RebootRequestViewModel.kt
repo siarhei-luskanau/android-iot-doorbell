@@ -1,31 +1,29 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import io.reactivex.Flowable
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.AppConstants
+import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class RebootRequestViewModel @Inject constructor(
-    uptimeRepository: UptimeRepository
-) : ViewModel() {
+    private val schedulerSet: SchedulerSet,
+    private val uptimeRepository: UptimeRepository
+) : BaseViewModel() {
 
-    val deviceIdRebootRequestTimeLiveData = MutableLiveData<Pair<String, Long>>()
-    val uptimeRebootRequestUpdateLiveData: LiveData<Long> =
-            Transformations.switchMap(deviceIdRebootRequestTimeLiveData) { deviceIdRebootRequestTime: Pair<String, Long> ->
-                LiveDataReactiveStreams.fromPublisher(
-                        Flowable.fromCallable {
-                            uptimeRepository.uptimeRebootRequest(
-                                    deviceId = deviceIdRebootRequestTime.first,
-                                    rebootRequestTimeMillis = deviceIdRebootRequestTime.second,
-                                    rebootRequestTimeString = AppConstants.DATE_FORMAT.format(deviceIdRebootRequestTime.second)
-                            )
-                            deviceIdRebootRequestTime.second
-                        }
+    fun rebootDevice(deviceId: String, currentTime: Long) {
+        viewModelScope.launch(schedulerSet.ioCoroutineContext) {
+            try {
+                uptimeRepository.uptimeRebootRequest(
+                        deviceId = deviceId,
+                        rebootRequestTimeMillis = currentTime,
+                        rebootRequestTimeString = AppConstants.DATE_FORMAT.format(currentTime)
                 )
+            } catch (t: Throwable) {
+                Timber.e(t)
             }
+        }.also { jobs.add(it) }
+    }
 }

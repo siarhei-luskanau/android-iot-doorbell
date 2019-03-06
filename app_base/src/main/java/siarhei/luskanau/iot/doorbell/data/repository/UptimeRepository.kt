@@ -16,7 +16,7 @@ interface UptimeRepository {
         pingTimeString: String
     )
 
-    fun uptimeRebootRequest(
+    suspend fun uptimeRebootRequest(
         deviceId: String,
         rebootRequestTimeMillis: Long,
         rebootRequestTimeString: String

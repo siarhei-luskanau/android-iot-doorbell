@@ -69,6 +69,7 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
     implementation appDependencies.kotlinStdlib
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
 
     implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
@@ -79,6 +80,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-reactivestreams:$archLifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
     implementation "androidx.paging:paging-runtime:$archPagingVersion"
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
@@ -89,6 +91,8 @@ dependencies {
     compileOnly "com.google.android.things:androidthings:$androidthingsVersion"
 
     implementation "android.arch.work:work-runtime-ktx:$archWorkManagerVersion"
+
+    implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
 
     //Development
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"

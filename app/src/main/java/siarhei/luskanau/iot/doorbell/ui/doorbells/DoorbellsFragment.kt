@@ -1,7 +1,6 @@
 package siarhei.luskanau.iot.doorbell.ui.doorbells
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -45,15 +44,12 @@ class DoorbellsFragment : BaseAppFragment<FragmentDoorbellsBinding>() {
         cameraImageRequestVewModel = ViewModelProviders.of(this, viewModelFactory).get(CameraImageRequestVewModel::class.java)
 
         camerasAdapter.onItemClickListener = { _, _, position ->
-            cameraImageRequestVewModel.deviceIdCameraIdLiveData.value =
-                    Pair(deviceId, camerasAdapter.getItem(position).cameraId)
+            cameraImageRequestVewModel.requestCameraImage(
+                    deviceId = deviceId,
+                    cameraId = camerasAdapter.getItem(position).cameraId
+            )
         }
         binding.camerasRecyclerView.adapter = camerasAdapter
-        cameraImageRequestVewModel.cameraImageRequestLiveData.observe(viewLifecycleOwner,
-                Observer<String> { cameraId: String? ->
-                    Toast.makeText(context, cameraId, Toast.LENGTH_SHORT).show()
-                }
-        )
 
         doorbellsAdapter.onItemClickListener = { _, _, position ->
             val doorbellData = doorbellsAdapter.currentList?.get(position)

@@ -1,36 +1,31 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.rxkotlin.subscribeBy
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class CameraImageRequestVewModel @Inject constructor(
-    schedulerSet: SchedulerSet,
-    doorbellRepository: DoorbellRepository
-) : ViewModel() {
+    private val schedulerSet: SchedulerSet,
+    private val doorbellRepository: DoorbellRepository
+) : BaseViewModel() {
 
-    val deviceIdCameraIdLiveData = MutableLiveData<Pair<String, String>>()
-
-    val cameraImageRequestLiveData: LiveData<String> =
-            Transformations.switchMap(deviceIdCameraIdLiveData) { deviceIdCameraId: Pair<String, String> ->
-                LiveDataReactiveStreams.fromPublisher(
-                        Completable.fromAction {
-                            doorbellRepository.sendCameraImageRequest(
-                                    deviceId = deviceIdCameraId.first,
-                                    cameraId = deviceIdCameraId.second,
-                                    isRequested = true
-                            )
-                        }
-                                .subscribeOn(schedulerSet.io)
-                                .observeOn(schedulerSet.ui)
-                                .andThen(Flowable.just(deviceIdCameraId.second))
+    fun requestCameraImage(deviceId: String, cameraId: String) {
+        Completable.fromAction {
+            doorbellRepository.sendCameraImageRequest(
+                    deviceId = deviceId,
+                    cameraId = cameraId,
+                    isRequested = true
+            )
+        }
+                .subscribeOn(schedulerSet.io)
+                .observeOn(schedulerSet.ui)
+                .subscribeBy(
+                        onComplete = {},
+                        onError = { Timber.e(it) }
                 )
-            }
+                .also { disposables.add(it) }
+    }
 }

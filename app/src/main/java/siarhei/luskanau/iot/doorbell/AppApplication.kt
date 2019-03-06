@@ -50,9 +50,9 @@ class AppApplication : DaggerApplication(), HasSupportFragmentInjector {
     }
 
     override fun applicationInjector(): AppComponent = DaggerAppComponent
-        .builder()
-        .application(this)
-        .build()
+            .builder()
+            .application(this)
+            .build()
 
     override fun supportFragmentInjector() = supportFragmentInjector
 
@@ -60,29 +60,29 @@ class AppApplication : DaggerApplication(), HasSupportFragmentInjector {
 
         fun init(application: AppApplication) {
             application
-                .registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
-                    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                        handleActivity(activity)
-                    }
+                    .registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
+                        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                            handleActivity(activity)
+                        }
 
-                    override fun onActivityStarted(activity: Activity) {
-                    }
+                        override fun onActivityStarted(activity: Activity) {
+                        }
 
-                    override fun onActivityResumed(activity: Activity) {
-                    }
+                        override fun onActivityResumed(activity: Activity) {
+                        }
 
-                    override fun onActivityPaused(activity: Activity) {
-                    }
+                        override fun onActivityPaused(activity: Activity) {
+                        }
 
-                    override fun onActivityStopped(activity: Activity) {
-                    }
+                        override fun onActivityStopped(activity: Activity) {
+                        }
 
-                    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {
-                    }
+                        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {
+                        }
 
-                    override fun onActivityDestroyed(activity: Activity) {
-                    }
-                })
+                        override fun onActivityDestroyed(activity: Activity) {
+                        }
+                    })
         }
 
         fun handleActivity(activity: Activity) {
@@ -91,18 +91,18 @@ class AppApplication : DaggerApplication(), HasSupportFragmentInjector {
             }
 
             (activity as? FragmentActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(
-                object : FragmentManager.FragmentLifecycleCallbacks() {
-                    override fun onFragmentCreated(
-                        fragmentManager: FragmentManager,
-                        fragment: Fragment,
-                        savedInstanceState: Bundle?
-                    ) {
-                        if (fragment is Injectable) {
-                            AndroidSupportInjection.inject(fragment)
+                    object : FragmentManager.FragmentLifecycleCallbacks() {
+                        override fun onFragmentCreated(
+                            fragmentManager: FragmentManager,
+                            fragment: Fragment,
+                            savedInstanceState: Bundle?
+                        ) {
+                            if (fragment is Injectable) {
+                                AndroidSupportInjection.inject(fragment)
+                            }
                         }
-                    }
-                },
-                true
+                    },
+                    true
             )
         }
     }

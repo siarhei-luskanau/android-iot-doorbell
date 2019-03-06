@@ -20,7 +20,7 @@ dependencies {
     implementation project(':app_base')
 
     implementation appDependencies.kotlinStdlib
-    implementation appDependencies.kotlinxCoroutinesCore
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
     implementation "com.google.firebase:firebase-database:$firebaseDatabaseVersion"

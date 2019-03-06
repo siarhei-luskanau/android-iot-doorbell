@@ -8,7 +8,7 @@
 
         <variable
             name="item"
-            type="siarhei.luskanau.iot.doorbell.data.model.CameraData"/>
+            type="siarhei.luskanau.iot.doorbell.data.model.CameraData" />
 
     </data>
 
@@ -24,10 +24,10 @@
             android:layout_margin="8dp"
             android:drawableTop="@drawable/ic_add_a_photo"
             android:gravity="center_horizontal"
-            android:maxLines="2"
             android:maxWidth="196dp"
+            android:maxLines="2"
             android:text='@{item.name ?? item.cameraId}'
-            tools:text="@tools:sample/lorem/random"/>
+            tools:text="@tools:sample/lorem/random" />
 
     </androidx.cardview.widget.CardView>
 

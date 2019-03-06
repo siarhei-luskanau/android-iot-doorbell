@@ -21,9 +21,6 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
                             .child(UptimeDto.STARTUP_TIME_MILLIS_KEY),
                     startupTimeMillis
             )
-        }
-
-        runBlocking {
             setValueToDatabase(
                     getAppDatabase().child(UPTIME_KEY).child(deviceId)
                             .child(UptimeDto.STARTUP_TIME_STRING_KEY),
@@ -43,9 +40,6 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
                             .child(UptimeDto.PING_TIME_MILLIS_KEY),
                     pingTimeMillis
             )
-        }
-
-        runBlocking {
             setValueToDatabase(
                     getAppDatabase().child(UPTIME_KEY).child(deviceId)
                             .child(UptimeDto.PING_TIME_STRING_KEY),
@@ -54,26 +48,21 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
         }
     }
 
-    override fun uptimeRebootRequest(
+    override suspend fun uptimeRebootRequest(
         deviceId: String,
         rebootRequestTimeMillis: Long,
         rebootRequestTimeString: String
     ) {
-        runBlocking {
-            setValueToDatabase(
-                    getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                            .child(UptimeDto.REBOOT_REQUEST_TIME_MILLIS_KEY),
-                    rebootRequestTimeMillis
-            )
-        }
-
-        runBlocking {
-            setValueToDatabase(
-                    getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                            .child(UptimeDto.REBOOT_REQUEST_TIME_STRING_KEY),
-                    rebootRequestTimeString
-            )
-        }
+        setValueToDatabase(
+                getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                        .child(UptimeDto.REBOOT_REQUEST_TIME_MILLIS_KEY),
+                rebootRequestTimeMillis
+        )
+        setValueToDatabase(
+                getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                        .child(UptimeDto.REBOOT_REQUEST_TIME_STRING_KEY),
+                rebootRequestTimeString
+        )
     }
 
     override fun uptimeRebooting(
@@ -87,9 +76,6 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
                             .child(UptimeDto.REBOOTING_TIME_MILLIS_KEY),
                     rebootingTimeMillis
             )
-        }
-
-        runBlocking {
             setValueToDatabase(
                     getAppDatabase().child(UPTIME_KEY).child(deviceId)
                             .child(UptimeDto.REBOOTING_TIME_STRING_KEY),

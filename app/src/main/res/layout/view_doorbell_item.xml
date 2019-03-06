@@ -8,7 +8,7 @@
 
         <variable
             name="item"
-            type="siarhei.luskanau.iot.doorbell.data.model.DoorbellData"/>
+            type="siarhei.luskanau.iot.doorbell.data.model.DoorbellData" />
 
     </data>
 
@@ -26,7 +26,7 @@
             android:gravity="center_vertical"
             android:maxLines="2"
             android:text="@{item.name ?? item.doorbellId}"
-            tools:text="@tools:sample/lorem/random"/>
+            tools:text="@tools:sample/lorem/random" />
 
     </androidx.cardview.widget.CardView>
 

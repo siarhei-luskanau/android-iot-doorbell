@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
@@ -13,7 +12,7 @@ import javax.inject.Inject
 
 class ImagesViewModel @Inject constructor(
     imagesDataSourceFactory: ImagesDataSourceFactory
-) : ViewModel() {
+) : BaseViewModel() {
 
     val deviceIdLiveData = MutableLiveData<String>()
     val imagesLiveData: LiveData<PagedList<ImageData>> =

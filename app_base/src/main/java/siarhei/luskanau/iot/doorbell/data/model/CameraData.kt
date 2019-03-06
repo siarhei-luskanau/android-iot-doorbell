@@ -5,6 +5,6 @@ import android.util.Size
 data class CameraData(
     val cameraId: String,
     val name: String? = null,
-    val sizes: Map<Int, Size> = emptyMap(),
+    val sizes: Map<Int, Size>? = null,
     val info: Map<String, Any> = emptyMap()
 )

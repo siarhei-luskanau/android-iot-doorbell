@@ -1,7 +1,6 @@
 package siarhei.luskanau.iot.doorbell.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
@@ -11,7 +10,7 @@ import javax.inject.Inject
 
 class DoorbellsViewModel @Inject constructor(
     doorbellsDataSource: DoorbellsDataSource
-) : ViewModel() {
+) : BaseViewModel() {
 
     val doorbellsLiveData: LiveData<PagedList<DoorbellData>> =
             LivePagedListBuilder(

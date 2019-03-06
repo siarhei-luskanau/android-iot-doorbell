@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import io.reactivex.Flowable
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
@@ -15,7 +14,7 @@ import javax.inject.Inject
 class CamerasViewModel @Inject constructor(
     schedulerSet: SchedulerSet,
     doorbellRepository: DoorbellRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     val deviceIdLiveData = MutableLiveData<String>()
     val camerasLiveData: LiveData<List<CameraData>> =
