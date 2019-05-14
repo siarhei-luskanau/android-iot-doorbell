@@ -22,5 +22,5 @@ dependencies {
     implementation appDependencies.kotlinStdlib
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
-    implementation "androidx.paging:paging-runtime:$archPagingVersion"
+    implementation "androidx.paging:paging-runtime:$pagingVersion"
 }

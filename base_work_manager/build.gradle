@@ -28,5 +28,5 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
 
-    implementation "android.arch.work:work-runtime-ktx:$archWorkManagerVersion"
+    implementation "androidx.work:work-runtime-ktx:$workManagerVersion"
 }

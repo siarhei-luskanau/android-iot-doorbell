@@ -87,10 +87,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideCameraRepository(
-        context: Context,
         imageRepository: ImageRepository
     ): CameraRepository = AndroidCameraRepository(
-            context,
             imageRepository
     )
 

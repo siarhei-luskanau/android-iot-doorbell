@@ -1,7 +1,6 @@
 package siarhei.luskanau.iot.doorbell.workmanager
 
 import android.content.Context
-import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
@@ -49,10 +48,10 @@ class UptimeWorker(
                 thisDeviceRepository.getCamerasList()
             )
 
-            ListenableWorker.Result.success()
+            Result.success()
         } catch (t: Throwable) {
             Timber.e(t)
-            ListenableWorker.Result.failure()
+            Result.failure()
         }
 
     class Factory @Inject constructor(

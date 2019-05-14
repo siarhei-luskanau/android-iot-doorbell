@@ -3,6 +3,7 @@ package siarhei.luskanau.iot.doorbell.data
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.TestScheduler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.coroutines.CoroutineContext
 
 open class SchedulerSet(
@@ -14,6 +15,7 @@ open class SchedulerSet(
 ) {
 
     companion object {
+        @ExperimentalCoroutinesApi
         fun test(): SchedulerSet = SchedulerSet(
                 io = TestScheduler(),
                 ui = TestScheduler(),

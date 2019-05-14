@@ -23,6 +23,6 @@ dependencies {
     implementation appDependencies.kotlinStdlib
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
-    kapt "androidx.room:room-compiler:$archRoomVersion"
-    implementation "androidx.room:room-runtime:$archRoomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
 }

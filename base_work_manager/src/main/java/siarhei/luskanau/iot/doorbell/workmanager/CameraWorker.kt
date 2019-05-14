@@ -1,9 +1,9 @@
 package siarhei.luskanau.iot.doorbell.workmanager
 
 import android.content.Context
-import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -34,25 +34,26 @@ class CameraWorker(
                         isRequested = false
                     )
 
-                    cameraRepository
-                        .makeImage(
-                            deviceId = thisDeviceRepository.doorbellId(),
-                            cameraId = cameraId
-                        )
-                        .blockingIterable()
-                        .onEach { imageFile ->
-                            doorbellRepository.sendImage(
+                    runBlocking {
+                        cameraRepository
+                            .makeImage(
                                 deviceId = thisDeviceRepository.doorbellId(),
-                                cameraId = cameraId,
-                                imageFile = imageFile
+                                cameraId = cameraId
                             )
-                        }
+                            .also { imageFile ->
+                                doorbellRepository.sendImage(
+                                    deviceId = thisDeviceRepository.doorbellId(),
+                                    cameraId = cameraId,
+                                    imageFile = imageFile
+                                )
+                            }
+                    }
                 }
 
-            ListenableWorker.Result.success()
+            Result.success()
         } catch (t: Throwable) {
             Timber.e(t)
-            ListenableWorker.Result.failure()
+            Result.failure()
         }
 
     class Factory @Inject constructor(
