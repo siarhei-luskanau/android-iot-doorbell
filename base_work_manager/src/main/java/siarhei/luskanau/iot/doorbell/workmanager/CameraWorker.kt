@@ -1,9 +1,8 @@
 package siarhei.luskanau.iot.doorbell.workmanager
 
 import android.content.Context
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -18,12 +17,12 @@ class CameraWorker(
     private val thisDeviceRepository: ThisDeviceRepository,
     private val doorbellRepository: DoorbellRepository,
     private val cameraRepository: CameraRepository
-) : Worker(
+) : CoroutineWorker(
     context,
     workerParams
 ) {
 
-    override fun doWork(): Result =
+    override suspend fun doWork(): Result =
         try {
             doorbellRepository.getCameraImageRequest(thisDeviceRepository.doorbellId())
                 .filterValues { value -> value }
@@ -34,20 +33,18 @@ class CameraWorker(
                         isRequested = false
                     )
 
-                    runBlocking {
-                        cameraRepository
-                            .makeImage(
+                    cameraRepository
+                        .makeImage(
+                            deviceId = thisDeviceRepository.doorbellId(),
+                            cameraId = cameraId
+                        )
+                        .also { imageFile ->
+                            doorbellRepository.sendImage(
                                 deviceId = thisDeviceRepository.doorbellId(),
-                                cameraId = cameraId
+                                cameraId = cameraId,
+                                imageFile = imageFile
                             )
-                            .also { imageFile ->
-                                doorbellRepository.sendImage(
-                                    deviceId = thisDeviceRepository.doorbellId(),
-                                    cameraId = cameraId,
-                                    imageFile = imageFile
-                                )
-                            }
-                    }
+                        }
                 }
 
             Result.success()
@@ -57,7 +54,6 @@ class CameraWorker(
         }
 
     class Factory @Inject constructor(
-        // left out params: WorkerParameters for the create() method
         private val appContext: Provider<Context>,
         private val thisDeviceRepository: Provider<ThisDeviceRepository>,
         private val doorbellRepository: Provider<DoorbellRepository>,

@@ -1,7 +1,7 @@
 package siarhei.luskanau.iot.doorbell.workmanager
 
 import android.content.Context
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -21,12 +21,12 @@ class UptimeWorker(
     private val uptimeRepository: UptimeRepository,
     private val thisDeviceRepository: ThisDeviceRepository,
     private val doorbellRepository: DoorbellRepository
-) : Worker(
+) : CoroutineWorker(
     context,
     workerParams
 ) {
 
-    override fun doWork(): Result =
+    override suspend fun doWork(): Result =
         try {
 
             uptimeRepository.sendIpAddressMap(
@@ -55,7 +55,6 @@ class UptimeWorker(
         }
 
     class Factory @Inject constructor(
-        // left out params: WorkerParameters for the create() method
         private val appContext: Provider<Context>,
         private val uptimeRepository: Provider<UptimeRepository>,
         private val thisDeviceRepository: Provider<ThisDeviceRepository>,
