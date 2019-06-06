@@ -4,38 +4,43 @@ buildscript {
         //Android
         compileSdkVersion = 29
         targetSdkVersion = 29
-        buildToolsVersion = '29.0.0'
+        buildToolsVersion = '29.0.1'
         minSdkVersion = 21
         androidThingsMinSdkVersion = 26
+        androidGragleBuildVersion = '3.4.2'
 
         // Play services versions
         firebaseDatabaseVersion = '18.0.0'
-        firebaseStorageVersion = '18.0.0'
+        firebaseStorageVersion = '18.1.0'
 
         //Libraries
-        kotlinVersion = '1.3.40'
+        kotlinVersion = '1.3.41'
         kotlinCoroutinesVersion = '1.2.2'
-        navigationVersion = '2.1.0-alpha06'
+        navigationVersion = '2.1.0-beta02'
         androidxAnnotationVersion = '1.1.0'
         androidxCameraVersion = '1.0.0-alpha03'
-        materialVersion = '1.1.0-alpha07'
+        materialVersion = '1.1.0-alpha08'
         fragmentVersion = '1.2.0-alpha01'
         lifecycleVersion = '2.2.0-alpha02'
         pagingVersion = '2.1.0'
-        roomVersion = '2.1.0'
-        workManagerVersion = '2.1.0-rc01'
+        roomVersion = '2.2.0-alpha01'
+        workManagerVersion = '2.2.0-beta02'
         constraintLayoutVersion = '2.0.0-beta2'
-        daggerVersion = '2.23.2'
-        koinVersion = '2.0.1'
         rxJavaVersion = '2.2.10'
-        rxKotlinVersion = '2.3.0'
+        rxKotlinVersion = '2.4.0-beta.1'
         rxAndroidVersion = '2.1.1'
         timberVersion = '4.7.1'
         gsonVersion = '2.8.5'
         glideVersion = '4.9.0'
+        paperworkVersion = '1.2.7'
+
+        // DI
+        daggerVersion = '2.23.2'
+        kodeinVersion = '6.3.2'
+        koinVersion = '2.0.1'
 
         //Development
-        leakCanaryVersion = '2.0-alpha-2'
+        leakCanaryVersion = '2.0-alpha-3'
 
         //Android Things
         androidthingsVersion = '1.0'
@@ -46,9 +51,10 @@ buildscript {
         spekVersion = '2.0.1'
 
         //test instrumentation
-        androidTestCoreVersion = '1.1.1-alpha01'
-        androidTestRunnerVersion = '1.1.2-alpha02'
-        espressoVersion = '3.1.2-alpha01'
+        androidTestCoreVersion = '1.2.1-alpha02'
+        androidTestRunnerVersion = '1.3.0-alpha02'
+        espressoVersion = '3.3.0-alpha02'
+        fragmentTestingVersion = '1.2.0-alpha01'
 
         appDependencies = [
                 kotlinStdlib : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
@@ -64,12 +70,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath "com.android.tools.build:gradle:$androidGragleBuildVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
         classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.4.2.1'
-        classpath 'org.jacoco:org.jacoco.core:0.8.4'
         classpath 'com.google.gms:google-services:4.3.0'
+        classpath "hu.supercluster:paperwork-plugin:$paperworkVersion"
     }
 }
 
@@ -80,6 +86,15 @@ allprojects {
     }
 
     apply from: "$rootDir/ktlint.gradle"
+
+    tasks.withType(JavaCompile).all {
+        android.compileOptions.sourceCompatibility = JavaVersion.VERSION_1_8
+        android.compileOptions.targetCompatibility = JavaVersion.VERSION_1_8
+        android.lintOptions.abortOnError = false
+    }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+    }
 }
 
 task clean(type: Delete) {

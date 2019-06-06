@@ -6,7 +6,7 @@ import java.io.File
 import java.io.InputStream
 
 class InternalStorageImageRepository(
-    val context: Context
+    private val context: Context
 ) : ImageRepository {
 
     override fun prepareFile(name: String): File =

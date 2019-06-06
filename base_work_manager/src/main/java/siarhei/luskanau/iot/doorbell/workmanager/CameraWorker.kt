@@ -6,10 +6,7 @@ import androidx.work.WorkerParameters
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
-import siarhei.luskanau.iot.doorbell.workmanager.dagger.AppWorkerFactory
 import timber.log.Timber
-import javax.inject.Inject
-import javax.inject.Provider
 
 class CameraWorker(
     context: Context,
@@ -24,7 +21,9 @@ class CameraWorker(
 
     override suspend fun doWork(): Result =
         try {
-            doorbellRepository.getCameraImageRequest(thisDeviceRepository.doorbellId())
+            doorbellRepository.getCameraImageRequest(
+                thisDeviceRepository.doorbellId()
+            )
                 .filterValues { value -> value }
                 .onEach { (cameraId, _) ->
                     doorbellRepository.sendCameraImageRequest(
@@ -52,21 +51,4 @@ class CameraWorker(
             Timber.e(t)
             Result.failure()
         }
-
-    class Factory @Inject constructor(
-        private val appContext: Provider<Context>,
-        private val thisDeviceRepository: Provider<ThisDeviceRepository>,
-        private val doorbellRepository: Provider<DoorbellRepository>,
-        private val cameraRepository: Provider<CameraRepository>
-    ) : AppWorkerFactory<CameraWorker> {
-        override fun create(params: WorkerParameters): CameraWorker {
-            return CameraWorker(
-                appContext.get(),
-                params,
-                thisDeviceRepository.get(),
-                doorbellRepository.get(),
-                cameraRepository.get()
-            )
-        }
-    }
 }

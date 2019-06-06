@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.cache
 
+import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
@@ -16,14 +17,17 @@ class DefaultCachedRepository(
         afterImageId: String?,
         onResult: (List<ImageData>) -> Unit,
         invalidate: () -> Unit
-    ) {
-        onResult.invoke(doorbellRepository.getImagesList(
-                deviceId = deviceId,
-                size = limit,
-                imageIdAt = afterImageId,
-                orderAsc = true
-        ))
-    }
+    ) =
+        runBlocking {
+            onResult.invoke(
+                doorbellRepository.getImagesList(
+                    deviceId = deviceId,
+                    size = limit,
+                    imageIdAt = afterImageId,
+                    orderAsc = true
+                )
+            )
+        }
 
     override fun loadBeforeImages(
         deviceId: String,
@@ -31,14 +35,17 @@ class DefaultCachedRepository(
         beforeImageId: String?,
         onResult: (List<ImageData>) -> Unit,
         invalidate: () -> Unit
-    ) {
-        onResult.invoke(doorbellRepository.getImagesList(
-                deviceId = deviceId,
-                size = limit,
-                imageIdAt = beforeImageId,
-                orderAsc = false
-        ))
-    }
+    ) =
+        runBlocking {
+            onResult.invoke(
+                doorbellRepository.getImagesList(
+                    deviceId = deviceId,
+                    size = limit,
+                    imageIdAt = beforeImageId,
+                    orderAsc = false
+                )
+            )
+        }
 
 //    private fun getAfterImagesList(deviceId: String, callback: ItemKeyedDataSource.LoadCallback<ImageData>, size: Int, startAt: String? = null) {
 //        Single.fromCallable { persistenceRepository.getImages(deviceId, startAt, size) }

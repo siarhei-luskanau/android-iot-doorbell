@@ -29,12 +29,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".PermissionActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:theme="@style/Theme.AppCompat.Dialog"/>
-
     </application>
 
 </manifest>

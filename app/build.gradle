@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
-apply plugin: 'jacoco'
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
@@ -16,7 +15,7 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "siarhei.luskanau.iot.doorbell.MockTestRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -40,28 +39,20 @@ android {
             unitTests.all {
                 testLogging.events = ["passed", "skipped", "failed"]
             }
-            jacocoOptions {
-                html.enabled = true
-                xml.enabled = false
-                csv.enabled = false
-            }
         }
     }
 }
 
 dependencies {
-    implementation project(':app_base')
+    implementation project(':doomain')
     implementation project(':base_camera')
     implementation project(':base_file')
     implementation project(':base_firebase')
     implementation project(':base_persistence')
     implementation project(':base_cache')
     implementation project(':base_work_manager')
-
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
-    implementation "com.google.dagger:dagger:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    implementation project(':ui')
+    implementation project(':navigation')
 
     implementation appDependencies.kotlinStdlib
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
@@ -86,24 +77,21 @@ dependencies {
 
     implementation "androidx.work:work-runtime-ktx:$workManagerVersion"
 
-    implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
-
     //Development
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
 
     //unit test
-    testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
-    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testImplementation appDependencies.kotlinTest
     testImplementation appDependencies.kotlinReflect
+    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
+    testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
 
     //android test
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test:core:$androidTestCoreVersion"
-    androidTestImplementation "androidx.test:runner:$androidTestRunnerVersion"
     androidTestImplementation appDependencies.kotlinTest
     androidTestImplementation appDependencies.kotlinReflect
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 }
 
 // ADD THIS AT THE BOTTOM

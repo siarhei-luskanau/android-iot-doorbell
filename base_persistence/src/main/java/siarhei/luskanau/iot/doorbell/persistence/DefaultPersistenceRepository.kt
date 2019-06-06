@@ -10,15 +10,15 @@ class DefaultPersistenceRepository(
 ) : PersistenceRepository {
 
     private val appDatabase: AppDatabase =
-            Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "${context.packageName}.db"
-            ).build()
+        Room.databaseBuilder(
+            context.applicationContext,
+            AppDatabase::class.java,
+            "${context.packageName}.db"
+        ).build()
 
     private val mapper = ImageEntityMapper()
 
-    override fun getImages(
+    override suspend fun getImages(
         deviceId: String,
         afterImageId: String?,
         limit: Int
@@ -28,6 +28,6 @@ class DefaultPersistenceRepository(
         mapper.fromEntityList(appDatabase.imageDao().getImages(deviceId, limit))
     }
 
-    override fun insertImages(deviceId: String, images: List<ImageData>) =
-            appDatabase.imageDao().insertImages(mapper.toEntityList(deviceId, images))
+    override suspend fun insertImages(deviceId: String, images: List<ImageData>) =
+        appDatabase.imageDao().insertImages(mapper.toEntityList(deviceId, images))
 }

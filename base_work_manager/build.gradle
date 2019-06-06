@@ -12,15 +12,14 @@ android {
 }
 
 dependencies {
-    implementation project(':app_base')
+    implementation project(':doomain')
 
     implementation appDependencies.kotlinStdlib
     implementation "com.jakewharton.timber:timber:$timberVersion"
-
-    implementation "com.google.dagger:dagger:$daggerVersion"
 
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
 
     implementation "androidx.work:work-runtime-ktx:$workManagerVersion"
+    implementation "androidx.work:work-gcm:$workManagerVersion"
 }

@@ -1,10 +1,11 @@
 language: android
+dist: trusty
 
 android:
   components:
     - platform-tools
     - tools
-    - build-tools-29.0.0
+    - build-tools-29.0.1
     - android-29
     - android-21
     - sys-img-armeabi-v7a-android-21
@@ -17,13 +18,14 @@ before_script:
   - adb shell input keyevent 82 &
 
 script:
-  - ./gradlew ktlint clean build test connectedAndroidTest jacocoTestReport --stacktrace
+  - ./gradlew ktlint clean build test connectedAndroidTest --stacktrace
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
-    - $HOME/.m2
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
