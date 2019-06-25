@@ -30,11 +30,6 @@ android {
         enabled = true
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     testOptions {
         junitPlatform {
             filters {
@@ -81,7 +76,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
-    implementation "androidx.paging:paging-runtime:$pagingVersion"
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
 
     implementation "com.jakewharton.timber:timber:$timberVersion"
@@ -95,14 +90,12 @@ dependencies {
 
     //Development
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
-    testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
 
     //unit test
     testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testImplementation appDependencies.kotlinTest
-    testImplementation appDependencies.kotlinKotlinReflect
+    testImplementation appDependencies.kotlinReflect
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
 
     //android test
@@ -110,7 +103,7 @@ dependencies {
     androidTestImplementation "androidx.test:core:$androidTestCoreVersion"
     androidTestImplementation "androidx.test:runner:$androidTestRunnerVersion"
     androidTestImplementation appDependencies.kotlinTest
-    androidTestImplementation appDependencies.kotlinKotlinReflect
+    androidTestImplementation appDependencies.kotlinReflect
 }
 
 // ADD THIS AT THE BOTTOM

@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: "de.mannodermaus.android-junit5"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -9,19 +11,51 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    androidExtensions {
+        experimental = true
+    }
+
+    testOptions {
+        junitPlatform {
+            filters {
+                engines {
+                    include 'spek2'
+                }
+            }
+            unitTests.all {
+                testLogging.events = ["passed", "skipped", "failed"]
+            }
+        }
     }
 }
 
 dependencies {
+    compileOnly "com.google.android.things:androidthings:$androidthingsVersion"
+
     implementation appDependencies.kotlinStdlib
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
+
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
+    //unit test
+    testImplementation appDependencies.kotlinTest
+    testImplementation appDependencies.kotlinReflect
+    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
+    testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
+
+    //android test
+    androidTestImplementation "androidx.test:core:$androidTestCoreVersion"
+    androidTestImplementation appDependencies.kotlinTest
+    androidTestImplementation appDependencies.kotlinReflect
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 }
