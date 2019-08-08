@@ -1,12 +1,12 @@
 package siarhei.luskanau.iot.doorbell.data
 
+import java.util.Timer
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.schedule
 import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import timber.log.Timber
-import java.util.Timer
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.schedule
 
 class AppBackgroundServices(
     private val doorbellRepository: DoorbellRepository,

@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.dagger.di.fragment
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import dagger.Module
 import dagger.Provides
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -38,7 +37,7 @@ class FragmentBuilderModule {
         thisDeviceRepository: ThisDeviceRepository
     ) = DoorbellListFragment {
         val placeListViewModel =
-            ViewModelProviders.of(activity, viewModelFactory).get(DoorbellListViewModel::class.java)
+            ViewModelProvider(activity, viewModelFactory).get(DoorbellListViewModel::class.java)
         DoorbellListPresenterImpl(
             doorbellListViewModel = placeListViewModel,
             appNavigation = appNavigation,
@@ -55,7 +54,7 @@ class FragmentBuilderModule {
     ) = ImageListFragment { args: Bundle? ->
         ImageListPresenterImpl(
             doorbellData = appNavigationArgs.getImagesFragmentArgs(args),
-            imageListViewModel = ViewModelProviders.of(activity, viewModelFactory)
+            imageListViewModel = ViewModelProvider(activity, viewModelFactory)
                 .get(ImageListViewModel::class.java),
             appNavigation = appNavigation
         )

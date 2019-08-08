@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.work.WorkManager
 import org.kodein.di.Kodein
 import org.kodein.di.generic.M
@@ -132,7 +131,7 @@ val activityModule = Kodein.Module(name = "activityModule") {
     }
     bind<DoorbellListPresenter>() with factory { activity: FragmentActivity, appNavigation: AppNavigation ->
         val viewModelFactory: ViewModelProvider.Factory = instance()
-        val viewModel = ViewModelProviders.of(activity, viewModelFactory)
+        val viewModel = ViewModelProvider(activity, viewModelFactory)
             .get(DoorbellListViewModel::class.java)
         val thisDeviceRepository: ThisDeviceRepository = instance()
         DoorbellListPresenterImpl(
@@ -152,7 +151,7 @@ val activityModule = Kodein.Module(name = "activityModule") {
     }
     bind<ImageListPresenter>() with factory { activity: FragmentActivity, appNavigation: AppNavigation, doorbellData: DoorbellData ->
         val viewModelFactory: ViewModelProvider.Factory = instance()
-        val viewModel = ViewModelProviders.of(activity, viewModelFactory)
+        val viewModel = ViewModelProvider(activity, viewModelFactory)
             .get(ImageListViewModel::class.java)
         ImageListPresenterImpl(
             doorbellData = doorbellData,

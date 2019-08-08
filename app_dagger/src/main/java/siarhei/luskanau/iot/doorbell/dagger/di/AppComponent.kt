@@ -2,8 +2,8 @@ package siarhei.luskanau.iot.doorbell.dagger.di
 
 import dagger.BindsInstance
 import dagger.Component
-import siarhei.luskanau.iot.doorbell.dagger.AppApplication
 import javax.inject.Singleton
+import siarhei.luskanau.iot.doorbell.dagger.AppApplication
 
 @Component(
     modules = [

@@ -3,8 +3,8 @@ package siarhei.luskanau.iot.doorbell.data
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.Dispatchers
 
 class DefaultSchedulerSet(
     override val io: Scheduler = Schedulers.io(),

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import siarhei.luskanau.iot.doorbell.doomain.AppNavigation
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
@@ -35,7 +35,7 @@ class AppFragmentFactory(
             }
 
             DoorbellListFragment::class.java.name -> {
-                val viewModel = ViewModelProviders.of(activity, appModules.viewModelFactory)
+                val viewModel = ViewModelProvider(activity, appModules.viewModelFactory)
                     .get(DoorbellListViewModel::class.java)
                 DoorbellListFragment {
                     DoorbellListPresenterImpl(
@@ -47,7 +47,7 @@ class AppFragmentFactory(
             }
 
             ImageListFragment::class.java.name -> {
-                val viewModel = ViewModelProviders.of(activity, appModules.viewModelFactory)
+                val viewModel = ViewModelProvider(activity, appModules.viewModelFactory)
                     .get(ImageListViewModel::class.java)
                 ImageListFragment { args: Bundle? ->
                     val doorbellData = appModules.appNavigationArgs.getImagesFragmentArgs(args)

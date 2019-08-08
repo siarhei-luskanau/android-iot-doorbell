@@ -6,9 +6,9 @@ import android.os.Build
 import android.provider.Settings
 import com.google.android.things.pio.PeripheralManager
 import hu.supercluster.paperwork.Paperwork
-import siarhei.luskanau.iot.doorbell.doomain.DeviceInfoProvider
 import java.io.Serializable
 import java.util.UUID
+import siarhei.luskanau.iot.doorbell.doomain.DeviceInfoProvider
 
 private const val GIT_SHA = "gitSha"
 private const val GIT_BRANCH = "gitBranch"

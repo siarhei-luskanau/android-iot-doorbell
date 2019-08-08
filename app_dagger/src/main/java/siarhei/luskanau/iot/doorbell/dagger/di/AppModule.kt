@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
+import javax.inject.Provider
+import javax.inject.Singleton
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.dagger.AppApplication
 import siarhei.luskanau.iot.doorbell.dagger.di.viewmodel.ViewModelBinderModule
@@ -36,8 +38,6 @@ import siarhei.luskanau.iot.doorbell.doomain.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigationArgs
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
-import javax.inject.Provider
-import javax.inject.Singleton
 
 @Module(
     includes = [

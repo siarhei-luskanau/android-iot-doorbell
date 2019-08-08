@@ -2,10 +2,10 @@ package siarhei.luskanau.iot.doorbell.dagger.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
+import timber.log.Timber
 
 @Singleton
 class DaggerViewModelFactory @Inject constructor(

@@ -2,8 +2,8 @@ package siarhei.luskanau.iot.doorbell
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import org.junit.Test
 import kotlin.test.assertEquals
+import org.junit.Test
 
 class ExampleInstrumentedTest {
 

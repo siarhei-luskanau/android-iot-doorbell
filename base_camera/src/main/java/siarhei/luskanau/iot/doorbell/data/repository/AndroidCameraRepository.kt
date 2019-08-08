@@ -13,20 +13,22 @@ import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCapture.CaptureMode
 import androidx.camera.core.ImageCaptureConfig
 import androidx.lifecycle.ProcessLifecycleOwner
-import siarhei.luskanau.iot.doorbell.data.model.CameraData
-import siarhei.luskanau.iot.doorbell.data.model.ImageFile
-import timber.log.Timber
 import java.io.File
 import java.io.Serializable
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import siarhei.luskanau.iot.doorbell.data.model.CameraData
+import siarhei.luskanau.iot.doorbell.data.model.ImageFile
+import timber.log.Timber
 
 class AndroidCameraRepository(
     private val context: Context,
     private val imageRepository: ImageRepository
 ) : CameraRepository {
+
+    @SuppressLint("RestrictedApi")
     override suspend fun makeImage(
         deviceId: String,
         cameraId: String

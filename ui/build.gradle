@@ -37,6 +37,7 @@ dependencies {
     implementation appDependencies.kotlinStdlib
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
     implementation "com.google.android.material:material:$materialVersion"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayoutVersion"
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
     implementation "androidx.paging:paging-rxjava2-ktx:$pagingVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"

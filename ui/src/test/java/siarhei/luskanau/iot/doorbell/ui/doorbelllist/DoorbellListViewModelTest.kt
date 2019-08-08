@@ -10,6 +10,7 @@ import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
+import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.spekframework.spek2.Spek
@@ -22,7 +23,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.doomain.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.ui.setArchTaskExecutor
-import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 object DoorbellListViewModelTest : Spek({

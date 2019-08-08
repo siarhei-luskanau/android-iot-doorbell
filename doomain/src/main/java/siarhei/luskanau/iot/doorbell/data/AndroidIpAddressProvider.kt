@@ -1,12 +1,12 @@
 package siarhei.luskanau.iot.doorbell.data
 
-import siarhei.luskanau.iot.doorbell.doomain.AppConstants
-import siarhei.luskanau.iot.doorbell.doomain.IpAddressProvider
-import timber.log.Timber
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.net.NetworkInterface
 import java.util.Collections
+import siarhei.luskanau.iot.doorbell.doomain.AppConstants
+import siarhei.luskanau.iot.doorbell.doomain.IpAddressProvider
+import timber.log.Timber
 
 class AndroidIpAddressProvider : IpAddressProvider {
 

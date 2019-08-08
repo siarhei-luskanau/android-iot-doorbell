@@ -7,6 +7,7 @@ import androidx.work.WorkManager
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import javax.inject.Inject
 import siarhei.luskanau.iot.doorbell.BuildConfig
 import siarhei.luskanau.iot.doorbell.dagger.di.AppComponent
 import siarhei.luskanau.iot.doorbell.dagger.di.DaggerAppComponent
@@ -18,7 +19,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
 import timber.log.Timber
-import javax.inject.Inject
 
 class AppApplication : Application(), HasActivityInjector {
 

@@ -2,10 +2,10 @@ package siarhei.luskanau.iot.doorbell.dagger.di.fragment
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import siarhei.luskanau.iot.doorbell.dagger.di.common.PerActivity
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider
+import siarhei.luskanau.iot.doorbell.dagger.di.common.PerActivity
+import timber.log.Timber
 
 @PerActivity
 class DaggerFragmentFactory @Inject constructor(

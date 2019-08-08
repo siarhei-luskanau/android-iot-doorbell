@@ -1,8 +1,8 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import kotlin.test.assertEquals
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import kotlin.test.assertEquals
 
 private const val MAX_COUNT = 100
 private const val SIZE = 20

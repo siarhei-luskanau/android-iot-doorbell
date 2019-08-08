@@ -7,8 +7,8 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 import javax.inject.Inject
+import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 
 class AppActivity : NavigationActivity(), HasSupportFragmentInjector {
 

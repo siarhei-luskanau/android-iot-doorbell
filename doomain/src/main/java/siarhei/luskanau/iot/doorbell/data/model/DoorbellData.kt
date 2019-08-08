@@ -1,8 +1,8 @@
 package siarhei.luskanau.iot.doorbell.data.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
+import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class DoorbellData(
