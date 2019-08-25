@@ -1,12 +1,11 @@
 package siarhei.luskanau.iot.doorbell.dagger
 
-import android.app.Activity
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 import siarhei.luskanau.iot.doorbell.BuildConfig
 import siarhei.luskanau.iot.doorbell.dagger.di.AppComponent
@@ -20,10 +19,10 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
 import timber.log.Timber
 
-class AppApplication : Application(), HasActivityInjector {
+class AppApplication : Application(), HasAndroidInjector {
 
     @Inject
-    lateinit var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
     @Inject
     lateinit var thisDeviceRepository: ThisDeviceRepository
     @Inject
@@ -66,5 +65,5 @@ class AppApplication : Application(), HasActivityInjector {
         appBackgroundServices.startServices()
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> = dispatchingActivityInjector
+    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 }

@@ -13,6 +13,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     dataBinding {
         enabled = true
     }
@@ -57,7 +62,7 @@ dependencies {
 
     //android test
     kaptAndroidTest "androidx.databinding:databinding-compiler:$androidGragleBuildVersion"
-    debugImplementation "androidx.fragment:fragment-testing:$fragmentTestingVersion"
+    debugImplementation "androidx.fragment:fragment-testing:$fragmentVersion"
     debugImplementation "androidx.test:core:$androidTestCoreVersion"
     androidTestImplementation appDependencies.kotlinTest
     androidTestImplementation appDependencies.kotlinReflect
