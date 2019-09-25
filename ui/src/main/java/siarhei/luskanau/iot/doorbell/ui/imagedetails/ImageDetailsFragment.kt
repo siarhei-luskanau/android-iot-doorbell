@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
-import siarhei.luskanau.iot.doorbell.ui.R
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericContentContainerBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericErrorBinding
@@ -27,27 +25,24 @@ class ImageDetailsFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        DataBindingUtil.inflate<LayoutGenericContentContainerBinding>(
+        LayoutGenericContentContainerBinding.inflate(
             inflater,
-            R.layout.layout_generic_content_container,
             container,
             false
         ).also {
             fragmentBinding = it
         }
 
-        DataBindingUtil.inflate<LayoutImageDetailsNormalBinding>(
+        LayoutImageDetailsNormalBinding.inflate(
             inflater,
-            R.layout.layout_image_details_normal,
             container,
             false
         ).also {
             normalStateBinding = it
         }
 
-        DataBindingUtil.inflate<LayoutGenericErrorBinding>(
+        LayoutGenericErrorBinding.inflate(
             inflater,
-            R.layout.layout_generic_error,
             container,
             false
         ).also {

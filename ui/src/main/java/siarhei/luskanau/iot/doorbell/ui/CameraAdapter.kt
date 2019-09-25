@@ -1,16 +1,18 @@
 package siarhei.luskanau.iot.doorbell.ui
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
-import siarhei.luskanau.iot.doorbell.ui.common.adapter.BaseRecyclerBindingListAdapter
+import siarhei.luskanau.iot.doorbell.ui.common.adapter.BaseRecyclerClickableListAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.adapter.BindingViewHolder
 import siarhei.luskanau.iot.doorbell.ui.databinding.ViewItemCameraBinding
 
-class CameraAdapter : BaseRecyclerBindingListAdapter<CameraData, ViewItemCameraBinding>(
+class CameraAdapter : BaseRecyclerClickableListAdapter<CameraData, ViewItemCameraBinding>(
     DIFF_CALLBACK
 ) {
-
-    override fun getViewLayout(): Int = R.layout.view_item_camera
+    override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): BindingViewHolder<ViewItemCameraBinding> =
+            BindingViewHolder(ViewItemCameraBinding.inflate(inflater, parent, false))
 
     override fun onBindViewHolder(holder: BindingViewHolder<ViewItemCameraBinding>, position: Int) {
         getItem(position).let { item ->

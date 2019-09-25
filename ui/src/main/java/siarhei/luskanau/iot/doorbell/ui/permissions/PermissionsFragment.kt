@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import siarhei.luskanau.iot.doorbell.doomain.AppConstants.PERMISSIONS
-import siarhei.luskanau.iot.doorbell.ui.R
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentPermissionsBinding
 
@@ -24,11 +22,7 @@ class PermissionsFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? =
-        DataBindingUtil.inflate<FragmentPermissionsBinding>(
-            inflater,
-            R.layout.fragment_permissions, container,
-            false
-        ).root
+            FragmentPermissionsBinding.inflate(inflater, container, false).root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -1,8 +1,8 @@
 package siarhei.luskanau.iot.doorbell.navigation
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentFactory
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -19,12 +19,12 @@ abstract class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         supportFragmentManager.fragmentFactory = getAppFragmentFactory()
         super.onCreate(savedInstanceState)
-        DataBindingUtil.setContentView<ActivityNavigationBinding>(
-            this,
-            R.layout.activity_navigation
-        ).also { binding ->
-            setSupportActionBar(binding.toolbar)
-        }
+
+        ActivityNavigationBinding.inflate(LayoutInflater.from(this))
+                .also { binding ->
+                    setContentView(binding.root)
+                    setSupportActionBar(binding.toolbar)
+                }
 
         navController = Navigation.findNavController(this, R.id.navHostFragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -32,7 +32,7 @@ abstract class NavigationActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean =
-        navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+            navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 
     protected abstract fun getAppFragmentFactory(): FragmentFactory
 }

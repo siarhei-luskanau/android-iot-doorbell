@@ -1,16 +1,18 @@
 package siarhei.luskanau.iot.doorbell.ui
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
-import siarhei.luskanau.iot.doorbell.ui.common.adapter.BaseRecyclerBindingPagingAdapter
+import siarhei.luskanau.iot.doorbell.ui.common.adapter.BaseRecyclerClickablePagingAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.adapter.BindingViewHolder
 import siarhei.luskanau.iot.doorbell.ui.databinding.ViewItemDoorbellBinding
 
-class DoorbellsAdapter : BaseRecyclerBindingPagingAdapter<DoorbellData, ViewItemDoorbellBinding>(
-    DIFF_CALLBACK
+class DoorbellsAdapter : BaseRecyclerClickablePagingAdapter<DoorbellData, ViewItemDoorbellBinding>(
+        DIFF_CALLBACK
 ) {
-
-    override fun getViewLayout(): Int = R.layout.view_item_doorbell
+    override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): BindingViewHolder<ViewItemDoorbellBinding> =
+            BindingViewHolder(ViewItemDoorbellBinding.inflate(inflater, parent, false))
 
     override fun onBindViewHolder(
         holder: BindingViewHolder<ViewItemDoorbellBinding>,
@@ -25,10 +27,10 @@ class DoorbellsAdapter : BaseRecyclerBindingPagingAdapter<DoorbellData, ViewItem
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DoorbellData>() {
             override fun areItemsTheSame(oldItem: DoorbellData, newItem: DoorbellData) =
-                oldItem.doorbellId == newItem.doorbellId
+                    oldItem.doorbellId == newItem.doorbellId
 
             override fun areContentsTheSame(oldItem: DoorbellData, newItem: DoorbellData) =
-                oldItem == newItem
+                    oldItem == newItem
         }
     }
 }

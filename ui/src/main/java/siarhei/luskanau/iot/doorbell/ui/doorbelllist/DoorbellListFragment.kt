@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.DoorbellsAdapter
-import siarhei.luskanau.iot.doorbell.ui.R
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutDoorbellListNormalBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericEmptyBinding
@@ -33,9 +31,8 @@ class DoorbellListFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        DataBindingUtil.inflate<LayoutGenericRefreshContentContainerBinding>(
+        LayoutGenericRefreshContentContainerBinding.inflate(
             inflater,
-            R.layout.layout_generic_refresh_content_container,
             container,
             false
         ).also {
@@ -43,9 +40,8 @@ class DoorbellListFragment(
             fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.requestData() }
         }
 
-        DataBindingUtil.inflate<LayoutDoorbellListNormalBinding>(
+        LayoutDoorbellListNormalBinding.inflate(
             inflater,
-            R.layout.layout_doorbell_list_normal,
             container,
             false
         ).also {
@@ -54,18 +50,16 @@ class DoorbellListFragment(
             normalStateBinding.doorbellsRecyclerView.adapter = doorbellsAdapter
         }
 
-        DataBindingUtil.inflate<LayoutGenericEmptyBinding>(
+        LayoutGenericEmptyBinding.inflate(
             inflater,
-            R.layout.layout_generic_empty,
             container,
             false
         ).also {
             emptyStateBinding = it
         }
 
-        DataBindingUtil.inflate<LayoutGenericErrorBinding>(
+        LayoutGenericErrorBinding.inflate(
             inflater,
-            R.layout.layout_generic_error,
             container,
             false
         ).also {
