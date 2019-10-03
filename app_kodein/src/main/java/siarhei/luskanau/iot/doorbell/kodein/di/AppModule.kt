@@ -24,9 +24,9 @@ import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import siarhei.luskanau.iot.doorbell.data.repository.AndroidCameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
+import siarhei.luskanau.iot.doorbell.data.repository.CoroutineCameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
@@ -79,7 +79,7 @@ val appModule = Kodein.Module(name = "appModule") {
         )
     }
     bind<CameraRepository>() with singleton {
-        AndroidCameraRepository(
+        CoroutineCameraRepository(
             context = instance(),
             imageRepository = instance()
         )

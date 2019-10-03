@@ -60,7 +60,6 @@ dependencies {
     implementation project(':navigation')
 
     implementation appDependencies.kotlinStdlib
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
 
     // dagger
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"

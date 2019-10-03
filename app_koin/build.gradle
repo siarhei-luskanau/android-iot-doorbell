@@ -60,7 +60,6 @@ dependencies {
     implementation project(':navigation')
 
     implementation appDependencies.kotlinStdlib
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion"
 
     // koin
     implementation "org.koin:koin-androidx-viewmodel:$koinVersion"

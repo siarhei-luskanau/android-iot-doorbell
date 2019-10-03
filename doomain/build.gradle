@@ -50,7 +50,7 @@ dependencies {
     compileOnly "com.google.android.things:androidthings:$androidthingsVersion"
 
     implementation appDependencies.kotlinStdlib
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
+    implementation appDependencies.kotlinxCoroutinesCore
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"

@@ -40,7 +40,7 @@ dependencies {
     implementation project(':doomain')
 
     implementation appDependencies.kotlinStdlib
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
+    implementation appDependencies.kotlinxCoroutinesCore
     implementation "com.google.android.material:material:$materialVersion"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayoutVersion"
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
