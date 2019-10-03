@@ -3,12 +3,17 @@ package siarhei.luskanau.iot.doorbell
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import siarhei.luskanau.iot.doorbell.di.AppModules
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
 import timber.log.Timber
 
 class AppApplication : Application() {
 
-    val appModules: AppModules by lazy { AppModules(this) }
+    val appModules: AppModules by lazy {
+        AppModules(
+            this
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()

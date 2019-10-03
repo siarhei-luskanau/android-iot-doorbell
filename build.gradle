@@ -7,7 +7,7 @@ buildscript {
         buildToolsVersion = '29.0.2'
         minSdkVersion = 21
         androidThingsMinSdkVersion = 26
-        androidGragleBuildVersion = '3.6.0-beta05'
+        androidGragleBuildVersion = '3.6.0-rc01'
 
         // Play services versions
         firebaseDatabaseVersion = '19.2.0'
@@ -26,7 +26,7 @@ buildscript {
         pagingVersion = '2.1.0'
         roomVersion = '2.2.2'
         workManagerVersion = '2.3.0-beta01'
-        constraintLayoutVersion = '2.0.0-beta3'
+        constraintLayoutVersion = '2.0.0-beta4'
         rxJavaVersion = '2.2.15'
         rxKotlinVersion = '2.4.0'
         rxAndroidVersion = '2.1.1'
@@ -36,8 +36,8 @@ buildscript {
         paperworkVersion = '1.2.7'
 
         // DI
-        daggerVersion = '2.25.2'
-        kodeinVersion = '6.4.1'
+        daggerVersion = '2.25.3'
+        kodeinVersion = '6.5.1'
         koinVersion = '2.0.1'
         toothpickVersion = '3.1.0'
 

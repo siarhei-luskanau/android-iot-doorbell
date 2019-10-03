@@ -1,8 +1,7 @@
-package siarhei.luskanau.iot.doorbell
+package siarhei.luskanau.iot.doorbell.di
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import androidx.work.WorkManager
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.data.AndroidDeviceInfoProvider
@@ -72,17 +71,6 @@ class AppModules(application: Application) {
     val ipAddressProvider: IpAddressProvider by lazy { AndroidIpAddressProvider() }
     val doorbellsDataSource: DoorbellsDataSource by lazy {
         DefaultDoorbellsDataSource(doorbellRepository = doorbellRepository)
-    }
-    val viewModelFactory: ViewModelProvider.Factory by lazy {
-        AppViewModelFactory(
-            doorbellsDataSource = doorbellsDataSource,
-            schedulerSet = schedulerSet,
-            doorbellRepository = doorbellRepository,
-            thisDeviceRepository = thisDeviceRepository,
-            cameraRepository = cameraRepository,
-            imagesDataSourceFactory = imagesDataSourceFactory,
-            uptimeRepository = uptimeRepository
-        )
     }
     val workManager: WorkManager by lazy { WorkManager.getInstance(context) }
     val scheduleWorkManagerService: ScheduleWorkManagerService by lazy {

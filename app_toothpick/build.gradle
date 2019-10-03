@@ -1,0 +1,100 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: "de.mannodermaus.android-junit5"
+
+android {
+
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    defaultConfig {
+        applicationId "siarhei.luskanau.iot.doorbell"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    viewBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    testOptions {
+        unitTests.all {
+            testLogging.events = ["passed", "skipped", "failed"]
+        }
+    }
+}
+
+dependencies {
+    implementation project(':doomain')
+    implementation project(':base_camera')
+    implementation project(':base_file')
+    implementation project(':base_firebase')
+    implementation project(':base_persistence')
+    implementation project(':base_cache')
+    implementation project(':base_work_manager')
+    implementation project(':ui')
+    implementation project(':navigation')
+
+    implementation appDependencies.kotlinStdlib
+
+    // toothpick
+    implementation "com.github.stephanenicolas.toothpick:ktp:$toothpickVersion"
+    kapt "com.github.stephanenicolas.toothpick:toothpick-compiler:$toothpickVersion"
+
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlinVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
+    implementation "com.google.android.material:material:$materialVersion"
+    kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
+    implementation "com.jakewharton.timber:timber:$timberVersion"
+
+    compileOnly "com.google.android.things:androidthings:$androidthingsVersion"
+
+    implementation "androidx.work:work-runtime-ktx:$workManagerVersion"
+
+    //Development
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+
+    //unit test
+    testRuntimeOnly appDependencies.spekRunnerJunit5
+    testImplementation appDependencies.spekDslJvm
+    testImplementation appDependencies.kotlinTest
+    testImplementation appDependencies.mockitoKotlin
+
+    //android test
+    androidTestImplementation appDependencies.kotlinTest
+    androidTestImplementation appDependencies.testEspressoCore
+    androidTestImplementation appDependencies.testCore
+}
+
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'

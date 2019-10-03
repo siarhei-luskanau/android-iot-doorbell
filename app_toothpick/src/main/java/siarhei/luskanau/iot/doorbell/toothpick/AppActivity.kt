@@ -1,14 +1,14 @@
-package siarhei.luskanau.iot.doorbell
+package siarhei.luskanau.iot.doorbell.toothpick
 
 import androidx.fragment.app.FragmentFactory
-import siarhei.luskanau.iot.doorbell.di.AppFragmentFactory
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
+import siarhei.luskanau.iot.doorbell.toothpick.di.ToothpickFragmentFactory
 
 class AppActivity : NavigationActivity() {
 
     override fun getAppFragmentFactory(): FragmentFactory =
-        AppFragmentFactory(
+        ToothpickFragmentFactory(
             activity = this,
-            appModules = (application as AppApplication).appModules
+            scope = (application as AppApplication).scope
         )
 }

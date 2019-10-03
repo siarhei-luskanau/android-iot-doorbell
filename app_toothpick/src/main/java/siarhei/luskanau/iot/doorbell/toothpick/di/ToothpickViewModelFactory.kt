@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell
+package siarhei.luskanau.iot.doorbell.toothpick.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,15 +12,10 @@ import siarhei.luskanau.iot.doorbell.doomain.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import timber.log.Timber
+import toothpick.Scope
 
-class AppViewModelFactory(
-    private val doorbellsDataSource: DoorbellsDataSource,
-    private val schedulerSet: SchedulerSet,
-    private val doorbellRepository: DoorbellRepository,
-    private val thisDeviceRepository: ThisDeviceRepository,
-    private val cameraRepository: CameraRepository,
-    private val imagesDataSourceFactory: ImagesDataSourceFactory,
-    private val uptimeRepository: UptimeRepository
+class ToothpickViewModelFactory(
+    private val scope: Scope
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -29,18 +24,18 @@ class AppViewModelFactory(
         return when {
 
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
-                schedulerSet = schedulerSet,
-                doorbellRepository = doorbellRepository,
-                thisDeviceRepository = thisDeviceRepository,
-                cameraRepository = cameraRepository,
-                doorbellsDataSource = doorbellsDataSource
+                schedulerSet = scope.getInstance(SchedulerSet::class.java),
+                doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
+                thisDeviceRepository = scope.getInstance(ThisDeviceRepository::class.java),
+                cameraRepository = scope.getInstance(CameraRepository::class.java),
+                doorbellsDataSource = scope.getInstance(DoorbellsDataSource::class.java)
             ) as T
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
-                schedulerSet = schedulerSet,
-                doorbellRepository = doorbellRepository,
-                imagesDataSourceFactory = imagesDataSourceFactory,
-                uptimeRepository = uptimeRepository
+                schedulerSet = scope.getInstance(SchedulerSet::class.java),
+                doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
+                imagesDataSourceFactory = scope.getInstance(ImagesDataSourceFactory::class.java),
+                uptimeRepository = scope.getInstance(UptimeRepository::class.java)
             ) as T
 
             else -> modelClass.getConstructor().newInstance()
