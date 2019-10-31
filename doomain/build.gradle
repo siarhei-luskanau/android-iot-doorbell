@@ -51,6 +51,7 @@ dependencies {
 
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.kotlinxCoroutinesCore
+    implementation appDependencies.kotlinxCoroutinesTest
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"

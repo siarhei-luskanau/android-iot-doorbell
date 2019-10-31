@@ -3,6 +3,7 @@ package siarhei.luskanau.iot.doorbell.persistence
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ImageDao {
@@ -13,10 +14,10 @@ interface ImageDao {
                 "ORDER BY image_id DESC " +
                 "LIMIT :limit"
     )
-    suspend fun getImages(
+    fun getImages(
         deviceId: String,
         limit: Int
-    ): List<ImageEntity>
+    ): Flow<List<ImageEntity>>
 
     @Query(
         "SELECT * FROM images " +
@@ -25,11 +26,11 @@ interface ImageDao {
                 "ORDER BY image_id DESC " +
                 "LIMIT :limit"
     )
-    suspend fun getImages(
+    fun getImages(
         deviceId: String,
         afterImageId: String,
         limit: Int
-    ): List<ImageEntity>
+    ): Flow<List<ImageEntity>>
 
     @Insert
     suspend fun insertImages(images: List<ImageEntity>)

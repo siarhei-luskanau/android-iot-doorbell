@@ -9,13 +9,11 @@ import kotlinx.coroutines.Dispatchers
 class DefaultSchedulerSet(
     override val io: Scheduler = Schedulers.io(),
     override val ui: Scheduler = AndroidSchedulers.mainThread(),
-    override val computation: Scheduler = Schedulers.computation(),
     override val ioCoroutineContext: CoroutineContext = Dispatchers.IO,
     override val uiCoroutineContext: CoroutineContext = Dispatchers.Main
 ) : SchedulerSet(
     io,
     ui,
-    computation,
     ioCoroutineContext,
     uiCoroutineContext
 )

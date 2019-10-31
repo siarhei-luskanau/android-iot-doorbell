@@ -12,7 +12,7 @@ class DomainAndroidTest {
     fun checkApplicationId() {
         assertEquals(
             expected = "siarhei.luskanau.iot.doorbell.doomain",
-            actual = BuildConfig.APPLICATION_ID
+            actual = BuildConfig.LIBRARY_PACKAGE_NAME
         )
     }
 

@@ -7,6 +7,7 @@ import androidx.camera.core.CameraX
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCapture.CaptureMode
 import androidx.camera.core.ImageCaptureConfig
+import androidx.camera.core.impl.utils.executor.CameraXExecutors
 import androidx.lifecycle.ProcessLifecycleOwner
 import java.io.File
 import kotlin.coroutines.Continuation
@@ -40,7 +41,9 @@ class JetpackCameraRepository(
                     // TODO use ImageAnalysis to check if camera is ready
                     Thread.sleep(1000)
 
-                    imageCapture.takePicture(imageRepository.prepareFile(cameraId),
+                    imageCapture.takePicture(
+                            imageRepository.prepareFile(cameraId),
+                            CameraXExecutors.ioExecutor(),
                             object : ImageCapture.OnImageSavedListener {
                                 override fun onImageSaved(file: File) {
                                     CameraX.unbind(imageCapture)

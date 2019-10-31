@@ -15,7 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
+import siarhei.luskanau.iot.doorbell.data.TestSchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
@@ -29,7 +29,7 @@ object DoorbellListViewModelTest : Spek({
 
     setArchTaskExecutor()
 
-    val schedulerSet by memoized { SchedulerSet.test() }
+    val schedulerSet by memoized { TestSchedulerSet() }
     val doorbellRepository by memoized { mock<DoorbellRepository>() }
     val thisDeviceRepository by memoized { mock<ThisDeviceRepository>() }
     val cameraRepository by memoized { mock<CameraRepository>() }
