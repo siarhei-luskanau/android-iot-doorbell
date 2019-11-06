@@ -9,16 +9,16 @@ import androidx.lifecycle.Observer
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.DoorbellsAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
+import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentGenericRefreshContentContainerBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutDoorbellListNormalBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericEmptyBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericErrorBinding
-import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericRefreshContentContainerBinding
 
 class DoorbellListFragment(
     presenterProvider: (args: Bundle?) -> DoorbellListPresenter
 ) : BaseFragment<DoorbellListPresenter>(presenterProvider) {
 
-    private lateinit var fragmentBinding: LayoutGenericRefreshContentContainerBinding
+    private lateinit var fragmentBinding: FragmentGenericRefreshContentContainerBinding
     private lateinit var normalStateBinding: LayoutDoorbellListNormalBinding
     private lateinit var emptyStateBinding: LayoutGenericEmptyBinding
     private lateinit var errorStateBinding: LayoutGenericErrorBinding
@@ -31,7 +31,7 @@ class DoorbellListFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        LayoutGenericRefreshContentContainerBinding.inflate(
+        FragmentGenericRefreshContentContainerBinding.inflate(
             inflater,
             container,
             false

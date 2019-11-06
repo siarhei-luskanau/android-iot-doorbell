@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
-import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericContentContainerBinding
+import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentGenericContentContainerBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericErrorBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutImageDetailsNormalBinding
 
@@ -16,7 +16,7 @@ class ImageDetailsFragment(
     presenterProvider: (args: Bundle?) -> ImageDetailsPresenter
 ) : BaseFragment<ImageDetailsPresenter>(presenterProvider) {
 
-    private lateinit var fragmentBinding: LayoutGenericContentContainerBinding
+    private lateinit var fragmentBinding: FragmentGenericContentContainerBinding
     private lateinit var normalStateBinding: LayoutImageDetailsNormalBinding
     private lateinit var errorStateBinding: LayoutGenericErrorBinding
 
@@ -25,7 +25,7 @@ class ImageDetailsFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        LayoutGenericContentContainerBinding.inflate(
+        FragmentGenericContentContainerBinding.inflate(
             inflater,
             container,
             false
