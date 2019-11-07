@@ -7,22 +7,22 @@ buildscript {
         buildToolsVersion = '29.0.2'
         minSdkVersion = 21
         androidThingsMinSdkVersion = 26
-        androidGragleBuildVersion = '4.0.0-alpha01'
+        androidGragleBuildVersion = '4.0.0-alpha02'
 
         // Play services versions
         firebaseDatabaseVersion = '19.2.0'
         firebaseStorageVersion = '19.1.0'
 
         //Libraries
-        kotlinVersion = '1.3.60-eap-25'
+        kotlinVersion = '1.3.50'
         kotlinCoroutinesVersion = '1.3.0'
-        navigationVersion = '2.2.0-rc01'
+        navigationVersion = '2.2.0-rc02'
         androidxAnnotationVersion = '1.1.0'
         androidxCameraVersion = '1.0.0-alpha06'
         materialVersion = '1.2.0-alpha01'
         swiperefreshlayoutVersion = '1.1.0-alpha03'
-        fragmentVersion = '1.2.0-rc01'
-        lifecycleVersion = '2.2.0-rc01'
+        fragmentVersion = '1.2.0-rc02'
+        lifecycleVersion = '2.2.0-rc02'
         pagingVersion = '2.1.0'
         roomVersion = '2.2.1'
         workManagerVersion = '2.3.0-alpha03'

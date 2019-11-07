@@ -2,6 +2,8 @@ package siarhei.luskanau.iot.doorbell.data.repository
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Size
 import androidx.camera.core.CameraX
 import androidx.camera.core.ImageCapture
@@ -28,37 +30,60 @@ class JetpackCameraRepository(
     ): ImageFile =
             suspendCoroutine { continuation: Continuation<ImageFile> ->
                 try {
-                    val imageCaptureConfig = ImageCaptureConfig.Builder()
-                            .setCameraIdFilter(IdCameraIdFilter(cameraId))
-                            .setCaptureMode(CaptureMode.MIN_LATENCY)
-                            .setTargetResolution(Size(480, 640))
-                            .build()
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.post {
+                        try {
+                            val imageCaptureConfig = ImageCaptureConfig.Builder()
+                                    // .setCameraIdFilter(IdCameraIdFilter(cameraId))
+                                    .setLensFacing(when (cameraId) {
+                                        CameraX.getCameraWithLensFacing(CameraX.LensFacing.BACK) ->
+                                            CameraX.LensFacing.BACK
 
-                    val imageCapture = ImageCapture(imageCaptureConfig)
+                                        CameraX.getCameraWithLensFacing(CameraX.LensFacing.FRONT) ->
+                                            CameraX.LensFacing.FRONT
 
-                    CameraX.bindToLifecycle(ProcessLifecycleOwner.get(), imageCapture)
+                                        else -> CameraX.LensFacing.BACK
+                                    })
+                                    .setCaptureMode(CaptureMode.MIN_LATENCY)
+                                    .setTargetResolution(Size(480, 640))
+                                    .build()
 
-                    // TODO use ImageAnalysis to check if camera is ready
-                    Thread.sleep(1000)
+                            val imageCapture = ImageCapture(imageCaptureConfig)
 
-                    imageCapture.takePicture(
-                            imageRepository.prepareFile(cameraId),
-                            CameraXExecutors.ioExecutor(),
-                            object : ImageCapture.OnImageSavedListener {
-                                override fun onImageSaved(file: File) {
-                                    CameraX.unbind(imageCapture)
-                                    continuation.resume(imageRepository.saveImage(file))
-                                }
+                            CameraX.bindToLifecycle(ProcessLifecycleOwner.get(), imageCapture)
 
-                                override fun onError(
-                                    imageCaptureError: ImageCapture.ImageCaptureError,
-                                    message: String,
-                                    cause: Throwable?
-                                ) {
-                                    continuation.resumeWithException(cause ?: Error(message))
-                                }
-                            }
-                    )
+                            // TODO use ImageAnalysis to check if camera is ready
+                            Thread.sleep(1000)
+
+                            imageCapture.takePicture(
+                                    imageRepository.prepareFile(cameraId),
+                                    CameraXExecutors.ioExecutor(),
+                                    object : ImageCapture.OnImageSavedListener {
+                                        override fun onImageSaved(file: File) {
+                                            handler.post {
+                                                try {
+                                                    CameraX.unbind(imageCapture)
+                                                    continuation.resume(imageRepository.saveImage(file))
+                                                } catch (t: Throwable) {
+                                                    continuation.resumeWithException(t)
+                                                }
+                                            }
+                                        }
+
+                                        override fun onError(
+                                            imageCaptureError: ImageCapture.ImageCaptureError,
+                                            message: String,
+                                            cause: Throwable?
+                                        ) {
+                                            continuation.resumeWithException(cause
+                                                    ?: Error(message))
+                                        }
+                                    }
+                            )
+                        } catch (t: Throwable) {
+                            continuation.resumeWithException(t)
+                        }
+                    }
                 } catch (t: Throwable) {
                     continuation.resumeWithException(t)
                 }
