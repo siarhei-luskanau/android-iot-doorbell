@@ -51,7 +51,6 @@ dependencies {
 
     implementation appDependencies.kotlinStdlib
     implementation appDependencies.kotlinxCoroutinesCore
-    implementation appDependencies.kotlinxCoroutinesTest
     implementation "com.jakewharton.timber:timber:$timberVersion"
 
     implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
@@ -66,6 +65,7 @@ dependencies {
     //unit test
     testImplementation appDependencies.kotlinTest
     testImplementation appDependencies.kotlinReflect
+    testImplementation appDependencies.kotlinxCoroutinesTest
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"

@@ -12,7 +12,7 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.data.TestSchedulerSet
@@ -56,13 +56,13 @@ object DoorbellListViewModelTest : Spek({
             }
 
             it("should load camera list") {
-                runBlocking {
+                runBlockingTest {
                     verify(cameraRepository, times(1)).getCamerasList()
                 }
             }
 
             it("should load initial doorbell list") {
-                runBlocking {
+                runBlockingTest {
                     verify(doorbellsDataSource, times(1)).loadInitial(any(), any())
                 }
             }
@@ -73,7 +73,7 @@ object DoorbellListViewModelTest : Spek({
                 val expectedCameraList = emptyList<CameraData>()
 
                 beforeEachTest {
-                    runBlocking {
+                    runBlockingTest {
                         given(cameraRepository.getCamerasList()).willReturn(expectedCameraList)
                     }
                     doorbellListViewModel.doorbellListStateData.observeForever(observer)
@@ -96,7 +96,7 @@ object DoorbellListViewModelTest : Spek({
                 )
 
                 beforeEachTest {
-                    runBlocking {
+                    runBlockingTest {
                         given(cameraRepository.getCamerasList()).willReturn(expectedCameraList)
                     }
                     doorbellListViewModel.doorbellListStateData.observeForever(observer)
@@ -117,7 +117,7 @@ object DoorbellListViewModelTest : Spek({
                 val pagedList by memoized { mock<PagedList<DoorbellData>>() }
 
                 beforeEachTest {
-                    runBlocking {
+                    runBlockingTest {
                         given(cameraRepository.getCamerasList()).willReturn(expectedCameraList)
                     }
                     doorbellListViewModel.doorbellListStateData.observeForever(observer)

@@ -7,7 +7,7 @@ buildscript {
         buildToolsVersion = '29.0.2'
         minSdkVersion = 21
         androidThingsMinSdkVersion = 26
-        androidGragleBuildVersion = '4.0.0-alpha02'
+        androidGragleBuildVersion = '4.0.0-alpha03'
 
         // Play services versions
         firebaseDatabaseVersion = '19.2.0'
@@ -78,7 +78,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
         classpath 'de.mannodermaus.gradle.plugins:android-junit5:1.5.1.0'
-        classpath 'com.google.gms:google-services:4.3.2'
+        classpath 'com.google.gms:google-services:4.3.3'
         classpath "hu.supercluster:paperwork-plugin:$paperworkVersion"
     }
 }
