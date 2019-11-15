@@ -11,6 +11,7 @@ import android.util.Size
 import androidx.camera.core.CameraX
 import java.io.Serializable
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
+import siarhei.luskanau.iot.doorbell.data.model.SizeData
 import timber.log.Timber
 
 abstract class BaseCameraRepository(
@@ -35,7 +36,7 @@ abstract class BaseCameraRepository(
                                             CameraData(
                                                     cameraId = cameraId,
                                                     name = name.orEmpty(),
-                                                    sizes = sizes,
+                                                    sizes = sizes.mapValues { SizeData(it.value.width, it.value.height) },
                                                     info = info,
                                                     cameraxInfo = cameraxInfo
                                             )
@@ -76,23 +77,26 @@ abstract class BaseCameraRepository(
                     characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                             ?.let { configs: StreamConfigurationMap ->
                                 info["SCALER_STREAM_CONFIGURATION_MAP"] = configs.outputFormats
-                                        .associate { outputFormat: Int ->
-                                            Pair(
-                                                    getOtputFormaName(outputFormat) + ":$outputFormat",
+                                        .associateBy(
+                                                { outputFormat: Int ->
+                                                    getOutputFormaName(outputFormat) + ":$outputFormat"
+                                                },
+                                                { outputFormat: Int ->
                                                     configs.getOutputSizes(outputFormat)
-                                                            .associateBy { size: Size? ->
-                                                                Pair("size: $size", size)
-                                                            }
-                                            )
-                                        } as Serializable
+                                                            .associateBy(
+                                                                    { it.toString() },
+                                                                    { it.toString() }
+                                                            )
+                                                }
+                                        ) as Serializable
                             }
 
                     info["CONTROL_AVAILABLE_EFFECTS"] =
                             characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS)
-                                    ?.associate { effect: Int ->
-                                        Pair(getEffectName(effect), effect)
-                                    }
-                                    ?.toMap() as Serializable
+                                    ?.associateBy(
+                                            { effect: Int -> getEffectName(effect) },
+                                            { effect: Int -> effect }
+                                    ) as Serializable
                 } catch (e: Throwable) {
                     info["error"] = e.message as Serializable
                     Timber.d("Cam access exception getting characteristics.")
@@ -104,7 +108,6 @@ abstract class BaseCameraRepository(
             mutableMapOf<String, Serializable>().also { cameraxInfo ->
                 try {
                     CameraX.getCameraInfo(cameraId).let { cameraInfo ->
-                        cameraxInfo["CameraInfo"] = cameraInfo.toString()
                         cameraxInfo["CameraInfo:lensFacing"] = cameraInfo.lensFacing.toString()
                         cameraxInfo["CameraInfo:sensorRotationDegrees"] =
                                 cameraInfo.sensorRotationDegrees
@@ -132,7 +135,7 @@ abstract class BaseCameraRepository(
                 else -> hardwareLevel.toString()
             } + ":$hardwareLevel"
 
-    private fun getOtputFormaName(outputFormat: Int): String =
+    private fun getOutputFormaName(outputFormat: Int): String =
             when (outputFormat) {
                 ImageFormat.UNKNOWN -> "UNKNOWN"
                 ImageFormat.JPEG -> "JPEG"

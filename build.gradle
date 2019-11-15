@@ -31,7 +31,7 @@ buildscript {
         rxKotlinVersion = '2.4.0'
         rxAndroidVersion = '2.1.1'
         timberVersion = '4.7.1'
-        gsonVersion = '2.8.6'
+        moshiVersion = '1.9.1'
         glideVersion = '4.10.0'
         paperworkVersion = '1.2.7'
 

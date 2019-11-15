@@ -1,12 +1,13 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import android.util.Size
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class CameraDto(
-    @SerializedName("camera_id") val cameraId: String,
-    @SerializedName("name") val name: String?,
-    @SerializedName("sizes") val sizes: Map<Int, Size>?,
-    @SerializedName("info") val info: Map<String, Any>?,
-    @SerializedName("camerax_info") val cameraxInfo: Map<String, Any>?
+    @Json(name = "camera_id") val cameraId: String,
+    @Json(name = "name") val name: String?,
+    @Json(name = "sizes") val sizes: Map<Int, SizeDto>?,
+    @Json(name = "info") val info: Map<String, Any>?,
+    @Json(name = "camerax_info") val cameraxInfo: Map<String, Any>?
 )

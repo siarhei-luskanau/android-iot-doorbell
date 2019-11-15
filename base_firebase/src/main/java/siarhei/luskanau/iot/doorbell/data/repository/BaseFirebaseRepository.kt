@@ -9,21 +9,26 @@ import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.gson.Gson
+import com.squareup.moshi.Moshi
 import java.io.InputStream
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-abstract class BaseFirebaseRepository(private val gson: Gson = Gson()) {
+abstract class BaseFirebaseRepository(
+    private val moshi: Moshi = Moshi.Builder()
+            // .add(KotlinJsonAdapterFactory())
+            .build()
+) {
 
     companion object {
         protected const val DOORBELL_APP_KEY = "doorbell_app"
     }
 
-    protected fun serializeByGson(src: Any?): Any? =
-            gson.fromJson(gson.toJson(src), Object::class.java)
+    protected fun serializeByMoshi(src: Any?): Any? =
+            moshi.adapter(Any::class.java).fromJsonValue(
+                    moshi.adapter<Any>(Object::class.java).toJsonValue(src))
 
     protected fun getAppDatabase(): DatabaseReference =
             FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY)
@@ -31,18 +36,30 @@ abstract class BaseFirebaseRepository(private val gson: Gson = Gson()) {
     protected fun getAppStorage(): StorageReference =
             FirebaseStorage.getInstance().getReference(DOORBELL_APP_KEY)
 
-    protected fun <T> dataSnapshotObject(dataSnapshot: DataSnapshot, type: Class<T>): T =
-            gson.fromJson(gson.toJson(dataSnapshot.value), type)
+    protected fun <T : Any> dataSnapshotObject(dataSnapshot: DataSnapshot, type: Class<T>): T =
+            moshi.adapter<Any>(Object::class.java).toJson(dataSnapshot.value)?.let { json ->
+                moshi.adapter(type).fromJson(json)
+            } as T
 
-    protected fun <T> dataSnapshotToList(dataSnapshot: DataSnapshot, type: Class<T>): List<T> =
-            dataSnapshot.children.map { gson.fromJson(gson.toJson(it.value), type) }
+    protected fun <T : Any> dataSnapshotToList(dataSnapshot: DataSnapshot, type: Class<T>): List<T> =
+            dataSnapshot.children.mapNotNull {
+                moshi.adapter<Any>(Object::class.java).toJson(it.value)?.let { json ->
+                    moshi.adapter(type).fromJson(json)
+                }
+            }
 
-    protected fun <T> dataSnapshotToMap(dataSnapshot: DataSnapshot, type: Class<T>): Map<String, T> =
-    // if (dataSnapshot.exists())
+    protected fun <T : Any> dataSnapshotToMap(dataSnapshot: DataSnapshot, type: Class<T>): Map<String, T> =
+            // if (dataSnapshot.exists())
             dataSnapshot.children.associateBy(
                     { it.key.orEmpty() },
-                    { gson.fromJson(gson.toJson(it.value), type) }
+                    {
+                        moshi.adapter<Any>(Object::class.java).toJson(it.value)?.let { json ->
+                            moshi.adapter(type).fromJson(json)
+                        }
+                    }
             )
+                    .filterValues { it != null }
+                    .mapValues { it.value as T }
 
     protected suspend fun putStreamToStorage(storageRef: StorageReference, stream: InputStream): Uri? =
             suspendCoroutine { continuation ->
