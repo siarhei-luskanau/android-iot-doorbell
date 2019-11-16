@@ -3,7 +3,7 @@ package siarhei.luskanau.iot.doorbell.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.bumptech.glide.Glide
+import coil.api.load
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.ui.common.adapter.BaseRecyclerClickablePagingAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.adapter.BindingViewHolder
@@ -17,11 +17,10 @@ class ImageAdapter : BaseRecyclerClickablePagingAdapter<ImageData, ViewItemImage
 
     override fun onBindViewHolder(holder: BindingViewHolder<ViewItemImageBinding>, position: Int) {
         getItem(position)?.let { item ->
-            Glide
-                    .with(holder.binding.imageView)
-                    .load(item.imageUri)
-                    .into(holder.binding.imageView)
             holder.binding.name.text = item.imageUri
+            holder.binding.imageView.load(item.imageUri) {
+                placeholder(R.drawable.ic_image)
+            }
         }
     }
 

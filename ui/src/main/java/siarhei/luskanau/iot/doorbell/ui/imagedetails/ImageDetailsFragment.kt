@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.bumptech.glide.Glide
+import coil.api.load
+import siarhei.luskanau.iot.doorbell.ui.R
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentGenericContentContainerBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericErrorBinding
@@ -26,25 +27,25 @@ class ImageDetailsFragment(
         savedInstanceState: Bundle?
     ): View? {
         FragmentGenericContentContainerBinding.inflate(
-            inflater,
-            container,
-            false
+                inflater,
+                container,
+                false
         ).also {
             fragmentBinding = it
         }
 
         LayoutImageDetailsNormalBinding.inflate(
-            inflater,
-            container,
-            false
+                inflater,
+                container,
+                false
         ).also {
             normalStateBinding = it
         }
 
         LayoutGenericErrorBinding.inflate(
-            inflater,
-            container,
-            false
+                inflater,
+                container,
+                false
         ).also {
             errorStateBinding = it
         }
@@ -60,7 +61,7 @@ class ImageDetailsFragment(
     override fun observeDataSources() {
         super.observeDataSources()
         presenter.getImageDetailsStateData()
-            .observe(viewLifecycleOwner, Observer { changeState(it) })
+                .observe(viewLifecycleOwner, Observer { changeState(it) })
     }
 
     private fun changeState(state: ImageDetailsState) {
@@ -75,10 +76,11 @@ class ImageDetailsFragment(
         }
 
         when (state) {
-            is NormalImageDetailsState -> Glide
-                .with(requireContext())
-                .load(state.imageData.imageUri)
-                .into(normalStateBinding.imageView)
+            is NormalImageDetailsState -> {
+                normalStateBinding.imageView.load(state.imageData.imageUri) {
+                    placeholder(R.drawable.ic_image)
+                }
+            }
 
             is ErrorImageDetailsState -> errorStateBinding.errorMessage.text = state.error.message
         }
