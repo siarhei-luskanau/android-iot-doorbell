@@ -192,7 +192,6 @@ val viewModelModule = Kodein.Module(name = "viewModelModule") {
         ImageListViewModel(
             schedulerSet = instance(),
             doorbellRepository = instance(),
-            cameraRepository = instance(),
             imagesDataSourceFactory = instance(),
             uptimeRepository = instance()
         )

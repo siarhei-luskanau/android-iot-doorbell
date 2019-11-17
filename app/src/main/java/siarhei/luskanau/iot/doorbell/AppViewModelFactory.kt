@@ -39,7 +39,6 @@ class AppViewModelFactory(
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
                 schedulerSet = schedulerSet,
                 doorbellRepository = doorbellRepository,
-                cameraRepository = cameraRepository,
                 imagesDataSourceFactory = imagesDataSourceFactory,
                 uptimeRepository = uptimeRepository
             ) as T

@@ -11,7 +11,6 @@ import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.doomain.AppConstants
@@ -23,7 +22,6 @@ private const val PAGE_SIZE = 20
 class ImageListViewModel(
     private val schedulerSet: SchedulerSet,
     private val doorbellRepository: DoorbellRepository,
-    private val cameraRepository: CameraRepository,
     private val imagesDataSourceFactory: ImagesDataSourceFactory,
     private val uptimeRepository: UptimeRepository
 ) : BaseViewModel() {
@@ -40,14 +38,10 @@ class ImageListViewModel(
 
         viewModelScope.launch(schedulerSet.ioCoroutineContext) {
             try {
-                cameraList = cameraRepository.getCamerasList()
-                viewModelScope.launch(schedulerSet.uiCoroutineContext) {
-                    updateLiveDate()
-                }
+                cameraList = doorbellRepository.getCamerasList(deviceId)
+                updateLiveDate()
             } catch (error: Throwable) {
-                viewModelScope.launch(schedulerSet.uiCoroutineContext) {
-                    imageListStateData.value = ErrorImageListState(error)
-                }
+                imageListStateData.postValue(ErrorImageListState(error))
             }
         }.cancelOnCleared()
 
@@ -59,27 +53,29 @@ class ImageListViewModel(
             ),
             boundaryCallback = createBoundaryCallback()
         )
-            .doOnSubscribe { loadingData.value = true }
-            .doOnNext { loadingData.value = false }
-            .doOnTerminate { loadingData.value = false }
+            .doOnSubscribe { loadingData.postValue(true) }
+            .doOnNext { loadingData.postValue(false) }
+            .doOnTerminate { loadingData.postValue(false) }
             .subscribeBy(
                 onNext = { pagedList ->
                     imagePagedList = pagedList
                     updateLiveDate()
                 },
                 onError = {
-                    imageListStateData.value = ErrorImageListState(it)
+                    imageListStateData.postValue(ErrorImageListState(it))
                 }
             )
             .disposeOnCleared()
     }
 
     private fun updateLiveDate() {
-        imageListStateData.value = if (imagePagedList?.isNotEmpty() == true) {
-            NormalImageListState(cameraList, requireNotNull(imagePagedList))
-        } else {
-            EmptyImageListState(cameraList)
-        }
+        imageListStateData.postValue(
+            if (imagePagedList?.isNotEmpty() == true) {
+                NormalImageListState(cameraList, requireNotNull(imagePagedList))
+            } else {
+                EmptyImageListState(cameraList)
+            }
+        )
     }
 
     private fun createBoundaryCallback(): PagedList.BoundaryCallback<ImageData> =
@@ -98,9 +94,7 @@ class ImageListViewModel(
                     isRequested = true
                 )
             } catch (error: Throwable) {
-                viewModelScope.launch(schedulerSet.uiCoroutineContext) {
-                    imageListStateData.value = ErrorImageListState(error)
-                }
+                imageListStateData.postValue(ErrorImageListState(error))
             }
         }.cancelOnCleared()
     }
@@ -114,7 +108,7 @@ class ImageListViewModel(
                     rebootRequestTimeString = AppConstants.DATE_FORMAT.format(currentTime)
                 )
             } catch (error: Throwable) {
-                imageListStateData.value = ErrorImageListState(error)
+                imageListStateData.postValue(ErrorImageListState(error))
             }
         }.cancelOnCleared()
     }

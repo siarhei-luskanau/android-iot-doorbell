@@ -34,13 +34,11 @@ class ViewModelBuilderModule {
     fun provideImageListViewModel(
         schedulerSet: SchedulerSet,
         doorbellRepository: DoorbellRepository,
-        cameraRepository: CameraRepository,
         imagesDataSourceFactory: ImagesDataSourceFactory,
         uptimeRepository: UptimeRepository
     ) = ImageListViewModel(
         schedulerSet = schedulerSet,
         doorbellRepository = doorbellRepository,
-        cameraRepository = cameraRepository,
         imagesDataSourceFactory = imagesDataSourceFactory,
         uptimeRepository = uptimeRepository
     )

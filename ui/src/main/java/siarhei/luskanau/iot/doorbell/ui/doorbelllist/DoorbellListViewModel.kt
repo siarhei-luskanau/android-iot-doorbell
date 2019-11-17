@@ -40,13 +40,9 @@ class DoorbellListViewModel(
         viewModelScope.launch(schedulerSet.ioCoroutineContext) {
             try {
                 cameraList = cameraRepository.getCamerasList()
-                viewModelScope.launch(schedulerSet.uiCoroutineContext) {
-                    updateLiveDate()
-                }
+                updateLiveDate()
             } catch (error: Throwable) {
-                viewModelScope.launch(schedulerSet.uiCoroutineContext) {
-                    doorbellListStateData.value = ErrorDoorbellListState(error)
-                }
+                doorbellListStateData.postValue(ErrorDoorbellListState(error))
             }
         }.cancelOnCleared()
 
@@ -58,27 +54,29 @@ class DoorbellListViewModel(
             ),
             boundaryCallback = createBoundaryCallback()
         )
-            .doOnSubscribe { loadingData.value = true }
-            .doOnNext { loadingData.value = false }
-            .doOnTerminate { loadingData.value = false }
+            .doOnSubscribe { loadingData.postValue(true) }
+            .doOnNext { loadingData.postValue(false) }
+            .doOnTerminate { loadingData.postValue(false) }
             .subscribeBy(
                 onNext = { pagedList ->
                     doorbellPagedList = pagedList
                     updateLiveDate()
                 },
                 onError = {
-                    doorbellListStateData.value = ErrorDoorbellListState(it)
+                    doorbellListStateData.postValue(ErrorDoorbellListState(it))
                 }
             )
             .disposeOnCleared()
     }
 
     private fun updateLiveDate() {
-        doorbellListStateData.value = if (doorbellPagedList?.isNotEmpty() == true) {
-            NormalDoorbellListState(cameraList, requireNotNull(doorbellPagedList))
-        } else {
-            EmptyDoorbellListState(cameraList)
-        }
+        doorbellListStateData.postValue(
+            if (doorbellPagedList?.isNotEmpty() == true) {
+                NormalDoorbellListState(cameraList, requireNotNull(doorbellPagedList))
+            } else {
+                EmptyDoorbellListState(cameraList)
+            }
+        )
     }
 
     private fun createDataSourceFactory(): DataSource.Factory<String, DoorbellData> =
@@ -102,9 +100,7 @@ class DoorbellListViewModel(
                     isRequested = true
                 )
             } catch (error: Throwable) {
-                viewModelScope.launch(schedulerSet.uiCoroutineContext) {
-                    doorbellListStateData.value = ErrorDoorbellListState(error)
-                }
+                doorbellListStateData.postValue(ErrorDoorbellListState(error))
             }
         }.cancelOnCleared()
     }

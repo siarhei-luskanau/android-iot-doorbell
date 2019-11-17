@@ -187,7 +187,6 @@ val viewModelModule = module {
         ImageListViewModel(
             schedulerSet = get(),
             doorbellRepository = get(),
-            cameraRepository = get(),
             imagesDataSourceFactory = get(),
             uptimeRepository = get()
         )
