@@ -28,7 +28,7 @@ interface UptimeRepository {
         rebootingTimeString: String
     )
 
-    suspend fun getUptime(deviceId: String): Uptime
+    suspend fun getUptime(deviceId: String): Uptime?
 
     suspend fun sendIpAddressMap(deviceId: String, ipAddressMap: Map<String, String>)
 }

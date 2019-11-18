@@ -9,6 +9,8 @@ interface DoorbellRepository {
 
     suspend fun getDoorbellsList(size: Int, startAt: String? = null, orderAsc: Boolean = true): List<DoorbellData>
 
+    suspend fun getDoorbell(deviceId: String): DoorbellData?
+
     suspend fun getCamerasList(deviceId: String): List<CameraData>
 
     suspend fun sendDoorbellData(doorbellData: DoorbellData)

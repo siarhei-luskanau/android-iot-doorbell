@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.ImageAdapter
@@ -112,6 +113,8 @@ class ImageListFragment(
             is NormalImageListState -> {
                 camerasAdapter.submitList(state.cameraList)
                 imageAdapter.submitList(state.imageList)
+                normalStateBinding.uptimeCardView.isVisible = state.isAndroidThings
+                normalStateBinding.rebootButton.isVisible = state.isAndroidThings
             }
 
             is ErrorImageListState -> errorStateBinding.errorMessage.text = state.error.message

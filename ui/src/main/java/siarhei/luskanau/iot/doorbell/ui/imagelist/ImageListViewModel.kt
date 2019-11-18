@@ -32,9 +32,19 @@ class ImageListViewModel(
 
     private var cameraList: List<CameraData> = emptyList()
     private var imagePagedList: PagedList<ImageData>? = null
+    private var doorbellData: DoorbellData? = null
 
     fun requestData(deviceId: String) {
         disposables.clear()
+
+        viewModelScope.launch(schedulerSet.ioCoroutineContext) {
+            try {
+                doorbellData = doorbellRepository.getDoorbell(deviceId)
+                updateLiveDate()
+            } catch (error: Throwable) {
+                imageListStateData.postValue(ErrorImageListState(error))
+            }
+        }.cancelOnCleared()
 
         viewModelScope.launch(schedulerSet.ioCoroutineContext) {
             try {
@@ -71,9 +81,16 @@ class ImageListViewModel(
     private fun updateLiveDate() {
         imageListStateData.postValue(
             if (imagePagedList?.isNotEmpty() == true) {
-                NormalImageListState(cameraList, requireNotNull(imagePagedList))
+                NormalImageListState(
+                    cameraList = cameraList,
+                    imageList = requireNotNull(imagePagedList),
+                    isAndroidThings = doorbellData?.isAndroidThings == true
+                )
             } else {
-                EmptyImageListState(cameraList)
+                EmptyImageListState(
+                    cameraList = cameraList,
+                    isAndroidThings = doorbellData?.isAndroidThings == true
+                )
             }
         )
     }

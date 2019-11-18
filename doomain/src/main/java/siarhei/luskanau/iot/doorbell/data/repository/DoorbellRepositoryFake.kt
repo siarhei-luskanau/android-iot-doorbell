@@ -36,6 +36,13 @@ class DoorbellRepositoryFake : DoorbellRepository {
         return list
     }
 
+    override suspend fun getDoorbell(deviceId: String): DoorbellData =
+        DoorbellData(
+            doorbellId = deviceId,
+            name = "doorbell_$deviceId",
+            isAndroidThings = false
+        )
+
     override suspend fun getCamerasList(deviceId: String): List<CameraData> =
         listOf(
             CameraData(

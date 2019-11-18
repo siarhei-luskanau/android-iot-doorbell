@@ -9,10 +9,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import org.hamcrest.Matchers.not
 import org.junit.Test
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.ui.R
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 
 class ImageListFragmentTest {
 
@@ -27,14 +27,15 @@ class ImageListFragmentTest {
     }
 
     @Test
-    fun testNormalState() {
+    fun testNormalStateAndIsAndroidThings() {
         val fragmentFactory = createFragmentFactory(
             state = NormalImageListState(
                 cameraList = listOf(CameraData("cameraId")),
-                imageList = null
+                imageList = null,
+                isAndroidThings = true
             )
         )
-        val scenario = launchFragmentInContainer<ImageDetailsFragment>(factory = fragmentFactory)
+        val scenario = launchFragmentInContainer<ImageListFragment>(factory = fragmentFactory)
         scenario.moveToState(Lifecycle.State.RESUMED)
 
         // normal view is displayed
@@ -42,11 +43,106 @@ class ImageListFragmentTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        // reboot button should be visible
         Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        // error view does not exist
+        // other views does not exist
+        Espresso.onView(ViewMatchers.withId(R.id.empty_message))
+            .check(ViewAssertions.doesNotExist())
         Espresso.onView(ViewMatchers.withId(R.id.error_message))
+            .check(ViewAssertions.doesNotExist())
+    }
+
+    @Test
+    fun testNormalStateAndIsNotAndroidThings() {
+        val fragmentFactory = createFragmentFactory(
+            state = NormalImageListState(
+                cameraList = listOf(CameraData("cameraId")),
+                imageList = null,
+                isAndroidThings = false
+            )
+        )
+        val scenario = launchFragmentInContainer<ImageListFragment>(factory = fragmentFactory)
+        scenario.moveToState(Lifecycle.State.RESUMED)
+
+        // normal view is displayed
+        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        // reboot button should be gone
+        Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
+            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
+        Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
+            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
+
+        // other views does not exist
+        Espresso.onView(ViewMatchers.withId(R.id.empty_message))
+            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withId(R.id.error_message))
+            .check(ViewAssertions.doesNotExist())
+    }
+
+    @Test
+    fun testEmptyState() {
+        val fragmentFactory = createFragmentFactory(
+            state = EmptyImageListState(
+                cameraList = listOf(CameraData("cameraId")),
+                isAndroidThings = false
+            )
+        )
+        val scenario = launchFragmentInContainer<ImageListFragment>(factory = fragmentFactory)
+        scenario.moveToState(Lifecycle.State.RESUMED)
+
+        // empty view is displayed
+        Espresso.onView(ViewMatchers.withId(R.id.empty_message))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        // other views does not exist
+        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
+            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
+            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
+            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
+            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withId(R.id.error_message))
+            .check(ViewAssertions.doesNotExist())
+    }
+
+    @Test
+    fun testErrorState() {
+        val expectedErrorMessage = "Test Exception"
+        val fragmentFactory = createFragmentFactory(
+            state = ErrorImageListState(
+                error = RuntimeException(expectedErrorMessage)
+            )
+        )
+        val scenario = launchFragmentInContainer<ImageListFragment>(factory = fragmentFactory)
+        scenario.moveToState(Lifecycle.State.RESUMED)
+
+        // error view is displayed
+        Espresso.onView(ViewMatchers.withId(R.id.error_message))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        Espresso.onView(ViewMatchers.withText(expectedErrorMessage))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        // other views does not exist
+        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
+            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
+            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
+            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
+            .check(ViewAssertions.doesNotExist())
+        Espresso.onView(ViewMatchers.withId(R.id.empty_message))
             .check(ViewAssertions.doesNotExist())
     }
 }

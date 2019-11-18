@@ -15,14 +15,14 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
         startupTimeString: String
     ) {
         setValueToDatabase(
-                getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                        .child(UptimeDto.STARTUP_TIME_MILLIS_KEY),
-                startupTimeMillis
+            getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                .child(UptimeDto.STARTUP_TIME_MILLIS_KEY),
+            startupTimeMillis
         )
         setValueToDatabase(
-                getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                        .child(UptimeDto.STARTUP_TIME_STRING_KEY),
-                startupTimeString
+            getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                .child(UptimeDto.STARTUP_TIME_STRING_KEY),
+            startupTimeString
         )
     }
 
@@ -32,14 +32,14 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
         pingTimeString: String
     ) {
         setValueToDatabase(
-                getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                        .child(UptimeDto.PING_TIME_MILLIS_KEY),
-                pingTimeMillis
+            getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                .child(UptimeDto.PING_TIME_MILLIS_KEY),
+            pingTimeMillis
         )
         setValueToDatabase(
-                getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                        .child(UptimeDto.PING_TIME_STRING_KEY),
-                pingTimeString
+            getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                .child(UptimeDto.PING_TIME_STRING_KEY),
+            pingTimeString
         )
     }
 
@@ -49,14 +49,14 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
         rebootRequestTimeString: String
     ) {
         setValueToDatabase(
-                getAppDatabase().child(UPTIME_KEY).child(doorbellId)
-                        .child(UptimeDto.REBOOT_REQUEST_TIME_MILLIS_KEY),
-                rebootRequestTimeMillis
+            getAppDatabase().child(UPTIME_KEY).child(doorbellId)
+                .child(UptimeDto.REBOOT_REQUEST_TIME_MILLIS_KEY),
+            rebootRequestTimeMillis
         )
         setValueToDatabase(
-                getAppDatabase().child(UPTIME_KEY).child(doorbellId)
-                        .child(UptimeDto.REBOOT_REQUEST_TIME_STRING_KEY),
-                rebootRequestTimeString
+            getAppDatabase().child(UPTIME_KEY).child(doorbellId)
+                .child(UptimeDto.REBOOT_REQUEST_TIME_STRING_KEY),
+            rebootRequestTimeString
         )
     }
 
@@ -66,24 +66,23 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
         rebootingTimeString: String
     ) {
         setValueToDatabase(
-                getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                        .child(UptimeDto.REBOOTING_TIME_MILLIS_KEY),
-                rebootingTimeMillis
+            getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                .child(UptimeDto.REBOOTING_TIME_MILLIS_KEY),
+            rebootingTimeMillis
         )
         setValueToDatabase(
-                getAppDatabase().child(UPTIME_KEY).child(deviceId)
-                        .child(UptimeDto.REBOOTING_TIME_STRING_KEY),
-                rebootingTimeString
+            getAppDatabase().child(UPTIME_KEY).child(deviceId)
+                .child(UptimeDto.REBOOTING_TIME_STRING_KEY),
+            rebootingTimeString
         )
     }
 
-    override suspend fun getUptime(deviceId: String): Uptime {
-        val uptimeDto = dataSnapshotObject(
-                getValueFromDatabase(getAppDatabase().child(UPTIME_KEY).child(deviceId)),
-                UptimeDto::class.java
-        )
-
-        return Uptime(
+    override suspend fun getUptime(deviceId: String): Uptime? =
+        dataSnapshotObject(
+            getValueFromDatabase(getAppDatabase().child(UPTIME_KEY).child(deviceId)),
+            UptimeDto::class.java
+        )?.let { uptimeDto ->
+            Uptime(
                 startupTimeMillis = uptimeDto.startupTimeMillis,
                 startupTimeString = uptimeDto.startupTimeString,
                 pingTimeMillis = uptimeDto.pingTimeMillis,
@@ -93,12 +92,12 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
                 rebootingTimeMillis = uptimeDto.rebootingTimeMillis,
                 rebootingTimeString = uptimeDto.rebootingTimeString
 
-        )
-    }
+            )
+        }
 
     override suspend fun sendIpAddressMap(deviceId: String, ipAddressMap: Map<String, String>) =
-            setValueToDatabase(
-                    getAppDatabase().child(UPTIME_KEY).child(deviceId).child(IP_ADDRESS_KEY),
-                    serializeByMoshi(ipAddressMap)
-            )
+        setValueToDatabase(
+            getAppDatabase().child(UPTIME_KEY).child(deviceId).child(IP_ADDRESS_KEY),
+            serializeByMoshi(ipAddressMap)
+        )
 }

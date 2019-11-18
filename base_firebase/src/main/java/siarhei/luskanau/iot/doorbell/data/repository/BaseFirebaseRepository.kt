@@ -36,10 +36,10 @@ abstract class BaseFirebaseRepository(
     protected fun getAppStorage(): StorageReference =
             FirebaseStorage.getInstance().getReference(DOORBELL_APP_KEY)
 
-    protected fun <T : Any> dataSnapshotObject(dataSnapshot: DataSnapshot, type: Class<T>): T =
+    protected fun <T : Any> dataSnapshotObject(dataSnapshot: DataSnapshot, type: Class<T>): T? =
             moshi.adapter<Any>(Object::class.java).toJson(dataSnapshot.value)?.let { json ->
                 moshi.adapter(type).fromJson(json)
-            } as T
+            }
 
     protected fun <T : Any> dataSnapshotToList(dataSnapshot: DataSnapshot, type: Class<T>): List<T> =
             dataSnapshot.children.mapNotNull {
