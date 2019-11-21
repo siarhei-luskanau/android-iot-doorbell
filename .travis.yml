@@ -7,18 +7,18 @@ android:
     - tools
     - build-tools-29.0.2
     - android-29
-    - android-21
-    - sys-img-armeabi-v7a-android-21
+#    - android-21
+#    - sys-img-armeabi-v7a-android-21
 
 before_script:
   - chmod +x gradlew # ./gradlew: Permission denied
-  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+#  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+#  - emulator -avd test -no-skin -no-audio -no-window &
+#  - android-wait-for-emulator
+#  - adb shell input keyevent 82 &
 
 script:
-  - ./gradlew clean ktlint detekt build test connectedAndroidTest --stacktrace
+  - ./gradlew clean ktlint detekt build test --stacktrace
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
