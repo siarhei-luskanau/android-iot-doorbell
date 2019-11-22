@@ -30,7 +30,7 @@ class ImageListFragmentTest {
     fun testNormalStateAndIsAndroidThings() {
         val fragmentFactory = createFragmentFactory(
             state = NormalImageListState(
-                cameraList = listOf(CameraData("cameraId")),
+                cameraList = listOf(CameraData("NormalCameraId")),
                 imageList = null,
                 isAndroidThings = true
             )
@@ -61,7 +61,7 @@ class ImageListFragmentTest {
     fun testNormalStateAndIsNotAndroidThings() {
         val fragmentFactory = createFragmentFactory(
             state = NormalImageListState(
-                cameraList = listOf(CameraData("cameraId")),
+                cameraList = listOf(CameraData("NormalCameraId")),
                 imageList = null,
                 isAndroidThings = false
             )
@@ -92,7 +92,7 @@ class ImageListFragmentTest {
     fun testEmptyState() {
         val fragmentFactory = createFragmentFactory(
             state = EmptyImageListState(
-                cameraList = listOf(CameraData("cameraId")),
+                cameraList = listOf(CameraData("EmptyCameraId")),
                 isAndroidThings = false
             )
         )
@@ -100,17 +100,19 @@ class ImageListFragmentTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
 
         // empty view is displayed
+        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.empty_message))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        // other views does not exist
-        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
-            .check(ViewAssertions.doesNotExist())
-        Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
-            .check(ViewAssertions.doesNotExist())
+        // reboot button should be gone
         Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
-            .check(ViewAssertions.doesNotExist())
+            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
         Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
+            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
+
+        // other views does not exist
+        Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
             .check(ViewAssertions.doesNotExist())
         Espresso.onView(ViewMatchers.withId(R.id.error_message))
             .check(ViewAssertions.doesNotExist())
@@ -133,14 +135,16 @@ class ImageListFragmentTest {
         Espresso.onView(ViewMatchers.withText(expectedErrorMessage))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        // other views does not exist
+        // reboot button should be gone
         Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
-            .check(ViewAssertions.doesNotExist())
-        Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
-            .check(ViewAssertions.doesNotExist())
+            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
         Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
-            .check(ViewAssertions.doesNotExist())
+            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
         Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
+            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
+
+        // other views does not exist
+        Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
             .check(ViewAssertions.doesNotExist())
         Espresso.onView(ViewMatchers.withId(R.id.empty_message))
             .check(ViewAssertions.doesNotExist())

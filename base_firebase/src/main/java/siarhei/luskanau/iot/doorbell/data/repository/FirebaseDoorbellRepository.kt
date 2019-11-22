@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.data.repository
 import android.net.Uri
 import com.google.firebase.database.Query
 import com.google.firebase.database.ServerValue
-import java.io.Serializable
 import java.text.DateFormat
 import java.util.Calendar
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
@@ -53,7 +52,7 @@ class FirebaseDoorbellRepository(
                     doorbellId = it.doorbellId,
                     name = it.name,
                     isAndroidThings = it.isAndroidThings,
-                    info = it.info?.mapValues { value -> value.toString() }
+                    info = it.info?.mapValues { entry -> entry.value.toString() }
                 )
             }
     }
@@ -67,7 +66,7 @@ class FirebaseDoorbellRepository(
                 doorbellId = it.doorbellId,
                 name = it.name,
                 isAndroidThings = it.isAndroidThings,
-                info = it.info?.mapValues { value -> value as Serializable }
+                info = it.info?.mapValues { entry -> entry.value.toString() }
             )
         }
 
@@ -86,8 +85,8 @@ class FirebaseDoorbellRepository(
                             entry.value.height
                         )
                     },
-                    info = it.info?.mapValues { value -> value.toString() },
-                    cameraxInfo = it.cameraxInfo?.mapValues { value -> value.toString() }
+                    info = it.info?.mapValues { entry -> entry.value.toString() },
+                    cameraxInfo = it.cameraxInfo?.mapValues { entry -> entry.value.toString() }
                 )
             }
 

@@ -10,16 +10,17 @@ import androidx.lifecycle.Observer
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.ImageAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
-import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentGenericRefreshContentContainerBinding
+import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentImageListBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericEmptyBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericErrorBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutImageListNormalBinding
+import timber.log.Timber
 
 class ImageListFragment(
     presenterProvider: (args: Bundle?) -> ImageListPresenter
 ) : BaseFragment<ImageListPresenter>(presenterProvider) {
 
-    private lateinit var fragmentBinding: FragmentGenericRefreshContentContainerBinding
+    private lateinit var fragmentBinding: FragmentImageListBinding
     private lateinit var normalStateBinding: LayoutImageListNormalBinding
     private lateinit var emptyStateBinding: LayoutGenericEmptyBinding
     private lateinit var errorStateBinding: LayoutGenericErrorBinding
@@ -32,12 +33,14 @@ class ImageListFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        FragmentGenericRefreshContentContainerBinding.inflate(
+        FragmentImageListBinding.inflate(
             inflater,
             container,
             false
         ).also {
             fragmentBinding = it
+            fragmentBinding.camerasRecyclerView.adapter = camerasAdapter
+            fragmentBinding.rebootButton.setOnClickListener { presenter.rebootDevice() }
             fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.requestData() }
         }
 
@@ -47,9 +50,7 @@ class ImageListFragment(
             false
         ).also {
             normalStateBinding = it
-            normalStateBinding.camerasRecyclerView.adapter = camerasAdapter
             normalStateBinding.imagesRecyclerView.adapter = imageAdapter
-            normalStateBinding.rebootButton.setOnClickListener { presenter.rebootDevice() }
         }
 
         LayoutGenericEmptyBinding.inflate(
@@ -105,19 +106,27 @@ class ImageListFragment(
             fragmentBinding.containerContent.addView(stateBinding.root)
         }
 
+        fragmentBinding.camerasRecyclerView.isVisible = (state is ErrorImageListState).not()
         when (state) {
             is EmptyImageListState -> {
                 camerasAdapter.submitList(state.cameraList)
+                fragmentBinding.uptimeCardView.isVisible = state.isAndroidThings
+                fragmentBinding.rebootButton.isVisible = state.isAndroidThings
             }
 
             is NormalImageListState -> {
                 camerasAdapter.submitList(state.cameraList)
                 imageAdapter.submitList(state.imageList)
-                normalStateBinding.uptimeCardView.isVisible = state.isAndroidThings
-                normalStateBinding.rebootButton.isVisible = state.isAndroidThings
+                fragmentBinding.uptimeCardView.isVisible = state.isAndroidThings
+                fragmentBinding.rebootButton.isVisible = state.isAndroidThings
             }
 
-            is ErrorImageListState -> errorStateBinding.errorMessage.text = state.error.message
+            is ErrorImageListState -> {
+                Timber.e(state.error)
+                errorStateBinding.errorMessage.text = state.error.message
+                fragmentBinding.uptimeCardView.isVisible = false
+                fragmentBinding.rebootButton.isVisible = false
+            }
         }
     }
 }

@@ -17,9 +17,7 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 abstract class BaseFirebaseRepository(
-    private val moshi: Moshi = Moshi.Builder()
-            // .add(KotlinJsonAdapterFactory())
-            .build()
+    private val moshi: Moshi = Moshi.Builder().build()
 ) {
 
     companion object {
@@ -27,75 +25,85 @@ abstract class BaseFirebaseRepository(
     }
 
     protected fun serializeByMoshi(src: Any?): Any? =
-            moshi.adapter(Any::class.java).fromJsonValue(
-                    moshi.adapter<Any>(Object::class.java).toJsonValue(src))
+        moshi.adapter(Any::class.java).fromJsonValue(
+            moshi.adapter<Any>(Object::class.java).toJsonValue(src)
+        )
 
     protected fun getAppDatabase(): DatabaseReference =
-            FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY)
+        FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY)
 
     protected fun getAppStorage(): StorageReference =
-            FirebaseStorage.getInstance().getReference(DOORBELL_APP_KEY)
+        FirebaseStorage.getInstance().getReference(DOORBELL_APP_KEY)
 
     protected fun <T : Any> dataSnapshotObject(dataSnapshot: DataSnapshot, type: Class<T>): T? =
-            moshi.adapter<Any>(Object::class.java).toJson(dataSnapshot.value)?.let { json ->
+        moshi.adapter<Any>(Object::class.java).toJson(dataSnapshot.value)?.let { json ->
+            moshi.adapter(type).fromJson(json)
+        }
+
+    protected fun <T : Any> dataSnapshotToList(
+        dataSnapshot: DataSnapshot,
+        type: Class<T>
+    ): List<T> =
+        dataSnapshot.children.mapNotNull {
+            moshi.adapter<Any>(Object::class.java).toJson(it.value)?.let { json ->
                 moshi.adapter(type).fromJson(json)
             }
+        }
 
-    protected fun <T : Any> dataSnapshotToList(dataSnapshot: DataSnapshot, type: Class<T>): List<T> =
-            dataSnapshot.children.mapNotNull {
+    protected fun <T : Any> dataSnapshotToMap(
+        dataSnapshot: DataSnapshot,
+        type: Class<T>
+    ): Map<String, T> =
+        // if (dataSnapshot.exists())
+        dataSnapshot.children.associateBy(
+            { it.key.orEmpty() },
+            {
                 moshi.adapter<Any>(Object::class.java).toJson(it.value)?.let { json ->
                     moshi.adapter(type).fromJson(json)
                 }
             }
+        )
+            .filterValues { it != null }
+            .mapValues { entry -> entry.value as T }
 
-    protected fun <T : Any> dataSnapshotToMap(dataSnapshot: DataSnapshot, type: Class<T>): Map<String, T> =
-            // if (dataSnapshot.exists())
-            dataSnapshot.children.associateBy(
-                    { it.key.orEmpty() },
-                    {
-                        moshi.adapter<Any>(Object::class.java).toJson(it.value)?.let { json ->
-                            moshi.adapter(type).fromJson(json)
-                        }
-                    }
-            )
-                    .filterValues { it != null }
-                    .mapValues { it.value as T }
-
-    protected suspend fun putStreamToStorage(storageRef: StorageReference, stream: InputStream): Uri? =
-            suspendCoroutine { continuation ->
-                storageRef.putStream(stream)
-                        .continueWithTask {
-                            storageRef.downloadUrl
-                        }
-                        .addOnCompleteListener {
-                            continuation.resume(it.result)
-                        }
-                        .addOnFailureListener {
-                            continuation.resumeWithException(it)
-                        }
-            }
+    protected suspend fun putStreamToStorage(
+        storageRef: StorageReference,
+        stream: InputStream
+    ): Uri? =
+        suspendCoroutine { continuation ->
+            storageRef.putStream(stream)
+                .continueWithTask {
+                    storageRef.downloadUrl
+                }
+                .addOnCompleteListener {
+                    continuation.resume(it.result)
+                }
+                .addOnFailureListener {
+                    continuation.resumeWithException(it)
+                }
+        }
 
     protected suspend fun setValueToDatabase(ref: DatabaseReference, value: Any?) =
-            suspendCoroutine { continuation: Continuation<Unit> ->
-                ref.setValue(value)
-                        .addOnSuccessListener {
-                            continuation.resume(Unit)
-                        }
-                        .addOnFailureListener {
-                            continuation.resumeWithException(it)
-                        }
-            }
+        suspendCoroutine { continuation: Continuation<Unit> ->
+            ref.setValue(value)
+                .addOnSuccessListener {
+                    continuation.resume(Unit)
+                }
+                .addOnFailureListener {
+                    continuation.resumeWithException(it)
+                }
+        }
 
     protected suspend fun getValueFromDatabase(query: Query): DataSnapshot =
-            suspendCoroutine { continuation: Continuation<DataSnapshot> ->
-                query.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        continuation.resume(dataSnapshot)
-                    }
+        suspendCoroutine { continuation: Continuation<DataSnapshot> ->
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    continuation.resume(dataSnapshot)
+                }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        continuation.resumeWithException(databaseError.toException())
-                    }
-                })
-            }
+                override fun onCancelled(databaseError: DatabaseError) {
+                    continuation.resumeWithException(databaseError.toException())
+                }
+            })
+        }
 }

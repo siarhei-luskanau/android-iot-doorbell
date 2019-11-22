@@ -5,20 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.DoorbellsAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
-import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentGenericRefreshContentContainerBinding
+import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentDoorbellListBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutDoorbellListNormalBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericEmptyBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericErrorBinding
+import timber.log.Timber
 
 class DoorbellListFragment(
     presenterProvider: (args: Bundle?) -> DoorbellListPresenter
 ) : BaseFragment<DoorbellListPresenter>(presenterProvider) {
 
-    private lateinit var fragmentBinding: FragmentGenericRefreshContentContainerBinding
+    private lateinit var fragmentBinding: FragmentDoorbellListBinding
     private lateinit var normalStateBinding: LayoutDoorbellListNormalBinding
     private lateinit var emptyStateBinding: LayoutGenericEmptyBinding
     private lateinit var errorStateBinding: LayoutGenericErrorBinding
@@ -31,13 +33,14 @@ class DoorbellListFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        FragmentGenericRefreshContentContainerBinding.inflate(
+        FragmentDoorbellListBinding.inflate(
             inflater,
             container,
             false
         ).also {
             fragmentBinding = it
             fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.requestData() }
+            fragmentBinding.camerasRecyclerView.adapter = camerasAdapter
         }
 
         LayoutDoorbellListNormalBinding.inflate(
@@ -46,7 +49,6 @@ class DoorbellListFragment(
             false
         ).also {
             normalStateBinding = it
-            normalStateBinding.camerasRecyclerView.adapter = camerasAdapter
             normalStateBinding.doorbellsRecyclerView.adapter = doorbellsAdapter
         }
 
@@ -104,6 +106,7 @@ class DoorbellListFragment(
             fragmentBinding.containerContent.addView(stateBinding.root)
         }
 
+        fragmentBinding.camerasRecyclerView.isVisible = (state is ErrorDoorbellListState).not()
         when (state) {
             is EmptyDoorbellListState -> {
                 camerasAdapter.submitList(state.cameraList)
@@ -114,7 +117,10 @@ class DoorbellListFragment(
                 doorbellsAdapter.submitList(state.doorbellList)
             }
 
-            is ErrorDoorbellListState -> errorStateBinding.errorMessage.text = state.error.message
+            is ErrorDoorbellListState -> {
+                Timber.e(state.error)
+                errorStateBinding.errorMessage.text = state.error.message
+            }
         }
     }
 }

@@ -12,7 +12,7 @@
     <fragment
         android:id="@+id/nav_doorbell_list"
         android:name="siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment"
-        tools:layout="@layout/fragment_generic_refresh_content_container">
+        tools:layout="@layout/fragment_doorbell_list">
         <action
             android:id="@+id/action_doorbell_list_to_image_list"
             app:destination="@id/nav_image_list" />
@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/nav_image_list"
         android:name="siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment"
-        tools:layout="@layout/fragment_generic_refresh_content_container">
+        tools:layout="@layout/fragment_image_list">
         <argument
             android:name="doorbellData"
             app:argType="siarhei.luskanau.iot.doorbell.data.model.DoorbellData" />
@@ -36,7 +36,7 @@
     <fragment
         android:id="@+id/nav_image_details"
         android:name="siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment"
-        tools:layout="@layout/fragment_generic_content_container">
+        tools:layout="@layout/fragment_image_details">
         <argument
             android:name="imageData"
             app:argType="siarhei.luskanau.iot.doorbell.data.model.ImageData" />

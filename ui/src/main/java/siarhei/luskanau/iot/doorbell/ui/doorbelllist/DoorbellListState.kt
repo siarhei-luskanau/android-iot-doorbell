@@ -10,7 +10,7 @@ data class EmptyDoorbellListState(val cameraList: List<CameraData>) : DoorbellLi
 
 data class NormalDoorbellListState(
     val cameraList: List<CameraData>,
-    val doorbellList: PagedList<DoorbellData>
+    val doorbellList: PagedList<DoorbellData>?
 ) : DoorbellListState()
 
 data class ErrorDoorbellListState(val error: Throwable) : DoorbellListState()

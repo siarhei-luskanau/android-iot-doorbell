@@ -9,15 +9,16 @@ import androidx.lifecycle.Observer
 import coil.api.load
 import siarhei.luskanau.iot.doorbell.ui.R
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
-import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentGenericContentContainerBinding
+import siarhei.luskanau.iot.doorbell.ui.databinding.FragmentImageDetailsBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutGenericErrorBinding
 import siarhei.luskanau.iot.doorbell.ui.databinding.LayoutImageDetailsNormalBinding
+import timber.log.Timber
 
 class ImageDetailsFragment(
     presenterProvider: (args: Bundle?) -> ImageDetailsPresenter
 ) : BaseFragment<ImageDetailsPresenter>(presenterProvider) {
 
-    private lateinit var fragmentBinding: FragmentGenericContentContainerBinding
+    private lateinit var fragmentBinding: FragmentImageDetailsBinding
     private lateinit var normalStateBinding: LayoutImageDetailsNormalBinding
     private lateinit var errorStateBinding: LayoutGenericErrorBinding
 
@@ -26,26 +27,26 @@ class ImageDetailsFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        FragmentGenericContentContainerBinding.inflate(
-                inflater,
-                container,
-                false
+        FragmentImageDetailsBinding.inflate(
+            inflater,
+            container,
+            false
         ).also {
             fragmentBinding = it
         }
 
         LayoutImageDetailsNormalBinding.inflate(
-                inflater,
-                container,
-                false
+            inflater,
+            container,
+            false
         ).also {
             normalStateBinding = it
         }
 
         LayoutGenericErrorBinding.inflate(
-                inflater,
-                container,
-                false
+            inflater,
+            container,
+            false
         ).also {
             errorStateBinding = it
         }
@@ -61,7 +62,7 @@ class ImageDetailsFragment(
     override fun observeDataSources() {
         super.observeDataSources()
         presenter.getImageDetailsStateData()
-                .observe(viewLifecycleOwner, Observer { changeState(it) })
+            .observe(viewLifecycleOwner, Observer { changeState(it) })
     }
 
     private fun changeState(state: ImageDetailsState) {
@@ -82,7 +83,10 @@ class ImageDetailsFragment(
                 }
             }
 
-            is ErrorImageDetailsState -> errorStateBinding.errorMessage.text = state.error.message
+            is ErrorImageDetailsState -> {
+                Timber.e(state.error)
+                errorStateBinding.errorMessage.text = state.error.message
+            }
         }
     }
 }

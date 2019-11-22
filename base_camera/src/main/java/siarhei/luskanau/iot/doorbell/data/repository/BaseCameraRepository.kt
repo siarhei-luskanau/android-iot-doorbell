@@ -40,10 +40,10 @@ abstract class BaseCameraRepository(
                                 CameraData(
                                     cameraId = cameraId,
                                     name = name.orEmpty(),
-                                    sizes = sizes.mapValues {
+                                    sizes = sizes.mapValues { entry ->
                                         SizeData(
-                                            it.value.width,
-                                            it.value.height
+                                            entry.value.width,
+                                            entry.value.height
                                         )
                                     },
                                     info = info,
