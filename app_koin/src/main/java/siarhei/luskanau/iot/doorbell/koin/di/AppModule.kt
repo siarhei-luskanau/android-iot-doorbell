@@ -128,7 +128,11 @@ val activityModule = module {
             }
         }
     }
-    factory<DoorbellListPresenter> { (lifecycleOwner: LifecycleOwner, appNavigation: AppNavigation, thisDeviceRepository: ThisDeviceRepository) ->
+    factory<DoorbellListPresenter> { (
+                                         lifecycleOwner: LifecycleOwner,
+                                         appNavigation: AppNavigation,
+                                         thisDeviceRepository: ThisDeviceRepository
+                                     ) ->
         DoorbellListPresenterImpl(
             doorbellListViewModel = lifecycleOwner.getViewModel(),
             appNavigation = appNavigation,
@@ -150,7 +154,11 @@ val activityModule = module {
             }
         }
     }
-    factory<ImageListPresenter> { (doorbellData: DoorbellData, lifecycleOwner: LifecycleOwner, appNavigation: AppNavigation) ->
+    factory<ImageListPresenter> { (
+                                      doorbellData: DoorbellData,
+                                      lifecycleOwner: LifecycleOwner,
+                                      appNavigation: AppNavigation
+                                  ) ->
         ImageListPresenterImpl(
             doorbellData = doorbellData,
             imageListViewModel = lifecycleOwner.getViewModel(),

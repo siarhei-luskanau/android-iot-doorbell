@@ -38,20 +38,20 @@ class ImageListViewModel(
         disposables.clear()
 
         viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            try {
+            runCatching {
                 doorbellData = doorbellRepository.getDoorbell(deviceId)
                 updateLiveDate()
-            } catch (error: Throwable) {
-                imageListStateData.postValue(ErrorImageListState(error))
+            }.onFailure {
+                imageListStateData.postValue(ErrorImageListState(it))
             }
         }.cancelOnCleared()
 
         viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            try {
+            runCatching {
                 cameraList = doorbellRepository.getCamerasList(deviceId)
                 updateLiveDate()
-            } catch (error: Throwable) {
-                imageListStateData.postValue(ErrorImageListState(error))
+            }.onFailure {
+                imageListStateData.postValue(ErrorImageListState(it))
             }
         }.cancelOnCleared()
 
@@ -60,8 +60,7 @@ class ImageListViewModel(
                 pageSize = PAGE_SIZE,
                 prefetchDistance = PAGE_SIZE,
                 initialLoadSizeHint = PAGE_SIZE
-            ),
-            boundaryCallback = createBoundaryCallback()
+            )
         )
             .doOnSubscribe { loadingData.postValue(true) }
             .doOnNext { loadingData.postValue(false) }
@@ -95,37 +94,30 @@ class ImageListViewModel(
         )
     }
 
-    private fun createBoundaryCallback(): PagedList.BoundaryCallback<ImageData> =
-        object : PagedList.BoundaryCallback<ImageData>() {
-            override fun onItemAtFrontLoaded(itemAtFront: ImageData) {}
-            override fun onItemAtEndLoaded(itemAtEnd: ImageData) {}
-            override fun onZeroItemsLoaded() {}
-        }
-
     fun onCameraClicked(doorbellData: DoorbellData, cameraData: CameraData) {
         viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            try {
+            runCatching {
                 doorbellRepository.sendCameraImageRequest(
                     deviceId = doorbellData.doorbellId,
                     cameraId = cameraData.cameraId,
                     isRequested = true
                 )
-            } catch (error: Throwable) {
-                imageListStateData.postValue(ErrorImageListState(error))
+            }.onFailure {
+                imageListStateData.postValue(ErrorImageListState(it))
             }
         }.cancelOnCleared()
     }
 
     fun rebootDevice(doorbellId: String, currentTime: Long) {
         viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            try {
+            runCatching {
                 uptimeRepository.uptimeRebootRequest(
                     doorbellId = doorbellId,
                     rebootRequestTimeMillis = currentTime,
                     rebootRequestTimeString = AppConstants.DATE_FORMAT.format(currentTime)
                 )
-            } catch (error: Throwable) {
-                imageListStateData.postValue(ErrorImageListState(error))
+            }.onFailure {
+                imageListStateData.postValue(ErrorImageListState(it))
             }
         }.cancelOnCleared()
     }

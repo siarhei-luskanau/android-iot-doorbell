@@ -10,10 +10,14 @@ import siarhei.luskanau.iot.doorbell.ui.common.adapter.BindingViewHolder
 import siarhei.luskanau.iot.doorbell.ui.databinding.ViewItemImageBinding
 
 class ImageAdapter : BaseRecyclerClickablePagingAdapter<ImageData, ViewItemImageBinding>(
-        DIFF_CALLBACK
+    DIFF_CALLBACK
 ) {
-    override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): BindingViewHolder<ViewItemImageBinding> =
-            BindingViewHolder(ViewItemImageBinding.inflate(inflater, parent, false))
+    override fun onCreateViewHolder(
+        inflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int
+    ): BindingViewHolder<ViewItemImageBinding> =
+        BindingViewHolder(ViewItemImageBinding.inflate(inflater, parent, false))
 
     override fun onBindViewHolder(holder: BindingViewHolder<ViewItemImageBinding>, position: Int) {
         getItem(position)?.let { item ->
@@ -28,10 +32,10 @@ class ImageAdapter : BaseRecyclerClickablePagingAdapter<ImageData, ViewItemImage
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ImageData>() {
             override fun areItemsTheSame(oldItem: ImageData, newItem: ImageData) =
-                    oldItem.imageId == newItem.imageId
+                oldItem.imageId == newItem.imageId
 
             override fun areContentsTheSame(oldItem: ImageData, newItem: ImageData) =
-                    oldItem == newItem
+                oldItem == newItem
         }
     }
 }

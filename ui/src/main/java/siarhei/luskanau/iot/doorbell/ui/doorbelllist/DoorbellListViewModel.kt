@@ -38,11 +38,11 @@ class DoorbellListViewModel(
         disposables.clear()
 
         viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            try {
+            runCatching {
                 cameraList = cameraRepository.getCamerasList()
                 updateLiveDate()
-            } catch (error: Throwable) {
-                doorbellListStateData.postValue(ErrorDoorbellListState(error))
+            }.onFailure {
+                doorbellListStateData.postValue(ErrorDoorbellListState(it))
             }
         }.cancelOnCleared()
 
@@ -51,8 +51,7 @@ class DoorbellListViewModel(
                 pageSize = PAGE_SIZE,
                 prefetchDistance = PAGE_SIZE,
                 initialLoadSizeHint = PAGE_SIZE
-            ),
-            boundaryCallback = createBoundaryCallback()
+            )
         )
             .doOnSubscribe { loadingData.postValue(true) }
             .doOnNext { loadingData.postValue(false) }
@@ -84,23 +83,16 @@ class DoorbellListViewModel(
             override fun create() = doorbellsDataSource
         }
 
-    private fun createBoundaryCallback(): PagedList.BoundaryCallback<DoorbellData> =
-        object : PagedList.BoundaryCallback<DoorbellData>() {
-            override fun onItemAtFrontLoaded(itemAtFront: DoorbellData) {}
-            override fun onItemAtEndLoaded(itemAtEnd: DoorbellData) {}
-            override fun onZeroItemsLoaded() {}
-        }
-
     fun onCameraClicked(cameraData: CameraData) {
         viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            try {
+            runCatching {
                 doorbellRepository.sendCameraImageRequest(
                     deviceId = thisDeviceRepository.doorbellId(),
                     cameraId = cameraData.cameraId,
                     isRequested = true
                 )
-            } catch (error: Throwable) {
-                doorbellListStateData.postValue(ErrorDoorbellListState(error))
+            }.onFailure {
+                doorbellListStateData.postValue(ErrorDoorbellListState(it))
             }
         }.cancelOnCleared()
     }

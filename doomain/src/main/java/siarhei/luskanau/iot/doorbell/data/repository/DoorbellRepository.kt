@@ -7,7 +7,11 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 
 interface DoorbellRepository {
 
-    suspend fun getDoorbellsList(size: Int, startAt: String? = null, orderAsc: Boolean = true): List<DoorbellData>
+    suspend fun getDoorbellsList(
+        size: Int,
+        startAt: String? = null,
+        orderAsc: Boolean = true
+    ): List<DoorbellData>
 
     suspend fun getDoorbell(deviceId: String): DoorbellData?
 
@@ -23,5 +27,10 @@ interface DoorbellRepository {
 
     suspend fun sendImage(deviceId: String, cameraId: String, imageFile: ImageFile)
 
-    suspend fun getImagesList(deviceId: String, size: Int, imageIdAt: String? = null, orderAsc: Boolean = true): List<ImageData>
+    suspend fun getImagesList(
+        deviceId: String,
+        size: Int,
+        imageIdAt: String? = null,
+        orderAsc: Boolean = true
+    ): List<ImageData>
 }

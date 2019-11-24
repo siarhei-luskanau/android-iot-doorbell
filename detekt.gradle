@@ -1,7 +1,7 @@
 apply plugin: 'io.gitlab.arturbosch.detekt'
 
 detekt {
-    ignoreFailures = true
+    ignoreFailures = false
     input = files("src/main/kotlin", "src/main/java")
     //filters = ".*/resources/.*,.*/build/.*"
     filters = ".*build.*,.*/resources/.*,.*/tmp/.*"

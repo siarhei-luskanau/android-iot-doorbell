@@ -46,35 +46,4 @@ class DefaultCachedRepository(
                 )
             )
         }
-
-//    private fun getAfterImagesList(deviceId: String, callback: ItemKeyedDataSource.LoadCallback<ImageData>, size: Int, startAt: String? = null) {
-//        Single.fromCallable { persistenceRepository.getImages(deviceId, startAt, size) }
-//                .subscribeOn(schedulerSet.io)
-//                .observeOn(schedulerSet.ui)
-//                .subscribe(
-//                        {
-//
-//                            if (it.size != size) {
-//                                updateFromNetwork(deviceId, callback, size, startAt, it.size)
-//                            } else {
-//                                callback.onResult(it)
-//                            }
-//                        },
-//                        { Timber.e(it) }
-//                )
-//    }
-//
-//    private fun updateFromNetwork(deviceId: String, callback: ItemKeyedDataSource.LoadCallback<ImageData>, size: Int, startAt: String? = null, persistenceLoadedSize: Int) =
-//            doorbellRepository.listenImagesList(deviceId, size, startAt)
-//                    .subscribeOn(schedulerSet.io)
-//                    .observeOn(schedulerSet.ui)
-//                    .subscribe(
-//                            {
-//                                persistenceRepository.insertImages(deviceId, it)
-//                                if (it.size != persistenceLoadedSize) {
-//                                    //invalidate()
-//                                }
-//                            },
-//                            { Timber.e(it) }
-//                    )
 }

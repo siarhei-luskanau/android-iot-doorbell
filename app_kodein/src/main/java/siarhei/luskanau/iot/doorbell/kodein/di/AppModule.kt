@@ -115,7 +115,9 @@ val activityModule = Kodein.Module(name = "activityModule") {
     }
 
     // Permissions
-    bind<Fragment>(tag = PermissionsFragment::class.simpleName) with factory { _: FragmentActivity, appNavigation: AppNavigation ->
+    bind<Fragment>(tag = PermissionsFragment::class.simpleName) with factory {
+            _: FragmentActivity,
+            appNavigation: AppNavigation ->
         @Suppress("RedundantLambdaArrow") val fragment = PermissionsFragment { _: Bundle? ->
             instance(arg = appNavigation)
         }
@@ -126,7 +128,9 @@ val activityModule = Kodein.Module(name = "activityModule") {
     }
 
     // DoorbellList
-    bind<Fragment>(tag = DoorbellListFragment::class.simpleName) with factory { activity: FragmentActivity, appNavigation: AppNavigation ->
+    bind<Fragment>(tag = DoorbellListFragment::class.simpleName) with factory {
+            activity: FragmentActivity,
+            appNavigation: AppNavigation ->
         DoorbellListFragment { instance(arg = M(activity, appNavigation)) }
     }
     bind<DoorbellListPresenter>() with factory { activity: FragmentActivity, appNavigation: AppNavigation ->
@@ -142,14 +146,19 @@ val activityModule = Kodein.Module(name = "activityModule") {
     }
 
     // ImageList
-    bind<Fragment>(tag = ImageListFragment::class.simpleName) with factory { _: FragmentActivity, appNavigation: AppNavigation ->
+    bind<Fragment>(tag = ImageListFragment::class.simpleName) with factory {
+            _: FragmentActivity,
+            appNavigation: AppNavigation ->
         ImageListFragment { args: Bundle? ->
             val appNavigationArgs: AppNavigationArgs = instance()
             val doorbellData = appNavigationArgs.getImagesFragmentArgs(args)
             instance(arg = M(appNavigation, doorbellData))
         }
     }
-    bind<ImageListPresenter>() with factory { activity: FragmentActivity, appNavigation: AppNavigation, doorbellData: DoorbellData ->
+    bind<ImageListPresenter>() with factory {
+            activity: FragmentActivity,
+            appNavigation: AppNavigation,
+            doorbellData: DoorbellData ->
         val viewModelFactory: ViewModelProvider.Factory = instance()
         val viewModel = ViewModelProvider(activity, viewModelFactory)
             .get(ImageListViewModel::class.java)

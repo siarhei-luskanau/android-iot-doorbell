@@ -38,11 +38,11 @@ class AndroidThisDeviceRepository(
         ipAddressProvider.getIpAddressList()
 
     override fun reboot() {
-        try {
+        runCatching {
             Timber.d("reboot")
             Runtime.getRuntime().exec("reboot")
-        } catch (t: Throwable) {
-            Timber.e(t)
+        }.onFailure {
+            Timber.e(it)
         }
     }
 

@@ -20,7 +20,7 @@ class AppBackgroundServices(
             delay = 0,
             period = period
         ) {
-            try {
+            runCatching {
                 val requestMap: Map<String, Boolean>? = runBlocking {
                     doorbellRepository.getCameraImageRequest(
                         thisDeviceRepository.doorbellId()
@@ -38,8 +38,8 @@ class AppBackgroundServices(
                         scheduleWorkManagerService.cameraWorker()
                     }
                 }
-            } catch (t: Throwable) {
-                Timber.e(t)
+            }.onFailure {
+                Timber.e(it)
             }
         }
     }

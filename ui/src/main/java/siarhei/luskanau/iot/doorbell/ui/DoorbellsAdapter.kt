@@ -9,10 +9,14 @@ import siarhei.luskanau.iot.doorbell.ui.common.adapter.BindingViewHolder
 import siarhei.luskanau.iot.doorbell.ui.databinding.ViewItemDoorbellBinding
 
 class DoorbellsAdapter : BaseRecyclerClickablePagingAdapter<DoorbellData, ViewItemDoorbellBinding>(
-        DIFF_CALLBACK
+    DIFF_CALLBACK
 ) {
-    override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): BindingViewHolder<ViewItemDoorbellBinding> =
-            BindingViewHolder(ViewItemDoorbellBinding.inflate(inflater, parent, false))
+    override fun onCreateViewHolder(
+        inflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int
+    ): BindingViewHolder<ViewItemDoorbellBinding> =
+        BindingViewHolder(ViewItemDoorbellBinding.inflate(inflater, parent, false))
 
     override fun onBindViewHolder(
         holder: BindingViewHolder<ViewItemDoorbellBinding>,
@@ -27,10 +31,10 @@ class DoorbellsAdapter : BaseRecyclerClickablePagingAdapter<DoorbellData, ViewIt
 
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DoorbellData>() {
             override fun areItemsTheSame(oldItem: DoorbellData, newItem: DoorbellData) =
-                    oldItem.doorbellId == newItem.doorbellId
+                oldItem.doorbellId == newItem.doorbellId
 
             override fun areContentsTheSame(oldItem: DoorbellData, newItem: DoorbellData) =
-                    oldItem == newItem
+                oldItem == newItem
         }
     }
 }

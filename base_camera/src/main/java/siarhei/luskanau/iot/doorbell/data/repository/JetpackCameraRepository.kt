@@ -28,64 +28,65 @@ class JetpackCameraRepository(
         deviceId: String,
         cameraId: String
     ): ImageFile =
-            suspendCoroutine { continuation: Continuation<ImageFile> ->
-                try {
-                    val handler = Handler(Looper.getMainLooper())
-                    handler.post {
-                        try {
-                            val imageCaptureConfig = ImageCaptureConfig.Builder()
-                                    // .setCameraIdFilter(IdCameraIdFilter(cameraId))
-                                    .setLensFacing(when (cameraId) {
-                                        CameraX.getCameraWithLensFacing(CameraX.LensFacing.BACK) ->
-                                            CameraX.LensFacing.BACK
+        suspendCoroutine { continuation: Continuation<ImageFile> ->
+            runCatching {
+                val handler = Handler(Looper.getMainLooper())
+                handler.post {
+                    runCatching {
+                        val imageCaptureConfig = ImageCaptureConfig.Builder()
+                            // .setCameraIdFilter(IdCameraIdFilter(cameraId))
+                            .setLensFacing(
+                                when (cameraId) {
+                                    CameraX.getCameraWithLensFacing(CameraX.LensFacing.BACK) ->
+                                        CameraX.LensFacing.BACK
 
-                                        CameraX.getCameraWithLensFacing(CameraX.LensFacing.FRONT) ->
-                                            CameraX.LensFacing.FRONT
+                                    CameraX.getCameraWithLensFacing(CameraX.LensFacing.FRONT) ->
+                                        CameraX.LensFacing.FRONT
 
-                                        else -> CameraX.LensFacing.BACK
-                                    })
-                                    .setCaptureMode(CaptureMode.MIN_LATENCY)
-                                    .setTargetResolution(Size(480, 640))
-                                    .build()
+                                    else -> CameraX.LensFacing.BACK
+                                }
+                            )
+                            .setCaptureMode(CaptureMode.MIN_LATENCY)
+                            .setTargetResolution(Size(480, 640))
+                            .build()
 
-                            val imageCapture = ImageCapture(imageCaptureConfig)
+                        val imageCapture = ImageCapture(imageCaptureConfig)
 
-                            CameraX.bindToLifecycle(ProcessLifecycleOwner.get(), imageCapture)
+                        CameraX.bindToLifecycle(ProcessLifecycleOwner.get(), imageCapture)
 
-                            // TODO use ImageAnalysis to check if camera is ready
-                            Thread.sleep(1000)
+                        // TODO use ImageAnalysis to check if camera is ready
+                        Thread.sleep(1000)
 
-                            imageCapture.takePicture(
-                                    imageRepository.prepareFile(cameraId),
-                                    CameraXExecutors.ioExecutor(),
-                                    object : ImageCapture.OnImageSavedListener {
-                                        override fun onImageSaved(file: File) {
-                                            handler.post {
-                                                try {
-                                                    CameraX.unbind(imageCapture)
-                                                    continuation.resume(imageRepository.saveImage(file))
-                                                } catch (t: Throwable) {
-                                                    continuation.resumeWithException(t)
-                                                }
-                                            }
-                                        }
-
-                                        override fun onError(
-                                            imageCaptureError: ImageCapture.ImageCaptureError,
-                                            message: String,
-                                            cause: Throwable?
-                                        ) {
-                                            continuation.resumeWithException(cause
-                                                    ?: Error(message))
+                        imageCapture.takePicture(
+                            imageRepository.prepareFile(cameraId),
+                            CameraXExecutors.ioExecutor(),
+                            object : ImageCapture.OnImageSavedListener {
+                                override fun onImageSaved(file: File) {
+                                    handler.post {
+                                        runCatching {
+                                            CameraX.unbind(imageCapture)
+                                            continuation.resume(imageRepository.saveImage(file))
+                                        }.onFailure {
+                                            continuation.resumeWithException(it)
                                         }
                                     }
-                            )
-                        } catch (t: Throwable) {
-                            continuation.resumeWithException(t)
-                        }
+                                }
+
+                                override fun onError(
+                                    imageCaptureError: ImageCapture.ImageCaptureError,
+                                    message: String,
+                                    cause: Throwable?
+                                ) {
+                                    continuation.resumeWithException(cause ?: Error(message))
+                                }
+                            }
+                        )
+                    }.onFailure {
+                        continuation.resumeWithException(it)
                     }
-                } catch (t: Throwable) {
-                    continuation.resumeWithException(t)
                 }
+            }.onFailure {
+                continuation.resumeWithException(it)
             }
+        }
 }

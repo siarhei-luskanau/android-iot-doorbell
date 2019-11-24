@@ -7,7 +7,7 @@ buildscript {
         buildToolsVersion = '29.0.2'
         minSdkVersion = 21
         androidThingsMinSdkVersion = 26
-        androidGragleBuildVersion = '4.0.0-alpha04'
+        androidGragleBuildVersion = '3.6.0-beta04'
 
         // Play services versions
         firebaseDatabaseVersion = '19.2.0'
@@ -70,7 +70,6 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     }
 
     dependencies {
@@ -84,14 +83,13 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.1.1")
+    id("io.gitlab.arturbosch.detekt").version("1.2.0")
 }
 
 allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
     }
 
     apply from: "$rootDir/ktlint.gradle"

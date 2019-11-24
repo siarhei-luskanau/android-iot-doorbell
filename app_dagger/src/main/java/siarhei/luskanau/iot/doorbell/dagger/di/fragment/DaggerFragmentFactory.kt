@@ -17,13 +17,9 @@ class DaggerFragmentFactory @Inject constructor(
         className: String
     ): Fragment {
         Timber.d("DaggerFragmentFactory.instantiate: $className")
-        try {
-            val fragmentClass = loadFragmentClass(classLoader, className)
-            val fragment: Fragment = providers[fragmentClass]?.get()
+        return loadFragmentClass(classLoader, className).let { fragmentClass ->
+            providers[fragmentClass]?.get()
                 ?: super.instantiate(classLoader, className)
-            return fragment
-        } catch (e: Exception) {
-            throw RuntimeException(e)
         }
     }
 }

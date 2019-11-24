@@ -13,7 +13,7 @@ class AndroidIpAddressProvider : IpAddressProvider {
     override suspend fun getIpAddressList(): Map<String, String> {
         val ipAddressList = mutableMapOf<String, String>()
 
-        try {
+        runCatching {
             for (networkInterface in Collections.list(NetworkInterface.getNetworkInterfaces())) {
                 Collections.list(networkInterface.inetAddresses)
                     .filter { inetAddress: InetAddress ->
@@ -26,8 +26,8 @@ class AndroidIpAddressProvider : IpAddressProvider {
                         ipAddressList[networkInterface.name] = hostAddress
                     }
             }
-        } catch (e: Exception) {
-            Timber.e(e)
+        }.onFailure {
+            Timber.e(it)
         }
 
         return ipAddressList

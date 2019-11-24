@@ -21,7 +21,7 @@ abstract class BaseCameraRepository(
 
     override suspend fun getCamerasList(): List<CameraData> =
         mutableListOf<CameraData>().also { list ->
-            try {
+            runCatching {
                 (ContextCompat.getSystemService(
                     context,
                     CameraManager::class.java
@@ -52,14 +52,14 @@ abstract class BaseCameraRepository(
                             )
                         }
                 }
-            } catch (t: Throwable) {
-                Timber.e(t)
+            }.onFailure {
+                Timber.e(it)
             }
         }
 
     private fun getSizes(cameraManager: CameraManager, cameraId: String): Map<Int, Size> =
         mutableMapOf<Int, Size>().also { sizes ->
-            try {
+            runCatching {
                 val characteristics = cameraManager.getCameraCharacteristics(cameraId)
                 characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                     ?.let { configs: StreamConfigurationMap ->
@@ -69,14 +69,14 @@ abstract class BaseCameraRepository(
                                 { size: Size -> size }
                             ))
                     }
-            } catch (t: Throwable) {
-                Timber.e(t)
+            }.onFailure {
+                Timber.e(it)
             }
         }
 
     private fun getInfo(cameraManager: CameraManager, cameraId: String): Map<String, Serializable> =
         mutableMapOf<String, Serializable>().also { info ->
-            try {
+            runCatching {
                 val characteristics = cameraManager.getCameraCharacteristics(cameraId)
 
                 info["LENS_FACING"] =
@@ -108,8 +108,8 @@ abstract class BaseCameraRepository(
                             { effect: Int -> getEffectName(effect) },
                             { effect: Int -> effect }
                         ) as Serializable
-            } catch (e: Throwable) {
-                info["error"] = e.message as Serializable
+            }.onFailure {
+                info["error"] = it.message as Serializable
                 Timber.d("Cam access exception getting characteristics.")
             }
         }
@@ -117,14 +117,14 @@ abstract class BaseCameraRepository(
     @SuppressLint("RestrictedApi")
     private fun getCameraxInfo(cameraId: String): Map<String, Serializable> =
         mutableMapOf<String, Serializable>().also { cameraxInfo ->
-            try {
+            runCatching {
                 CameraX.getCameraInfo(cameraId).let { cameraInfo ->
                     cameraxInfo["CameraInfo:lensFacing"] = cameraInfo.lensFacing.toString()
                     cameraxInfo["CameraInfo:sensorRotationDegrees"] =
                         cameraInfo.sensorRotationDegrees
                 }
-            } catch (e: Throwable) {
-                cameraxInfo["error"] = e.message as Serializable
+            }.onFailure {
+                cameraxInfo["error"] = it.message as Serializable
                 Timber.d("Cam access exception getting characteristics.")
             }
         }

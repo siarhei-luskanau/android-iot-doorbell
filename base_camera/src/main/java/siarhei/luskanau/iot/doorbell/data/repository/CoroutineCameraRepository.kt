@@ -35,11 +35,11 @@ class CoroutineCameraRepository(
         cameraId: String
     ): ImageFile =
         suspendCoroutine { continuation: Continuation<ImageFile> ->
-            try {
+            runCatching {
                 openCamera(continuation, cameraId)
-            } catch (t: Throwable) {
-                Timber.e(t)
-                continuation.resumeWithException(t)
+            }.onFailure {
+                Timber.e(it)
+                continuation.resumeWithException(it)
             }
         }
 
@@ -47,8 +47,8 @@ class CoroutineCameraRepository(
     private fun openCamera(
         continuation: Continuation<ImageFile>,
         cameraId: String
-    ) =
-        try {
+    ) {
+        runCatching {
             val backgroundThread = HandlerThread("CameraBackground:$cameraId")
             backgroundThread.start()
             val backgroundHandler = Handler(backgroundThread.looper)
@@ -80,17 +80,18 @@ class CoroutineCameraRepository(
                 },
                 backgroundHandler
             )
-        } catch (t: Throwable) {
-            Timber.e(t)
-            continuation.resumeWithException(t)
+        }.onFailure {
+            Timber.e(it)
+            continuation.resumeWithException(it)
         }
+    }
 
     private fun createCaptureSession(
         continuation: Continuation<ImageFile>,
         cameraDevice: CameraDevice,
         handler: Handler? = null
-    ) =
-        try {
+    ) {
+        runCatching {
             // Initialize the image processor
             val imageReader =
                 ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES)
@@ -117,11 +118,12 @@ class CoroutineCameraRepository(
                 },
                 handler
             )
-        } catch (t: Throwable) {
-            Timber.e(t)
+        }.onFailure {
+            Timber.e(it)
             close(cameraDevice)
-            continuation.resumeWithException(t)
+            continuation.resumeWithException(it)
         }
+    }
 
     private fun capture(
         continuation: Continuation<ImageFile>,
@@ -129,97 +131,100 @@ class CoroutineCameraRepository(
         captureSession: CameraCaptureSession,
         imageReader: ImageReader,
         handler: Handler? = null
-    ) = try {
-        val captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
-        captureBuilder.addTarget(imageReader.surface)
-        captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
+    ) {
+        runCatching {
+            val captureBuilder =
+                cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
+            captureBuilder.addTarget(imageReader.surface)
+            captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON)
 
-        val windowManager = ContextCompat.getSystemService(context, WindowManager::class.java)
-        windowManager?.let {
-            val display = windowManager.defaultDisplay
-            val rotation = display.rotation
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS[rotation])
+            val windowManager = ContextCompat.getSystemService(context, WindowManager::class.java)
+            windowManager?.let {
+                val display = windowManager.defaultDisplay
+                val rotation = display.rotation
+                captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS[rotation])
+            }
+
+            captureSession.capture(
+                captureBuilder.build(),
+                object : CameraCaptureSession.CaptureCallback() {
+                    override fun onCaptureStarted(
+                        session: CameraCaptureSession,
+                        request: CaptureRequest,
+                        timestamp: Long,
+                        frameNumber: Long
+                    ) {
+                        Timber.d("Camera ${cameraDevice.id} capture(): onCaptureStarted")
+                    }
+
+                    override fun onCaptureProgressed(
+                        session: CameraCaptureSession,
+                        request: CaptureRequest,
+                        partialResult: CaptureResult
+                    ) {
+                        Timber.d("Camera ${cameraDevice.id} capture(): onCaptureProgressed")
+                    }
+
+                    override fun onCaptureCompleted(
+                        session: CameraCaptureSession,
+                        request: CaptureRequest,
+                        result: TotalCaptureResult
+                    ) {
+                        Timber.d("Camera ${cameraDevice.id} capture(): onCaptureCompleted")
+                        acquireLatestImage(
+                            continuation,
+                            cameraDevice,
+                            imageReader
+                        )
+                    }
+
+                    override fun onCaptureFailed(
+                        session: CameraCaptureSession,
+                        request: CaptureRequest,
+                        failure: CaptureFailure
+                    ) {
+                        Timber.d("Camera ${cameraDevice.id} capture(): onCaptureFailed")
+                    }
+
+                    override fun onCaptureSequenceCompleted(
+                        session: CameraCaptureSession,
+                        sequenceId: Int,
+                        frameNumber: Long
+                    ) {
+                        Timber.d("Camera ${cameraDevice.id} capture(): onCaptureSequenceCompleted")
+                    }
+
+                    override fun onCaptureSequenceAborted(
+                        session: CameraCaptureSession,
+                        sequenceId: Int
+                    ) {
+                        Timber.d("Camera ${cameraDevice.id} capture(): onCaptureSequenceAborted")
+                    }
+
+                    override fun onCaptureBufferLost(
+                        session: CameraCaptureSession,
+                        request: CaptureRequest,
+                        target: Surface,
+                        frameNumber: Long
+                    ) {
+                        Timber.d("Camera ${cameraDevice.id} capture(): onCaptureBufferLost")
+                    }
+                },
+                handler
+            )
+        }.onFailure {
+            Timber.e(it)
+            close(cameraDevice)
+            continuation.resumeWithException(it)
         }
-
-        captureSession.capture(
-            captureBuilder.build(),
-            object : CameraCaptureSession.CaptureCallback() {
-                override fun onCaptureStarted(
-                    session: CameraCaptureSession,
-                    request: CaptureRequest,
-                    timestamp: Long,
-                    frameNumber: Long
-                ) {
-                    Timber.d("Camera ${cameraDevice.id} capture(): onCaptureStarted")
-                }
-
-                override fun onCaptureProgressed(
-                    session: CameraCaptureSession,
-                    request: CaptureRequest,
-                    partialResult: CaptureResult
-                ) {
-                    Timber.d("Camera ${cameraDevice.id} capture(): onCaptureProgressed")
-                }
-
-                override fun onCaptureCompleted(
-                    session: CameraCaptureSession,
-                    request: CaptureRequest,
-                    result: TotalCaptureResult
-                ) {
-                    Timber.d("Camera ${cameraDevice.id} capture(): onCaptureCompleted")
-                    acquireLatestImage(
-                        continuation,
-                        cameraDevice,
-                        imageReader
-                    )
-                }
-
-                override fun onCaptureFailed(
-                    session: CameraCaptureSession,
-                    request: CaptureRequest,
-                    failure: CaptureFailure
-                ) {
-                    Timber.d("Camera ${cameraDevice.id} capture(): onCaptureFailed")
-                }
-
-                override fun onCaptureSequenceCompleted(
-                    session: CameraCaptureSession,
-                    sequenceId: Int,
-                    frameNumber: Long
-                ) {
-                    Timber.d("Camera ${cameraDevice.id} capture(): onCaptureSequenceCompleted")
-                }
-
-                override fun onCaptureSequenceAborted(
-                    session: CameraCaptureSession,
-                    sequenceId: Int
-                ) {
-                    Timber.d("Camera ${cameraDevice.id} capture(): onCaptureSequenceAborted")
-                }
-
-                override fun onCaptureBufferLost(
-                    session: CameraCaptureSession,
-                    request: CaptureRequest,
-                    target: Surface,
-                    frameNumber: Long
-                ) {
-                    Timber.d("Camera ${cameraDevice.id} capture(): onCaptureBufferLost")
-                }
-            },
-            handler
-        )
-    } catch (t: Throwable) {
-        Timber.e(t)
-        close(cameraDevice)
-        continuation.resumeWithException(t)
     }
 
     private fun acquireLatestImage(
         continuation: Continuation<ImageFile>,
         cameraDevice: CameraDevice,
         imageReader: ImageReader
-    ) =
-        try {
+    ) {
+        runCatching {
             Thread.sleep(200)
 
             val image: Image? = imageReader.acquireLatestImage()
@@ -228,19 +233,21 @@ class CoroutineCameraRepository(
                 imageRepository.saveImage(image?.planes?.get(0)?.buffer, cameraDevice.id)
             close(cameraDevice)
             continuation.resume(imageFile)
-        } catch (t: Throwable) {
-            Timber.e(t)
+        }.onFailure {
+            Timber.e(it)
             close(cameraDevice)
-            continuation.resumeWithException(t)
+            continuation.resumeWithException(it)
         }
+    }
 
-    private fun close(cameraDevice: CameraDevice) =
-        try {
+    private fun close(cameraDevice: CameraDevice) {
+        runCatching {
             Timber.d("Camera ${cameraDevice.id} close")
             cameraDevice.close()
-        } catch (t: Throwable) {
-            Timber.e(t)
+        }.onFailure {
+            Timber.e(it)
         }
+    }
 
     companion object {
         private const val IMAGE_WIDTH = 320
