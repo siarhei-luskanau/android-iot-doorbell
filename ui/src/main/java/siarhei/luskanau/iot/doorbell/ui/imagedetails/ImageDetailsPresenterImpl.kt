@@ -9,13 +9,13 @@ class ImageDetailsPresenterImpl(
 ) : ImageDetailsPresenter {
 
     override fun getImageDetailsStateData(): LiveData<ImageDetailsState> =
-        MutableLiveData<ImageDetailsState>().also {
-            it.postValue(
-                try {
+        MutableLiveData<ImageDetailsState>().also { liveData ->
+            liveData.postValue(
+                runCatching {
                     NormalImageDetailsState(requireNotNull(imageData))
-                } catch (t: Throwable) {
-                    ErrorImageDetailsState(t)
-                }
+                }.onFailure {
+                    ErrorImageDetailsState(it)
+                }.getOrNull()
             )
         }
 }

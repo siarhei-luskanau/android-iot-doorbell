@@ -15,32 +15,32 @@ class InternalStorageImageRepository(
         File.createTempFile("camera_${name}_", null, context.cacheDir)
 
     override fun saveImage(byteBuffer: ByteBuffer?, name: String): ImageFile =
-            try {
-                val file = File.createTempFile("camera_${name}_", null, context.cacheDir)
+        runCatching {
+            val file = File.createTempFile("camera_${name}_", null, context.cacheDir)
 
-                val channel = FileOutputStream(file, false).channel
-                channel.write(byteBuffer)
-                channel.close()
+            val channel = FileOutputStream(file, false).channel
+            channel.write(byteBuffer)
+            channel.close()
 
-                ImageFile(
-                        name = name,
-                        path = file.absolutePath,
-                        size = file.length()
-                )
-            } catch (t: Throwable) {
-                ImageFile(throwable = t)
-            }
+            ImageFile(
+                name = name,
+                path = file.absolutePath,
+                size = file.length()
+            )
+        }.onFailure {
+            ImageFile(throwable = it)
+        }.getOrThrow()
 
     override fun saveImage(file: File): ImageFile =
-        try {
+        runCatching {
             ImageFile(
                 name = file.name,
                 path = file.absolutePath,
                 size = file.length()
             )
-        } catch (t: Throwable) {
-            ImageFile(throwable = t)
-        }
+        }.onFailure {
+            ImageFile(throwable = it)
+        }.getOrThrow()
 
     override fun openInputStream(imageFile: ImageFile): InputStream =
         File(imageFile.path.orEmpty()).inputStream()

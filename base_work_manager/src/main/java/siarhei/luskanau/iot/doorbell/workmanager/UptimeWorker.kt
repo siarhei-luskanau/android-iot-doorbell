@@ -24,7 +24,7 @@ class UptimeWorker(
 ) {
 
     override suspend fun doWork(): Result =
-        try {
+        runCatching {
             uptimeRepository.sendIpAddressMap(
                 thisDeviceRepository.doorbellId(),
                 thisDeviceRepository.getIpAddressList()
@@ -47,8 +47,8 @@ class UptimeWorker(
             )
 
             Result.success()
-        } catch (t: Throwable) {
-            Timber.e(t)
+        }.onFailure {
+            Timber.e(it)
             Result.failure()
-        }
+        }.getOrDefault(Result.failure())
 }

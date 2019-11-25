@@ -20,7 +20,7 @@ class CameraWorker(
 ) {
 
     override suspend fun doWork(): Result =
-        try {
+        runCatching {
             doorbellRepository.getCameraImageRequest(
                 thisDeviceRepository.doorbellId()
             )
@@ -47,8 +47,8 @@ class CameraWorker(
                 }
 
             Result.success()
-        } catch (t: Throwable) {
-            Timber.e(t)
+        }.onFailure {
+            Timber.e(it)
             Result.failure()
-        }
+        }.getOrDefault(Result.failure())
 }

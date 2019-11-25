@@ -22,7 +22,7 @@ class DefaultWorkerFactory(
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? =
-        try {
+        runCatching {
             Timber.e("DefaultWorkerFactory:createWorker:$workerClassName")
             when (workerClassName) {
 
@@ -44,8 +44,8 @@ class DefaultWorkerFactory(
 
                 else -> null
             }
-        } catch (throwable: Throwable) {
-            Timber.e(throwable, "DefaultWorkerFactory:createWorker:$workerClassName")
+        }.onFailure {
+            Timber.e(it, "DefaultWorkerFactory:createWorker:$workerClassName")
             null
-        }
+        }.getOrNull()
 }
