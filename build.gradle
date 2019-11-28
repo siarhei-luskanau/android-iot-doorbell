@@ -42,7 +42,7 @@ buildscript {
         toothpickVersion = '3.1.0'
 
         //Development
-        leakCanaryVersion = '2.0-beta-5'
+        leakCanaryVersion = '2.0'
 
         //Android Things
         androidthingsVersion = '1.0'

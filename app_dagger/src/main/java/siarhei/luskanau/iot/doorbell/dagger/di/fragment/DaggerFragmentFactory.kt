@@ -9,7 +9,7 @@ import timber.log.Timber
 
 @PerActivity
 class DaggerFragmentFactory @Inject constructor(
-    private val providers: Map<Class<out Fragment>, @JvmSuppressWildcards Provider<Fragment>>
+    private val providers: MutableMap<Class<out Fragment>, Provider<Fragment>>
 ) : FragmentFactory() {
 
     override fun instantiate(

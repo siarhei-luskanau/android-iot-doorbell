@@ -9,7 +9,7 @@ import timber.log.Timber
 
 @Singleton
 class DaggerViewModelFactory @Inject constructor(
-    private val providers: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
+    private val providers: MutableMap<Class<out ViewModel>, Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
