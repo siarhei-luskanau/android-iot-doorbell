@@ -15,32 +15,32 @@ class AppBackgroundServices(
 ) {
 
     fun startServices() {
-        val period = TimeUnit.SECONDS.toMillis(1)
-        Timer("AppBackgroundServices", false).schedule(
-            delay = 0,
-            period = period
-        ) {
-            runCatching {
-                val requestMap: Map<String, Boolean>? = runBlocking {
-                    doorbellRepository.getCameraImageRequest(
-                        thisDeviceRepository.doorbellId()
-                    )
-                }
-                Timber.d("listenCameraImageRequest:%s", requestMap)
-
-                val hasImageRequest = requestMap
-                    .orEmpty()
-                    .filterValues { value -> value }
-                    .isNotEmpty()
-
-                if (hasImageRequest) {
-                    if (thisDeviceRepository.isPermissionsGranted()) {
-                        scheduleWorkManagerService.cameraWorker()
+        val period = TimeUnit.SECONDS.toMillis(3)
+        Timer("AppBackgroundServices", false)
+            .schedule(
+                delay = 0,
+                period = period
+            ) {
+                runCatching {
+                    val requestMap: Map<String, Boolean> = runBlocking {
+                        doorbellRepository.getCameraImageRequest(
+                            thisDeviceRepository.doorbellId()
+                        )
                     }
+                    Timber.d("listenCameraImageRequest:%s", requestMap)
+
+                    val hasImageRequest = requestMap
+                        .filterValues { value -> value }
+                        .isNotEmpty()
+
+                    if (hasImageRequest) {
+                        if (thisDeviceRepository.isPermissionsGranted()) {
+                            scheduleWorkManagerService.cameraWorker()
+                        }
+                    }
+                }.onFailure {
+                    Timber.e(it)
                 }
-            }.onFailure {
-                Timber.e(it)
             }
-        }
     }
 }
