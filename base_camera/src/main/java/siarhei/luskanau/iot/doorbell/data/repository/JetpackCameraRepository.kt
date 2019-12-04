@@ -5,10 +5,10 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Size
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraX
 import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCapture.CaptureMode
-import androidx.camera.core.ImageCaptureConfig
+import androidx.camera.core.LensFacing
 import androidx.camera.core.impl.utils.executor.CameraXExecutors
 import androidx.lifecycle.ProcessLifecycleOwner
 import java.io.File
@@ -33,26 +33,24 @@ class JetpackCameraRepository(
                 val handler = Handler(Looper.getMainLooper())
                 handler.post {
                     runCatching {
-                        val imageCaptureConfig = ImageCaptureConfig.Builder()
-                            // .setCameraIdFilter(IdCameraIdFilter(cameraId))
-                            .setLensFacing(
+                        val cameraSelector = CameraSelector.Builder()
+                            .requireLensFacing(
                                 when (cameraId) {
-                                    CameraX.getCameraWithLensFacing(CameraX.LensFacing.BACK) ->
-                                        CameraX.LensFacing.BACK
+                                    CameraX.getCameraWithLensFacing(LensFacing.BACK) -> LensFacing.BACK
 
-                                    CameraX.getCameraWithLensFacing(CameraX.LensFacing.FRONT) ->
-                                        CameraX.LensFacing.FRONT
+                                    CameraX.getCameraWithLensFacing(LensFacing.FRONT) -> LensFacing.FRONT
 
-                                    else -> CameraX.LensFacing.BACK
+                                    else -> LensFacing.BACK
                                 }
                             )
-                            .setCaptureMode(CaptureMode.MIN_LATENCY)
+                            .build()
+
+                        val imageCapture = ImageCapture.Builder()
+                            .setCaptureMode(ImageCapture.CaptureMode.MINIMIZE_LATENCY)
                             .setTargetResolution(Size(480, 640))
                             .build()
 
-                        val imageCapture = ImageCapture(imageCaptureConfig)
-
-                        CameraX.bindToLifecycle(ProcessLifecycleOwner.get(), imageCapture)
+                        CameraX.bindToLifecycle(ProcessLifecycleOwner.get(), cameraSelector)
 
                         // TODO use ImageAnalysis to check if camera is ready
                         Thread.sleep(1000)
@@ -60,7 +58,8 @@ class JetpackCameraRepository(
                         imageCapture.takePicture(
                             imageRepository.prepareFile(cameraId),
                             CameraXExecutors.ioExecutor(),
-                            object : ImageCapture.OnImageSavedListener {
+                            object : ImageCapture.OnImageSavedCallback {
+
                                 override fun onImageSaved(file: File) {
                                     handler.post {
                                         runCatching {
@@ -73,7 +72,7 @@ class JetpackCameraRepository(
                                 }
 
                                 override fun onError(
-                                    imageCaptureError: ImageCapture.ImageCaptureError,
+                                    imageCaptureError: Int,
                                     message: String,
                                     cause: Throwable?
                                 ) {

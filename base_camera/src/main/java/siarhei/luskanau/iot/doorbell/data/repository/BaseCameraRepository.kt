@@ -118,7 +118,7 @@ abstract class BaseCameraRepository(
     private fun getCameraxInfo(cameraId: String): Map<String, Serializable> =
         mutableMapOf<String, Serializable>().also { cameraxInfo ->
             runCatching {
-                CameraX.getCameraInfo(cameraId).let { cameraInfo ->
+                CameraX.getCameraInfo(cameraId)?.let { cameraInfo ->
                     cameraxInfo["CameraInfo:lensFacing"] = cameraInfo.lensFacing.toString()
                     cameraxInfo["CameraInfo:sensorRotationDegrees"] =
                         cameraInfo.sensorRotationDegrees
