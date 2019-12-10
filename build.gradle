@@ -53,9 +53,9 @@ buildscript {
         spekVersion = '2.0.8'
 
         //test instrumentation
-        androidTestCoreVersion = '1.2.1-alpha02'
+        androidTestCoreVersion = '1.3.0-alpha03'
         androidTestRunnerVersion = '1.3.0-alpha02'
-        espressoVersion = '3.3.0-alpha02'
+        espressoVersion = '3.3.0-alpha03'
 
         appDependencies = [
                 kotlinStdlib         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
@@ -64,6 +64,10 @@ buildscript {
                 kotlinxCoroutinesCore: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion",
                 kotlinxCoroutinesTest: "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion",
                 mockitoKotlin        : "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion",
+                spekRunnerJunit5     : "org.spekframework.spek2:spek-runner-junit5:$spekVersion",
+                spekDslJvm           : "org.spekframework.spek2:spek-dsl-jvm:$spekVersion",
+                testEspressoCore     : "androidx.test.espresso:espresso-core:$espressoVersion",
+                testCore             : "androidx.test:core:$androidTestCoreVersion",
         ]
     }
 

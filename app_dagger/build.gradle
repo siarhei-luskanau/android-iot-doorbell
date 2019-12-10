@@ -35,15 +35,8 @@ android {
     }
 
     testOptions {
-        junitPlatform {
-            filters {
-                engines {
-                    include 'spek2'
-                }
-            }
-            unitTests.all {
-                testLogging.events = ["passed", "skipped", "failed"]
-            }
+        unitTests.all {
+            testLogging.events = ["passed", "skipped", "failed"]
         }
     }
 }
@@ -90,17 +83,15 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
 
     //unit test
+    testRuntimeOnly appDependencies.spekRunnerJunit5
+    testImplementation appDependencies.spekDslJvm
     testImplementation appDependencies.kotlinTest
-    testImplementation appDependencies.kotlinReflect
-    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
-    testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
+    testImplementation appDependencies.mockitoKotlin
 
     //android test
-    androidTestImplementation "androidx.test:core:$androidTestCoreVersion"
     androidTestImplementation appDependencies.kotlinTest
-    androidTestImplementation appDependencies.kotlinReflect
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation appDependencies.testEspressoCore
+    androidTestImplementation appDependencies.testCore
 }
 
 // ADD THIS AT THE BOTTOM

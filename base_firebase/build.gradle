@@ -21,7 +21,6 @@ dependencies {
     implementation project(':doomain')
 
     implementation appDependencies.kotlinStdlib
-    implementation appDependencies.kotlinReflect
     implementation appDependencies.kotlinxCoroutinesCore
     implementation "com.jakewharton.timber:timber:$timberVersion"
 

@@ -23,15 +23,8 @@ android {
     }
 
     testOptions {
-        junitPlatform {
-            filters {
-                engines {
-                    include 'spek2'
-                }
-            }
-            unitTests.all {
-                testLogging.events = ["passed", "skipped", "failed"]
-            }
+        unitTests.all {
+            testLogging.events = ["passed", "skipped", "failed"]
         }
     }
 }
@@ -56,18 +49,16 @@ dependencies {
     implementation "io.coil-kt:coil:$coilVersion"
 
     //unit test
+    testRuntimeOnly appDependencies.spekRunnerJunit5
+    testImplementation appDependencies.spekDslJvm
     testImplementation appDependencies.kotlinTest
-    testImplementation appDependencies.kotlinReflect
+    testImplementation appDependencies.mockitoKotlin
     testImplementation appDependencies.kotlinxCoroutinesTest
-    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spekVersion"
-    testImplementation "org.spekframework.spek2:spek-runner-junit5:$spekVersion"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
 
     //android test
-    kaptAndroidTest "androidx.databinding:databinding-compiler:$androidGragleBuildVersion"
-    debugImplementation "androidx.fragment:fragment-testing:$fragmentVersion"
-    debugImplementation "androidx.test:core:$androidTestCoreVersion"
     androidTestImplementation appDependencies.kotlinTest
-    androidTestImplementation appDependencies.kotlinReflect
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation appDependencies.testEspressoCore
+    androidTestImplementation appDependencies.testCore
+    androidTestImplementation "androidx.fragment:fragment-testing:$fragmentVersion"
+    kaptAndroidTest "androidx.databinding:databinding-compiler:$androidGragleBuildVersion"
 }
