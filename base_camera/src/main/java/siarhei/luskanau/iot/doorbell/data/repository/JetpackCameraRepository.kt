@@ -6,9 +6,11 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Size
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.CameraSelector.LENS_FACING_BACK
+import androidx.camera.core.CameraSelector.LENS_FACING_FRONT
 import androidx.camera.core.CameraX
 import androidx.camera.core.ImageCapture
-import androidx.camera.core.LensFacing
+import androidx.camera.core.ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
 import androidx.camera.core.impl.utils.executor.CameraXExecutors
 import androidx.lifecycle.ProcessLifecycleOwner
 import java.io.File
@@ -36,17 +38,17 @@ class JetpackCameraRepository(
                         val cameraSelector = CameraSelector.Builder()
                             .requireLensFacing(
                                 when (cameraId) {
-                                    CameraX.getCameraWithLensFacing(LensFacing.BACK) -> LensFacing.BACK
+                                    CameraX.getCameraWithLensFacing(LENS_FACING_BACK) -> LENS_FACING_BACK
 
-                                    CameraX.getCameraWithLensFacing(LensFacing.FRONT) -> LensFacing.FRONT
+                                    CameraX.getCameraWithLensFacing(LENS_FACING_FRONT) -> LENS_FACING_FRONT
 
-                                    else -> LensFacing.BACK
+                                    else -> LENS_FACING_BACK
                                 }
                             )
                             .build()
 
                         val imageCapture = ImageCapture.Builder()
-                            .setCaptureMode(ImageCapture.CaptureMode.MINIMIZE_LATENCY)
+                            .setCaptureMode(CAPTURE_MODE_MINIMIZE_LATENCY)
                             .setTargetResolution(Size(480, 640))
                             .build()
 

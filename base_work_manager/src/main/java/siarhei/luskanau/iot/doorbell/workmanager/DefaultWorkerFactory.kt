@@ -46,6 +46,5 @@ class DefaultWorkerFactory(
             }
         }.onFailure {
             Timber.e(it, "DefaultWorkerFactory:createWorker:$workerClassName")
-            null
         }.getOrNull()
 }
