@@ -1,27 +1,27 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdkVersion = rootProject.compileSdkVersion
+    buildToolsVersion = rootProject.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion(rootProject.minSdkVersion)
+        targetSdkVersion(rootProject.targetSdkVersion)
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    implementation project(':doomain')
+    implementation(project(":doomain"))
 
-    implementation appDependencies.kotlinStdlib
-    implementation "com.jakewharton.timber:timber:$timberVersion"
+    implementation(appDependencies.kotlinStdlib)
+    implementation("com.jakewharton.timber:timber:$timberVersion")
 
-    implementation "androidx.camera:camera-camera2:$androidxCameraVersion"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    implementation("androidx.camera:camera-camera2:$androidxCameraVersion")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
 }

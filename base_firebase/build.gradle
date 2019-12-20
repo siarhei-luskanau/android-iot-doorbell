@@ -1,32 +1,32 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdkVersion = rootProject.compileSdkVersion
+    buildToolsVersion = rootProject.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion(rootProject.minSdkVersion)
+        targetSdkVersion(rootProject.targetSdkVersion)
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    implementation project(':doomain')
+    implementation(project(":doomain"))
 
-    implementation appDependencies.kotlinStdlib
-    implementation appDependencies.kotlinxCoroutinesCore
-    implementation "com.jakewharton.timber:timber:$timberVersion"
+    implementation(appDependencies.kotlinStdlib)
+    implementation(appDependencies.kotlinxCoroutinesCore)
+    implementation("com.jakewharton.timber:timber:$timberVersion")
 
-    implementation "com.google.firebase:firebase-database:$firebaseDatabaseVersion"
-    implementation "com.google.firebase:firebase-storage:$firebaseStorageVersion"
+    implementation("com.google.firebase:firebase-database:$firebaseDatabaseVersion")
+    implementation("com.google.firebase:firebase-storage:$firebaseStorageVersion")
 
-    implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+    implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion")
 }
