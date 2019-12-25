@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
 }
 
@@ -43,6 +44,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:${rootProject.extra["constraintLayoutVersion"]}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${rootProject.extra["lifecycleVersion"]}")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleVersion"]}")
+    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
     implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
 
     implementation("io.reactivex.rxjava2:rxjava:${rootProject.extra["rxJavaVersion"]}")

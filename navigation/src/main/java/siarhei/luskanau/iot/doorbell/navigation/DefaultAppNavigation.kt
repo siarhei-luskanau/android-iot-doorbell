@@ -6,8 +6,6 @@ import androidx.navigation.Navigation
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.doomain.AppNavigation
-import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragmentDirections
-import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentDirections
 
 class DefaultAppNavigation(private val activity: Activity) : AppNavigation {
 
@@ -20,16 +18,16 @@ class DefaultAppNavigation(private val activity: Activity) : AppNavigation {
 
     override fun goDoorbellListToPermissions() =
         navController.navigate(
-            DoorbellListFragmentDirections.actionDoorbellListToPermissions()
+            NavRootDirections.actionDoorbellListToPermissions()
         )
 
     override fun navigateToImageList(doorbellData: DoorbellData) =
         navController.navigate(
-            DoorbellListFragmentDirections.actionDoorbellListToImageList(doorbellData)
+            NavRootDirections.actionDoorbellListToImageList(doorbellData)
         )
 
     override fun navigateToImageDetails(imageData: ImageData) =
         navController.navigate(
-            ImageListFragmentDirections.actionImageListToImageDetails(imageData)
+            NavRootDirections.actionImageListToImageDetails(imageData)
         )
 }

@@ -1,45 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@+id/nav_doorbell_list">
+    android:id="@+id/nav_root"
+    app:startDestination="@+id/nav_doorbell_list_xml">
 
-    <fragment
-        android:id="@+id/nav_permissions"
-        android:name="siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment"
-        tools:layout="@layout/fragment_permissions" />
+    <include app:graph="@navigation/nav_included_permissions" />
 
-    <fragment
-        android:id="@+id/nav_doorbell_list"
-        android:name="siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment"
-        tools:layout="@layout/fragment_doorbell_list">
-        <action
-            android:id="@+id/action_doorbell_list_to_image_list"
-            app:destination="@id/nav_image_list" />
-        <action
-            android:id="@+id/action_doorbell_list_to_permissions"
-            app:destination="@id/nav_permissions" />
-    </fragment>
+    <include app:graph="@navigation/nav_included_doorbell_list" />
 
-    <fragment
-        android:id="@+id/nav_image_list"
-        android:name="siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment"
-        tools:layout="@layout/fragment_image_list">
+    <include app:graph="@navigation/nav_included_image_list" />
+
+    <include app:graph="@navigation/nav_included_image_details" />
+
+    <action
+        android:id="@+id/action_doorbell_list_to_image_list"
+        app:destination="@id/nav_image_list_xml">
+
         <argument
             android:name="doorbellData"
             app:argType="siarhei.luskanau.iot.doorbell.data.model.DoorbellData" />
-        <action
-            android:id="@+id/action_image_list_to_image_details"
-            app:destination="@id/nav_image_details" />
-    </fragment>
 
-    <fragment
-        android:id="@+id/nav_image_details"
-        android:name="siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment"
-        tools:layout="@layout/fragment_image_details">
+    </action>
+
+    <action
+        android:id="@+id/action_doorbell_list_to_permissions"
+        app:destination="@id/nav_permissions_xml" />
+
+    <action
+        android:id="@+id/action_image_list_to_image_details"
+        app:destination="@id/nav_image_details_xml">
+
         <argument
             android:name="imageData"
             app:argType="siarhei.luskanau.iot.doorbell.data.model.ImageData" />
-    </fragment>
+
+    </action>
 
 </navigation>

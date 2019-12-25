@@ -1,0 +1,19 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_image_details_xml"
+    app:startDestination="@id/nav_image_details_fragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/nav_image_details_fragment"
+        android:name="siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment"
+        tools:layout="@layout/fragment_image_details">
+
+        <argument
+            android:name="imageData"
+            app:argType="siarhei.luskanau.iot.doorbell.data.model.ImageData" />
+
+    </fragment>
+
+</navigation>
