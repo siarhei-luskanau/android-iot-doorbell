@@ -10,6 +10,14 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
+import siarhei.luskanau.iot.doorbell.common.AppNavigation
+import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
+import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
+import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
+import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
+import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
+import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactoryImpl
+import siarhei.luskanau.iot.doorbell.common.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidDeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidIpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidThisDeviceRepository
@@ -30,14 +38,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
-import siarhei.luskanau.iot.doorbell.doomain.AppNavigation
-import siarhei.luskanau.iot.doorbell.doomain.AppNavigationArgs
-import siarhei.luskanau.iot.doorbell.doomain.DefaultDoorbellsDataSource
-import siarhei.luskanau.iot.doorbell.doomain.DeviceInfoProvider
-import siarhei.luskanau.iot.doorbell.doomain.DoorbellsDataSource
-import siarhei.luskanau.iot.doorbell.doomain.ImagesDataSourceFactory
-import siarhei.luskanau.iot.doorbell.doomain.ImagesDataSourceFactoryImpl
-import siarhei.luskanau.iot.doorbell.doomain.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigationArgs
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
@@ -65,7 +65,11 @@ val appModule = module {
     single<DoorbellRepository> { FirebaseDoorbellRepository(imageRepository = get()) }
     // single<DoorbellRepository> { DoorbellRepositoryFake() }
     single<PersistenceRepository> { DefaultPersistenceRepository(context = get()) }
-    single<ScheduleWorkManagerService> { DefaultScheduleWorkManagerService(workManager = get()) }
+    single<ScheduleWorkManagerService> {
+        DefaultScheduleWorkManagerService(
+            workManager = { get() }
+        )
+    }
     single<CachedRepository> {
         DefaultCachedRepository(
             doorbellRepository = get(),
@@ -79,10 +83,18 @@ val appModule = module {
         )
     }
     single<UptimeRepository> { UptimeFirebaseRepository() }
-    single<DoorbellsDataSource> { DefaultDoorbellsDataSource(doorbellRepository = get()) }
+    single<DoorbellsDataSource> {
+        DefaultDoorbellsDataSource(
+            doorbellRepository = get()
+        )
+    }
     single<DeviceInfoProvider> { AndroidDeviceInfoProvider(context = get()) }
     single<IpAddressProvider> { AndroidIpAddressProvider() }
-    single<ImagesDataSourceFactory> { ImagesDataSourceFactoryImpl(cachedRepository = get()) }
+    single<ImagesDataSourceFactory> {
+        ImagesDataSourceFactoryImpl(
+            cachedRepository = get()
+        )
+    }
     single<ThisDeviceRepository> {
         AndroidThisDeviceRepository(
             context = get(),

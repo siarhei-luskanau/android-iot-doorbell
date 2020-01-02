@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentFactory
 import org.kodein.di.DKodein
 import org.kodein.di.generic.M
 import org.kodein.di.generic.instance
-import siarhei.luskanau.iot.doorbell.doomain.AppNavigation
+import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import timber.log.Timber
 
 class KodeinFragmentFactory(

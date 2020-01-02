@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":doomain"))
+    implementation(project(":common:common"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
     implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")

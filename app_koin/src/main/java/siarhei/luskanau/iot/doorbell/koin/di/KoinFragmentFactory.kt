@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.LifecycleOwner
 import org.koin.core.context.GlobalContext
 import org.koin.core.parameter.parametersOf
-import siarhei.luskanau.iot.doorbell.doomain.AppNavigation
+import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import timber.log.Timber
 
 class KoinFragmentFactory(

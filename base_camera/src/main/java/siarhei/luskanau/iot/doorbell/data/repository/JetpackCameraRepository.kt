@@ -38,9 +38,11 @@ class JetpackCameraRepository(
                         val cameraSelector = CameraSelector.Builder()
                             .requireLensFacing(
                                 when (cameraId) {
-                                    CameraX.getCameraWithLensFacing(LENS_FACING_BACK) -> LENS_FACING_BACK
+                                    CameraX.getCameraWithLensFacing(LENS_FACING_BACK) ->
+                                        LENS_FACING_BACK
 
-                                    CameraX.getCameraWithLensFacing(LENS_FACING_FRONT) -> LENS_FACING_FRONT
+                                    CameraX.getCameraWithLensFacing(LENS_FACING_FRONT) ->
+                                        LENS_FACING_FRONT
 
                                     else -> LENS_FACING_BACK
                                 }

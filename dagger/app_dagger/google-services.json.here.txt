@@ -1,0 +1,2 @@
+google-services.json file should be here
+git update-index --assume-unchanged dagger/app_dagger/google-services.json

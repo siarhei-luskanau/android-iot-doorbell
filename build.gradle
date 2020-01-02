@@ -36,13 +36,13 @@ buildscript {
         paperworkVersion = "1.2.7"
 
         // DI
-        daggerVersion = "2.25.3"
+        daggerVersion = "2.25.4"
         kodeinVersion = "6.5.1"
         koinVersion = "2.0.1"
         toothpickVersion = "3.1.0"
 
         //Development
-        leakCanaryVersion = "2.0"
+        leakCanaryVersion = "2.1"
 
         //Android Things
         androidthingsVersion = "1.0"
@@ -96,7 +96,7 @@ allprojects {
         jcenter()
     }
 
-    apply from: "$rootDir/ktlint.gradle"
+    apply from: "$rootDir/ktlint.gradle.kts"
     apply from: "$rootDir/detekt.gradle"
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {

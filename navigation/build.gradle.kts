@@ -26,12 +26,16 @@ android {
 }
 
 dependencies {
-    implementation(project(":doomain"))
-    implementation(project(":ui"))
+    implementation(project(":common:common"))
+    implementation(project(":ui:ui_common"))
+    implementation(project(":ui:ui_permissions"))
+    implementation(project(":ui:ui_doorbell_list"))
+    implementation(project(":ui:ui_image_list"))
+    implementation(project(":ui:ui_image_details"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
+    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
     implementation("com.google.android.material:material:${rootProject.extra["materialVersion"]}")
     implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
     implementation("androidx.navigation:navigation-fragment-ktx:${rootProject.extra["navigationVersion"]}")
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
 }

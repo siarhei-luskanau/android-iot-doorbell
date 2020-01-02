@@ -48,17 +48,22 @@ android {
 }
 
 dependencies {
-    implementation(project(":doomain"))
+    implementation(project(":common:common"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
     implementation(project(":base_firebase"))
     implementation(project(":base_persistence"))
     implementation(project(":base_cache"))
     implementation(project(":base_work_manager"))
-    implementation(project(":ui"))
+    implementation(project(":ui:ui_common"))
+    implementation(project(":ui:ui_permissions"))
+    implementation(project(":ui:ui_doorbell_list"))
+    implementation(project(":ui:ui_image_list"))
+    implementation(project(":ui:ui_image_details"))
     implementation(project(":navigation"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
+    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
 
     // toothpick
     implementation("com.github.stephanenicolas.toothpick:ktp:${rootProject.extra["toothpickVersion"]}")
@@ -76,8 +81,6 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
     implementation("androidx.paging:paging-runtime-ktx:${rootProject.extra["pagingVersion"]}")
     implementation("androidx.constraintlayout:constraintlayout:${rootProject.extra["constraintLayoutVersion"]}")
-
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
 
     compileOnly("com.google.android.things:androidthings:${rootProject.extra["androidthingsVersion"]}")
 

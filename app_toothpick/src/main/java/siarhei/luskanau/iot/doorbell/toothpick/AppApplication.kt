@@ -27,10 +27,10 @@ class AppApplication : Application() {
         }
 
         val workerFactory = DefaultWorkerFactory(
-            thisDeviceRepository = scope.getInstance(),
-            doorbellRepository = scope.getInstance(),
-            cameraRepository = scope.getInstance(),
-            uptimeRepository = scope.getInstance()
+            thisDeviceRepository = { scope.getInstance() },
+            doorbellRepository = { scope.getInstance() },
+            cameraRepository = { scope.getInstance() },
+            uptimeRepository = { scope.getInstance() }
         )
         val config = Configuration.Builder().setWorkerFactory(workerFactory).build()
         WorkManager.initialize(this, config)

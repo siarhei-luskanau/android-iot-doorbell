@@ -22,10 +22,10 @@ class AppApplication : Application() {
         }
 
         val workerFactory = DefaultWorkerFactory(
-            thisDeviceRepository = appModules.thisDeviceRepository,
-            doorbellRepository = appModules.doorbellRepository,
-            cameraRepository = appModules.cameraRepository,
-            uptimeRepository = appModules.uptimeRepository
+            thisDeviceRepository = { appModules.thisDeviceRepository },
+            doorbellRepository = { appModules.doorbellRepository },
+            cameraRepository = { appModules.cameraRepository },
+            uptimeRepository = { appModules.uptimeRepository }
         )
         val config = Configuration.Builder().setWorkerFactory(workerFactory).build()
         WorkManager.initialize(this, config)

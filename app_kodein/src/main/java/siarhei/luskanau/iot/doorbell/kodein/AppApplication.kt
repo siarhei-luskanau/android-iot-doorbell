@@ -44,10 +44,10 @@ class AppApplication : Application(), KodeinAware {
         }
 
         val workerFactory = DefaultWorkerFactory(
-            thisDeviceRepository = thisDeviceRepository,
-            doorbellRepository = doorbellRepository,
-            cameraRepository = cameraRepository,
-            uptimeRepository = uptimeRepository
+            thisDeviceRepository = { thisDeviceRepository },
+            doorbellRepository = { doorbellRepository },
+            cameraRepository = { cameraRepository },
+            uptimeRepository = { uptimeRepository }
         )
         val config = Configuration.Builder().setWorkerFactory(workerFactory).build()
         WorkManager.initialize(this, config)

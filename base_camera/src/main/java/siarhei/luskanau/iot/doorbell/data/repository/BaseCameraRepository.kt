@@ -79,11 +79,13 @@ abstract class BaseCameraRepository(
             runCatching {
                 val characteristics = cameraManager.getCameraCharacteristics(cameraId)
 
-                info["LENS_FACING"] =
-                    getLensFacingName(characteristics.get(CameraCharacteristics.LENS_FACING))
+                info["LENS_FACING"] = getLensFacingName(
+                    characteristics.get(CameraCharacteristics.LENS_FACING)
+                )
 
-                info["INFO_SUPPORTED_HARDWARE_LEVEL"] =
-                    getHardwareLevelName(characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL))
+                info["INFO_SUPPORTED_HARDWARE_LEVEL"] = getHardwareLevelName(
+                    characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL)
+                )
 
                 characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                     ?.let { configs: StreamConfigurationMap ->
@@ -139,10 +141,18 @@ abstract class BaseCameraRepository(
 
     private fun getHardwareLevelName(hardwareLevel: Int?): Serializable =
         when (hardwareLevel) {
-            CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_3 -> "INFO_SUPPORTED_HARDWARE_LEVEL_3"
-            CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_FULL -> "INFO_SUPPORTED_HARDWARE_LEVEL_FULL"
-            CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY -> "INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY"
-            CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED -> "INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED"
+            CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_3 ->
+                "INFO_SUPPORTED_HARDWARE_LEVEL_3"
+
+            CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_FULL ->
+                "INFO_SUPPORTED_HARDWARE_LEVEL_FULL"
+
+            CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY ->
+                "INFO_SUPPORTED_HARDWARE_LEVEL_LEGACY"
+
+            CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED ->
+                "INFO_SUPPORTED_HARDWARE_LEVEL_LIMITED"
+
             else -> hardwareLevel.toString()
         } + ":$hardwareLevel"
 

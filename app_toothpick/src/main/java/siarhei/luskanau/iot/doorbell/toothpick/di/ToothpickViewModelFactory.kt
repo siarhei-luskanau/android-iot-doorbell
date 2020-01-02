@@ -2,13 +2,13 @@ package siarhei.luskanau.iot.doorbell.toothpick.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
+import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
-import siarhei.luskanau.iot.doorbell.doomain.DoorbellsDataSource
-import siarhei.luskanau.iot.doorbell.doomain.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import timber.log.Timber

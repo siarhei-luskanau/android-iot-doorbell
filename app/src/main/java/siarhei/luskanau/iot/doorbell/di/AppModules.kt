@@ -4,6 +4,13 @@ import android.app.Application
 import android.content.Context
 import androidx.work.WorkManager
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
+import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
+import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
+import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
+import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
+import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
+import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactoryImpl
+import siarhei.luskanau.iot.doorbell.common.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidDeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidIpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidThisDeviceRepository
@@ -22,13 +29,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
-import siarhei.luskanau.iot.doorbell.doomain.AppNavigationArgs
-import siarhei.luskanau.iot.doorbell.doomain.DefaultDoorbellsDataSource
-import siarhei.luskanau.iot.doorbell.doomain.DeviceInfoProvider
-import siarhei.luskanau.iot.doorbell.doomain.DoorbellsDataSource
-import siarhei.luskanau.iot.doorbell.doomain.ImagesDataSourceFactory
-import siarhei.luskanau.iot.doorbell.doomain.ImagesDataSourceFactoryImpl
-import siarhei.luskanau.iot.doorbell.doomain.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigationArgs
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
@@ -38,7 +38,11 @@ class AppModules(application: Application) {
     val context: Context = application.applicationContext
     val appNavigationArgs: AppNavigationArgs by lazy { DefaultAppNavigationArgs() }
     val schedulerSet: SchedulerSet by lazy { DefaultSchedulerSet() }
-    val imageRepository: ImageRepository by lazy { InternalStorageImageRepository(context = context) }
+    val imageRepository: ImageRepository by lazy {
+        InternalStorageImageRepository(
+            context = context
+        )
+    }
     val doorbellRepository: DoorbellRepository by lazy {
         FirebaseDoorbellRepository(imageRepository = imageRepository)
     }
@@ -51,14 +55,22 @@ class AppModules(application: Application) {
             ipAddressProvider = ipAddressProvider
         )
     }
-    val deviceInfoProvider: DeviceInfoProvider by lazy { AndroidDeviceInfoProvider(context = context) }
+    val deviceInfoProvider: DeviceInfoProvider by lazy {
+        AndroidDeviceInfoProvider(
+            context = context
+        )
+    }
     val cameraRepository: CameraRepository by lazy {
         CoroutineCameraRepository(
             context = context,
             imageRepository = imageRepository
         )
     }
-    val persistenceRepository: PersistenceRepository by lazy { DefaultPersistenceRepository(context = context) }
+    val persistenceRepository: PersistenceRepository by lazy {
+        DefaultPersistenceRepository(
+            context = context
+        )
+    }
     val cachedRepository: CachedRepository by lazy {
         DefaultCachedRepository(
             doorbellRepository = doorbellRepository,
@@ -66,15 +78,19 @@ class AppModules(application: Application) {
         )
     }
     val imagesDataSourceFactory: ImagesDataSourceFactory by lazy {
-        ImagesDataSourceFactoryImpl(cachedRepository = cachedRepository)
+        ImagesDataSourceFactoryImpl(
+            cachedRepository = cachedRepository
+        )
     }
     val ipAddressProvider: IpAddressProvider by lazy { AndroidIpAddressProvider() }
     val doorbellsDataSource: DoorbellsDataSource by lazy {
-        DefaultDoorbellsDataSource(doorbellRepository = doorbellRepository)
+        DefaultDoorbellsDataSource(
+            doorbellRepository = doorbellRepository
+        )
     }
     val workManager: WorkManager by lazy { WorkManager.getInstance(context) }
     val scheduleWorkManagerService: ScheduleWorkManagerService by lazy {
-        DefaultScheduleWorkManagerService(workManager = workManager)
+        DefaultScheduleWorkManagerService(workManager = { workManager })
     }
     val appBackgroundServices: AppBackgroundServices by lazy {
         AppBackgroundServices(

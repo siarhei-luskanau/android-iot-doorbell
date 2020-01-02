@@ -11,10 +11,10 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import timber.log.Timber
 
 class DefaultWorkerFactory(
-    private val thisDeviceRepository: ThisDeviceRepository,
-    private val doorbellRepository: DoorbellRepository,
-    private val cameraRepository: CameraRepository,
-    private val uptimeRepository: UptimeRepository
+    private val thisDeviceRepository: () -> ThisDeviceRepository,
+    private val doorbellRepository: () -> DoorbellRepository,
+    private val cameraRepository: () -> CameraRepository,
+    private val uptimeRepository: () -> UptimeRepository
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -29,17 +29,17 @@ class DefaultWorkerFactory(
                 CameraWorker::class.java.name -> CameraWorker(
                     context = appContext,
                     workerParams = workerParameters,
-                    thisDeviceRepository = thisDeviceRepository,
-                    doorbellRepository = doorbellRepository,
-                    cameraRepository = cameraRepository
+                    thisDeviceRepository = thisDeviceRepository.invoke(),
+                    doorbellRepository = doorbellRepository.invoke(),
+                    cameraRepository = cameraRepository.invoke()
                 )
 
                 UptimeWorker::class.java.name -> UptimeWorker(
                     context = appContext,
                     workerParams = workerParameters,
-                    uptimeRepository = uptimeRepository,
-                    thisDeviceRepository = thisDeviceRepository,
-                    doorbellRepository = doorbellRepository
+                    uptimeRepository = uptimeRepository.invoke(),
+                    thisDeviceRepository = thisDeviceRepository.invoke(),
+                    doorbellRepository = doorbellRepository.invoke()
                 )
 
                 else -> null
