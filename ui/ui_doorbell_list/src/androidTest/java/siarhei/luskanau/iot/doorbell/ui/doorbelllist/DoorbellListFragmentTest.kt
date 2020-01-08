@@ -17,7 +17,7 @@ class DoorbellListFragmentTest {
 
     private fun createFragmentFactory(state: DoorbellListState) = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
-            DoorbellListFragment {
+            DoorbellListFragment { _, _ ->
                 object : StubDoorbellListPresenter() {
                     override fun getDoorbellListStateData(): LiveData<DoorbellListState> =
                         MutableLiveData<DoorbellListState>().apply { value = state }

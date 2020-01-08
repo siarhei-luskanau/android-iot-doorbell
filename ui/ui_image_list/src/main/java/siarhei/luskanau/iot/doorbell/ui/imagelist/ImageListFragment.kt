@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelStore
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.ImageAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
@@ -17,7 +18,7 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.databinding.LayoutImageListNor
 import timber.log.Timber
 
 class ImageListFragment(
-    presenterProvider: (args: Bundle?) -> ImageListPresenter
+    presenterProvider: (args: Bundle?, store: ViewModelStore) -> ImageListPresenter
 ) : BaseFragment<ImageListPresenter>(presenterProvider) {
 
     private lateinit var fragmentBinding: FragmentImageListBinding

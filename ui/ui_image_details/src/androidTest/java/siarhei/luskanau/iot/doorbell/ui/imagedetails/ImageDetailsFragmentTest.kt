@@ -16,7 +16,7 @@ class ImageDetailsFragmentTest {
 
     private fun createFragmentFactory(state: ImageDetailsState) = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
-            ImageDetailsFragment {
+            ImageDetailsFragment { _, _ ->
                 object : ImageDetailsPresenter {
                     override fun getImageDetailsStateData(): LiveData<ImageDetailsState> =
                         MutableLiveData<ImageDetailsState>().apply { value = state }

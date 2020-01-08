@@ -17,7 +17,7 @@ class ImageListFragmentTest {
 
     private fun createFragmentFactory(state: ImageListState) = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
-            ImageListFragment {
+            ImageListFragment { _, _ ->
                 object : StubImageListPresenter() {
                     override fun getImageListStateData(): LiveData<ImageListState> =
                         MutableLiveData<ImageListState>().apply { value = state }

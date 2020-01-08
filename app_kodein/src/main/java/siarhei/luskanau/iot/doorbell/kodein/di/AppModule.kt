@@ -131,17 +131,16 @@ val activityModule = Kodein.Module(name = "activityModule") {
         DefaultAppNavigation(activity)
     }
     bind<FragmentFactory>() with factory { activity: FragmentActivity ->
-        KodeinFragmentFactory(activity, instance(arg = activity), dkodein)
+        KodeinFragmentFactory(instance(arg = activity), dkodein)
     }
 
     // Permissions
     bind<Fragment>(
         tag = PermissionsFragment::class.simpleName
     ) with factory { _: FragmentActivity, appNavigation: AppNavigation ->
-        @Suppress("RedundantLambdaArrow") val fragment = PermissionsFragment { _: Bundle? ->
+        PermissionsFragment { _, _ ->
             instance(arg = appNavigation)
         }
-        fragment
     }
     bind() from factory { appNavigation: AppNavigation ->
         PermissionsPresenter(appNavigation)
@@ -151,7 +150,7 @@ val activityModule = Kodein.Module(name = "activityModule") {
     bind<Fragment>(
         tag = DoorbellListFragment::class.simpleName
     ) with factory { activity: FragmentActivity, appNavigation: AppNavigation ->
-        DoorbellListFragment { instance(arg = M(activity, appNavigation)) }
+        DoorbellListFragment { _, _ -> instance(arg = M(activity, appNavigation)) }
     }
     bind<DoorbellListPresenter>() with factory { activity: FragmentActivity,
                                                  appNavigation: AppNavigation ->
@@ -170,7 +169,7 @@ val activityModule = Kodein.Module(name = "activityModule") {
     bind<Fragment>(
         tag = ImageListFragment::class.simpleName
     ) with factory { activity: FragmentActivity, appNavigation: AppNavigation ->
-        ImageListFragment { args: Bundle? ->
+        ImageListFragment { args: Bundle?, _ ->
             val appNavigationArgs: AppNavigationArgs = instance()
             val doorbellData = appNavigationArgs.getImagesFragmentArgs(args)
             instance(arg = M(activity, appNavigation, doorbellData))
@@ -193,7 +192,7 @@ val activityModule = Kodein.Module(name = "activityModule") {
     bind<Fragment>(
         tag = ImageDetailsFragment::class.simpleName
     ) with factory { _: FragmentActivity, _: AppNavigation ->
-        ImageDetailsFragment { args: Bundle? ->
+        ImageDetailsFragment { args: Bundle?, _ ->
             val appNavigationArgs: AppNavigationArgs = instance()
             val imageData = appNavigationArgs.getImageDetailsFragmentArgs(args)
             instance(arg = imageData)

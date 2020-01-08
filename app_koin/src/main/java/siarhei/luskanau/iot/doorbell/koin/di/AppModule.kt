@@ -116,12 +116,12 @@ val activityModule = module {
     factory<AppNavigation> { (activity: FragmentActivity) -> DefaultAppNavigation(activity) }
     factory<FragmentFactory> { (activity: FragmentActivity) ->
         val appNavigation: AppNavigation = get { parametersOf(activity) }
-        KoinFragmentFactory(lifecycleOwner = activity, appNavigation = appNavigation)
+        KoinFragmentFactory(appNavigation = appNavigation)
     }
 
     // Permissions
     factory { (_: LifecycleOwner, appNavigation: AppNavigation) ->
-        PermissionsFragment { get { parametersOf(appNavigation) } }
+        PermissionsFragment { _, _ -> get { parametersOf(appNavigation) } }
     }
     factory { (appNavigation: AppNavigation) ->
         PermissionsPresenter(appNavigation)
@@ -129,7 +129,7 @@ val activityModule = module {
 
     // DoorbellList
     factory { (lifecycleOwner: LifecycleOwner, appNavigation: AppNavigation) ->
-        DoorbellListFragment {
+        DoorbellListFragment { _, _ ->
             val thisDeviceRepository: ThisDeviceRepository = get()
             get {
                 parametersOf(
@@ -154,7 +154,7 @@ val activityModule = module {
 
     // ImageList
     factory { (lifecycleOwner: LifecycleOwner, appNavigation: AppNavigation) ->
-        ImageListFragment { args: Bundle? ->
+        ImageListFragment { args: Bundle?, _ ->
             val appNavigationArgs: AppNavigationArgs = get()
             val doorbellData = appNavigationArgs.getImagesFragmentArgs(args)
             get {
@@ -180,7 +180,7 @@ val activityModule = module {
 
     // ImageDetails
     factory { (_: LifecycleOwner, _: AppNavigation) ->
-        ImageDetailsFragment { args: Bundle? ->
+        ImageDetailsFragment { args: Bundle?, _ ->
             val appNavigationArgs: AppNavigationArgs = get()
             val imageData = appNavigationArgs.getImageDetailsFragmentArgs(args)
             get { parametersOf(imageData) }

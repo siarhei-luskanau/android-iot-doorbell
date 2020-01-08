@@ -3,6 +3,7 @@ package siarhei.luskanau.iot.doorbell.dagger.imagedetails
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
+import androidx.lifecycle.ViewModelStore
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
@@ -24,7 +25,7 @@ class ImageDetailsBuilderModule {
     @Provides
     fun provideImageDetailsFragment(
         commonComponent: CommonComponent
-    ) = ImageDetailsFragment { args: Bundle? ->
+    ) = ImageDetailsFragment { args: Bundle?, _: ViewModelStore ->
         val imageData = commonComponent.provideAppNavigationArgs().getImageDetailsFragmentArgs(args)
         ImageDetailsPresenterImpl(
             imageData = imageData

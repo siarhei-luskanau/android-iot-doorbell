@@ -1,6 +1,5 @@
 package siarhei.luskanau.iot.doorbell.dagger.imagelist
 
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import dagger.BindsInstance
 import dagger.Component
@@ -20,9 +19,6 @@ interface ImageListComponent {
 
     @Component.Builder
     interface Builder {
-
-        @BindsInstance
-        fun bindFragmentActivity(fragmentActivity: FragmentActivity): Builder
 
         @BindsInstance
         fun bindAppNavigation(appNavigation: AppNavigation): Builder

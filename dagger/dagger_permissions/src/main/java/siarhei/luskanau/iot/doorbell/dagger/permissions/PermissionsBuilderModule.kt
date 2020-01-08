@@ -23,7 +23,7 @@ class PermissionsBuilderModule {
     @Provides
     fun providePermissionsFragment(
         appNavigation: AppNavigation
-    ) = PermissionsFragment {
+    ) = PermissionsFragment { _, _ ->
         PermissionsPresenter(appNavigation = appNavigation)
     }
 }

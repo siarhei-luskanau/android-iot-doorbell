@@ -60,14 +60,12 @@ class AppApplication : Application(), HasFragmentFactory {
                     .provideFragmentFactory(),
 
                 DaggerDoorbellListComponent.builder()
-                    .bindFragmentActivity(fragmentActivity)
                     .bindAppNavigation(appNavigation)
                     .bindCommonComponent(commonComponent)
                     .build()
                     .provideFragmentFactory(),
 
                 DaggerImageListComponent.builder()
-                    .bindFragmentActivity(fragmentActivity)
                     .bindAppNavigation(appNavigation)
                     .bindCommonComponent(commonComponent)
                     .build()

@@ -1,9 +1,9 @@
 package siarhei.luskanau.iot.doorbell.dagger.doorbelllist
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
@@ -37,13 +37,12 @@ class DoorbellListBuilderModule {
 
     @Provides
     fun provideDoorbellListFragment(
-        activity: FragmentActivity,
         viewModelFactory: ViewModelProvider.Factory,
         appNavigation: AppNavigation,
         commonComponent: CommonComponent
-    ) = DoorbellListFragment {
+    ) = DoorbellListFragment { _, store: ViewModelStore ->
         val placeListViewModel =
-            ViewModelProvider(activity, viewModelFactory).get(DoorbellListViewModel::class.java)
+            ViewModelProvider(store, viewModelFactory).get(DoorbellListViewModel::class.java)
         DoorbellListPresenterImpl(
             doorbellListViewModel = placeListViewModel,
             appNavigation = appNavigation,
