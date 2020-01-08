@@ -176,16 +176,17 @@ class FirebaseDoorbellRepository(
 
         query = query.orderByChild("image_id")
 
-        query = if (orderAsc)
-            query.limitToFirst(size)
-        else
+        query = if (orderAsc) {
             query.limitToLast(size)
+        } else {
+            query.limitToFirst(size)
+        }
 
         imageIdAt?.let {
             query = if (orderAsc) {
-                query.startAt(it, imageIdAt)
-            } else {
                 query.endAt(it, imageIdAt)
+            } else {
+                query.startAt(it, imageIdAt)
             }
         }
 
@@ -195,6 +196,7 @@ class FirebaseDoorbellRepository(
         )
 
         return map.values.toList()
+            .reversed()
             .filter { imageDto: ImageDto ->
                 imageDto.imageId != imageIdAt
             }
