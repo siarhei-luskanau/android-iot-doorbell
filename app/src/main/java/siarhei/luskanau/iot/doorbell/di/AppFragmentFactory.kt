@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
@@ -21,11 +22,11 @@ import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsPresenter
 import timber.log.Timber
 
 class AppFragmentFactory(
-    activity: FragmentActivity,
+    fragmentActivity: FragmentActivity,
     private val appModules: AppModules
 ) : FragmentFactory() {
 
-    private val appNavigation: AppNavigation by lazy { DefaultAppNavigation(activity) }
+    private val appNavigation: AppNavigation by lazy { DefaultAppNavigation(fragmentActivity) }
 
     private val viewModelFactory: ViewModelProvider.Factory by lazy {
         AppViewModelFactory(appModules = appModules)
@@ -35,15 +36,19 @@ class AppFragmentFactory(
         Timber.d("AppFragmentFactory:instantiate:$className")
         return when (className) {
 
-            PermissionsFragment::class.java.name -> PermissionsFragment { _, _ ->
-                PermissionsPresenter(appNavigation)
+            PermissionsFragment::class.java.name -> {
+                PermissionsFragment { _: Bundle?, _: LifecycleOwner ->
+                    PermissionsPresenter(appNavigation)
+                }
             }
 
             DoorbellListFragment::class.java.name -> {
-                DoorbellListFragment { _, store: ViewModelStore ->
+                DoorbellListFragment { _: Bundle?, lifecycleOwner: LifecycleOwner ->
                     DoorbellListPresenterImpl(
-                        doorbellListViewModel = ViewModelProvider(store, viewModelFactory)
-                            .get(DoorbellListViewModel::class.java),
+                        doorbellListViewModel = ViewModelProvider(
+                            lifecycleOwner as ViewModelStoreOwner,
+                            viewModelFactory
+                        ).get(DoorbellListViewModel::class.java),
                         appNavigation = appNavigation,
                         thisDeviceRepository = appModules.thisDeviceRepository
                     )
@@ -51,19 +56,21 @@ class AppFragmentFactory(
             }
 
             ImageListFragment::class.java.name -> {
-                ImageListFragment { args: Bundle?, store: ViewModelStore ->
+                ImageListFragment { args: Bundle?, lifecycleOwner: LifecycleOwner ->
                     val doorbellData = appModules.appNavigationArgs.getImagesFragmentArgs(args)
                     ImageListPresenterImpl(
                         doorbellData = requireNotNull(doorbellData),
-                        imageListViewModel = ViewModelProvider(store, viewModelFactory)
-                            .get(ImageListViewModel::class.java),
+                        imageListViewModel = ViewModelProvider(
+                            lifecycleOwner as ViewModelStoreOwner,
+                            viewModelFactory
+                        ).get(ImageListViewModel::class.java),
                         appNavigation = appNavigation
                     )
                 }
             }
 
             ImageDetailsFragment::class.java.name -> {
-                ImageDetailsFragment { args: Bundle?, _ ->
+                ImageDetailsFragment { args: Bundle?, _: LifecycleOwner ->
                     val imageData = appModules.appNavigationArgs.getImageDetailsFragmentArgs(args)
                     ImageDetailsPresenterImpl(imageData = imageData)
                 }

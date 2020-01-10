@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelStore
 import coil.api.load
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericErrorBinding
@@ -15,7 +15,7 @@ import siarhei.luskanau.iot.doorbell.ui.imagedetails.databinding.LayoutImageDeta
 import timber.log.Timber
 
 class ImageDetailsFragment(
-    presenterProvider: (args: Bundle?, store: ViewModelStore) -> ImageDetailsPresenter
+    presenterProvider: (args: Bundle?, lifecycleOwner: LifecycleOwner) -> ImageDetailsPresenter
 ) : BaseFragment<ImageDetailsPresenter>(presenterProvider) {
 
     private lateinit var fragmentBinding: FragmentImageDetailsBinding

@@ -1,12 +1,15 @@
 package siarhei.luskanau.iot.doorbell.toothpick
 
 import android.app.Application
+import androidx.fragment.app.FragmentActivity
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import siarhei.luskanau.iot.doorbell.BuildConfig
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
+import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallbacks
 import siarhei.luskanau.iot.doorbell.toothpick.di.AppModule
+import siarhei.luskanau.iot.doorbell.toothpick.di.ToothpickFragmentFactory
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
 import timber.log.Timber
 import toothpick.Scope
@@ -37,6 +40,15 @@ class AppApplication : Application() {
 
         scope.getInstance<ScheduleWorkManagerService>().startUptimeNotifications()
         scope.getInstance<AppBackgroundServices>().startServices()
+
+        registerActivityLifecycleCallbacks(OnActivityCreatedLifecycleCallbacks {
+            (it as? FragmentActivity?)?.let { fragmentActivity ->
+                fragmentActivity.supportFragmentManager.fragmentFactory = ToothpickFragmentFactory(
+                    fragmentActivity = fragmentActivity,
+                    scope = scope
+                )
+            }
+        })
     }
 
     override fun onTrimMemory(level: Int) {

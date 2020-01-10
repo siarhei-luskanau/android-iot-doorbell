@@ -1,17 +1,20 @@
 package siarhei.luskanau.iot.doorbell
 
 import android.app.Application
+import androidx.fragment.app.FragmentActivity
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import siarhei.luskanau.iot.doorbell.di.AppFragmentFactory
 import siarhei.luskanau.iot.doorbell.di.AppModules
+import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallbacks
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
 import timber.log.Timber
 
 class AppApplication : Application() {
 
-    val appModules: AppModules by lazy {
+    private val appModules: AppModules by lazy {
         AppModules(
-            this
+            application = this
         )
     }
 
@@ -32,5 +35,14 @@ class AppApplication : Application() {
 
         appModules.scheduleWorkManagerService.startUptimeNotifications()
         appModules.appBackgroundServices.startServices()
+
+        registerActivityLifecycleCallbacks(OnActivityCreatedLifecycleCallbacks {
+            (it as? FragmentActivity?)?.let { fragmentActivity ->
+                fragmentActivity.supportFragmentManager.fragmentFactory = AppFragmentFactory(
+                    fragmentActivity = fragmentActivity,
+                    appModules = appModules
+                )
+            }
+        })
     }
 }

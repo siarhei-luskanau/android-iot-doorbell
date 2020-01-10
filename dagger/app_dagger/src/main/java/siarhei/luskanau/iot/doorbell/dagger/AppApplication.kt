@@ -2,7 +2,6 @@ package siarhei.luskanau.iot.doorbell.dagger
 
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentFactory
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import siarhei.luskanau.iot.doorbell.BuildConfig
@@ -15,10 +14,11 @@ import siarhei.luskanau.iot.doorbell.dagger.imagelist.DaggerImageListComponent
 import siarhei.luskanau.iot.doorbell.dagger.permissions.DaggerPermissionsComponent
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigationArgs
+import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallbacks
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
 import timber.log.Timber
 
-class AppApplication : Application(), HasFragmentFactory {
+class AppApplication : Application() {
 
     private val commonComponent: CommonComponent by lazy {
         DaggerCommonComponent
@@ -46,36 +46,49 @@ class AppApplication : Application(), HasFragmentFactory {
 
         commonComponent.provideScheduleWorkManagerService().startUptimeNotifications()
         commonComponent.provideAppBackgroundServices().startServices()
-    }
 
-    override fun buildFragmentFactory(fragmentActivity: FragmentActivity): FragmentFactory {
-        val appNavigation: AppNavigation = DefaultAppNavigation(fragmentActivity)
+        registerActivityLifecycleCallbacks(OnActivityCreatedLifecycleCallbacks {
+            (it as? FragmentActivity?)?.let { fragmentActivity ->
+                val appNavigation: AppNavigation = DefaultAppNavigation(fragmentActivity)
 
-        return DelegateFragmentFactory(
-            listOf(
+                val fragmentFactory =
+                    DelegateFragmentFactory(
+                        listOf(
+                            {
+                                DaggerPermissionsComponent.builder()
+                                    .bindAppNavigation(appNavigation)
+                                    .build()
+                                    .provideFragmentFactory()
+                                    .get()
+                            },
+                            {
+                                DaggerDoorbellListComponent.builder()
+                                    .bindAppNavigation(appNavigation)
+                                    .bindCommonComponent(commonComponent)
+                                    .build()
+                                    .provideFragmentFactory()
+                                    .get()
+                            },
+                            {
+                                DaggerImageListComponent.builder()
+                                    .bindAppNavigation(appNavigation)
+                                    .bindCommonComponent(commonComponent)
+                                    .build()
+                                    .provideFragmentFactory()
+                                    .get()
+                            },
+                            {
+                                DaggerImageDetailsComponent.builder()
+                                    .bindCommonComponent(commonComponent)
+                                    .build()
+                                    .provideFragmentFactory()
+                                    .get()
+                            }
+                        )
+                    )
 
-                DaggerPermissionsComponent.builder()
-                    .bindAppNavigation(appNavigation)
-                    .build()
-                    .provideFragmentFactory(),
-
-                DaggerDoorbellListComponent.builder()
-                    .bindAppNavigation(appNavigation)
-                    .bindCommonComponent(commonComponent)
-                    .build()
-                    .provideFragmentFactory(),
-
-                DaggerImageListComponent.builder()
-                    .bindAppNavigation(appNavigation)
-                    .bindCommonComponent(commonComponent)
-                    .build()
-                    .provideFragmentFactory(),
-
-                DaggerImageDetailsComponent.builder()
-                    .bindCommonComponent(commonComponent)
-                    .build()
-                    .provideFragmentFactory()
-            )
-        )
+                fragmentActivity.supportFragmentManager.fragmentFactory = fragmentFactory
+            }
+        })
     }
 }

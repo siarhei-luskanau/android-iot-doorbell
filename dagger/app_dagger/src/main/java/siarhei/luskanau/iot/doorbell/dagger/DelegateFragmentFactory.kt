@@ -2,11 +2,10 @@ package siarhei.luskanau.iot.doorbell.dagger
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import javax.inject.Provider
 import timber.log.Timber
 
 class DelegateFragmentFactory(
-    private val providers: List<Provider<FragmentFactory>>
+    private val providers: List<() -> FragmentFactory>
 ) : FragmentFactory() {
 
     override fun instantiate(
@@ -19,7 +18,7 @@ class DelegateFragmentFactory(
 
         for (provider in providers) {
             val instantiateResult = kotlin.runCatching {
-                fragment = provider.get().instantiate(classLoader, className)
+                fragment = provider.invoke().instantiate(classLoader, className)
             }
             if (instantiateResult.isSuccess) {
                 break

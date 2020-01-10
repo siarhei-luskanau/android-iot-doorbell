@@ -4,8 +4,10 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.work.WorkManager
 import org.kodein.di.Kodein
 import org.kodein.di.generic.M
@@ -137,8 +139,8 @@ val activityModule = Kodein.Module(name = "activityModule") {
     // Permissions
     bind<Fragment>(
         tag = PermissionsFragment::class.simpleName
-    ) with factory { _: FragmentActivity, appNavigation: AppNavigation ->
-        PermissionsFragment { _, _ ->
+    ) with factory { appNavigation: AppNavigation ->
+        PermissionsFragment { _: Bundle?, _: LifecycleOwner ->
             instance(arg = appNavigation)
         }
     }
@@ -149,13 +151,15 @@ val activityModule = Kodein.Module(name = "activityModule") {
     // DoorbellList
     bind<Fragment>(
         tag = DoorbellListFragment::class.simpleName
-    ) with factory { activity: FragmentActivity, appNavigation: AppNavigation ->
-        DoorbellListFragment { _, _ -> instance(arg = M(activity, appNavigation)) }
+    ) with factory { appNavigation: AppNavigation ->
+        DoorbellListFragment { _: Bundle?, lifecycleOwner: LifecycleOwner ->
+            instance(arg = M(lifecycleOwner, appNavigation))
+        }
     }
-    bind<DoorbellListPresenter>() with factory { activity: FragmentActivity,
+    bind<DoorbellListPresenter>() with factory { lifecycleOwner: LifecycleOwner,
                                                  appNavigation: AppNavigation ->
         val viewModelFactory: ViewModelProvider.Factory = instance()
-        val viewModel = ViewModelProvider(activity, viewModelFactory)
+        val viewModel = ViewModelProvider(lifecycleOwner as ViewModelStoreOwner, viewModelFactory)
             .get(DoorbellListViewModel::class.java)
         val thisDeviceRepository: ThisDeviceRepository = instance()
         DoorbellListPresenterImpl(
@@ -168,18 +172,18 @@ val activityModule = Kodein.Module(name = "activityModule") {
     // ImageList
     bind<Fragment>(
         tag = ImageListFragment::class.simpleName
-    ) with factory { activity: FragmentActivity, appNavigation: AppNavigation ->
-        ImageListFragment { args: Bundle?, _ ->
+    ) with factory { appNavigation: AppNavigation ->
+        ImageListFragment { args: Bundle?, lifecycleOwner: LifecycleOwner ->
             val appNavigationArgs: AppNavigationArgs = instance()
             val doorbellData = appNavigationArgs.getImagesFragmentArgs(args)
-            instance(arg = M(activity, appNavigation, doorbellData))
+            instance(arg = M(lifecycleOwner, appNavigation, doorbellData))
         }
     }
-    bind<ImageListPresenter>() with factory { activity: FragmentActivity,
+    bind<ImageListPresenter>() with factory { lifecycleOwner: LifecycleOwner,
                                               appNavigation: AppNavigation,
                                               doorbellData: DoorbellData ->
         val viewModelFactory: ViewModelProvider.Factory = instance()
-        val viewModel = ViewModelProvider(activity, viewModelFactory)
+        val viewModel = ViewModelProvider(lifecycleOwner as ViewModelStoreOwner, viewModelFactory)
             .get(ImageListViewModel::class.java)
         ImageListPresenterImpl(
             doorbellData = doorbellData,
@@ -191,8 +195,8 @@ val activityModule = Kodein.Module(name = "activityModule") {
     // ImageDetails
     bind<Fragment>(
         tag = ImageDetailsFragment::class.simpleName
-    ) with factory { _: FragmentActivity, _: AppNavigation ->
-        ImageDetailsFragment { args: Bundle?, _ ->
+    ) with factory { _: AppNavigation ->
+        ImageDetailsFragment { args: Bundle?, _: LifecycleOwner ->
             val appNavigationArgs: AppNavigationArgs = instance()
             val imageData = appNavigationArgs.getImageDetailsFragmentArgs(args)
             instance(arg = imageData)
