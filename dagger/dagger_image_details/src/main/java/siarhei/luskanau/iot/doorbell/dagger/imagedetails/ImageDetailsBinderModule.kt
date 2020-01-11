@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import siarhei.luskanau.iot.doorbell.dagger.common.FragmentKey
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
 
 @Module
 interface ImageDetailsBinderModule {
@@ -14,4 +15,9 @@ interface ImageDetailsBinderModule {
     @IntoMap
     @FragmentKey(ImageDetailsFragment::class)
     fun bindImageDetailsFragment(fragment: ImageDetailsFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(ImageDetailsSlideFragment::class)
+    fun bindImageDetailsSlideFragment(fragment: ImageDetailsSlideFragment): Fragment
 }

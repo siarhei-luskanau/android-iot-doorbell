@@ -1,6 +1,5 @@
 package siarhei.luskanau.iot.doorbell.kodein.di
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
@@ -54,6 +53,8 @@ import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenter
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenterImpl
@@ -140,7 +141,7 @@ val activityModule = Kodein.Module(name = "activityModule") {
     bind<Fragment>(
         tag = PermissionsFragment::class.simpleName
     ) with factory { appNavigation: AppNavigation ->
-        PermissionsFragment { _: Bundle?, _: LifecycleOwner ->
+        PermissionsFragment {
             instance(arg = appNavigation)
         }
     }
@@ -152,8 +153,8 @@ val activityModule = Kodein.Module(name = "activityModule") {
     bind<Fragment>(
         tag = DoorbellListFragment::class.simpleName
     ) with factory { appNavigation: AppNavigation ->
-        DoorbellListFragment { _: Bundle?, lifecycleOwner: LifecycleOwner ->
-            instance(arg = M(lifecycleOwner, appNavigation))
+        DoorbellListFragment { fragment: Fragment ->
+            instance(arg = M(fragment, appNavigation))
         }
     }
     bind<DoorbellListPresenter>() with factory { lifecycleOwner: LifecycleOwner,
@@ -173,10 +174,10 @@ val activityModule = Kodein.Module(name = "activityModule") {
     bind<Fragment>(
         tag = ImageListFragment::class.simpleName
     ) with factory { appNavigation: AppNavigation ->
-        ImageListFragment { args: Bundle?, lifecycleOwner: LifecycleOwner ->
+        ImageListFragment { fragment: Fragment ->
             val appNavigationArgs: AppNavigationArgs = instance()
-            val doorbellData = appNavigationArgs.getImagesFragmentArgs(args)
-            instance(arg = M(lifecycleOwner, appNavigation, doorbellData))
+            val doorbellData = appNavigationArgs.getImagesFragmentArgs(fragment.arguments)
+            instance(arg = M(fragment, appNavigation, doorbellData))
         }
     }
     bind<ImageListPresenter>() with factory { lifecycleOwner: LifecycleOwner,
@@ -196,14 +197,37 @@ val activityModule = Kodein.Module(name = "activityModule") {
     bind<Fragment>(
         tag = ImageDetailsFragment::class.simpleName
     ) with factory { _: AppNavigation ->
-        ImageDetailsFragment { args: Bundle?, _: LifecycleOwner ->
+        ImageDetailsFragment { fragment: Fragment ->
             val appNavigationArgs: AppNavigationArgs = instance()
-            val imageData = appNavigationArgs.getImageDetailsFragmentArgs(args)
+            val doorbellData =
+                appNavigationArgs.getDoorbellDataImageDetailsFragmentArgs(fragment.arguments)
+            val imageData =
+                appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
+            instance(arg = M(fragment, doorbellData, imageData))
+        }
+    }
+    bind() from factory { fragment: Fragment, doorbellData: DoorbellData, imageData: ImageData ->
+        ImageDetailsPresenterImpl(
+            appNavigationArgs = instance(),
+            fragment = fragment,
+            doorbellData = doorbellData,
+            imageData = imageData
+        )
+    }
+
+    // ImageDetailsSlide
+    bind<Fragment>(
+        tag = ImageDetailsSlideFragment::class.simpleName
+    ) with factory { _: AppNavigation ->
+        ImageDetailsSlideFragment { fragment: Fragment ->
+            val appNavigationArgs: AppNavigationArgs = instance()
+            val imageData =
+                appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
             instance(arg = imageData)
         }
     }
     bind() from factory { imageData: ImageData ->
-        ImageDetailsPresenterImpl(
+        ImageDetailsSlidePresenterImpl(
             imageData = imageData
         )
     }

@@ -1,11 +1,8 @@
 package siarhei.luskanau.iot.doorbell.dagger.imagelist
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
@@ -41,9 +38,10 @@ class ImageListBuilderModule {
         viewModelFactory: ViewModelProvider.Factory,
         appNavigation: AppNavigation,
         commonComponent: CommonComponent
-    ) = ImageListFragment { args: Bundle?, lifecycleOwner: LifecycleOwner ->
-        val doorbellData = commonComponent.provideAppNavigationArgs().getImagesFragmentArgs(args)
-        val viewModel = ViewModelProvider(lifecycleOwner as ViewModelStoreOwner, viewModelFactory)
+    ) = ImageListFragment { fragment: Fragment ->
+        val doorbellData = commonComponent.provideAppNavigationArgs()
+            .getImagesFragmentArgs(fragment.arguments)
+        val viewModel = ViewModelProvider(fragment, viewModelFactory)
             .get(ImageListViewModel::class.java)
         ImageListPresenterImpl(
             doorbellData = doorbellData,

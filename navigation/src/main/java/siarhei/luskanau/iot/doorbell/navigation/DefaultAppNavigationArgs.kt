@@ -15,6 +15,12 @@ class DefaultAppNavigationArgs : AppNavigationArgs {
     override fun getImagesFragmentArgs(args: Bundle?): DoorbellData? =
         args?.let { ImageListFragmentArgs.fromBundle(it).doorbellData }
 
-    override fun getImageDetailsFragmentArgs(args: Bundle?): ImageData? =
+    override fun getDoorbellDataImageDetailsFragmentArgs(args: Bundle?): DoorbellData? =
+        args?.let { ImageDetailsFragmentArgs.fromBundle(it).doorbellData }
+
+    override fun getImageDataImageDetailsFragmentArgs(args: Bundle?): ImageData? =
         args?.let { ImageDetailsFragmentArgs.fromBundle(it).imageData }
+
+    override fun buildImageDetailsArgs(doorbellData: DoorbellData, imageData: ImageData): Bundle =
+        NavRootDirections.actionImageListToImageDetails(doorbellData, imageData).arguments
 }

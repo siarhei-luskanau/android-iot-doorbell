@@ -3,13 +3,12 @@ package siarhei.luskanau.iot.doorbell.ui.common
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 
 abstract class BaseFragment<T>(
-    private val presenterProvider: (args: Bundle?, lifecycleOwner: LifecycleOwner) -> T
+    private val presenterProvider: (fragment: Fragment) -> T
 ) : Fragment() {
 
-    protected val presenter: T by lazy { presenterProvider(arguments, this) }
+    protected val presenter: T by lazy { presenterProvider(this) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

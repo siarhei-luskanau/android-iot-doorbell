@@ -1,12 +1,9 @@
 package siarhei.luskanau.iot.doorbell.toothpick.di
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -16,6 +13,8 @@ import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
@@ -42,17 +41,15 @@ class ToothpickFragmentFactory(
         Timber.d("AppFragmentFactory:instantiate:$className")
         return when (className) {
 
-            PermissionsFragment::class.java.name -> PermissionsFragment { _, _ ->
+            PermissionsFragment::class.java.name -> PermissionsFragment {
                 PermissionsPresenter(appNavigation)
             }
 
             DoorbellListFragment::class.java.name -> {
-                DoorbellListFragment { _, lifecycleOwner: LifecycleOwner ->
+                DoorbellListFragment { fragment: Fragment ->
                     DoorbellListPresenterImpl(
-                        doorbellListViewModel = ViewModelProvider(
-                            lifecycleOwner as ViewModelStoreOwner,
-                            viewModelFactory
-                        ).get(DoorbellListViewModel::class.java),
+                        doorbellListViewModel = ViewModelProvider(fragment, viewModelFactory)
+                            .get(DoorbellListViewModel::class.java),
                         appNavigation = appNavigation,
                         thisDeviceRepository = scope.getInstance(ThisDeviceRepository::class.java)
                     )
@@ -60,23 +57,39 @@ class ToothpickFragmentFactory(
             }
 
             ImageListFragment::class.java.name -> {
-                ImageListFragment { args: Bundle?, lifecycleOwner: LifecycleOwner ->
-                    val doorbellData = appNavigationArgs.getImagesFragmentArgs(args)
+                ImageListFragment { fragment: Fragment ->
+                    val doorbellData = appNavigationArgs.getImagesFragmentArgs(fragment.arguments)
                     ImageListPresenterImpl(
                         doorbellData = requireNotNull(doorbellData),
-                        imageListViewModel = ViewModelProvider(
-                            lifecycleOwner as ViewModelStoreOwner,
-                            viewModelFactory
-                        ).get(ImageListViewModel::class.java),
+                        imageListViewModel = ViewModelProvider(fragment, viewModelFactory)
+                            .get(ImageListViewModel::class.java),
                         appNavigation = appNavigation
                     )
                 }
             }
 
             ImageDetailsFragment::class.java.name -> {
-                ImageDetailsFragment { args: Bundle?, _: LifecycleOwner ->
-                    val imageData = appNavigationArgs.getImageDetailsFragmentArgs(args)
-                    ImageDetailsPresenterImpl(imageData = imageData)
+                ImageDetailsFragment { fragment: Fragment ->
+                    val doorbellData = appNavigationArgs
+                        .getDoorbellDataImageDetailsFragmentArgs(fragment.arguments)
+                    val imageData =
+                        appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
+                    ImageDetailsPresenterImpl(
+                        appNavigationArgs = appNavigationArgs,
+                        fragment = fragment,
+                        doorbellData = doorbellData,
+                        imageData = imageData
+                    )
+                }
+            }
+
+            ImageDetailsSlideFragment::class.java.name -> {
+                ImageDetailsSlideFragment { fragment: Fragment ->
+                    val imageData =
+                        appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
+                    ImageDetailsSlidePresenterImpl(
+                        imageData = imageData
+                    )
                 }
             }
 

@@ -1,6 +1,6 @@
 package siarhei.luskanau.iot.doorbell.koin.di
 
-import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.LifecycleOwner
@@ -48,6 +48,9 @@ import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenter
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenter
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenter
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenterImpl
@@ -121,7 +124,7 @@ val activityModule = module {
 
     // Permissions
     factory { (appNavigation: AppNavigation) ->
-        PermissionsFragment { _: Bundle?, _: LifecycleOwner -> get { parametersOf(appNavigation) } }
+        PermissionsFragment { fragment: Fragment -> get { parametersOf(appNavigation) } }
     }
     factory { (appNavigation: AppNavigation) ->
         PermissionsPresenter(appNavigation)
@@ -129,11 +132,11 @@ val activityModule = module {
 
     // DoorbellList
     factory { (appNavigation: AppNavigation) ->
-        DoorbellListFragment { _: Bundle?, lifecycleOwner: LifecycleOwner ->
+        DoorbellListFragment { fragment: Fragment ->
             val thisDeviceRepository: ThisDeviceRepository = get()
             get {
                 parametersOf(
-                    lifecycleOwner,
+                    fragment,
                     appNavigation,
                     thisDeviceRepository
                 )
@@ -154,13 +157,13 @@ val activityModule = module {
 
     // ImageList
     factory { (appNavigation: AppNavigation) ->
-        ImageListFragment { args: Bundle?, lifecycleOwner: LifecycleOwner ->
+        ImageListFragment { fragment: Fragment ->
             val appNavigationArgs: AppNavigationArgs = get()
-            val doorbellData = appNavigationArgs.getImagesFragmentArgs(args)
+            val doorbellData = appNavigationArgs.getImagesFragmentArgs(fragment.arguments)
             get {
                 parametersOf(
                     doorbellData,
-                    lifecycleOwner,
+                    fragment,
                     appNavigation
                 )
             }
@@ -180,14 +183,43 @@ val activityModule = module {
 
     // ImageDetails
     factory { (_: AppNavigation) ->
-        ImageDetailsFragment { args: Bundle?, _: LifecycleOwner ->
+        ImageDetailsFragment { fragment: Fragment ->
             val appNavigationArgs: AppNavigationArgs = get()
-            val imageData = appNavigationArgs.getImageDetailsFragmentArgs(args)
+            val doorbellData =
+                appNavigationArgs.getDoorbellDataImageDetailsFragmentArgs(fragment.arguments)
+            val imageData =
+                appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
+            get { parametersOf(appNavigationArgs, fragment, doorbellData, imageData) }
+        }
+    }
+    factory<ImageDetailsPresenter> { (
+                                         appNavigationArgs: AppNavigationArgs,
+                                         fragment: Fragment,
+                                         doorbellData: DoorbellData,
+                                         imageData: ImageData
+                                     ) ->
+        ImageDetailsPresenterImpl(
+            appNavigationArgs = appNavigationArgs,
+            fragment = fragment,
+            doorbellData = doorbellData,
+            imageData = imageData
+        )
+    }
+
+    // ImageDetailsSlide
+    factory { (_: AppNavigation) ->
+        ImageDetailsSlideFragment { fragment: Fragment ->
+            val appNavigationArgs: AppNavigationArgs = get()
+            val imageData =
+                appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
             get { parametersOf(imageData) }
         }
     }
-    factory<ImageDetailsPresenter> { (imageData: ImageData) ->
-        ImageDetailsPresenterImpl(imageData = imageData)
+    factory<ImageDetailsSlidePresenter> { (imageData: ImageData) ->
+        val imageDetailsSlidePresenterImpl = ImageDetailsSlidePresenterImpl(
+            imageData = imageData
+        )
+        imageDetailsSlidePresenterImpl
     }
 }
 

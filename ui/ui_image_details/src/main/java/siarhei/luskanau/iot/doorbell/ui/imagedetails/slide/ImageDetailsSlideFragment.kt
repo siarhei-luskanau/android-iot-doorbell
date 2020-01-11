@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.ui.imagedetails
+package siarhei.luskanau.iot.doorbell.ui.imagedetails.slide
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,18 +7,20 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import coil.api.load
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericErrorBinding
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.databinding.FragmentImageDetailsBinding
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.databinding.LayoutImageDetailsNormalBinding
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.databinding.LayoutImageDetailsSlideNormalBinding
 import timber.log.Timber
 
-class ImageDetailsFragment(
-    presenterProvider: (fragment: Fragment) -> ImageDetailsPresenter
-) : BaseFragment<ImageDetailsPresenter>(presenterProvider) {
+class ImageDetailsSlideFragment(
+    presenterProvider: (fragment: Fragment) -> ImageDetailsSlidePresenter
+) : BaseFragment<ImageDetailsSlidePresenter>(presenterProvider) {
 
     private lateinit var fragmentBinding: FragmentImageDetailsBinding
-    private lateinit var normalStateBinding: LayoutImageDetailsNormalBinding
+    private lateinit var normalStateBinding: LayoutImageDetailsSlideNormalBinding
     private lateinit var errorStateBinding: LayoutGenericErrorBinding
 
     override fun onCreateView(
@@ -34,7 +36,7 @@ class ImageDetailsFragment(
             fragmentBinding = it
         }
 
-        LayoutImageDetailsNormalBinding.inflate(
+        LayoutImageDetailsSlideNormalBinding.inflate(
             inflater,
             container,
             false
@@ -60,14 +62,14 @@ class ImageDetailsFragment(
 
     override fun observeDataSources() {
         super.observeDataSources()
-        presenter.getImageDetailsStateData()
+        presenter.getImageDetailsSlideStateData()
             .observe(viewLifecycleOwner, Observer { changeState(it) })
     }
 
-    private fun changeState(state: ImageDetailsState) {
+    private fun changeState(state: ImageDetailsSlideState) {
         val stateBinding = when (state) {
-            is NormalImageDetailsState -> normalStateBinding
-            is ErrorImageDetailsState -> errorStateBinding
+            is NormalImageDetailsSlideState -> normalStateBinding
+            is ErrorImageDetailsSlideState -> errorStateBinding
         }
 
         if (fragmentBinding.containerContent.getChildAt(0) != stateBinding.root) {
@@ -76,11 +78,13 @@ class ImageDetailsFragment(
         }
 
         when (state) {
-            is NormalImageDetailsState -> {
-                normalStateBinding.viewPager2.adapter = state.adapter
+            is NormalImageDetailsSlideState -> {
+                normalStateBinding.imageView.load(state.imageData.imageUri) {
+                    placeholder(R.drawable.ic_image)
+                }
             }
 
-            is ErrorImageDetailsState -> {
+            is ErrorImageDetailsSlideState -> {
                 Timber.e(state.error)
                 errorStateBinding.errorMessage.text = state.error.message
             }

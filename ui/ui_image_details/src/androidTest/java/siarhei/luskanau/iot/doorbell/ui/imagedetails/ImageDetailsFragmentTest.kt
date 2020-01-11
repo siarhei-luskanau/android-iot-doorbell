@@ -9,36 +9,56 @@ import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import org.junit.Test
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 class ImageDetailsFragmentTest {
 
-    private fun createFragmentFactory(state: ImageDetailsState) = object : FragmentFactory() {
+    companion object {
+        const val EXPECTED_ERROR_MESSAGE = "Test Exception"
+    }
+
+    private fun createNormalFragmentFactory() = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
-            ImageDetailsFragment { _, _ ->
+            ImageDetailsFragment { fragment: Fragment ->
                 object : ImageDetailsPresenter {
                     override fun getImageDetailsStateData(): LiveData<ImageDetailsState> =
-                        MutableLiveData<ImageDetailsState>().apply { value = state }
+                        MutableLiveData<ImageDetailsState>().apply {
+                            value = NormalImageDetailsState(
+                                adapter = object : FragmentStateAdapter(fragment) {
+                                    override fun getItemCount(): Int = 1
+                                    override fun createFragment(position: Int): Fragment =
+                                        Fragment(R.layout.layout_generic_empty)
+                                }
+                            )
+                        }
                 }
             }
     }
 
+    private fun createErrorFragmentFactory() =
+        object : FragmentFactory() {
+            override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
+                ImageDetailsFragment {
+                    object : ImageDetailsPresenter {
+                        override fun getImageDetailsStateData(): LiveData<ImageDetailsState> =
+                            MutableLiveData<ImageDetailsState>().apply {
+                                value = ErrorImageDetailsState(
+                                    error = RuntimeException(EXPECTED_ERROR_MESSAGE)
+                                )
+                            }
+                    }
+                }
+        }
+
     @Test
     fun testNormalState() {
-        val expectedImageData = ImageData(
-            imageId = "expectedImageId",
-            imageUri = "expectedImageUri",
-            timestampString = "timestampString"
-        )
-        val fragmentFactory = createFragmentFactory(
-            state = NormalImageDetailsState(imageData = expectedImageData)
-        )
+        val fragmentFactory = createNormalFragmentFactory()
         val scenario = launchFragmentInContainer<ImageDetailsFragment>(factory = fragmentFactory)
         scenario.moveToState(Lifecycle.State.RESUMED)
 
         // normal view is displayed
-        Espresso.onView(ViewMatchers.withId(R.id.imageView))
+        Espresso.onView(ViewMatchers.withId(R.id.viewPager2))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
         // error view does not exist
@@ -48,23 +68,18 @@ class ImageDetailsFragmentTest {
 
     @Test
     fun testErrorState() {
-        val expectedErrorMessage = "Test Exception"
-        val fragmentFactory = createFragmentFactory(
-            state = ErrorImageDetailsState(
-                error = RuntimeException(expectedErrorMessage)
-            )
-        )
+        val fragmentFactory = createErrorFragmentFactory()
         val scenario = launchFragmentInContainer<ImageDetailsFragment>(factory = fragmentFactory)
         scenario.moveToState(Lifecycle.State.RESUMED)
 
         // error view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.error_message))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(expectedErrorMessage))
+        Espresso.onView(ViewMatchers.withText(EXPECTED_ERROR_MESSAGE))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
         // normal view does not exist
-        Espresso.onView(ViewMatchers.withId(R.id.imageView))
+        Espresso.onView(ViewMatchers.withId(R.id.viewPager2))
             .check(ViewAssertions.doesNotExist())
     }
 }

@@ -26,8 +26,8 @@ class DefaultAppNavigation(private val activity: Activity) : AppNavigation {
             NavRootDirections.actionDoorbellListToImageList(doorbellData)
         )
 
-    override fun navigateToImageDetails(imageData: ImageData) =
+    override fun navigateToImageDetails(doorbellData: DoorbellData, imageData: ImageData) =
         navController.navigate(
-            NavRootDirections.actionImageListToImageDetails(imageData)
+            NavRootDirections.actionImageListToImageDetails(doorbellData, imageData)
         )
 }

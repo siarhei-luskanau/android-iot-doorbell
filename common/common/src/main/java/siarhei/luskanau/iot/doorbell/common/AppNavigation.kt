@@ -7,5 +7,5 @@ interface AppNavigation {
     fun goBack(): Boolean
     fun goDoorbellListToPermissions()
     fun navigateToImageList(doorbellData: DoorbellData)
-    fun navigateToImageDetails(imageData: ImageData)
+    fun navigateToImageDetails(doorbellData: DoorbellData, imageData: ImageData)
 }

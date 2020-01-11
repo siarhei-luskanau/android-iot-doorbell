@@ -7,5 +7,7 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageData
 interface AppNavigationArgs {
     fun getCameraListFragmentArgs(args: Bundle?): DoorbellData?
     fun getImagesFragmentArgs(args: Bundle?): DoorbellData?
-    fun getImageDetailsFragmentArgs(args: Bundle?): ImageData?
+    fun getDoorbellDataImageDetailsFragmentArgs(args: Bundle?): DoorbellData?
+    fun getImageDataImageDetailsFragmentArgs(args: Bundle?): ImageData?
+    fun buildImageDetailsArgs(doorbellData: DoorbellData, imageData: ImageData): Bundle
 }

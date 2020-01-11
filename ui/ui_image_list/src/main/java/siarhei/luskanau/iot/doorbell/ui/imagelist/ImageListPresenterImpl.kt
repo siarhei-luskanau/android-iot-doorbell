@@ -26,8 +26,9 @@ class ImageListPresenterImpl(
         doorbellData?.let { imageListViewModel.onCameraClicked(it, cameraData) }
     }
 
-    override fun onImageClicked(imageData: ImageData) =
-        appNavigation.navigateToImageDetails(imageData)
+    override fun onImageClicked(imageData: ImageData) {
+        doorbellData?.let { appNavigation.navigateToImageDetails(it, imageData) }
+    }
 
     override fun rebootDevice() {
         doorbellData?.let {

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.Fragment
 import siarhei.luskanau.iot.doorbell.common.AppConstants.PERMISSIONS
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.permissions.databinding.FragmentPermissionsBinding
@@ -15,7 +15,7 @@ import siarhei.luskanau.iot.doorbell.ui.permissions.databinding.FragmentPermissi
 private const val PERMISSIONS_REQUEST_CODE = 201
 
 class PermissionsFragment(
-    presenterProvider: (args: Bundle?, lifecycleOwner: LifecycleOwner) -> PermissionsPresenter
+    presenterProvider: (fragment: Fragment) -> PermissionsPresenter
 ) : BaseFragment<PermissionsPresenter>(presenterProvider) {
 
     override fun onCreateView(

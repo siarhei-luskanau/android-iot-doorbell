@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.DoorbellsAdapter
@@ -18,7 +18,7 @@ import siarhei.luskanau.iot.doorbell.ui.doorbelllist.databinding.LayoutDoorbellL
 import timber.log.Timber
 
 class DoorbellListFragment(
-    presenterProvider: (args: Bundle?, lifecycleOwner: LifecycleOwner) -> DoorbellListPresenter
+    presenterProvider: (fragment: Fragment) -> DoorbellListPresenter
 ) : BaseFragment<DoorbellListPresenter>(presenterProvider) {
 
     private lateinit var fragmentBinding: FragmentDoorbellListBinding
