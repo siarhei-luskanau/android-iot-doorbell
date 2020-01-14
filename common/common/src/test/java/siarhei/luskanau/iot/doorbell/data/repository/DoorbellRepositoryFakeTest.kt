@@ -4,6 +4,7 @@ import kotlin.test.assertEquals
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
+private const val MIN_COUNT = 0
 private const val MAX_COUNT = 100
 private const val SIZE = 20
 
@@ -14,51 +15,81 @@ object DoorbellRepositoryFakeTest : Spek({
     describe("check getFromToRange()") {
 
         listOf(
-                FromToRangeData(
-                        expected = Pair(0, 19),
-                        startAt = null,
-                        orderAsc = true
-                ),
-                FromToRangeData(
-                        expected = Pair(19, 0),
-                        startAt = null,
-                        orderAsc = false
-                ),
-                FromToRangeData(
-                        expected = Pair(11, 30),
-                        startAt = "10",
-                        orderAsc = true
-                ),
-                FromToRangeData(
-                        expected = Pair(9, 0),
-                        startAt = "10",
-                        orderAsc = false
-                ),
-                FromToRangeData(
-                        expected = Pair(91, 99),
-                        startAt = "90",
-                        orderAsc = true
-                ),
-                FromToRangeData(
-                        expected = Pair(89, 70),
-                        startAt = "90",
-                        orderAsc = false
-                )
+            FromToRangeData(
+                startAt = null,
+                orderAsc = true,
+                expected = Pair(0, 19)
+            ),
+            FromToRangeData(
+                startAt = null,
+                orderAsc = false,
+                expected = Pair(19, 0)
+            ),
+            FromToRangeData(
+                startAt = "10",
+                orderAsc = true,
+                expected = Pair(11, 30)
+            ),
+            FromToRangeData(
+                startAt = "10",
+                orderAsc = false,
+                expected = Pair(9, 0)
+            ),
+            FromToRangeData(
+                startAt = "1",
+                orderAsc = false,
+                expected = Pair(0, 0)
+            ),
+            FromToRangeData(
+                startAt = "0",
+                orderAsc = false,
+                expected = null
+            ),
+            FromToRangeData(
+                startAt = "-1",
+                orderAsc = false,
+                expected = null
+            ),
+            FromToRangeData(
+                startAt = "90",
+                orderAsc = true,
+                expected = Pair(91, 99)
+            ),
+            FromToRangeData(
+                startAt = "90",
+                orderAsc = false,
+                expected = Pair(89, 70)
+            ),
+            FromToRangeData(
+                startAt = "99",
+                orderAsc = true,
+                expected = null
+            ),
+            FromToRangeData(
+                startAt = "100",
+                orderAsc = true,
+                expected = null
+            )
         ).forEach { data ->
             context("$data") {
                 var actual: Pair<Int, Int>? = null
 
                 beforeEachTest {
                     actual = doorbellRepositoryFake.getFromToRange(
-                            size = data.size,
-                            startAt = data.startAt,
-                            orderAsc = data.orderAsc,
-                            maxCount = data.maxCount
+                        startAt = data.startAt,
+                        orderAsc = data.orderAsc,
+                        minCount = MIN_COUNT,
+                        maxCount = MAX_COUNT,
+                        size = SIZE
                     )
                 }
 
-                it("actual=$actual expected=$data") {
-                    assertEquals(expected = data.expected, actual = actual)
+                it("check the $data") {
+                    assertEquals(
+                        expected = data.expected,
+                        actual = actual,
+                        message = "actual=$actual expected=$data"
+                    )
                 }
             }
         }
@@ -66,9 +97,7 @@ object DoorbellRepositoryFakeTest : Spek({
 })
 
 private data class FromToRangeData(
-    val expected: Pair<Int, Int>,
-    val size: Int = SIZE,
     val startAt: String?,
     val orderAsc: Boolean,
-    val maxCount: Int = MAX_COUNT
+    val expected: Pair<Int, Int>?
 )

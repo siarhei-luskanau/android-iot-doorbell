@@ -37,6 +37,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CoroutineCameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
 import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
@@ -71,9 +72,8 @@ val appModule = Kodein.Module(name = "appModule") {
     bind<AppNavigationArgs>() with singleton { DefaultAppNavigationArgs() }
     bind<ImageRepository>() with singleton { InternalStorageImageRepository(context = instance()) }
     bind<DoorbellRepository>() with singleton {
-        FirebaseDoorbellRepository(
-            imageRepository = instance()
-        )
+        FirebaseDoorbellRepository(imageRepository = instance())
+        DoorbellRepositoryFake()
     }
     bind<PersistenceRepository>() with singleton {
         DefaultPersistenceRepository(

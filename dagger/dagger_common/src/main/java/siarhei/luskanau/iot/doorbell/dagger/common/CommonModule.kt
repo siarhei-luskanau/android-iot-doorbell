@@ -25,6 +25,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CoroutineCameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
 import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
@@ -60,8 +61,10 @@ class CommonModule {
 
     @Provides
     @Singleton
-    fun provideDoorbellRepository(imageRepository: Provider<ImageRepository>): DoorbellRepository =
+    fun provideDoorbellRepository(imageRepository: Provider<ImageRepository>): DoorbellRepository {
         FirebaseDoorbellRepository(imageRepository = imageRepository.get())
+        return DoorbellRepositoryFake()
+    }
 
     @Provides
     @Singleton

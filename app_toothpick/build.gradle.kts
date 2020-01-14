@@ -41,9 +41,19 @@ android {
     }
 
     testOptions {
-        // unitTests.all {
-        //     testLogging.events = ["passed", "skipped", "failed"]
-        // }
+        animationsDisabled = true
+        unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {
+            //isReturnDefaultValues = true
+            all(KotlinClosure1<Any, Test>({
+                (this as Test).also { testTask ->
+                    testTask.testLogging.events = setOf(
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+                    )
+                }
+            }, this))
+        })
     }
 }
 

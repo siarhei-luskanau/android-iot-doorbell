@@ -7,6 +7,7 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 
+private const val MIN_COUNT = 0
 private const val DOORBELL_MAX_COUNT = 50
 private const val IMAGE_MAX_COUNT = 150
 
@@ -21,17 +22,20 @@ class DoorbellRepositoryFake : DoorbellRepository {
             size = size,
             startAt = startAt,
             orderAsc = orderAsc,
+            minCount = MIN_COUNT,
             maxCount = DOORBELL_MAX_COUNT
         )
         val list = mutableListOf<DoorbellData>()
-        for (i in fromToPair.first..fromToPair.second) {
-            list.add(
-                DoorbellData(
-                    doorbellId = "$i",
-                    name = "doorbell_$i",
-                    isAndroidThings = i % 2 == 0
+        fromToPair?.let {
+            for (i in fromToPair.first..fromToPair.second) {
+                list.add(
+                    DoorbellData(
+                        doorbellId = "$i",
+                        name = "doorbell_$i",
+                        isAndroidThings = i % 2 == 0
+                    )
                 )
-            )
+            }
         }
         return list
     }
@@ -85,17 +89,20 @@ class DoorbellRepositoryFake : DoorbellRepository {
             size = size,
             startAt = imageIdAt,
             orderAsc = orderAsc,
+            minCount = MIN_COUNT,
             maxCount = IMAGE_MAX_COUNT
         )
         val list = mutableListOf<ImageData>()
-        for (i in fromToPair.first..fromToPair.second) {
-            list.add(
-                ImageData(
-                    imageId = "$i",
-                    imageUri = "imageUri_$i",
-                    timestampString = "timestampString_$i"
+        fromToPair?.let {
+            for (i in fromToPair.first..fromToPair.second) {
+                list.add(
+                    ImageData(
+                        imageId = "$i",
+                        imageUri = "imageUri_$i",
+                        timestampString = "timestampString_$i"
+                    )
                 )
-            )
+            }
         }
         return list
     }
@@ -104,8 +111,18 @@ class DoorbellRepositoryFake : DoorbellRepository {
         size: Int,
         startAt: String?,
         orderAsc: Boolean,
+        minCount: Int,
         maxCount: Int
-    ): Pair<Int, Int> {
+    ): Pair<Int, Int>? {
+        startAt?.toInt()?.let { startAtInt ->
+            if (orderAsc && startAtInt >= maxCount - 1) {
+                return null
+            }
+            if (orderAsc.not() && startAtInt <= minCount) {
+                return null
+            }
+        }
+
         val from: Int = if (orderAsc) {
             startAt?.let { it.toInt() + 1 } ?: 0
         } else {
@@ -115,7 +132,7 @@ class DoorbellRepositoryFake : DoorbellRepository {
         val to: Int = if (orderAsc) {
             min(maxCount - 1, startAt?.let { it.toInt() + size } ?: size - 1)
         } else {
-            max(0, startAt?.let { it.toInt() - size } ?: 0)
+            max(0, startAt?.let { max((it.toInt() - size), minCount) } ?: 0)
         }
 
         return Pair(from, to)

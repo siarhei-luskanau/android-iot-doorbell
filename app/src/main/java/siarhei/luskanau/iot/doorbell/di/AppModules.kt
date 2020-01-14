@@ -22,6 +22,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CoroutineCameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
 import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
@@ -35,16 +36,17 @@ import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerServi
 
 class AppModules(application: Application) {
 
-    val context: Context = application.applicationContext
+    private val context: Context = application.applicationContext
     val appNavigationArgs: AppNavigationArgs by lazy { DefaultAppNavigationArgs() }
     val schedulerSet: SchedulerSet by lazy { DefaultSchedulerSet() }
-    val imageRepository: ImageRepository by lazy {
+    private val imageRepository: ImageRepository by lazy {
         InternalStorageImageRepository(
             context = context
         )
     }
     val doorbellRepository: DoorbellRepository by lazy {
         FirebaseDoorbellRepository(imageRepository = imageRepository)
+        DoorbellRepositoryFake()
     }
     val uptimeRepository: UptimeRepository by lazy { UptimeFirebaseRepository() }
     val thisDeviceRepository: ThisDeviceRepository by lazy {
