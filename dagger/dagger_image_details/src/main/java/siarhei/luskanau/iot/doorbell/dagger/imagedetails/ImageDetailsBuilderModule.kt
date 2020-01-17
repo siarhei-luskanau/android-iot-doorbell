@@ -5,9 +5,10 @@ import androidx.fragment.app.FragmentFactory
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
-import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
+import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerFragmentFactory
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
@@ -24,14 +25,16 @@ class ImageDetailsBuilderModule {
 
     @Provides
     fun provideImageDetailsFragment(
-        commonComponent: CommonComponent
+        appNavigation: AppNavigation
     ) = ImageDetailsFragment { fragment: Fragment ->
-        val doorbellData = commonComponent.provideAppNavigationArgs()
-            .getDoorbellDataImageDetailsFragmentArgs(fragment.arguments)
-        val imageData = commonComponent.provideAppNavigationArgs()
-            .getImageDataImageDetailsFragmentArgs(fragment.arguments)
+        val doorbellData = fragment.arguments?.let { args ->
+            ImageDetailsFragmentArgs.fromBundle(args).doorbellData
+        }
+        val imageData = fragment.arguments?.let { args ->
+            ImageDetailsFragmentArgs.fromBundle(args).imageData
+        }
         ImageDetailsPresenterImpl(
-            appNavigationArgs = commonComponent.provideAppNavigationArgs(),
+            appNavigation = appNavigation,
             fragment = fragment,
             doorbellData = doorbellData,
             imageData = imageData
@@ -39,13 +42,13 @@ class ImageDetailsBuilderModule {
     }
 
     @Provides
-    fun provideImageDetailsSlideFragment(
-        commonComponent: CommonComponent
-    ) = ImageDetailsSlideFragment { fragment: Fragment ->
-        val imageData = commonComponent.provideAppNavigationArgs()
-            .getImageDataImageDetailsFragmentArgs(fragment.arguments)
-        ImageDetailsSlidePresenterImpl(
-            imageData = imageData
-        )
-    }
+    fun provideImageDetailsSlideFragment() =
+        ImageDetailsSlideFragment { fragment: Fragment ->
+            val imageData = fragment.arguments?.let { args ->
+                ImageDetailsFragmentArgs.fromBundle(args).imageData
+            }
+            ImageDetailsSlidePresenterImpl(
+                imageData = imageData
+            )
+        }
 }

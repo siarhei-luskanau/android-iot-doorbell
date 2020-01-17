@@ -103,5 +103,7 @@ dependencies {
     //android test
     androidTestImplementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
     androidTestImplementation("androidx.test.espresso:espresso-core:${rootProject.extra["espressoVersion"]}")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:${rootProject.extra["espressoVersion"]}")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:${rootProject.extra["espressoVersion"]}")
     androidTestImplementation("androidx.test:core:${rootProject.extra["androidTestCoreVersion"]}")
 }

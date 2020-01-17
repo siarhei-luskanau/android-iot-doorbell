@@ -13,7 +13,6 @@ import siarhei.luskanau.iot.doorbell.dagger.imagedetails.DaggerImageDetailsCompo
 import siarhei.luskanau.iot.doorbell.dagger.imagelist.DaggerImageListComponent
 import siarhei.luskanau.iot.doorbell.dagger.permissions.DaggerPermissionsComponent
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
-import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigationArgs
 import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallbacks
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
 import timber.log.Timber
@@ -24,7 +23,6 @@ class AppApplication : Application() {
         DaggerCommonComponent
             .builder()
             .bindApplication(this)
-            .bindAppNavigationArgs(DefaultAppNavigationArgs())
             .build()
     }
 
@@ -79,7 +77,7 @@ class AppApplication : Application() {
                             },
                             {
                                 DaggerImageDetailsComponent.builder()
-                                    .bindCommonComponent(commonComponent)
+                                    .bindAppNavigation(appNavigation)
                                     .build()
                                     .provideFragmentFactory()
                                     .get()

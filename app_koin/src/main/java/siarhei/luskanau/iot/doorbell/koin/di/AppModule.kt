@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.koin.di
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
@@ -11,7 +12,6 @@ import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
-import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
@@ -40,19 +40,20 @@ import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
-import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigationArgs
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenter
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenter
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenter
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
+import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenter
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
@@ -64,7 +65,6 @@ import timber.log.Timber
 val appModule = module {
     single<SchedulerSet> { DefaultSchedulerSet() }
     single { WorkManager.getInstance(get()) }
-    single<AppNavigationArgs> { DefaultAppNavigationArgs() }
     single<ImageRepository> { InternalStorageImageRepository(context = get()) }
     single<DoorbellRepository> {
         FirebaseDoorbellRepository(imageRepository = get())
@@ -127,7 +127,7 @@ val activityModule = module {
 
     // Permissions
     factory { (appNavigation: AppNavigation) ->
-        PermissionsFragment { fragment: Fragment -> get { parametersOf(appNavigation) } }
+        PermissionsFragment { get { parametersOf(appNavigation) } }
     }
     factory { (appNavigation: AppNavigation) ->
         PermissionsPresenter(appNavigation)
@@ -161,8 +161,9 @@ val activityModule = module {
     // ImageList
     factory { (appNavigation: AppNavigation) ->
         ImageListFragment { fragment: Fragment ->
-            val appNavigationArgs: AppNavigationArgs = get()
-            val doorbellData = appNavigationArgs.getImagesFragmentArgs(fragment.arguments)
+            val doorbellData = fragment.arguments?.let { args: Bundle ->
+                ImageListFragmentArgs.fromBundle(args).doorbellData
+            }
             get {
                 parametersOf(
                     doorbellData,
@@ -185,24 +186,25 @@ val activityModule = module {
     }
 
     // ImageDetails
-    factory { (_: AppNavigation) ->
+    factory { (appNavigation: AppNavigation) ->
         ImageDetailsFragment { fragment: Fragment ->
-            val appNavigationArgs: AppNavigationArgs = get()
-            val doorbellData =
-                appNavigationArgs.getDoorbellDataImageDetailsFragmentArgs(fragment.arguments)
-            val imageData =
-                appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
-            get { parametersOf(appNavigationArgs, fragment, doorbellData, imageData) }
+            val doorbellData = fragment.arguments?.let { args ->
+                ImageDetailsFragmentArgs.fromBundle(args).doorbellData
+            }
+            val imageData = fragment.arguments?.let { args ->
+                ImageDetailsFragmentArgs.fromBundle(args).imageData
+            }
+            get { parametersOf(appNavigation, fragment, doorbellData, imageData) }
         }
     }
     factory<ImageDetailsPresenter> { (
-                                         appNavigationArgs: AppNavigationArgs,
+                                         appNavigation: AppNavigation,
                                          fragment: Fragment,
                                          doorbellData: DoorbellData,
                                          imageData: ImageData
                                      ) ->
         ImageDetailsPresenterImpl(
-            appNavigationArgs = appNavigationArgs,
+            appNavigation = appNavigation,
             fragment = fragment,
             doorbellData = doorbellData,
             imageData = imageData
@@ -212,9 +214,9 @@ val activityModule = module {
     // ImageDetailsSlide
     factory { (_: AppNavigation) ->
         ImageDetailsSlideFragment { fragment: Fragment ->
-            val appNavigationArgs: AppNavigationArgs = get()
-            val imageData =
-                appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
+            val imageData = fragment.arguments?.let { args ->
+                ImageDetailsFragmentArgs.fromBundle(args).imageData
+            }
             get { parametersOf(imageData) }
         }
     }

@@ -3,12 +3,12 @@ package siarhei.luskanau.iot.doorbell.ui.imagedetails
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
+import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 class ImageDetailsPresenterImpl(
-    private val appNavigationArgs: AppNavigationArgs,
+    private val appNavigation: AppNavigation,
     private val fragment: Fragment,
     private val doorbellData: DoorbellData?,
     private val imageData: ImageData?
@@ -20,7 +20,7 @@ class ImageDetailsPresenterImpl(
                 runCatching {
                     NormalImageDetailsState(
                         ImagesFragmentViewPagerAdapter(
-                            appNavigationArgs = appNavigationArgs,
+                            appNavigation = appNavigation,
                             fragment = fragment,
                             doorbellData = requireNotNull(doorbellData),
                             imageData = requireNotNull(imageData)

@@ -31,6 +31,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
     implementation("androidx.fragment:fragment:${rootProject.extra["fragmentVersion"]}")
+    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
 
     // dagger
     kapt("com.google.dagger:dagger-compiler:${rootProject.extra["daggerVersion"]}")

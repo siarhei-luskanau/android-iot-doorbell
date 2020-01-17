@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentFactory
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Provider
-import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
+import siarhei.luskanau.iot.doorbell.common.AppNavigation
 
 @Component(
     modules = [
@@ -20,7 +20,7 @@ interface ImageDetailsComponent {
     interface Builder {
 
         @BindsInstance
-        fun bindCommonComponent(commonComponent: CommonComponent): Builder
+        fun bindAppNavigation(appNavigation: AppNavigation): Builder
 
         fun build(): ImageDetailsComponent
     }

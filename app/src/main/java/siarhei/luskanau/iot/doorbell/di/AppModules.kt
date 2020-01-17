@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import androidx.work.WorkManager
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
-import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
@@ -30,14 +29,12 @@ import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
-import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigationArgs
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 
 class AppModules(application: Application) {
 
     private val context: Context = application.applicationContext
-    val appNavigationArgs: AppNavigationArgs by lazy { DefaultAppNavigationArgs() }
     val schedulerSet: SchedulerSet by lazy { DefaultSchedulerSet() }
     private val imageRepository: ImageRepository by lazy {
         InternalStorageImageRepository(

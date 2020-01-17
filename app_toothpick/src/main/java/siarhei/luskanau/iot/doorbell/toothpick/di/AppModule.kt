@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import androidx.work.WorkManager
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
-import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
@@ -30,7 +29,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
-import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigationArgs
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 import toothpick.config.Module
@@ -41,9 +39,6 @@ class AppModule(application: Application) : Module() {
         val context = application.applicationContext
         bind(Application::class.java).toProviderInstance { application }
         bind(Context::class.java).toProviderInstance { context }
-
-        val appNavigationArgs: AppNavigationArgs by lazy { DefaultAppNavigationArgs() }
-        bind(AppNavigationArgs::class.java).toProviderInstance { appNavigationArgs }
 
         val schedulerSet: SchedulerSet by lazy { DefaultSchedulerSet() }
         bind(SchedulerSet::class.java).toProviderInstance { schedulerSet }

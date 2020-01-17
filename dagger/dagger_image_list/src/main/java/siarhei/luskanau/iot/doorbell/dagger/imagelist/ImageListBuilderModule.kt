@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.dagger.imagelist
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
@@ -10,6 +11,7 @@ import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerFragmentFactory
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
+import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 
@@ -36,11 +38,11 @@ class ImageListBuilderModule {
     @Provides
     fun provideImageListFragment(
         viewModelFactory: ViewModelProvider.Factory,
-        appNavigation: AppNavigation,
-        commonComponent: CommonComponent
+        appNavigation: AppNavigation
     ) = ImageListFragment { fragment: Fragment ->
-        val doorbellData = commonComponent.provideAppNavigationArgs()
-            .getImagesFragmentArgs(fragment.arguments)
+        val doorbellData = fragment.arguments?.let { args: Bundle ->
+            ImageListFragmentArgs.fromBundle(args).doorbellData
+        }
         val viewModel = ViewModelProvider(fragment, viewModelFactory)
             .get(ImageListViewModel::class.java)
         ImageListPresenterImpl(

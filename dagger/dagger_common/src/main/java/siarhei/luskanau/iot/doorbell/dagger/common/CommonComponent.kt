@@ -5,7 +5,6 @@ import androidx.work.WorkManager
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
-import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
@@ -27,7 +26,6 @@ interface CommonComponent {
 
     fun provideSchedulerSet(): SchedulerSet
     fun provideWorkManager(): WorkManager
-    fun provideAppNavigationArgs(): AppNavigationArgs
     fun provideImageRepository(): ImageRepository
     fun provideDoorbellRepository(): DoorbellRepository
     fun providePersistenceRepository(): PersistenceRepository
@@ -47,9 +45,6 @@ interface CommonComponent {
 
         @BindsInstance
         fun bindApplication(application: Application): Builder
-
-        @BindsInstance
-        fun bindAppNavigationArgs(AppNavigationArgs: AppNavigationArgs): Builder
 
         fun build(): CommonComponent
     }

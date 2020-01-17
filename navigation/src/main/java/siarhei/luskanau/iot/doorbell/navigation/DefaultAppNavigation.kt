@@ -1,6 +1,7 @@
 package siarhei.luskanau.iot.doorbell.navigation
 
 import android.app.Activity
+import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
@@ -30,4 +31,7 @@ class DefaultAppNavigation(private val activity: Activity) : AppNavigation {
         navController.navigate(
             NavRootDirections.actionImageListToImageDetails(doorbellData, imageData)
         )
+
+    override fun buildImageDetailsArgs(doorbellData: DoorbellData, imageData: ImageData): Bundle =
+        NavRootDirections.actionImageListToImageDetails(doorbellData, imageData).arguments
 }

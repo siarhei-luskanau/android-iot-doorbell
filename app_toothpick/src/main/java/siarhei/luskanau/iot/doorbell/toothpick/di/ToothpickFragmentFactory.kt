@@ -1,21 +1,23 @@
 package siarhei.luskanau.iot.doorbell.toothpick.di
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
-import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
+import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment
@@ -31,10 +33,6 @@ class ToothpickFragmentFactory(
     private val appNavigation: AppNavigation by lazy { DefaultAppNavigation(fragmentActivity) }
     private val viewModelFactory: ViewModelProvider.Factory by lazy {
         ToothpickViewModelFactory(scope = scope)
-    }
-
-    private val appNavigationArgs: AppNavigationArgs by lazy {
-        scope.getInstance(AppNavigationArgs::class.java)
     }
 
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
@@ -58,7 +56,9 @@ class ToothpickFragmentFactory(
 
             ImageListFragment::class.java.name -> {
                 ImageListFragment { fragment: Fragment ->
-                    val doorbellData = appNavigationArgs.getImagesFragmentArgs(fragment.arguments)
+                    val doorbellData = fragment.arguments?.let { args: Bundle ->
+                        ImageListFragmentArgs.fromBundle(args).doorbellData
+                    }
                     ImageListPresenterImpl(
                         doorbellData = requireNotNull(doorbellData),
                         imageListViewModel = ViewModelProvider(fragment, viewModelFactory)
@@ -70,12 +70,14 @@ class ToothpickFragmentFactory(
 
             ImageDetailsFragment::class.java.name -> {
                 ImageDetailsFragment { fragment: Fragment ->
-                    val doorbellData = appNavigationArgs
-                        .getDoorbellDataImageDetailsFragmentArgs(fragment.arguments)
-                    val imageData =
-                        appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
+                    val doorbellData = fragment.arguments?.let { args ->
+                        ImageDetailsFragmentArgs.fromBundle(args).doorbellData
+                    }
+                    val imageData = fragment.arguments?.let { args ->
+                        ImageDetailsFragmentArgs.fromBundle(args).imageData
+                    }
                     ImageDetailsPresenterImpl(
-                        appNavigationArgs = appNavigationArgs,
+                        appNavigation = appNavigation,
                         fragment = fragment,
                         doorbellData = doorbellData,
                         imageData = imageData
@@ -85,8 +87,9 @@ class ToothpickFragmentFactory(
 
             ImageDetailsSlideFragment::class.java.name -> {
                 ImageDetailsSlideFragment { fragment: Fragment ->
-                    val imageData =
-                        appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
+                    val imageData = fragment.arguments?.let { args ->
+                        ImageDetailsFragmentArgs.fromBundle(args).imageData
+                    }
                     ImageDetailsSlidePresenterImpl(
                         imageData = imageData
                     )

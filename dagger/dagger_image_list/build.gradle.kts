@@ -34,6 +34,7 @@ dependencies {
     implementation("androidx.fragment:fragment:${rootProject.extra["fragmentVersion"]}")
     implementation("androidx.paging:paging-runtime-ktx:${rootProject.extra["pagingVersion"]}")
     implementation("androidx.work:work-runtime-ktx:${rootProject.extra["workManagerVersion"]}")
+    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
 
     implementation("io.reactivex.rxjava2:rxkotlin:${rootProject.extra["rxKotlinVersion"]}")
     implementation("io.reactivex.rxjava2:rxandroid:${rootProject.extra["rxAndroidVersion"]}")

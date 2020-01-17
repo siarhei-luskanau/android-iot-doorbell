@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.kodein.di
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
@@ -17,7 +18,6 @@ import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
-import siarhei.luskanau.iot.doorbell.common.AppNavigationArgs
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
@@ -46,17 +46,18 @@ import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
-import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigationArgs
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenter
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
+import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenter
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
@@ -69,7 +70,6 @@ val appModule = Kodein.Module(name = "appModule") {
     bind<SchedulerSet>() with singleton { DefaultSchedulerSet() }
     bind() from singleton { WorkManager.getInstance(instance()) }
     bind<ViewModelProvider.Factory>() with singleton { KodeinViewModelFactory(injector = dkodein) }
-    bind<AppNavigationArgs>() with singleton { DefaultAppNavigationArgs() }
     bind<ImageRepository>() with singleton { InternalStorageImageRepository(context = instance()) }
     bind<DoorbellRepository>() with singleton {
         FirebaseDoorbellRepository(imageRepository = instance())
@@ -175,8 +175,9 @@ val activityModule = Kodein.Module(name = "activityModule") {
         tag = ImageListFragment::class.simpleName
     ) with factory { appNavigation: AppNavigation ->
         ImageListFragment { fragment: Fragment ->
-            val appNavigationArgs: AppNavigationArgs = instance()
-            val doorbellData = appNavigationArgs.getImagesFragmentArgs(fragment.arguments)
+            val doorbellData = fragment.arguments?.let { args: Bundle ->
+                ImageListFragmentArgs.fromBundle(args).doorbellData
+            }
             instance(arg = M(fragment, appNavigation, doorbellData))
         }
     }
@@ -196,19 +197,23 @@ val activityModule = Kodein.Module(name = "activityModule") {
     // ImageDetails
     bind<Fragment>(
         tag = ImageDetailsFragment::class.simpleName
-    ) with factory { _: AppNavigation ->
+    ) with factory { appNavigation: AppNavigation ->
         ImageDetailsFragment { fragment: Fragment ->
-            val appNavigationArgs: AppNavigationArgs = instance()
-            val doorbellData =
-                appNavigationArgs.getDoorbellDataImageDetailsFragmentArgs(fragment.arguments)
-            val imageData =
-                appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
-            instance(arg = M(fragment, doorbellData, imageData))
+            val doorbellData = fragment.arguments?.let { args ->
+                ImageDetailsFragmentArgs.fromBundle(args).doorbellData
+            }
+            val imageData = fragment.arguments?.let { args ->
+                ImageDetailsFragmentArgs.fromBundle(args).imageData
+            }
+            instance(arg = M(appNavigation, fragment, doorbellData, imageData))
         }
     }
-    bind() from factory { fragment: Fragment, doorbellData: DoorbellData, imageData: ImageData ->
+    bind() from factory { appNavigation: AppNavigation,
+                          fragment: Fragment,
+                          doorbellData: DoorbellData,
+                          imageData: ImageData ->
         ImageDetailsPresenterImpl(
-            appNavigationArgs = instance(),
+            appNavigation = appNavigation,
             fragment = fragment,
             doorbellData = doorbellData,
             imageData = imageData
@@ -220,9 +225,9 @@ val activityModule = Kodein.Module(name = "activityModule") {
         tag = ImageDetailsSlideFragment::class.simpleName
     ) with factory { _: AppNavigation ->
         ImageDetailsSlideFragment { fragment: Fragment ->
-            val appNavigationArgs: AppNavigationArgs = instance()
-            val imageData =
-                appNavigationArgs.getImageDataImageDetailsFragmentArgs(fragment.arguments)
+            val imageData = fragment.arguments?.let { args ->
+                ImageDetailsFragmentArgs.fromBundle(args).imageData
+            }
             instance(arg = imageData)
         }
     }
