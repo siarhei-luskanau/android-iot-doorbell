@@ -56,6 +56,7 @@ buildscript {
         androidTestCoreVersion = "1.3.0-alpha03"
         androidTestRunnerVersion = "1.3.0-alpha02"
         espressoVersion = "3.3.0-alpha03"
+        testExtJunitVersion = "1.1.2-alpha03"
 
         appDependencies = [
                 kotlinStdlib         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
