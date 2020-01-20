@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
     }
 
     compileOptions {
@@ -29,11 +29,11 @@ dependencies {
     implementation(project(":ui:ui_image_details"))
     implementation(project(":app:dagger:dagger_common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("androidx.fragment:fragment:${rootProject.extra["fragmentVersion"]}")
-    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.fragmentKtx)
+    implementation(Libraries.navigationUiKtx)
 
     // dagger
-    kapt("com.google.dagger:dagger-compiler:${rootProject.extra["daggerVersion"]}")
-    implementation("com.google.dagger:dagger:${rootProject.extra["daggerVersion"]}")
+    kapt(Libraries.daggerCompiler)
+    implementation(Libraries.dagger)
 }

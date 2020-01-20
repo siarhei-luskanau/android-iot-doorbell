@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
     }
 
     compileOptions {
@@ -22,13 +22,13 @@ android {
 dependencies {
     implementation(project(":common:common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.extra["kotlinxCoroutinesVersion"]}")
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.kotlinxCoroutinesCore)
+    implementation(Libraries.timber)
 
-    implementation("com.google.firebase:firebase-database:${rootProject.extra["firebaseDatabaseVersion"]}")
-    implementation("com.google.firebase:firebase-storage:${rootProject.extra["firebaseStorageVersion"]}")
+    implementation(Libraries.firebaseDatabase)
+    implementation(Libraries.firebaseStorage)
 
-    implementation("com.squareup.moshi:moshi-kotlin:${rootProject.extra["moshiVersion"]}")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:${rootProject.extra["moshiVersion"]}")
+    implementation(Libraries.moshiKotlin)
+    kapt(Libraries.moshiCodegen)
 }

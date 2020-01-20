@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -46,35 +46,35 @@ dependencies {
     implementation(project(":common:common"))
     implementation(project(":ui:ui_common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.extra["kotlinxCoroutinesVersion"]}")
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.kotlinxCoroutinesCore)
+    implementation(Libraries.timber)
 
-    implementation("com.google.android.material:material:${rootProject.extra["materialVersion"]}")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:${rootProject.extra["swiperefreshlayoutVersion"]}")
-    implementation("androidx.constraintlayout:constraintlayout:${rootProject.extra["constraintLayoutVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${rootProject.extra["lifecycleVersion"]}")
-    implementation("androidx.paging:paging-runtime-ktx:${rootProject.extra["pagingVersion"]}")
-    implementation("androidx.paging:paging-rxjava2-ktx:${rootProject.extra["pagingVersion"]}")
-    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
-    implementation("io.coil-kt:coil:${rootProject.extra["coilVersion"]}")
+    implementation(Libraries.material)
+    implementation(Libraries.swiperefreshlayout)
+    implementation(Libraries.constraintLayout)
+    implementation(Libraries.lifecycleRuntimeKtx)
+    implementation(Libraries.lifecycleViewmodelKtx)
+    implementation(Libraries.pagingRuntimeKtx)
+    implementation(Libraries.pagingRxjava2Ktx)
+    implementation(Libraries.navigationUiKtx)
+    implementation(Libraries.coil)
 
-    implementation("io.reactivex.rxjava2:rxjava:${rootProject.extra["rxJavaVersion"]}")
-    implementation("io.reactivex.rxjava2:rxkotlin:${rootProject.extra["rxKotlinVersion"]}")
+    implementation(Libraries.rxJava)
+    implementation(Libraries.rxKotlin)
 
-    //unit test
+    // unit test
     testImplementation(project(":common:common_test"))
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:${rootProject.extra["spekVersion"]}")
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:${rootProject.extra["spekVersion"]}")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${rootProject.extra["mockitoKotlinVersion"]}")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${rootProject.extra["kotlinxCoroutinesVersion"]}")
+    testRuntimeOnly(TestLibraries.spekRunnerJunit5)
+    testImplementation(TestLibraries.spekDslJvm)
+    testImplementation(TestLibraries.kotlinTest)
+    testImplementation(TestLibraries.mockitoKotlin)
+    testImplementation(TestLibraries.kotlinxCoroutinesTest)
 
-    //android test
-    androidTestImplementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${rootProject.extra["espressoVersion"]}")
-    androidTestImplementation("androidx.test:core:${rootProject.extra["androidTestCoreVersion"]}")
-    androidTestImplementation("androidx.fragment:fragment-testing:${rootProject.extra["fragmentVersion"]}")
-    kaptAndroidTest("androidx.databinding:databinding-compiler:${rootProject.extra["androidGragleBuildVersion"]}")
+    // android test
+    androidTestImplementation(TestLibraries.kotlinTest)
+    androidTestImplementation(TestLibraries.testEspressoCore)
+    androidTestImplementation(TestLibraries.androidTestCore)
+    androidTestImplementation(TestLibraries.fragmentTesting)
+    kaptAndroidTest(TestLibraries.databindingCompiler)
 }

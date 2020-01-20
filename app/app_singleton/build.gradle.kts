@@ -8,13 +8,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
         applicationId = "siarhei.luskanau.iot.doorbell"
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -68,41 +68,42 @@ dependencies {
     implementation(project(":ui:ui_image_details"))
     implementation(project(":navigation"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.timber)
 
-    implementation("io.reactivex.rxjava2:rxkotlin:${rootProject.extra["rxKotlinVersion"]}")
-    implementation("io.reactivex.rxjava2:rxandroid:${rootProject.extra["rxAndroidVersion"]}")
+    implementation(Libraries.rxKotlin)
+    implementation(Libraries.rxAndroid)
 
-    implementation("com.google.android.material:material:${rootProject.extra["materialVersion"]}")
-    kapt("androidx.lifecycle:lifecycle-common-java8:${rootProject.extra["lifecycleVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-extensions:${rootProject.extra["lifecycleVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-reactivestreams-ktx:${rootProject.extra["lifecycleVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${rootProject.extra["lifecycleVersion"]}")
-    implementation("androidx.navigation:navigation-fragment-ktx:${rootProject.extra["navigationVersion"]}")
-    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
-    implementation("androidx.paging:paging-runtime-ktx:${rootProject.extra["pagingVersion"]}")
-    implementation("androidx.constraintlayout:constraintlayout:${rootProject.extra["constraintLayoutVersion"]}")
+    implementation(Libraries.material)
+    kapt(Libraries.lifecycleCommonJava8)
+    implementation(Libraries.lifecycleExtensions)
+    implementation(Libraries.lifecycleReactivestreamsKtx)
+    implementation(Libraries.lifecycleViewmodelKtx)
+    implementation(Libraries.navigationFragmentKtx)
+    implementation(Libraries.navigationUiKtx)
+    implementation(Libraries.pagingRuntimeKtx)
+    implementation(Libraries.constraintLayout)
 
-    compileOnly("com.google.android.things:androidthings:${rootProject.extra["androidthingsVersion"]}")
+    implementation(Libraries.workRuntimeKtx)
 
-    implementation("androidx.work:work-runtime-ktx:${rootProject.extra["workManagerVersion"]}")
+    // Development
+    debugImplementation(Libraries.leakCanary)
 
-    //Development
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:${rootProject.extra["leakCanaryVersion"]}")
+    // Android Things
+    compileOnly(Libraries.androidthings)
 
-    //unit test
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:${rootProject.extra["spekVersion"]}")
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:${rootProject.extra["spekVersion"]}")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${rootProject.extra["mockitoKotlinVersion"]}")
+    // unit test
+    testRuntimeOnly(TestLibraries.spekRunnerJunit5)
+    testImplementation(TestLibraries.spekDslJvm)
+    testImplementation(TestLibraries.kotlinTest)
+    testImplementation(TestLibraries.mockitoKotlin)
 
-    //android test
-    androidTestImplementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${rootProject.extra["espressoVersion"]}")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:${rootProject.extra["espressoVersion"]}")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:${rootProject.extra["espressoVersion"]}")
-    androidTestImplementation("androidx.test:core:${rootProject.extra["androidTestCoreVersion"]}")
-    androidTestImplementation("androidx.test.ext:truth:${rootProject.extra["androidTestCoreVersion"]}")
-    androidTestImplementation("androidx.test.ext:junit-ktx:${rootProject.extra["testExtJunitVersion"]}")
+    // android test
+    androidTestImplementation(TestLibraries.kotlinTest)
+    androidTestImplementation(TestLibraries.testEspressoCore)
+    androidTestImplementation(TestLibraries.testEspressoIntents)
+    androidTestImplementation(TestLibraries.testEspressoContrib)
+    androidTestImplementation(TestLibraries.androidTestCore)
+    androidTestImplementation(TestLibraries.androidTestExtTruth)
+    androidTestImplementation(TestLibraries.testExtJunit)
 }

@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
     }
 
     compileOptions {
@@ -21,12 +21,11 @@ android {
 dependencies {
     implementation(project(":common:common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.timber)
 
-    implementation("io.reactivex.rxjava2:rxjava:${rootProject.extra["rxJavaVersion"]}")
-    implementation("io.reactivex.rxjava2:rxkotlin:${rootProject.extra["rxKotlinVersion"]}")
+    implementation(Libraries.rxJava)
+    implementation(Libraries.rxKotlin)
 
-    implementation("androidx.work:work-runtime-ktx:${rootProject.extra["workManagerVersion"]}")
-    implementation("androidx.work:work-gcm:${rootProject.extra["workManagerVersion"]}")
+    implementation(Libraries.workRuntimeKtx)
 }

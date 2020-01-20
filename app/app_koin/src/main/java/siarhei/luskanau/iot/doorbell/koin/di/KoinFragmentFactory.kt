@@ -15,7 +15,7 @@ class KoinFragmentFactory(
         try {
             Timber.d("KoinFragmentFactory:instantiate:$className")
             val clazz = loadFragmentClass(classLoader, className).kotlin
-            GlobalContext.get().koin.get(
+            GlobalContext.get().get(
                 clazz = clazz,
                 qualifier = null,
                 parameters = { parametersOf(appNavigation) }

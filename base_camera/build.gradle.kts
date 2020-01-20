@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
     }
 
     compileOptions {
@@ -21,9 +21,9 @@ android {
 dependencies {
     implementation(project(":common:common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.timber)
 
-    implementation("androidx.camera:camera-camera2:${rootProject.extra["androidxCameraVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-extensions:${rootProject.extra["lifecycleVersion"]}")
+    implementation(Libraries.androidxCamera)
+    implementation(Libraries.lifecycleExtensions)
 }

@@ -39,7 +39,7 @@ class AppFragmentFactory(
         return when (className) {
 
             PermissionsFragment::class.java.name -> {
-                PermissionsFragment { fragment: Fragment ->
+                PermissionsFragment {
                     PermissionsPresenter(appNavigation)
                 }
             }

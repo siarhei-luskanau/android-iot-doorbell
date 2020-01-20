@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -33,9 +33,9 @@ dependencies {
     implementation(project(":ui:ui_image_list"))
     implementation(project(":ui:ui_image_details"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
-    implementation("com.google.android.material:material:${rootProject.extra["materialVersion"]}")
-    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
-    implementation("androidx.navigation:navigation-fragment-ktx:${rootProject.extra["navigationVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.timber)
+    implementation(Libraries.material)
+    implementation(Libraries.navigationUiKtx)
+    implementation(Libraries.navigationFragmentKtx)
 }

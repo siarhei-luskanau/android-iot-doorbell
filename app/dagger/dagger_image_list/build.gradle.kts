@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
     }
 
     compileOptions {
@@ -29,17 +29,17 @@ dependencies {
     implementation(project(":ui:ui_image_list"))
     implementation(project(":app:dagger:dagger_common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
 
-    implementation("androidx.fragment:fragment:${rootProject.extra["fragmentVersion"]}")
-    implementation("androidx.paging:paging-runtime-ktx:${rootProject.extra["pagingVersion"]}")
-    implementation("androidx.work:work-runtime-ktx:${rootProject.extra["workManagerVersion"]}")
-    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
+    implementation(Libraries.fragmentKtx)
+    implementation(Libraries.pagingRuntimeKtx)
+    implementation(Libraries.workRuntimeKtx)
+    implementation(Libraries.navigationUiKtx)
 
-    implementation("io.reactivex.rxjava2:rxkotlin:${rootProject.extra["rxKotlinVersion"]}")
-    implementation("io.reactivex.rxjava2:rxandroid:${rootProject.extra["rxAndroidVersion"]}")
+    implementation(Libraries.rxKotlin)
+    implementation(Libraries.rxAndroid)
 
     // dagger
-    kapt("com.google.dagger:dagger-compiler:${rootProject.extra["daggerVersion"]}")
-    implementation("com.google.dagger:dagger:${rootProject.extra["daggerVersion"]}")
+    kapt(Libraries.daggerCompiler)
+    implementation(Libraries.dagger)
 }

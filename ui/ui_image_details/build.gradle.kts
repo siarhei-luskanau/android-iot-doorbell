@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -46,23 +46,23 @@ dependencies {
     implementation(project(":common:common"))
     implementation(project(":ui:ui_common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.timber)
 
-    implementation("com.google.android.material:material:${rootProject.extra["materialVersion"]}")
-    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra["navigationVersion"]}")
-    implementation("io.coil-kt:coil:${rootProject.extra["coilVersion"]}")
+    implementation(Libraries.material)
+    implementation(Libraries.navigationUiKtx)
+    implementation(Libraries.coil)
 
-    //unit test
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:${rootProject.extra["spekVersion"]}")
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:${rootProject.extra["spekVersion"]}")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${rootProject.extra["mockitoKotlinVersion"]}")
+    // unit test
+    testRuntimeOnly(TestLibraries.spekRunnerJunit5)
+    testImplementation(TestLibraries.spekDslJvm)
+    testImplementation(TestLibraries.kotlinTest)
+    testImplementation(TestLibraries.mockitoKotlin)
 
-    //android test
-    androidTestImplementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${rootProject.extra["espressoVersion"]}")
-    androidTestImplementation("androidx.test:core:${rootProject.extra["androidTestCoreVersion"]}")
-    androidTestImplementation("androidx.fragment:fragment-testing:${rootProject.extra["fragmentVersion"]}")
-    kaptAndroidTest("androidx.databinding:databinding-compiler:${rootProject.extra["androidGragleBuildVersion"]}")
+    // android test
+    androidTestImplementation(TestLibraries.kotlinTest)
+    androidTestImplementation(TestLibraries.testEspressoCore)
+    androidTestImplementation(TestLibraries.androidTestCore)
+    androidTestImplementation(TestLibraries.fragmentTesting)
+    kaptAndroidTest(TestLibraries.databindingCompiler)
 }

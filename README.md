@@ -1,1 +1,1 @@
-# android-iot-doorbell [![Build Status](https://travis-ci.org/siarhei-luskanau/android-iot-doorbell.svg?branch=master)](https://travis-ci.org/siarhei-luskanau/android-iot-doorbell)
+# android-iot-doorbell ![actionsAfterPush](https://github.com/siarhei-luskanau/android-iot-doorbell/workflows/actionsAfterPush/badge.svg)

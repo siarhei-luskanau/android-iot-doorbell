@@ -16,12 +16,12 @@ paperwork {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -52,30 +52,31 @@ android {
 }
 
 dependencies {
-    compileOnly("com.google.android.things:androidthings:${rootProject.extra["androidthingsVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.kotlinxCoroutinesCore)
+    implementation(Libraries.timber)
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.extra["kotlinxCoroutinesVersion"]}")
-    implementation("com.jakewharton.timber:timber:${rootProject.extra["timberVersion"]}")
+    implementation(Libraries.pagingRuntimeKtx)
+    implementation(Libraries.fragmentKtx)
 
-    implementation("androidx.paging:paging-runtime-ktx:${rootProject.extra["pagingVersion"]}")
-    implementation("androidx.fragment:fragment-ktx:${rootProject.extra["fragmentVersion"]}")
+    implementation(Libraries.rxJava)
+    implementation(Libraries.rxKotlin)
+    implementation(Libraries.rxAndroid)
 
-    implementation("io.reactivex.rxjava2:rxjava:${rootProject.extra["rxJavaVersion"]}")
-    implementation("io.reactivex.rxjava2:rxkotlin:${rootProject.extra["rxKotlinVersion"]}")
-    implementation("io.reactivex.rxjava2:rxandroid:${rootProject.extra["rxAndroidVersion"]}")
+    implementation(Libraries.paperwork)
 
-    implementation("hu.supercluster:paperwork:${rootProject.extra["paperworkVersion"]}")
+    // Android Things
+    compileOnly(Libraries.androidthings)
 
-    //unit test
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:${rootProject.extra["spekVersion"]}")
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:${rootProject.extra["spekVersion"]}")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${rootProject.extra["mockitoKotlinVersion"]}")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${rootProject.extra["kotlinxCoroutinesVersion"]}")
+    // unit test
+    testRuntimeOnly(TestLibraries.spekRunnerJunit5)
+    testImplementation(TestLibraries.spekDslJvm)
+    testImplementation(TestLibraries.kotlinTest)
+    testImplementation(TestLibraries.mockitoKotlin)
+    testImplementation(TestLibraries.kotlinxCoroutinesTest)
 
-    //android test
-    androidTestImplementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${rootProject.extra["espressoVersion"]}")
-    androidTestImplementation("androidx.test:core:${rootProject.extra["androidTestCoreVersion"]}")
+    // android test
+    androidTestImplementation(TestLibraries.kotlinTest)
+    androidTestImplementation(TestLibraries.testEspressoCore)
+    androidTestImplementation(TestLibraries.androidTestCore)
 }

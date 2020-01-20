@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
     }
 
     compileOptions {
@@ -22,13 +22,13 @@ android {
 dependencies {
     implementation(project(":common:common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${rootProject.extra["kotlinxCoroutinesVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
+    implementation(TestLibraries.kotlinxCoroutinesTest)
 
-    implementation("androidx.lifecycle:lifecycle-reactivestreams-ktx:${rootProject.extra["lifecycleVersion"]}")
+    implementation(Libraries.lifecycleReactivestreamsKtx)
 
-    implementation("org.spekframework.spek2:spek-dsl-jvm:${rootProject.extra["spekVersion"]}")
+    implementation(TestLibraries.spekDslJvm)
 
-    implementation("io.reactivex.rxjava2:rxjava:${rootProject.extra["rxJavaVersion"]}")
-    implementation("io.reactivex.rxjava2:rxkotlin:${rootProject.extra["rxKotlinVersion"]}")
+    implementation(Libraries.rxJava)
+    implementation(Libraries.rxKotlin)
 }

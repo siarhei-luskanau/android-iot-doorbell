@@ -3,11 +3,14 @@ package siarhei.luskanau.iot.doorbell
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.ext.junit.rules.activityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 
+@RunWith(AndroidJUnit4::class)
 @LargeTest
 class NavigationActivityAndroidTest {
 

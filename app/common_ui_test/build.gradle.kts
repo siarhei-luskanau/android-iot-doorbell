@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(rootProject.extra["compileSdkVersion"].toString().toInt())
-    buildToolsVersion = rootProject.extra["buildToolsVersion"].toString()
+    compileSdkVersion(BuildVersions.compileSdkVersion)
+    buildToolsVersion = BuildVersions.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(rootProject.extra["minSdkVersion"].toString().toInt())
-        targetSdkVersion(rootProject.extra["targetSdkVersion"].toString().toInt())
+        minSdkVersion(BuildVersions.minSdkVersion)
+        targetSdkVersion(BuildVersions.targetSdkVersion)
     }
 
     compileOptions {
@@ -22,14 +22,14 @@ android {
 dependencies {
     implementation(project(":common:common"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
+    implementation(Libraries.kotlinStdlibJdk8)
 
-    //android test, but implementation
-    implementation("org.jetbrains.kotlin:kotlin-test:${rootProject.extra["kotlinVersion"]}")
-    implementation("androidx.test.espresso:espresso-core:${rootProject.extra["espressoVersion"]}")
-    implementation("androidx.test.espresso:espresso-intents:${rootProject.extra["espressoVersion"]}")
-    implementation("androidx.test.espresso:espresso-contrib:${rootProject.extra["espressoVersion"]}")
-    implementation("androidx.test:core:${rootProject.extra["androidTestCoreVersion"]}")
-    implementation("androidx.test.ext:truth:${rootProject.extra["androidTestCoreVersion"]}")
-    implementation("androidx.test.ext:junit-ktx:${rootProject.extra["testExtJunitVersion"]}")
+    // android test, but implementation
+    implementation(TestLibraries.kotlinTest)
+    implementation(TestLibraries.testEspressoCore)
+    implementation(TestLibraries.testEspressoIntents)
+    implementation(TestLibraries.testEspressoContrib)
+    implementation(TestLibraries.androidTestCore)
+    implementation(TestLibraries.androidTestExtTruth)
+    implementation(TestLibraries.testExtJunit)
 }

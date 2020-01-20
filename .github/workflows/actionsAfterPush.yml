@@ -1,0 +1,20 @@
+name: actionsAfterPush
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2.0.0
+
+      - name: ciRunAndroidEmulator
+        run: bash ./gradlew ciRunAndroidEmulator --stacktrace
+
+      - name: ciBuildApp
+        run: bash ./gradlew ciBuildApp --stacktrace
+
+      - name: killAndroidEmulator
+        run: bash ./gradlew killAndroidEmulator --stacktrace
