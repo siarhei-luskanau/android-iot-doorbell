@@ -17,7 +17,7 @@ class DefaultDoorbellsDataSource(
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<DoorbellData>) =
             getDoorbellsList(callback, params.requestedLoadSize, params.key)
 
-    override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<DoorbellData>) {}
+    override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<DoorbellData>) = Unit
 
     override fun getKey(item: DoorbellData) = item.doorbellId
 

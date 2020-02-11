@@ -13,16 +13,31 @@ import java.util.Properties
 // rm ${ANDROID_HOME}/android-sdk.zip
 // ./gradlew :setupAndroidSDK :setupAndroidEmulator
 
+data class EmulatorConfig(
+    val avdName: String,
+    val sdkId: String,
+    val deviceType: String,
+    val port: String
+)
+
 val ANDROID_EMULATORS = listOf(
 //    EmulatorConfig(
-//        avdName = "TestEmulator28",
-//        sdkId = "system-images;android-28;google_apis;x86_64",
-//        port = 5528
+//        avdName = "TestEmulator29",
+//        sdkId = "system-images;android-29;google_apis;x86",
+//        deviceType = "Nexus 5X",
+//        port = "5564"
 //    ),
     EmulatorConfig(
-        avdName = "TestEmulator29",
-        sdkId = "system-images;android-29;google_apis;x86_64",
-        port = 5529
+        avdName = "TestEmulator28",
+        sdkId = "system-images;android-28;google_apis;x86_64",
+        deviceType = "Galaxy Nexus",
+        port = "5562"
+    ),
+    EmulatorConfig(
+        avdName = "TestEmulator23",
+        sdkId = "system-images;android-23;google_apis;x86_64",
+        deviceType = "Nexus One",
+        port = "5560"
     )
 )
 
@@ -30,9 +45,10 @@ val YES_INPUT: String = mutableListOf<String>()
     .apply { repeat(10) { add("y\n") } }
     .joinToString()
 
+val EMULATOR_GRADLE = "EMULATOR_GRADLE"
+
 tasks.register<Exec>("setupAndroidSDK") {
-    group = "setupAndroid"
-    description = "setupAndroidSDK"
+    group = EMULATOR_GRADLE
     commandLine = listOf("java", "-version")
 
     doLast {
@@ -82,8 +98,7 @@ tasks.register<Exec>("setupAndroidSDK") {
 }
 
 tasks.register<Exec>("setupAndroidEmulator") {
-    group = "setupAndroid"
-    description = "setupAndroidEmulator"
+    group = EMULATOR_GRADLE
     commandLine = listOf("java", "-version")
 
     doLast {
@@ -117,7 +132,7 @@ tasks.register<Exec>("setupAndroidEmulator") {
                     "--sdcard",
                     "500M",
                     "--device",
-                    "Nexus 5X",
+                    emulatorConfig.deviceType,
                     "-k",
                     emulatorConfig.sdkId
                 )
@@ -135,64 +150,63 @@ tasks.register<Exec>("setupAndroidEmulator") {
 
 tasks.register<Exec>("runAndroidEmulator") {
     val config = AndroidSdkConfig()
-    group = "runEmulator"
-    description = "runAndroidEmulator"
-    commandLine = listOf(config.adb.absolutePath, "kill-server")
+    group = EMULATOR_GRADLE
+    commandLine = listOf(config.adb.absolutePath, "start-server")
 
     doLast {
+        Thread.sleep(3000)
         ANDROID_EMULATORS.forEach { emulatorConfig ->
-            exec {
-                commandLine = listOf(config.adb.absolutePath, "devices", "-l")
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
+            Thread {
+                println("Start emulator: ${emulatorConfig.avdName}")
+                val process = ProcessBuilder()
+                    .directory(projectDir)
+                    .command(
+                        config.emulator.absolutePath,
+                        "-avd",
+                        emulatorConfig.avdName,
+                        "-port",
+                        emulatorConfig.port,
+                        // https://developer.android.com/studio/run/emulator-acceleration.html#command-gpu
+                        "-gpu",
+                        "swiftshader_indirect",
+                        // "-no-window",
+                        "-no-audio",
+                        "-no-snapshot"
+                    )
+                    .apply { println("ProcessBuilder: ${this.command()}") }
+                    .start()
 
-            val process = ProcessBuilder()
-                .directory(projectDir)
-                .command(
-                    config.emulator.absolutePath,
-                    "-avd",
-                    emulatorConfig.avdName,
-                    "-port",
-                    emulatorConfig.port.toString(),
-                    // https://developer.android.com/studio/run/emulator-acceleration.html#command-gpu
-                    "-gpu",
-                    "swiftshader_indirect",
-                    // "-no-window",
-                    "-no-audio",
-                    "-no-snapshot"
-                )
-                .apply { println("ProcessBuilder: ${this.command()}") }
-                .start()
+                Thread.sleep(3000)
 
-            Thread.sleep(10000)
-
-            if (process.isAlive.not() && process.exitValue() != 0) {
-                println(process.errorStream.bufferedReader().use { it.readText() })
-                println(process.inputStream.bufferedReader().use { it.readText() })
-                throw Error("Failed to start process")
-            }
+                if (process.isAlive.not() && process.exitValue() != 0) {
+                    println(process.errorStream.bufferedReader().use { it.readText() })
+                    println(process.inputStream.bufferedReader().use { it.readText() })
+                    throw Error("Failed to start process")
+                }
+            }.start()
         }
+
+        Thread.sleep(30 * 1000)
+        exec {
+            commandLine = listOf(config.adb.absolutePath, "devices", "-l")
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
     }
 }
 
 tasks.register<Exec>("waitAndroidEmulator") {
     val config = AndroidSdkConfig()
-    group = "runEmulator"
-    description = "waitAndroidEmulator"
+    group = EMULATOR_GRADLE
     commandLine = listOf("java", "-version")
 
     doLast {
-        ANDROID_EMULATORS.forEach { emulatorConfig ->
-            exec {
-                commandLine = listOf(config.adb.absolutePath, "devices", "-l")
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
-
+        config.getDevicesList().forEach { emulatorAttributes ->
+            println("WaitAndroidEmulator: $emulatorAttributes")
             exec {
                 commandLine = listOf(
                     config.adb.absolutePath,
                     "-s",
-                    "emulator-${emulatorConfig.port}",
+                    emulatorAttributes.first(),
                     "wait-for-device",
                     "shell",
                     "while $(exit $(getprop sys.boot_completed)) ; do sleep 1; done;"
@@ -204,19 +218,55 @@ tasks.register<Exec>("waitAndroidEmulator") {
     }
 }
 
+tasks.register<Exec>("moveScreenshotsFromDevices") {
+    val config = AndroidSdkConfig()
+    group = EMULATOR_GRADLE
+    commandLine = listOf(config.adb.absolutePath, "start-server")
+
+    doLast {
+        val buildScreenshotsDirectory = File(File(project.buildDir, "artifacts"), "screenshots")
+            .apply { mkdirs() }
+
+        config.getDevicesList().forEach { emulatorAttributes ->
+            println("MoveScreenshotsFromDevices: $emulatorAttributes")
+            exec {
+                val emulatorName = emulatorAttributes.first().let { emulatorAttribute ->
+                    ANDROID_EMULATORS
+                        .filter { emulatorConfig -> emulatorAttribute.contains(emulatorConfig.port) }
+                        .map { it.avdName }
+                        .firstOrNull()
+                        ?: emulatorAttribute
+                }
+                commandLine = listOf(
+                    config.adb.absolutePath,
+                    "-s",
+                    emulatorAttributes.first(),
+                    "pull",
+                    "/sdcard/Pictures/screenshots/.",
+                    File(buildScreenshotsDirectory, emulatorName)
+                        .apply { mkdirs() }
+                        .absolutePath
+                )
+                isIgnoreExitValue = true
+                println("commandLine: ${this.commandLine}")
+            }.apply { println("ExecResult: $this") }
+        }
+    }
+}
+
 tasks.register<Exec>("killAndroidEmulator") {
     val config = AndroidSdkConfig()
-    group = "runEmulator"
-    description = "killEmulator"
+    group = EMULATOR_GRADLE
     commandLine = listOf(config.adb.absolutePath, "devices", "-l")
 
     doLast {
-        ANDROID_EMULATORS.forEach { emulatorConfig ->
+        config.getDevicesList().forEach { emulatorAttributes ->
+            println("KillAndroidEmulator: $emulatorAttributes")
             exec {
                 commandLine = listOf(
                     config.adb.absolutePath,
                     "-s",
-                    "emulator-${emulatorConfig.port}",
+                    emulatorAttributes.first(),
                     "emu",
                     "kill"
                 )
@@ -226,17 +276,30 @@ tasks.register<Exec>("killAndroidEmulator") {
     }
 }
 
-data class EmulatorConfig(
-    val avdName: String,
-    val sdkId: String,
-    val port: Int
-)
-
 private class AndroidSdkConfig {
     val sdkmanager = sdkFile("tools", "bin", platformExecutable(name = "sdkmanager", ext = "bat"))
     val avdmanager = sdkFile("tools", "bin", platformExecutable(name = "avdmanager", ext = "bat"))
     val emulator = sdkFile("emulator", platformExecutable(name = "emulator"))
     val adb = sdkFile("platform-tools", platformExecutable(name = "adb"))
+
+    fun getDevicesList(): List<List<String>> =
+        ByteArrayOutputStream().also { devicesOutput ->
+            exec {
+                commandLine = listOf(adb.absolutePath, "devices", "-l")
+                standardOutput = devicesOutput
+                println("commandLine: ${this.commandLine}")
+            }.apply { println("ExecResult: $this") }
+        }.let { devicesOutput ->
+            println(devicesOutput)
+            String(devicesOutput.toByteArray())
+                .split("\n")
+                .filter { it.contains("emulator-") }
+                .map { deviceString ->
+                    deviceString.split(" ")
+                        .map { it.trim() }
+                        .filter { it.isNotBlank() }
+                }
+        }
 
     fun printSdkPath() {
         println("sdkmanager: ${sdkmanager.exists()}: $sdkmanager")

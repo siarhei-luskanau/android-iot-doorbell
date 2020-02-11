@@ -4,8 +4,7 @@ tasks.register<GradleBuild>("ciRunAndroidEmulator") {
     tasks = listOf(
         "setupAndroidSDK",
         "setupAndroidEmulator",
-        "runAndroidEmulator",
-        "waitAndroidEmulator"
+        "runAndroidEmulator"
     )
 }
 
@@ -16,7 +15,14 @@ tasks.register<GradleBuild>("ciBuildApp") {
         "detekt",
         "lint",
         "build",
-        "testDebugUnitTest",
-        "connectedAndroidTest"
+        "testDebugUnitTest"
     )
+}
+
+tasks.register<Copy>("copyApkArtifacts") {
+    from(project.subprojects.map { it.buildDir })
+    include("**/*.apk")
+    exclude("**/apk/androidTest/**")
+    includeEmptyDirs = false
+    into("$buildDir/artifacts")
 }

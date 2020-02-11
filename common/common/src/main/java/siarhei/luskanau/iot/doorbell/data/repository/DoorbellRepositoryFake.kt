@@ -63,21 +63,20 @@ class DoorbellRepositoryFake : DoorbellRepository {
             )
         )
 
-    override suspend fun sendDoorbellData(doorbellData: DoorbellData) {}
+    override suspend fun sendDoorbellData(doorbellData: DoorbellData) = Unit
 
-    override suspend fun sendCamerasList(deviceId: String, list: List<CameraData>) {}
+    override suspend fun sendCamerasList(deviceId: String, list: List<CameraData>) = Unit
 
     override suspend fun sendCameraImageRequest(
         deviceId: String,
         cameraId: String,
         isRequested: Boolean
-    ) {
-    }
+    ) = Unit
 
     override suspend fun getCameraImageRequest(deviceId: String): Map<String, Boolean> =
         emptyMap()
 
-    override suspend fun sendImage(deviceId: String, cameraId: String, imageFile: ImageFile) {}
+    override suspend fun sendImage(deviceId: String, cameraId: String, imageFile: ImageFile) = Unit
 
     override suspend fun getImagesList(
         deviceId: String,
