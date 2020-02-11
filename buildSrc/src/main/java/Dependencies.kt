@@ -1,18 +1,18 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "3.6.0-rc02"
+    const val androidToolsBuildGradle = "3.6.0-rc03"
     const val kotlin = "1.3.61"
     const val kotlinxCoroutines = "1.3.3"
-    const val navigation = "2.2.0"
+    const val navigation = "2.3.0-alpha01"
     const val timber = "4.7.1"
     const val androidxCamera = "1.0.0-alpha09"
     const val material = "1.2.0-alpha04"
     const val swiperefreshlayout = "1.1.0-alpha03"
-    const val fragment = "1.2.0"
+    const val fragment = "1.2.1"
     const val lifecycle = "2.2.0"
     const val paging = "2.1.1"
     const val room = "2.2.3"
-    const val workManager = "2.3.0"
+    const val workManager = "2.3.1"
     const val constraintLayout = "2.0.0-beta4"
     const val rxJava = "2.2.17"
     const val rxKotlin = "2.4.0"
@@ -32,7 +32,7 @@ private object Versions {
     const val toothpick = "3.1.0"
 
     // Development
-    const val leakCanary = "2.1"
+    const val leakCanary = "2.2"
 
     // Android Things
     const val androidthings = "1.0"

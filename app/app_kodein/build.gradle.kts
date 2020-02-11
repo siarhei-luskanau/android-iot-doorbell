@@ -104,6 +104,7 @@ dependencies {
     testImplementation(TestLibraries.mockitoKotlin)
 
     // android test
+    androidTestImplementation(project(":common:common_test_ui"))
     androidTestImplementation(TestLibraries.kotlinTest)
     androidTestImplementation(TestLibraries.testEspressoCore)
     androidTestImplementation(TestLibraries.testEspressoIntents)

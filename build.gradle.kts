@@ -39,3 +39,5 @@ tasks.register("clean").configure {
 }
 
 apply(from = "$rootDir/ci.gradle.kts")
+
+println("gradle.startParameter.taskNames: ${gradle.startParameter.taskNames}")

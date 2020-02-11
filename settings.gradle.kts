@@ -1,5 +1,6 @@
 include(":common:common")
 include(":common:common_test")
+include(":common:common_test_ui")
 
 include(":base_camera")
 include(":base_file")
@@ -19,7 +20,6 @@ include(":app:app_kodein")
 include(":app:app_koin")
 include(":app:app_singleton")
 include(":app:app_toothpick")
-include(":app:common_ui_test")
 
 include(":app:dagger:dagger_common")
 include(":app:dagger:dagger_permissions")

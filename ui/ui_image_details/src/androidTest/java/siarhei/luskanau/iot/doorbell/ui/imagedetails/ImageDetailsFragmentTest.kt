@@ -10,9 +10,15 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.RuleChain
+import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 
 class ImageDetailsFragmentTest {
+
+    @get:Rule
+    val screenshotRule: RuleChain = TakeScreenshotAfterTestRule.screenshotRule()
 
     companion object {
         const val EXPECTED_ERROR_MESSAGE = "Test Exception"

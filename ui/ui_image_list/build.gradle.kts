@@ -71,6 +71,7 @@ dependencies {
     testImplementation(TestLibraries.kotlinxCoroutinesTest)
 
     // android test
+    androidTestImplementation(project(":common:common_test_ui"))
     androidTestImplementation(TestLibraries.kotlinTest)
     androidTestImplementation(TestLibraries.testEspressoCore)
     androidTestImplementation(TestLibraries.androidTestCore)

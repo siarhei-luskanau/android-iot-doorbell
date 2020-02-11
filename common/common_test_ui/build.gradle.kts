@@ -23,6 +23,7 @@ dependencies {
     implementation(project(":common:common"))
 
     implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.timber)
 
     // android test, but implementation
     implementation(TestLibraries.kotlinTest)

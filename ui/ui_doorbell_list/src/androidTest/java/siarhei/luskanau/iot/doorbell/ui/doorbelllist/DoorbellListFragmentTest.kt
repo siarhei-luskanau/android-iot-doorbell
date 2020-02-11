@@ -10,10 +10,16 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import org.hamcrest.Matchers.not
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.RuleChain
+import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 
 class DoorbellListFragmentTest {
+
+    @get:Rule
+    val screenshotRule: RuleChain = TakeScreenshotAfterTestRule.screenshotRule()
 
     private fun createFragmentFactory(state: DoorbellListState) = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =

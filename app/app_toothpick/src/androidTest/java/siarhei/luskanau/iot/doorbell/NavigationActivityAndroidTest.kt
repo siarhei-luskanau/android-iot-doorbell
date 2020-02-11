@@ -7,12 +7,17 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
+import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class NavigationActivityAndroidTest {
+
+    @get:Rule
+    val screenshotRule: RuleChain = TakeScreenshotAfterTestRule.screenshotRule()
 
     @get:Rule
     val intentsTestRule = IntentsTestRule(NavigationActivity::class.java)
