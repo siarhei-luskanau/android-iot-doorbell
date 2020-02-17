@@ -12,14 +12,13 @@ import kotlinx.coroutines.flow.flowOf
 import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.RuleChain
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 
 class ImageListFragmentTest {
 
     @get:Rule
-    val screenshotRule: RuleChain = TakeScreenshotAfterTestRule.screenshotRule()
+    val screenshotRule = TakeScreenshotAfterTestRule()
 
     private fun createFragmentFactory(state: ImageListState) = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
@@ -39,8 +38,12 @@ class ImageListFragmentTest {
                 isAndroidThings = true
             )
         )
-        val scenario = launchFragmentInContainer<ImageListFragment>(factory = fragmentFactory)
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<ImageListFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // normal view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
@@ -62,7 +65,7 @@ class ImageListFragmentTest {
     }
 
     @Test
-    fun testNormalStateAndIsNotAndroidThings() {
+    fun testNormalStateAndNotAndroidThings() {
         val fragmentFactory = createFragmentFactory(
             state = NormalImageListState(
                 cameraList = listOf(CameraData("NormalCameraId")),
@@ -70,8 +73,12 @@ class ImageListFragmentTest {
                 isAndroidThings = false
             )
         )
-        val scenario = launchFragmentInContainer<ImageListFragment>(factory = fragmentFactory)
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<ImageListFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // normal view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
@@ -100,8 +107,12 @@ class ImageListFragmentTest {
                 isAndroidThings = false
             )
         )
-        val scenario = launchFragmentInContainer<ImageListFragment>(factory = fragmentFactory)
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<ImageListFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // empty view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
@@ -130,8 +141,12 @@ class ImageListFragmentTest {
                 error = RuntimeException(expectedErrorMessage)
             )
         )
-        val scenario = launchFragmentInContainer<ImageListFragment>(factory = fragmentFactory)
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<ImageListFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // error view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.error_message))

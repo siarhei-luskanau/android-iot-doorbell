@@ -11,7 +11,6 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.RuleChain
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
@@ -19,7 +18,7 @@ import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
 class ImageDetailsSlideFragmentTest {
 
     @get:Rule
-    val screenshotRule: RuleChain = TakeScreenshotAfterTestRule.screenshotRule()
+    val screenshotRule = TakeScreenshotAfterTestRule()
 
     private fun createFragmentFactory(state: ImageDetailsSlideState) = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
@@ -41,10 +40,12 @@ class ImageDetailsSlideFragmentTest {
         val fragmentFactory = createFragmentFactory(
             state = NormalImageDetailsSlideState(imageData = expectedImageData)
         )
-        val scenario = launchFragmentInContainer<ImageDetailsSlideFragment>(
-            factory = fragmentFactory
-        )
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<ImageDetailsSlideFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // normal view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.imageView))
@@ -63,10 +64,12 @@ class ImageDetailsSlideFragmentTest {
                 error = RuntimeException(expectedErrorMessage)
             )
         )
-        val scenario = launchFragmentInContainer<ImageDetailsSlideFragment>(
-            factory = fragmentFactory
-        )
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<ImageDetailsSlideFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // error view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.error_message))

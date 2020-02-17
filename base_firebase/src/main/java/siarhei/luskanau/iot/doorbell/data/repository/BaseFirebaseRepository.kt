@@ -4,11 +4,12 @@ import android.net.Uri
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import com.squareup.moshi.Moshi
 import java.io.InputStream
 import kotlin.coroutines.Continuation
@@ -30,10 +31,10 @@ open class BaseFirebaseRepository(
         )
 
     protected fun getAppDatabase(): DatabaseReference =
-        FirebaseDatabase.getInstance().getReference(DOORBELL_APP_KEY)
+        Firebase.database.getReference(DOORBELL_APP_KEY)
 
     protected fun getAppStorage(): StorageReference =
-        FirebaseStorage.getInstance().getReference(DOORBELL_APP_KEY)
+        Firebase.storage.getReference(DOORBELL_APP_KEY)
 
     protected fun <T : Any> dataSnapshotObject(dataSnapshot: DataSnapshot, type: Class<T>): T? =
         moshi.adapter<Any>(Object::class.java).toJson(dataSnapshot.value)?.let { json ->

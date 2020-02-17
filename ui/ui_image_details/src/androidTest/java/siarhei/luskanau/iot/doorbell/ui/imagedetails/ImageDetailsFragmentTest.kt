@@ -12,13 +12,12 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.RuleChain
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 
 class ImageDetailsFragmentTest {
 
     @get:Rule
-    val screenshotRule: RuleChain = TakeScreenshotAfterTestRule.screenshotRule()
+    val screenshotRule = TakeScreenshotAfterTestRule()
 
     companion object {
         const val EXPECTED_ERROR_MESSAGE = "Test Exception"
@@ -60,8 +59,12 @@ class ImageDetailsFragmentTest {
     @Test
     fun testNormalState() {
         val fragmentFactory = createNormalFragmentFactory()
-        val scenario = launchFragmentInContainer<ImageDetailsFragment>(factory = fragmentFactory)
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<ImageDetailsFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // normal view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.viewPager2))
@@ -75,8 +78,12 @@ class ImageDetailsFragmentTest {
     @Test
     fun testErrorState() {
         val fragmentFactory = createErrorFragmentFactory()
-        val scenario = launchFragmentInContainer<ImageDetailsFragment>(factory = fragmentFactory)
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<ImageDetailsFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // error view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.error_message))

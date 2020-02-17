@@ -20,11 +20,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -52,6 +47,8 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(Libraries.desugarJdkLibs)
+
     implementation(project(":common:common"))
     implementation(project(":base_android"))
     implementation(project(":base_camera"))

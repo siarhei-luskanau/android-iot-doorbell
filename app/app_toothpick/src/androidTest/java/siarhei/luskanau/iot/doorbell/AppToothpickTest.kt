@@ -7,7 +7,6 @@ import androidx.test.filters.LargeTest
 import androidx.test.rule.GrantPermissionRule
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.RuleChain
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 
@@ -15,7 +14,7 @@ import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 class AppToothpickTest {
 
     @get:Rule
-    val screenshotRule: RuleChain = TakeScreenshotAfterTestRule.screenshotRule()
+    val screenshotRule = TakeScreenshotAfterTestRule()
 
     @get:Rule
     val grantPermissionRule: GrantPermissionRule? =

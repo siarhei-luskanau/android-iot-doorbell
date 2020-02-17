@@ -15,7 +15,7 @@ class AppBackgroundServices(
 ) {
 
     fun startServices() {
-        val period = TimeUnit.SECONDS.toMillis(3)
+        val period = TimeUnit.SECONDS.toMillis(PERIOD)
         Timer("AppBackgroundServices", false)
             .schedule(
                 delay = 0,
@@ -42,5 +42,9 @@ class AppBackgroundServices(
                     Timber.e(it)
                 }
             }
+    }
+
+    companion object {
+        const val PERIOD = 3L
     }
 }

@@ -18,11 +18,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -52,6 +48,8 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring(Libraries.desugarJdkLibs)
+
     implementation(project(":common:common"))
     implementation(project(":base_android"))
     implementation(project(":base_camera"))

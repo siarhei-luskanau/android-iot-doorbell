@@ -28,19 +28,19 @@ val ANDROID_EMULATORS = listOf(
 //        port = "5564"
 //    )
 //    ,
-    EmulatorConfig(
-        avdName = "TestEmulator28",
-        sdkId = "system-images;android-28;google_apis;x86_64",
-        deviceType = "Galaxy Nexus",
-        port = "5562"
-    )
-//    ,
 //    EmulatorConfig(
-//        avdName = "TestEmulator23",
-//        sdkId = "system-images;android-23;google_apis;x86_64",
-//        deviceType = "Nexus One",
-//        port = "5560"
+//        avdName = "TestEmulator28",
+//        sdkId = "system-images;android-28;google_apis;x86_64",
+//        deviceType = "Galaxy Nexus",
+//        port = "5562"
 //    )
+//    ,
+    EmulatorConfig(
+        avdName = "TestEmulator23",
+        sdkId = "system-images;android-23;google_apis;x86_64",
+        deviceType = "Nexus One",
+        port = "5560"
+    )
 )
 
 val YES_INPUT: String = mutableListOf<String>()
@@ -132,7 +132,7 @@ tasks.register<Exec>("setupAndroidEmulator") {
                     "-n",
                     emulatorConfig.avdName,
                     "--sdcard",
-                    "500M",
+                    "100M",
                     "--device",
                     emulatorConfig.deviceType,
                     "-k",
@@ -168,10 +168,8 @@ tasks.register<Exec>("runAndroidEmulator") {
                         emulatorConfig.avdName,
                         "-port",
                         emulatorConfig.port,
-                        // https://developer.android.com/studio/run/emulator-acceleration.html#command-gpu
-                        "-gpu",
-                        "swiftshader_indirect",
                         // "-no-window",
+                        "-no-boot-anim",
                         "-no-audio",
                         "-no-snapshot"
                     )
@@ -244,10 +242,24 @@ tasks.register<Exec>("moveScreenshotsFromDevices") {
                     "-s",
                     emulatorAttributes.first(),
                     "pull",
-                    "/sdcard/Pictures/screenshots/.",
+                    "/sdcard/Pictures/screenshots/",
                     File(buildScreenshotsDirectory, emulatorName)
                         .apply { mkdirs() }
                         .absolutePath
+                )
+                isIgnoreExitValue = true
+                println("commandLine: ${this.commandLine}")
+            }.apply { println("ExecResult: $this") }
+
+            exec {
+                commandLine = listOf(
+                    config.adb.absolutePath,
+                    "-s",
+                    emulatorAttributes.first(),
+                    "shell",
+                    "rm",
+                    "-rf",
+                    "/sdcard/Pictures/screenshots/"
                 )
                 isIgnoreExitValue = true
                 println("commandLine: ${this.commandLine}")

@@ -5,16 +5,16 @@ private object Versions {
     const val kotlinxCoroutines = "1.3.5"
     const val navigation = "2.3.0-alpha04"
     const val timber = "4.7.1"
-    const val androidxCamera = "1.0.0-beta01"
-    const val androidxCameraExtensions = "1.0.0-alpha08"
+    const val androidxCamera = "1.0.0-beta02"
+    const val androidxCameraExtensions = "1.0.0-alpha09"
     const val material = "1.2.0-alpha05"
     const val swiperefreshlayout = "1.1.0-beta01"
-    const val fragment = "1.3.0-alpha02"
-    const val androidxCore = "1.3.0-alpha02"
+    const val fragment = "1.3.0-alpha03"
+    const val androidxCore = "1.3.0-beta01"
     const val lifecycle = "2.3.0-alpha01"
     const val paging = "2.1.2"
     const val room = "2.2.5"
-    const val workManager = "2.4.0-alpha01"
+    const val workManager = "2.4.0-alpha02"
     const val constraintLayout = "2.0.0-beta4"
     const val moshi = "1.9.2"
     const val coil = "0.9.5"
@@ -41,9 +41,9 @@ private object Versions {
     const val spek = "2.0.9"
 
     // test instrumentation
-    const val androidTestCore = "1.3.0-alpha04"
-    const val espresso = "3.3.0-alpha04"
-    const val testExtJunit = "1.1.2-alpha04"
+    const val androidTestCore = "1.3.0-alpha05"
+    const val espresso = "3.3.0-alpha05"
+    const val testExtJunit = "1.1.2-alpha05"
 }
 
 object BuildVersions {
@@ -54,6 +54,7 @@ object BuildVersions {
 }
 
 object Libraries {
+    const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.0.5"
     const val kotlinStdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
     const val kotlinxCoroutinesCore =
@@ -91,9 +92,9 @@ object Libraries {
     const val paperwork = "hu.supercluster:paperwork:${Versions.paperwork}"
 
     // firebase
-    const val firebaseDatabase =
+    const val firebaseDatabaseKtx =
         "com.google.firebase:firebase-database-ktx:${Versions.firebaseDatabase}"
-    const val firebaseStorage =
+    const val firebaseStorageKtx =
         "com.google.firebase:firebase-storage-ktx:${Versions.firebaseStorage}"
 
     // dagger

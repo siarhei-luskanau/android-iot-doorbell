@@ -12,14 +12,13 @@ import kotlinx.coroutines.flow.flowOf
 import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.RuleChain
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 
 class DoorbellListFragmentTest {
 
     @get:Rule
-    val screenshotRule: RuleChain = TakeScreenshotAfterTestRule.screenshotRule()
+    val screenshotRule = TakeScreenshotAfterTestRule()
 
     private fun createFragmentFactory(state: DoorbellListState) = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
@@ -38,8 +37,12 @@ class DoorbellListFragmentTest {
                 doorbellList = null
             )
         )
-        val scenario = launchFragmentInContainer<DoorbellListFragment>(factory = fragmentFactory)
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<DoorbellListFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // normal view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
@@ -61,8 +64,12 @@ class DoorbellListFragmentTest {
                 cameraList = listOf(CameraData("EmptyCameraId"))
             )
         )
-        val scenario = launchFragmentInContainer<DoorbellListFragment>(factory = fragmentFactory)
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<DoorbellListFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // empty view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
@@ -85,8 +92,12 @@ class DoorbellListFragmentTest {
                 error = RuntimeException(expectedErrorMessage)
             )
         )
-        val scenario = launchFragmentInContainer<DoorbellListFragment>(factory = fragmentFactory)
-        scenario.moveToState(Lifecycle.State.RESUMED)
+        launchFragmentInContainer<DoorbellListFragment>(
+            factory = fragmentFactory,
+            themeResId = R.style.AppTheme
+        ).apply {
+            moveToState(Lifecycle.State.RESUMED)
+        }
 
         // error view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.error_message))

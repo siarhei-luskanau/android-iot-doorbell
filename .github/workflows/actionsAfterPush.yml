@@ -23,9 +23,11 @@ jobs:
         run: bash ./gradlew connectedAndroidTest --stacktrace
 
       - name: Prepare Artifacts
+        if: always()
         run: bash ./gradlew copyApkArtifacts moveScreenshotsFromDevices --stacktrace
 
       - name: killAndroidEmulator
+        if: always()
         run: bash ./gradlew killAndroidEmulator --stacktrace
 
       - uses: actions/upload-artifact@v1
@@ -34,6 +36,7 @@ jobs:
           path: build/artifacts/outputs/apk/
 
       - uses: actions/upload-artifact@v1
+        if: always()
         with:
           name: screenshots
           path: build/artifacts/screenshots/

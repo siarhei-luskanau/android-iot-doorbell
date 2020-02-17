@@ -17,7 +17,7 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.7.0")
+    id("io.gitlab.arturbosch.detekt").version("1.7.3")
 }
 
 allprojects {
@@ -30,9 +30,23 @@ allprojects {
     apply(from = "$rootDir/ktlint.gradle.kts")
     apply(from = "$rootDir/detekt.gradle")
 
-    tasks.withType<AbstractCompile>().configureEach {
-        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-        targetCompatibility = JavaVersion.VERSION_1_8.toString()
+    afterEvaluate {
+        plugins.forEach { plugin ->
+            // println("plugin: $plugin")
+            (plugin as? com.android.build.gradle.internal.plugins.BasePlugin<*,*>)?.let { libraryPlugin ->
+                // println("LibraryPlugin: $libraryPlugin")
+
+                libraryPlugin.extension.compileOptions {
+                    isCoreLibraryDesugaringEnabled = true
+                    sourceCompatibility = JavaVersion.VERSION_1_8
+                    targetCompatibility = JavaVersion.VERSION_1_8
+                }
+
+                libraryPlugin.extension.defaultConfig {
+                    multiDexEnabled = true
+                }
+            }
+        }
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
