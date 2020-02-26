@@ -1,29 +1,29 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "3.6.0-rc03"
+    const val androidToolsBuildGradle = "4.1.0-alpha03"
     const val kotlin = "1.3.61"
     const val kotlinxCoroutines = "1.3.3"
-    const val navigation = "2.3.0-alpha01"
+    const val navigation = "2.3.0-alpha04"
     const val timber = "4.7.1"
-    const val androidxCamera = "1.0.0-alpha09"
-    const val material = "1.2.0-alpha04"
-    const val swiperefreshlayout = "1.1.0-alpha03"
-    const val fragment = "1.2.1"
-    const val lifecycle = "2.2.0"
-    const val paging = "2.1.1"
-    const val room = "2.2.3"
-    const val workManager = "2.3.1"
+    const val androidxCamera = "1.0.0-beta01"
+    const val material = "1.2.0-alpha05"
+    const val swiperefreshlayout = "1.1.0-beta01"
+    const val fragment = "1.3.0-alpha02"
+    const val androidxCore = "1.3.0-alpha02"
+    const val lifecycle = "2.3.0-alpha01"
+    const val paging = "2.1.2"
+    const val room = "2.2.5"
+    const val workManager = "2.4.0-alpha01"
     const val constraintLayout = "2.0.0-beta4"
-    const val rxJava = "2.2.17"
+    const val rxJava = "2.2.18"
     const val rxKotlin = "2.4.0"
-    const val rxAndroid = "2.1.1"
     const val moshi = "1.9.2"
-    const val coil = "0.9.2"
+    const val coil = "0.9.5"
     const val paperwork = "1.2.7"
 
     // Play services versions
-    const val firebaseDatabase = "19.2.0"
-    const val firebaseStorage = "19.1.0"
+    const val firebaseDatabase = "19.2.1"
+    const val firebaseStorage = "19.1.1"
 
     // DI
     const val dagger = "2.26"
@@ -42,15 +42,15 @@ private object Versions {
     const val spek = "2.0.9"
 
     // test instrumentation
-    const val androidTestCore = "1.3.0-alpha03"
-    const val espresso = "3.3.0-alpha03"
-    const val testExtJunit = "1.1.2-alpha03"
+    const val androidTestCore = "1.3.0-alpha04"
+    const val espresso = "3.3.0-alpha04"
+    const val testExtJunit = "1.1.2-alpha04"
 }
 
 object BuildVersions {
-    const val compileSdkVersion = 29
-    const val targetSdkVersion = 29
-    const val buildToolsVersion = "29.0.2"
+    const val compileSdkVersion = "android-R"
+    const val targetSdkVersion = 30
+    const val buildToolsVersion = "30.0.0-rc2"
     const val minSdkVersion = 21
 }
 
@@ -70,14 +70,14 @@ object Libraries {
     const val constraintLayout =
         "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragment}"
+    const val androidxCoreKtx = "androidx.core:core-ktx:${Versions.androidxCore}"
     const val lifecycleCommonJava8 =
         "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
-    const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
-    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
-    const val lifecycleReactivestreamsKtx =
-        "androidx.lifecycle:lifecycle-reactivestreams-ktx:${Versions.lifecycle}"
+    const val lifecycleLivedataKtx =
+        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     const val lifecycleViewmodelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
+    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
     const val pagingRuntimeKtx = "androidx.paging:paging-runtime-ktx:${Versions.paging}"
     const val pagingRxjava2Ktx = "androidx.paging:paging-rxjava2-ktx:${Versions.paging}"
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
@@ -85,7 +85,6 @@ object Libraries {
     const val workRuntimeKtx = "androidx.work:work-runtime-ktx:${Versions.workManager}"
     const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
     const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxKotlin}"
-    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
     const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
     const val coil = "io.coil-kt:coil:${Versions.coil}"
@@ -93,8 +92,9 @@ object Libraries {
 
     // firebase
     const val firebaseDatabase =
-        "com.google.firebase:firebase-database:${Versions.firebaseDatabase}"
-    const val firebaseStorage = "com.google.firebase:firebase-storage:${Versions.firebaseStorage}"
+        "com.google.firebase:firebase-database-ktx:${Versions.firebaseDatabase}"
+    const val firebaseStorage =
+        "com.google.firebase:firebase-storage-ktx:${Versions.firebaseStorage}"
 
     // dagger
     const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
@@ -145,7 +145,7 @@ object GradlePlugin {
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val navigationSafeArgsGradlePlugin =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
-    const val androidJunit5Plugin = "de.mannodermaus.gradle.plugins:android-junit5:1.5.2.0"
+    const val androidJunit5Plugin = "de.mannodermaus.gradle.plugins:android-junit5:1.6.0.0"
     const val googleServicePlugin = "com.google.gms:google-services:4.3.3"
     const val paperworkPlugin = "hu.supercluster:paperwork-plugin:${Versions.paperwork}"
 }

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import coil.api.load
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericErrorBinding
@@ -62,8 +62,7 @@ class ImageDetailsSlideFragment(
 
     override fun observeDataSources() {
         super.observeDataSources()
-        presenter.getImageDetailsSlideStateData()
-            .observe(viewLifecycleOwner, Observer { changeState(it) })
+        presenter.getImageDetailsSlideStateData().observe(viewLifecycleOwner) { changeState(it) }
     }
 
     private fun changeState(state: ImageDetailsSlideState) {

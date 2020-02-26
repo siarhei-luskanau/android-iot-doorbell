@@ -3,7 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
-    id("de.mannodermaus.android-junit5")
+    // id("de.mannodermaus.android-junit5")
     id("com.google.gms.google-services")
 }
 
@@ -27,34 +27,33 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 
-    viewBinding {
-        isEnabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     testOptions {
         animationsDisabled = true
         unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {
             //isReturnDefaultValues = true
-            all(KotlinClosure1<Any, Test>({
-                (this as Test).also { testTask ->
-                    testTask.testLogging.events = setOf(
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-                    )
-                }
-            }, this))
+            all { test: Test ->
+                test.testLogging.events = setOf(
+                    org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                    org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                    org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+                )
+            }
         })
     }
 }
 
 dependencies {
     implementation(project(":common:common"))
+    implementation(project(":base_android"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
     implementation(project(":base_firebase"))
@@ -72,17 +71,9 @@ dependencies {
     implementation(Libraries.timber)
 
     implementation(Libraries.rxKotlin)
-    implementation(Libraries.rxAndroid)
 
-    implementation(Libraries.material)
     kapt(Libraries.lifecycleCommonJava8)
-    implementation(Libraries.lifecycleExtensions)
-    implementation(Libraries.lifecycleReactivestreamsKtx)
-    implementation(Libraries.lifecycleViewmodelKtx)
     implementation(Libraries.navigationFragmentKtx)
-    implementation(Libraries.navigationUiKtx)
-    implementation(Libraries.pagingRuntimeKtx)
-    implementation(Libraries.constraintLayout)
 
     implementation(Libraries.workRuntimeKtx)
 

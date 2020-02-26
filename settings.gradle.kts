@@ -2,6 +2,7 @@ include(":common:common")
 include(":common:common_test")
 include(":common:common_test_ui")
 
+include(":base_android")
 include(":base_camera")
 include(":base_file")
 include(":base_firebase")

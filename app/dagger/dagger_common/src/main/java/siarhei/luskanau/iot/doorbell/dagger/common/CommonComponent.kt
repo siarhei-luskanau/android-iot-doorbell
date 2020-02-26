@@ -40,12 +40,9 @@ interface CommonComponent {
     fun provideThisDeviceRepository(): ThisDeviceRepository
     fun provideAppBackgroundServices(): AppBackgroundServices
 
-    @Component.Builder
-    interface Builder {
+    @Component.Factory
+    interface Factory {
 
-        @BindsInstance
-        fun bindApplication(application: Application): Builder
-
-        fun build(): CommonComponent
+        fun create(@BindsInstance application: Application): CommonComponent
     }
 }

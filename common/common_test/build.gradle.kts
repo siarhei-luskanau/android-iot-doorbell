@@ -12,11 +12,6 @@ android {
         minSdkVersion(BuildVersions.minSdkVersion)
         targetSdkVersion(BuildVersions.targetSdkVersion)
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
@@ -24,11 +19,6 @@ dependencies {
 
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(TestLibraries.kotlinxCoroutinesTest)
-
-    implementation(Libraries.lifecycleReactivestreamsKtx)
-
+    implementation(Libraries.lifecycleLivedataKtx)
     implementation(TestLibraries.spekDslJvm)
-
-    implementation(Libraries.rxJava)
-    implementation(Libraries.rxKotlin)
 }

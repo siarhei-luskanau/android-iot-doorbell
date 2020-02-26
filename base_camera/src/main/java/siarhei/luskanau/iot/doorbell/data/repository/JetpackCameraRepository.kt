@@ -11,9 +11,9 @@ import androidx.camera.core.CameraSelector.LENS_FACING_FRONT
 import androidx.camera.core.CameraX
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.impl.utils.executor.CameraXExecutors
 import androidx.lifecycle.ProcessLifecycleOwner
-import java.io.File
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -60,27 +60,31 @@ class JetpackCameraRepository(
                         Thread.sleep(1000)
 
                         imageCapture.takePicture(
-                            imageRepository.prepareFile(cameraId),
+                            ImageCapture.OutputFileOptions.Builder(
+                                imageRepository.prepareFile(cameraId)
+                            ).build(),
                             CameraXExecutors.ioExecutor(),
                             object : ImageCapture.OnImageSavedCallback {
 
-                                override fun onImageSaved(file: File) {
+                                override fun onImageSaved(
+                                    outputFileResults: ImageCapture.OutputFileResults
+                                ) {
                                     handler.post {
                                         runCatching {
                                             CameraX.unbind(imageCapture)
-                                            continuation.resume(imageRepository.saveImage(file))
+                                            continuation.resume(
+                                                imageRepository.saveImage(
+                                                    outputFileResults.savedUri
+                                                )
+                                            )
                                         }.onFailure {
                                             continuation.resumeWithException(it)
                                         }
                                     }
                                 }
 
-                                override fun onError(
-                                    imageCaptureError: Int,
-                                    message: String,
-                                    cause: Throwable?
-                                ) {
-                                    continuation.resumeWithException(cause ?: Error(message))
+                                override fun onError(exception: ImageCaptureException) {
+                                    continuation.resumeWithException(exception)
                                 }
                             }
                         )

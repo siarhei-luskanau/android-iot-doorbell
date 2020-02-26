@@ -26,19 +26,21 @@ val ANDROID_EMULATORS = listOf(
 //        sdkId = "system-images;android-29;google_apis;x86",
 //        deviceType = "Nexus 5X",
 //        port = "5564"
-//    ),
+//    )
+//    ,
     EmulatorConfig(
         avdName = "TestEmulator28",
         sdkId = "system-images;android-28;google_apis;x86_64",
         deviceType = "Galaxy Nexus",
         port = "5562"
-    ),
-    EmulatorConfig(
-        avdName = "TestEmulator23",
-        sdkId = "system-images;android-23;google_apis;x86_64",
-        deviceType = "Nexus One",
-        port = "5560"
     )
+//    ,
+//    EmulatorConfig(
+//        avdName = "TestEmulator23",
+//        sdkId = "system-images;android-23;google_apis;x86_64",
+//        deviceType = "Nexus One",
+//        port = "5560"
+//    )
 )
 
 val YES_INPUT: String = mutableListOf<String>()
@@ -81,7 +83,7 @@ tasks.register<Exec>("setupAndroidSDK") {
                 config.sdkmanager.absolutePath,
                 "tools",
                 "platform-tools",
-                "build-tools;29.0.2",
+                "build-tools;30.0.0-rc2",
                 "platforms;android-29",
                 "emulator"
             ).apply { addAll(ANDROID_EMULATORS.map { it.sdkId }) }

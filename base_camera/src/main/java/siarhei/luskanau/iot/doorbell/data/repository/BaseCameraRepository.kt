@@ -9,7 +9,7 @@ import android.hardware.camera2.CameraMetadata
 import android.hardware.camera2.params.StreamConfigurationMap
 import android.util.Size
 import androidx.camera.core.CameraX
-import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import java.io.Serializable
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.SizeData
@@ -22,10 +22,7 @@ abstract class BaseCameraRepository(
     override suspend fun getCamerasList(): List<CameraData> =
         mutableListOf<CameraData>().also { list ->
             runCatching {
-                (ContextCompat.getSystemService(
-                    context,
-                    CameraManager::class.java
-                ))?.let { cameraManager ->
+                context.getSystemService<CameraManager>()?.let { cameraManager ->
                     cameraManager.cameraIdList
                         .map { cameraId: String ->
                             val sizes = getSizes(cameraManager, cameraId)

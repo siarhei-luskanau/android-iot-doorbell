@@ -2,8 +2,6 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("androidx.navigation.safeargs.kotlin")
-    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -15,29 +13,13 @@ android {
         targetSdkVersion(BuildVersions.targetSdkVersion)
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    viewBinding {
-        isEnabled = true
-    }
-
-    testOptions {
-        animationsDisabled = true
-        unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {
-            //isReturnDefaultValues = true
-            all(KotlinClosure1<Any, Test>({
-                (this as Test).also { testTask ->
-                    testTask.testLogging.events = setOf(
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-                    )
-                }
-            }, this))
-        })
     }
 }
 
@@ -49,12 +31,6 @@ dependencies {
 
     implementation(Libraries.material)
     implementation(Libraries.constraintLayout)
-    implementation(Libraries.lifecycleRuntimeKtx)
-    implementation(Libraries.lifecycleViewmodelKtx)
     implementation(Libraries.pagingRuntimeKtx)
-    implementation(Libraries.pagingRxjava2Ktx)
     implementation(Libraries.coil)
-
-    implementation(Libraries.rxJava)
-    implementation(Libraries.rxKotlin)
 }

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -25,5 +26,6 @@ dependencies {
     implementation(Libraries.timber)
 
     implementation(Libraries.androidxCamera)
+    implementation(Libraries.androidxCoreKtx)
     implementation(Libraries.lifecycleExtensions)
 }

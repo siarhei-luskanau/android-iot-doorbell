@@ -21,6 +21,7 @@ android {
 
 dependencies {
     implementation(project(":common:common"))
+    implementation(project(":base_android"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
     implementation(project(":base_firebase"))
@@ -36,7 +37,6 @@ dependencies {
     implementation(Libraries.workRuntimeKtx)
 
     implementation(Libraries.rxKotlin)
-    implementation(Libraries.rxAndroid)
 
     // dagger
     kapt(Libraries.daggerCompiler)

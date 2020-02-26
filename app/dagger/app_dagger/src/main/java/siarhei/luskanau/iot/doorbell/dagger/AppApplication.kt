@@ -20,15 +20,11 @@ import timber.log.Timber
 class AppApplication : Application() {
 
     private val commonComponent: CommonComponent by lazy {
-        DaggerCommonComponent
-            .builder()
-            .bindApplication(this)
-            .build()
+        DaggerCommonComponent.factory().create(this)
     }
 
     override fun onCreate() {
         super.onCreate()
-
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
@@ -53,32 +49,26 @@ class AppApplication : Application() {
                     DelegateFragmentFactory(
                         listOf(
                             {
-                                DaggerPermissionsComponent.builder()
-                                    .bindAppNavigation(appNavigation)
-                                    .build()
+                                DaggerPermissionsComponent.factory()
+                                    .create(appNavigation)
                                     .provideFragmentFactory()
                                     .get()
                             },
                             {
-                                DaggerDoorbellListComponent.builder()
-                                    .bindAppNavigation(appNavigation)
-                                    .bindCommonComponent(commonComponent)
-                                    .build()
+                                DaggerDoorbellListComponent.factory()
+                                    .create(appNavigation, commonComponent)
                                     .provideFragmentFactory()
                                     .get()
                             },
                             {
-                                DaggerImageListComponent.builder()
-                                    .bindAppNavigation(appNavigation)
-                                    .bindCommonComponent(commonComponent)
-                                    .build()
+                                DaggerImageListComponent.factory()
+                                    .create(appNavigation, commonComponent)
                                     .provideFragmentFactory()
                                     .get()
                             },
                             {
-                                DaggerImageDetailsComponent.builder()
-                                    .bindAppNavigation(appNavigation)
-                                    .build()
+                                DaggerImageDetailsComponent.factory()
+                                    .create(appNavigation)
                                     .provideFragmentFactory()
                                     .get()
                             }

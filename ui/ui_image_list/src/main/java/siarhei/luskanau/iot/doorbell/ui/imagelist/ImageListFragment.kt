@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.ImageAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
@@ -89,10 +89,10 @@ class ImageListFragment(
 
     override fun observeDataSources() {
         super.observeDataSources()
-        presenter.getImageListStateData().observe(viewLifecycleOwner, Observer { changeState(it) })
-        presenter.getLoadingData().observe(
-            viewLifecycleOwner,
-            Observer { fragmentBinding.pullToRefresh.isRefreshing = it })
+        presenter.getImageListStateData().observe(viewLifecycleOwner) { changeState(it) }
+        presenter.getLoadingData().observe(viewLifecycleOwner) {
+            fragmentBinding.pullToRefresh.isRefreshing = it
+        }
     }
 
     private fun changeState(state: ImageListState) {

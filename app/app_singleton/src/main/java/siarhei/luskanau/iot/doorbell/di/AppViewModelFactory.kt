@@ -21,16 +21,16 @@ class AppViewModelFactory(
                 thisDeviceRepository = appModules.thisDeviceRepository,
                 cameraRepository = appModules.cameraRepository,
                 doorbellsDataSource = appModules.doorbellsDataSource
-            ) as T
+            )
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
                 schedulerSet = appModules.schedulerSet,
                 doorbellRepository = appModules.doorbellRepository,
                 imagesDataSourceFactory = appModules.imagesDataSourceFactory,
                 uptimeRepository = appModules.uptimeRepository
-            ) as T
+            )
 
             else -> modelClass.getConstructor().newInstance()
-        }
+        } as T
     }
 }

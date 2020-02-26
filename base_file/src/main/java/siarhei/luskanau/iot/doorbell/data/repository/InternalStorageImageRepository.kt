@@ -1,6 +1,7 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
 import android.content.Context
+import android.net.Uri
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -31,13 +32,9 @@ class InternalStorageImageRepository(
             ImageFile(throwable = it)
         }.getOrThrow()
 
-    override fun saveImage(file: File): ImageFile =
+    override fun saveImage(imageUri: Uri?): ImageFile =
         runCatching {
-            ImageFile(
-                name = file.name,
-                path = file.absolutePath,
-                size = file.length()
-            )
+            ImageFile(imageUri = imageUri)
         }.onFailure {
             ImageFile(throwable = it)
         }.getOrThrow()

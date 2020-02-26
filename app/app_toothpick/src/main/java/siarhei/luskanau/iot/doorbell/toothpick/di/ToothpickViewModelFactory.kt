@@ -29,16 +29,16 @@ class ToothpickViewModelFactory(
                 thisDeviceRepository = scope.getInstance(ThisDeviceRepository::class.java),
                 cameraRepository = scope.getInstance(CameraRepository::class.java),
                 doorbellsDataSource = scope.getInstance(DoorbellsDataSource::class.java)
-            ) as T
+            )
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
                 schedulerSet = scope.getInstance(SchedulerSet::class.java),
                 doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
                 imagesDataSourceFactory = scope.getInstance(ImagesDataSourceFactory::class.java),
                 uptimeRepository = scope.getInstance(UptimeRepository::class.java)
-            ) as T
+            )
 
             else -> modelClass.getConstructor().newInstance()
-        }
+        } as T
     }
 }

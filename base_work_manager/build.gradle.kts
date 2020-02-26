@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -11,11 +12,6 @@ android {
         minSdkVersion(BuildVersions.minSdkVersion)
         targetSdkVersion(BuildVersions.targetSdkVersion)
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
@@ -23,9 +19,6 @@ dependencies {
 
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.timber)
-
-    implementation(Libraries.rxJava)
-    implementation(Libraries.rxKotlin)
 
     implementation(Libraries.workRuntimeKtx)
 }

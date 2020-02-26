@@ -18,8 +18,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    viewBinding {
-        isEnabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -37,7 +37,6 @@ dependencies {
     implementation(Libraries.navigationUiKtx)
 
     implementation(Libraries.rxKotlin)
-    implementation(Libraries.rxAndroid)
 
     // dagger
     kapt(Libraries.daggerCompiler)

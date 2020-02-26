@@ -96,6 +96,7 @@ class CoroutineCameraRepository(
             val imageReader =
                 ImageReader.newInstance(IMAGE_WIDTH, IMAGE_HEIGHT, ImageFormat.JPEG, MAX_IMAGES)
 
+            @Suppress("DEPRECATION")
             cameraDevice.createCaptureSession(
                 listOf(imageReader.surface),
                 object : CameraCaptureSession.StateCallback() {

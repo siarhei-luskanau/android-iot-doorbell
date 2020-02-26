@@ -17,15 +17,12 @@ interface DoorbellListComponent {
 
     fun provideFragmentFactory(): Provider<FragmentFactory>
 
-    @Component.Builder
-    interface Builder {
+    @Component.Factory
+    interface Factory {
 
-        @BindsInstance
-        fun bindAppNavigation(appNavigation: AppNavigation): Builder
-
-        @BindsInstance
-        fun bindCommonComponent(commonComponent: CommonComponent): Builder
-
-        fun build(): DoorbellListComponent
+        fun create(
+            @BindsInstance appNavigation: AppNavigation,
+            @BindsInstance commonComponent: CommonComponent
+        ): DoorbellListComponent
     }
 }

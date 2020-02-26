@@ -1,10 +1,13 @@
 package siarhei.luskanau.iot.doorbell.ui.imagelist
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Config
 import androidx.paging.PagedList
 import androidx.paging.toFlowable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.common.AppConstants
@@ -15,7 +18,6 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
-import siarhei.luskanau.iot.doorbell.ui.common.BaseViewModel
 
 private const val PAGE_SIZE = 20
 
@@ -24,7 +26,7 @@ class ImageListViewModel(
     private val doorbellRepository: DoorbellRepository,
     private val imagesDataSourceFactory: ImagesDataSourceFactory,
     private val uptimeRepository: UptimeRepository
-) : BaseViewModel() {
+) : ViewModel() {
 
     val imageListStateData = MutableLiveData<ImageListState>()
 
@@ -33,6 +35,7 @@ class ImageListViewModel(
     private var cameraList: List<CameraData> = emptyList()
     private var imagePagedList: PagedList<ImageData>? = null
     private var doorbellData: DoorbellData? = null
+    private val disposables: CompositeDisposable = CompositeDisposable()
 
     fun requestData(deviceId: String) {
         disposables.clear()
@@ -56,12 +59,12 @@ class ImageListViewModel(
         }
 
         imagesDataSourceFactory.createDataSourceFactory(deviceId).toFlowable(
-            config = Config(
-                pageSize = PAGE_SIZE,
-                prefetchDistance = PAGE_SIZE,
-                initialLoadSizeHint = PAGE_SIZE
+                config = Config(
+                    pageSize = PAGE_SIZE,
+                    prefetchDistance = PAGE_SIZE,
+                    initialLoadSizeHint = PAGE_SIZE
+                )
             )
-        )
             .doOnSubscribe { loadingData.postValue(true) }
             .doOnNext { loadingData.postValue(false) }
             .doOnTerminate { loadingData.postValue(false) }
@@ -74,7 +77,7 @@ class ImageListViewModel(
                     imageListStateData.postValue(ErrorImageListState(it))
                 }
             )
-            .disposeOnCleared()
+            .also { disposeOnCleared(it) }
     }
 
     private fun updateLiveDate() {
@@ -120,5 +123,14 @@ class ImageListViewModel(
                 imageListStateData.postValue(ErrorImageListState(it))
             }
         }
+    }
+
+    override fun onCleared() {
+        disposables.clear()
+        super.onCleared()
+    }
+
+    private fun disposeOnCleared(disposable: Disposable) {
+        disposables.add(disposable)
     }
 }

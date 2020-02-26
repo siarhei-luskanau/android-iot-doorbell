@@ -16,12 +16,9 @@ interface PermissionsComponent {
 
     fun provideFragmentFactory(): Provider<FragmentFactory>
 
-    @Component.Builder
-    interface Builder {
+    @Component.Factory
+    interface Factory {
 
-        @BindsInstance
-        fun bindAppNavigation(appNavigation: AppNavigation): Builder
-
-        fun build(): PermissionsComponent
+        fun create(@BindsInstance appNavigation: AppNavigation): PermissionsComponent
     }
 }
