@@ -16,7 +16,6 @@ class AppViewModelFactory(
         return when {
 
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
-                schedulerSet = appModules.schedulerSet,
                 doorbellRepository = appModules.doorbellRepository,
                 thisDeviceRepository = appModules.thisDeviceRepository,
                 cameraRepository = appModules.cameraRepository,
@@ -24,7 +23,6 @@ class AppViewModelFactory(
             )
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
-                schedulerSet = appModules.schedulerSet,
                 doorbellRepository = appModules.doorbellRepository,
                 imagesDataSourceFactory = appModules.imagesDataSourceFactory,
                 uptimeRepository = appModules.uptimeRepository

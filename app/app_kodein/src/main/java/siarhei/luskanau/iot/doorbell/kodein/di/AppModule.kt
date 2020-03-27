@@ -28,9 +28,7 @@ import siarhei.luskanau.iot.doorbell.data.AndroidDeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidIpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
-import siarhei.luskanau.iot.doorbell.data.DefaultSchedulerSet
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
@@ -67,7 +65,6 @@ import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerServi
 import timber.log.Timber
 
 val appModule = Kodein.Module(name = "appModule") {
-    bind<SchedulerSet>() with singleton { DefaultSchedulerSet() }
     bind() from singleton { WorkManager.getInstance(instance()) }
     bind<ViewModelProvider.Factory>() with singleton { KodeinViewModelFactory(injector = dkodein) }
     bind<ImageRepository>() with singleton { InternalStorageImageRepository(context = instance()) }
@@ -242,7 +239,6 @@ val viewModelModule = Kodein.Module(name = "viewModelModule") {
     bind<ViewModel>(tag = DoorbellListViewModel::class.simpleName) with provider {
         Timber.d("KodeinViewModelFactory:${DoorbellListViewModel::class.java.name}")
         DoorbellListViewModel(
-            schedulerSet = instance(),
             doorbellRepository = instance(),
             thisDeviceRepository = instance(),
             cameraRepository = instance(),
@@ -253,7 +249,6 @@ val viewModelModule = Kodein.Module(name = "viewModelModule") {
     bind<ViewModel>(tag = ImageListViewModel::class.simpleName) with provider {
         Timber.d("KodeinViewModelFactory:${ImageListViewModel::class.java.name}")
         ImageListViewModel(
-            schedulerSet = instance(),
             doorbellRepository = instance(),
             imagesDataSourceFactory = instance(),
             uptimeRepository = instance()

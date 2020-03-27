@@ -29,7 +29,6 @@ class ImageListBuilderModule {
     fun provideImageListViewModel(
         commonComponent: CommonComponent
     ) = ImageListViewModel(
-        schedulerSet = commonComponent.provideSchedulerSet(),
         doorbellRepository = commonComponent.provideDoorbellRepository(),
         imagesDataSourceFactory = commonComponent.provideImagesDataSourceFactory(),
         uptimeRepository = commonComponent.provideUptimeRepository()

@@ -24,7 +24,7 @@ object AndroidThisDeviceRepositoryTest : Spek({
     val doorbellData = DoorbellData(deviceId, deviceName, false, deviceInfo)
     val camerasList = listOf(CameraData("cameraId"))
     val ipAddressList = mapOf("InterfaceName" to "IpAddress")
-    val context by memoized { mock<Context> {} }
+    val context by memoized { mock<Context>() }
     val deviceInfoProvider by memoized {
         mock<DeviceInfoProvider> {
             on { buildDeviceId() }.doReturn(deviceId)

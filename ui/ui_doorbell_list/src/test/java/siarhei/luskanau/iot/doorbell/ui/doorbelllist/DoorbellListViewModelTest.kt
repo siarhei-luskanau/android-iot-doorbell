@@ -1,22 +1,18 @@
 package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 
-import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.atLeast
-import com.nhaarman.mockitokotlin2.atLeastOnce
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.runBlockingTest
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
-import siarhei.luskanau.iot.doorbell.common.test.TestSchedulerSet
 import siarhei.luskanau.iot.doorbell.common.test.setArchTaskExecutor
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
@@ -29,7 +25,6 @@ object DoorbellListViewModelTest : Spek({
 
     setArchTaskExecutor()
 
-    val schedulerSet by memoized { TestSchedulerSet() }
     val doorbellRepository by memoized { mock<DoorbellRepository>() }
     val thisDeviceRepository by memoized { mock<ThisDeviceRepository>() }
     val cameraRepository by memoized { mock<CameraRepository>() }
@@ -37,7 +32,6 @@ object DoorbellListViewModelTest : Spek({
 
     val doorbellListViewModel by memoized {
         DoorbellListViewModel(
-            schedulerSet = schedulerSet,
             doorbellRepository = doorbellRepository,
             thisDeviceRepository = thisDeviceRepository,
             cameraRepository = cameraRepository,
@@ -50,9 +44,9 @@ object DoorbellListViewModelTest : Spek({
         context("check requestData") {
 
             beforeEachTest {
-                val observer = mock<Observer<DoorbellListState>>()
-                doorbellListViewModel.doorbellListStateData.observeForever(observer)
-                doorbellListViewModel.requestData()
+                runBlockingTest {
+                    doorbellListViewModel.doorbellListStateFlow.collect()
+                }
             }
 
             it("should load camera list") {
@@ -69,27 +63,24 @@ object DoorbellListViewModelTest : Spek({
 
             context("when camera list is empty and doorbell list is empty") {
 
-                val observer = mock<Observer<DoorbellListState>>()
+                val values = mutableListOf<DoorbellListState>()
                 val expectedCameraList = emptyList<CameraData>()
 
                 beforeEachTest {
                     runBlockingTest {
                         given(cameraRepository.getCamerasList()).willReturn(expectedCameraList)
+                        doorbellListViewModel.doorbellListStateFlow.collect { values.add(it) }
                     }
-                    doorbellListViewModel.doorbellListStateData.observeForever(observer)
-                    doorbellListViewModel.requestData()
                 }
 
                 it("should call observer.onChanged with EmptyDoorbellListState") {
-                    val captor = argumentCaptor<DoorbellListState>()
-                    verify(observer, atLeast(2)).onChanged(captor.capture())
-                    assertEquals(EmptyDoorbellListState(expectedCameraList), captor.lastValue)
+                    assertEquals(EmptyDoorbellListState(expectedCameraList), values.last())
                 }
             }
 
             context("when camera list is filled and doorbell list is empty") {
 
-                val observer = mock<Observer<DoorbellListState>>()
+                val values = mutableListOf<DoorbellListState>()
                 val expectedCameraList = listOf(
                     CameraData(cameraId = "cameraId_1"),
                     CameraData(cameraId = "cameraId_2")
@@ -98,38 +89,32 @@ object DoorbellListViewModelTest : Spek({
                 beforeEachTest {
                     runBlockingTest {
                         given(cameraRepository.getCamerasList()).willReturn(expectedCameraList)
+                        doorbellListViewModel.doorbellListStateFlow.collect { values.add(it) }
                     }
-                    doorbellListViewModel.doorbellListStateData.observeForever(observer)
-                    doorbellListViewModel.requestData()
                 }
 
                 it("should call observer.onChanged with EmptyDoorbellListState") {
-                    val captor = argumentCaptor<DoorbellListState>()
-                    verify(observer, atLeast(2)).onChanged(captor.capture())
-                    assertEquals(EmptyDoorbellListState(expectedCameraList), captor.lastValue)
+                    assertEquals(EmptyDoorbellListState(expectedCameraList), values.last())
                 }
             }
 
             xcontext("when camera list is empty and doorbell list is filled") {
 
-                val observer = mock<Observer<DoorbellListState>>()
+                val values = mutableListOf<DoorbellListState>()
                 val expectedCameraList = emptyList<CameraData>()
                 val pagedList by memoized { mock<PagedList<DoorbellData>>() }
 
                 beforeEachTest {
                     runBlockingTest {
                         given(cameraRepository.getCamerasList()).willReturn(expectedCameraList)
+                        doorbellListViewModel.doorbellListStateFlow.collect { values.add(it) }
                     }
-                    doorbellListViewModel.doorbellListStateData.observeForever(observer)
-                    doorbellListViewModel.requestData()
                 }
 
                 it("should call observer.onChanged with NormalDoorbellListState") {
-                    val captor = argumentCaptor<DoorbellListState>()
-                    verify(observer, atLeastOnce()).onChanged(captor.capture())
                     assertEquals(
                         NormalDoorbellListState(expectedCameraList, pagedList),
-                        captor.lastValue
+                        values.last()
                     )
                 }
             }

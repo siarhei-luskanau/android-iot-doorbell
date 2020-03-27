@@ -1,20 +1,23 @@
-package siarhei.luskanau.iot.doorbell.kodein.di
+package siarhei.luskanau.iot.doorbell.koin.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.kodein.di.DKodein
-import org.kodein.di.generic.instance
+import org.koin.core.Koin
 import timber.log.Timber
 
-class KodeinViewModelFactory(
-    private val injector: DKodein
+class KoinViewModelFactory(
+    private val koin: Koin
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        Timber.d("KodeinViewModelFactory:create:$modelClass")
+        Timber.d("KoinViewModelFactory:create:$modelClass")
         return try {
-            injector.instance<ViewModel>(tag = modelClass.simpleName) as T
+            koin.get(
+                clazz = modelClass.kotlin,
+                qualifier = null,
+                parameters = null
+            )
         } catch (kodeinThrowable: Throwable) {
             try {
                 modelClass.newInstance()

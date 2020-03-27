@@ -1,6 +1,7 @@
 package siarhei.luskanau.iot.doorbell.ui.imagelist
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
@@ -12,8 +13,8 @@ class ImageListPresenterImpl(
     private val appNavigation: AppNavigation
 ) : ImageListPresenter {
 
-    override fun getImageListStateData(): LiveData<ImageListState> =
-        imageListViewModel.imageListStateData
+    override fun getImageListStateFlow(): Flow<ImageListState> =
+        imageListViewModel.imageListStateFlow
 
     override fun getLoadingData(): LiveData<Boolean> =
         imageListViewModel.loadingData

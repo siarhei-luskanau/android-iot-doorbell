@@ -5,6 +5,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     // id("de.mannodermaus.android-junit5")
     id("com.google.gms.google-services")
+    id("koin")
 }
 
 android {
@@ -70,15 +71,13 @@ dependencies {
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.timber)
 
-    implementation(Libraries.rxKotlin)
-
     kapt(Libraries.lifecycleCommonJava8)
     implementation(Libraries.navigationFragmentKtx)
 
     implementation(Libraries.workRuntimeKtx)
 
     // koin
-    implementation(Libraries.koinAndroidxViewmodel)
+    implementation(Libraries.koinAndroid)
 
     // Development
     debugImplementation(Libraries.leakCanary)

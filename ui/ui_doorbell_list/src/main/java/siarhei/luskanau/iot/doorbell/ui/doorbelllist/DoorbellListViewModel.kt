@@ -2,83 +2,71 @@ package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Config
 import androidx.paging.DataSource
-import androidx.paging.PagedList
-import androidx.paging.toFlowable
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.subscribeBy
+import androidx.paging.toLiveData
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 
-private const val PAGE_SIZE = 20
-
+@ExperimentalCoroutinesApi
 class DoorbellListViewModel(
-    private val schedulerSet: SchedulerSet,
     private val doorbellRepository: DoorbellRepository,
     private val thisDeviceRepository: ThisDeviceRepository,
     private val cameraRepository: CameraRepository,
     private val doorbellsDataSource: DoorbellsDataSource
 ) : ViewModel() {
 
-    val doorbellListStateData = MutableLiveData<DoorbellListState>()
-
-    val loadingData = MutableLiveData<Boolean>()
-
-    private var cameraList: List<CameraData> = emptyList()
-    private var doorbellPagedList: PagedList<DoorbellData>? = null
-    private val disposables: CompositeDisposable = CompositeDisposable()
-
-    fun requestData() {
-        disposables.clear()
-
-        viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            runCatching {
-                cameraList = cameraRepository.getCamerasList()
-                updateLiveDate()
-            }.onFailure {
-                doorbellListStateData.postValue(ErrorDoorbellListState(it))
-            }
-        }
-
-        createDataSourceFactory().toFlowable(
+    val doorbellListStateFlow: Flow<DoorbellListState> =
+        createDataSourceFactory()
+            .toLiveData(
                 config = Config(
                     pageSize = PAGE_SIZE,
                     prefetchDistance = PAGE_SIZE,
                     initialLoadSizeHint = PAGE_SIZE
                 )
             )
-            .doOnSubscribe { loadingData.postValue(true) }
-            .doOnNext { loadingData.postValue(false) }
-            .doOnTerminate { loadingData.postValue(false) }
-            .subscribeBy(
-                onNext = { pagedList ->
-                    doorbellPagedList = pagedList
-                    updateLiveDate()
-                },
-                onError = {
-                    doorbellListStateData.postValue(ErrorDoorbellListState(it))
+            .asFlow()
+            .map { pagedList ->
+                val cameraList = cameraRepository.getCamerasList()
+                if (pagedList.isNotEmpty()) {
+                    NormalDoorbellListState(cameraList, pagedList)
+                } else {
+                    EmptyDoorbellListState(cameraList)
                 }
-            )
-            .also { disposeOnCleared(it) }
-    }
-
-    private fun updateLiveDate() {
-        doorbellListStateData.postValue(
-            if (doorbellPagedList?.isNotEmpty() == true) {
-                NormalDoorbellListState(cameraList, requireNotNull(doorbellPagedList))
-            } else {
-                EmptyDoorbellListState(cameraList)
             }
-        )
+            .catch { cause: Throwable ->
+                emit(ErrorDoorbellListState(error = cause))
+            }
+            .onStart {
+                loadingData.postValue(true)
+            }
+            .onEach {
+                loadingData.postValue(false)
+            }
+
+    val loadingData = MutableLiveData<Boolean>()
+
+    fun onCameraClicked(cameraData: CameraData) {
+        viewModelScope.launch {
+            doorbellRepository.sendCameraImageRequest(
+                deviceId = thisDeviceRepository.doorbellId(),
+                cameraId = cameraData.cameraId,
+                isRequested = true
+            )
+        }
     }
 
     private fun createDataSourceFactory(): DataSource.Factory<String, DoorbellData> =
@@ -86,26 +74,7 @@ class DoorbellListViewModel(
             override fun create() = doorbellsDataSource
         }
 
-    fun onCameraClicked(cameraData: CameraData) {
-        viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            runCatching {
-                doorbellRepository.sendCameraImageRequest(
-                    deviceId = thisDeviceRepository.doorbellId(),
-                    cameraId = cameraData.cameraId,
-                    isRequested = true
-                )
-            }.onFailure {
-                doorbellListStateData.postValue(ErrorDoorbellListState(it))
-            }
-        }
-    }
-
-    override fun onCleared() {
-        disposables.clear()
-        super.onCleared()
-    }
-
-    private fun disposeOnCleared(disposable: Disposable) {
-        disposables.add(disposable)
+    companion object {
+        private const val PAGE_SIZE = 20
     }
 }

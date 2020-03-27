@@ -1,11 +1,12 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-alpha03"
-    const val kotlin = "1.3.61"
-    const val kotlinxCoroutines = "1.3.3"
+    const val androidToolsBuildGradle = "4.1.0-alpha04"
+    const val kotlin = "1.3.71"
+    const val kotlinxCoroutines = "1.3.5"
     const val navigation = "2.3.0-alpha04"
     const val timber = "4.7.1"
     const val androidxCamera = "1.0.0-beta01"
+    const val androidxCameraExtensions = "1.0.0-alpha08"
     const val material = "1.2.0-alpha05"
     const val swiperefreshlayout = "1.1.0-beta01"
     const val fragment = "1.3.0-alpha02"
@@ -15,8 +16,6 @@ private object Versions {
     const val room = "2.2.5"
     const val workManager = "2.4.0-alpha01"
     const val constraintLayout = "2.0.0-beta4"
-    const val rxJava = "2.2.18"
-    const val rxKotlin = "2.4.0"
     const val moshi = "1.9.2"
     const val coil = "0.9.5"
     const val paperwork = "1.2.7"
@@ -28,7 +27,7 @@ private object Versions {
     // DI
     const val dagger = "2.26"
     const val kodein = "6.5.1"
-    const val koin = "2.1.0-alpha-10"
+    const val koin = "2.1.5"
     const val toothpick = "3.1.0"
 
     // Development
@@ -64,6 +63,9 @@ object Libraries {
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
     const val androidxCamera = "androidx.camera:camera-camera2:${Versions.androidxCamera}"
+    const val androidxCameraView = "androidx.camera:camera-view:${Versions.androidxCameraExtensions}"
+    const val androidxCameraExtensions =
+        "androidx.camera:camera-extensions:${Versions.androidxCameraExtensions}"
     const val material = "com.google.android.material:material:${Versions.material}"
     const val swiperefreshlayout =
         "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"
@@ -78,13 +80,11 @@ object Libraries {
     const val lifecycleViewmodelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    const val pagingCommonKtx = "androidx.paging:paging-common-ktx:${Versions.paging}"
     const val pagingRuntimeKtx = "androidx.paging:paging-runtime-ktx:${Versions.paging}"
-    const val pagingRxjava2Ktx = "androidx.paging:paging-rxjava2-ktx:${Versions.paging}"
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
     const val workRuntimeKtx = "androidx.work:work-runtime-ktx:${Versions.workManager}"
-    const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
-    const val rxKotlin = "io.reactivex.rxjava2:rxkotlin:${Versions.rxKotlin}"
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
     const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
     const val coil = "io.coil-kt:coil:${Versions.coil}"
@@ -106,7 +106,7 @@ object Libraries {
         "org.kodein.di:kodein-di-framework-android-x:${Versions.kodein}"
 
     // koin
-    const val koinAndroidxViewmodel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
+    const val koinAndroid = "org.koin:koin-android:${Versions.koin}"
 
     // toothpick
     const val toothpickKtp = "com.github.stephanenicolas.toothpick:ktp:${Versions.toothpick}"
@@ -148,4 +148,5 @@ object GradlePlugin {
     const val androidJunit5Plugin = "de.mannodermaus.gradle.plugins:android-junit5:1.6.0.0"
     const val googleServicePlugin = "com.google.gms:google-services:4.3.3"
     const val paperworkPlugin = "hu.supercluster:paperwork-plugin:${Versions.paperwork}"
+    const val koinGradlePlugin = "org.koin:koin-gradle-plugin:${Versions.koin}"
 }

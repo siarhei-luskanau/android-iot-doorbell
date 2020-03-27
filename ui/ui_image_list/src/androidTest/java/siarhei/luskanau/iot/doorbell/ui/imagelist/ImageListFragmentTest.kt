@@ -4,11 +4,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
@@ -25,8 +25,7 @@ class ImageListFragmentTest {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
             ImageListFragment {
                 object : StubImageListPresenter() {
-                    override fun getImageListStateData(): LiveData<ImageListState> =
-                        MutableLiveData<ImageListState>().apply { value = state }
+                    override fun getImageListStateFlow(): Flow<ImageListState> = flowOf(state)
                 }
             }
     }

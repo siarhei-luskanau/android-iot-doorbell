@@ -18,9 +18,7 @@ import siarhei.luskanau.iot.doorbell.data.AndroidDeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidIpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
-import siarhei.luskanau.iot.doorbell.data.DefaultSchedulerSet
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CoroutineCameraRepository
@@ -43,11 +41,6 @@ class CommonModule {
     @Singleton
     fun provideContext(application: Application): Context =
         application.applicationContext
-
-    @Provides
-    @Singleton
-    fun provideSchedulerSet(): SchedulerSet =
-        DefaultSchedulerSet()
 
     @Provides
     @Singleton

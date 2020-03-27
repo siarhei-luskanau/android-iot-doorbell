@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.work.WorkManager
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
@@ -22,9 +22,7 @@ import siarhei.luskanau.iot.doorbell.data.AndroidDeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidIpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
-import siarhei.luskanau.iot.doorbell.data.DefaultSchedulerSet
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
@@ -63,7 +61,7 @@ import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerServi
 import timber.log.Timber
 
 val appModule = module {
-    single<SchedulerSet> { DefaultSchedulerSet() }
+    single<ViewModelProvider.Factory> { KoinViewModelFactory(koin = getKoin()) }
     single { WorkManager.getInstance(get()) }
     single<ImageRepository> { InternalStorageImageRepository(context = get()) }
     single<DoorbellRepository> {
@@ -122,7 +120,10 @@ val activityModule = module {
     factory<AppNavigation> { (activity: FragmentActivity) -> DefaultAppNavigation(activity) }
     factory<FragmentFactory> { (activity: FragmentActivity) ->
         val appNavigation: AppNavigation = get { parametersOf(activity) }
-        KoinFragmentFactory(appNavigation = appNavigation)
+        KoinFragmentFactory(
+            koin = getKoin(),
+            appNavigation = appNavigation
+        )
     }
 
     // Permissions
@@ -151,8 +152,11 @@ val activityModule = module {
                                          appNavigation: AppNavigation,
                                          thisDeviceRepository: ThisDeviceRepository
                                      ) ->
+        val viewModelFactory: ViewModelProvider.Factory = get()
+        val viewModel = ViewModelProvider(lifecycleOwner as ViewModelStoreOwner, viewModelFactory)
+            .get(DoorbellListViewModel::class.java)
         DoorbellListPresenterImpl(
-            doorbellListViewModel = lifecycleOwner.getViewModel(),
+            doorbellListViewModel = viewModel,
             appNavigation = appNavigation,
             thisDeviceRepository = thisDeviceRepository
         )
@@ -178,9 +182,12 @@ val activityModule = module {
                                       lifecycleOwner: LifecycleOwner,
                                       appNavigation: AppNavigation
                                   ) ->
+        val viewModelFactory: ViewModelProvider.Factory = get()
+        val viewModel = ViewModelProvider(lifecycleOwner as ViewModelStoreOwner, viewModelFactory)
+            .get(ImageListViewModel::class.java)
         ImageListPresenterImpl(
             doorbellData = doorbellData,
-            imageListViewModel = lifecycleOwner.getViewModel(),
+            imageListViewModel = viewModel,
             appNavigation = appNavigation
         )
     }
@@ -229,20 +236,18 @@ val activityModule = module {
 }
 
 val viewModelModule = module {
-    viewModel {
+    factory {
         Timber.d("KoinViewModelFactory:${DoorbellListViewModel::class.java.name}")
         DoorbellListViewModel(
-            schedulerSet = get(),
             doorbellRepository = get(),
             thisDeviceRepository = get(),
             cameraRepository = get(),
             doorbellsDataSource = get()
         )
     }
-    viewModel {
+    factory {
         Timber.d("KoinViewModelFactory:${ImageListViewModel::class.java.name}")
         ImageListViewModel(
-            schedulerSet = get(),
             doorbellRepository = get(),
             imagesDataSourceFactory = get(),
             uptimeRepository = get()

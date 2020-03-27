@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
@@ -24,7 +23,6 @@ class ToothpickViewModelFactory(
         return when {
 
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
-                schedulerSet = scope.getInstance(SchedulerSet::class.java),
                 doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
                 thisDeviceRepository = scope.getInstance(ThisDeviceRepository::class.java),
                 cameraRepository = scope.getInstance(CameraRepository::class.java),
@@ -32,7 +30,6 @@ class ToothpickViewModelFactory(
             )
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
-                schedulerSet = scope.getInstance(SchedulerSet::class.java),
                 doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
                 imagesDataSourceFactory = scope.getInstance(ImagesDataSourceFactory::class.java),
                 uptimeRepository = scope.getInstance(UptimeRepository::class.java)

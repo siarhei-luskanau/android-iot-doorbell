@@ -33,10 +33,9 @@ dependencies {
     implementation(Libraries.timber)
 
     implementation(Libraries.fragmentKtx)
+    implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
     implementation(Libraries.workRuntimeKtx)
-
-    implementation(Libraries.rxKotlin)
 
     // dagger
     kapt(Libraries.daggerCompiler)

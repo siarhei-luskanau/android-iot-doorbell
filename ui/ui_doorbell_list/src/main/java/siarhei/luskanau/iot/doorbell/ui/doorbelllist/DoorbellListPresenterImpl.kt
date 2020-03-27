@@ -1,6 +1,7 @@
 package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
@@ -12,14 +13,15 @@ class DoorbellListPresenterImpl(
     private val thisDeviceRepository: ThisDeviceRepository
 ) : DoorbellListPresenter {
 
-    override fun getDoorbellListStateData(): LiveData<DoorbellListState> =
-        doorbellListViewModel.doorbellListStateData
+    override fun getDoorbellListFlow(): Flow<DoorbellListState> =
+        doorbellListViewModel.doorbellListStateFlow
 
     override fun getLoadingData(): LiveData<Boolean> =
         doorbellListViewModel.loadingData
 
-    override fun requestData() {
-        doorbellListViewModel.requestData()
+    override fun requestData() = Unit
+
+    override fun checkPermissions() {
         if (thisDeviceRepository.isPermissionsGranted().not()) {
             appNavigation.goDoorbellListToPermissions()
         }

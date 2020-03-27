@@ -26,6 +26,8 @@ dependencies {
     implementation(Libraries.timber)
 
     implementation(Libraries.androidxCamera)
+    implementation(Libraries.androidxCameraView)
+    implementation(Libraries.androidxCameraExtensions)
     implementation(Libraries.androidxCoreKtx)
     implementation(Libraries.lifecycleExtensions)
 }

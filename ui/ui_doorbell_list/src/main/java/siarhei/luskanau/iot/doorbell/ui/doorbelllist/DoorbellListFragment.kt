@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import kotlinx.coroutines.flow.collect
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.DoorbellsAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
@@ -83,12 +85,16 @@ class DoorbellListFragment(
             doorbellsAdapter.currentList?.get(position)?.let { presenter.onDoorbellClicked(it) }
         }
 
-        presenter.requestData()
+        presenter.checkPermissions()
     }
 
     override fun observeDataSources() {
         super.observeDataSources()
-        presenter.getDoorbellListStateData().observe(viewLifecycleOwner) { changeState(it) }
+        lifecycleScope.launchWhenStarted {
+            presenter.getDoorbellListFlow().collect {
+                changeState(it)
+            }
+        }
         presenter.getLoadingData().observe(viewLifecycleOwner) {
             fragmentBinding.pullToRefresh.isRefreshing = it
         }

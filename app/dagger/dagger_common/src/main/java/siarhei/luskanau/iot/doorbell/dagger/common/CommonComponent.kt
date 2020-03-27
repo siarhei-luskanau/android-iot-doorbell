@@ -11,7 +11,6 @@ import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.common.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
@@ -24,7 +23,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 @Component(modules = [CommonModule::class])
 interface CommonComponent {
 
-    fun provideSchedulerSet(): SchedulerSet
     fun provideWorkManager(): WorkManager
     fun provideImageRepository(): ImageRepository
     fun provideDoorbellRepository(): DoorbellRepository

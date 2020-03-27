@@ -32,10 +32,9 @@ dependencies {
     implementation(Libraries.kotlinStdlibJdk8)
 
     implementation(Libraries.fragmentKtx)
+    implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
     implementation(Libraries.workRuntimeKtx)
-
-    implementation(Libraries.rxKotlin)
 
     // dagger
     kapt(Libraries.daggerCompiler)

@@ -70,8 +70,6 @@ dependencies {
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.timber)
 
-    implementation(Libraries.rxKotlin)
-
     kapt(Libraries.lifecycleCommonJava8)
     implementation(Libraries.navigationFragmentKtx)
 

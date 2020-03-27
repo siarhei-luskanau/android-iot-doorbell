@@ -27,7 +27,6 @@ class DoorbellListBuilderModule {
     fun provideDoorbellListViewModel(
         commonComponent: CommonComponent
     ) = DoorbellListViewModel(
-        schedulerSet = commonComponent.provideSchedulerSet(),
         doorbellRepository = commonComponent.provideDoorbellRepository(),
         thisDeviceRepository = commonComponent.provideThisDeviceRepository(),
         cameraRepository = commonComponent.provideCameraRepository(),

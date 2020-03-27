@@ -12,11 +12,12 @@ buildscript {
         classpath(GradlePlugin.androidJunit5Plugin)
         classpath(GradlePlugin.googleServicePlugin)
         classpath(GradlePlugin.paperworkPlugin)
+        classpath(GradlePlugin.koinGradlePlugin)
     }
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.6.0")
+    id("io.gitlab.arturbosch.detekt").version("1.7.0")
 }
 
 allprojects {

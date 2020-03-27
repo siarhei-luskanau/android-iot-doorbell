@@ -2,135 +2,100 @@ package siarhei.luskanau.iot.doorbell.ui.imagelist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Config
-import androidx.paging.PagedList
-import androidx.paging.toFlowable
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.subscribeBy
+import androidx.paging.toLiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.common.AppConstants
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
-import siarhei.luskanau.iot.doorbell.data.SchedulerSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 
-private const val PAGE_SIZE = 20
-
 class ImageListViewModel(
-    private val schedulerSet: SchedulerSet,
     private val doorbellRepository: DoorbellRepository,
     private val imagesDataSourceFactory: ImagesDataSourceFactory,
     private val uptimeRepository: UptimeRepository
 ) : ViewModel() {
 
-    val imageListStateData = MutableLiveData<ImageListState>()
+    private val deviceIdLiveData = MutableLiveData<String>()
 
-    val loadingData = MutableLiveData<Boolean>()
-
-    private var cameraList: List<CameraData> = emptyList()
-    private var imagePagedList: PagedList<ImageData>? = null
-    private var doorbellData: DoorbellData? = null
-    private val disposables: CompositeDisposable = CompositeDisposable()
-
-    fun requestData(deviceId: String) {
-        disposables.clear()
-
-        viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            runCatching {
-                doorbellData = doorbellRepository.getDoorbell(deviceId)
-                updateLiveDate()
-            }.onFailure {
-                imageListStateData.postValue(ErrorImageListState(it))
-            }
-        }
-
-        viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            runCatching {
-                cameraList = doorbellRepository.getCamerasList(deviceId)
-                updateLiveDate()
-            }.onFailure {
-                imageListStateData.postValue(ErrorImageListState(it))
-            }
-        }
-
-        imagesDataSourceFactory.createDataSourceFactory(deviceId).toFlowable(
+    val imageListStateFlow: Flow<ImageListState> = deviceIdLiveData
+        .asFlow()
+        .flatMapLatest { deviceId: String ->
+            imagesDataSourceFactory.createDataSourceFactory(deviceId).toLiveData(
                 config = Config(
                     pageSize = PAGE_SIZE,
                     prefetchDistance = PAGE_SIZE,
                     initialLoadSizeHint = PAGE_SIZE
                 )
             )
-            .doOnSubscribe { loadingData.postValue(true) }
-            .doOnNext { loadingData.postValue(false) }
-            .doOnTerminate { loadingData.postValue(false) }
-            .subscribeBy(
-                onNext = { pagedList ->
-                    imagePagedList = pagedList
-                    updateLiveDate()
-                },
-                onError = {
-                    imageListStateData.postValue(ErrorImageListState(it))
-                }
-            )
-            .also { disposeOnCleared(it) }
-    }
+                .asFlow()
+                .map { pagedList ->
+                    val cameraList = doorbellRepository.getCamerasList(deviceId)
 
-    private fun updateLiveDate() {
-        imageListStateData.postValue(
-            if (imagePagedList?.isNotEmpty() == true) {
-                NormalImageListState(
-                    cameraList = cameraList,
-                    imageList = requireNotNull(imagePagedList),
-                    isAndroidThings = doorbellData?.isAndroidThings == true
-                )
-            } else {
-                EmptyImageListState(
-                    cameraList = cameraList,
-                    isAndroidThings = doorbellData?.isAndroidThings == true
-                )
-            }
-        )
+                    val doorbellData = doorbellRepository.getDoorbell(deviceId)
+
+                    val state = if (pagedList.isNotEmpty()) {
+                        NormalImageListState(
+                            cameraList = cameraList,
+                            imageList = pagedList,
+                            isAndroidThings = doorbellData?.isAndroidThings == true
+                        )
+                    } else {
+                        EmptyImageListState(
+                            cameraList = cameraList,
+                            isAndroidThings = doorbellData?.isAndroidThings == true
+                        )
+                    }
+                    state
+                }
+                .catch { cause: Throwable ->
+                    emit(ErrorImageListState(error = cause))
+                }
+        }
+        .onStart {
+            loadingData.postValue(true)
+        }
+        .onEach {
+            loadingData.postValue(false)
+        }
+
+    val loadingData = MutableLiveData<Boolean>()
+
+    fun requestData(deviceId: String) {
+        deviceIdLiveData.postValue(deviceId)
     }
 
     fun onCameraClicked(doorbellData: DoorbellData, cameraData: CameraData) {
-        viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            runCatching {
-                doorbellRepository.sendCameraImageRequest(
-                    deviceId = doorbellData.doorbellId,
-                    cameraId = cameraData.cameraId,
-                    isRequested = true
-                )
-            }.onFailure {
-                imageListStateData.postValue(ErrorImageListState(it))
-            }
+        viewModelScope.launch {
+            doorbellRepository.sendCameraImageRequest(
+                deviceId = doorbellData.doorbellId,
+                cameraId = cameraData.cameraId,
+                isRequested = true
+            )
         }
     }
 
     fun rebootDevice(doorbellId: String, currentTime: Long) {
-        viewModelScope.launch(schedulerSet.ioCoroutineContext) {
-            runCatching {
-                uptimeRepository.uptimeRebootRequest(
-                    doorbellId = doorbellId,
-                    rebootRequestTimeMillis = currentTime,
-                    rebootRequestTimeString = AppConstants.DATE_FORMAT.format(currentTime)
-                )
-            }.onFailure {
-                imageListStateData.postValue(ErrorImageListState(it))
-            }
+        viewModelScope.launch {
+            uptimeRepository.uptimeRebootRequest(
+                doorbellId = doorbellId,
+                rebootRequestTimeMillis = currentTime,
+                rebootRequestTimeString = AppConstants.DATE_FORMAT.format(currentTime)
+            )
         }
     }
 
-    override fun onCleared() {
-        disposables.clear()
-        super.onCleared()
-    }
-
-    private fun disposeOnCleared(disposable: Disposable) {
-        disposables.add(disposable)
+    companion object {
+        private const val PAGE_SIZE = 20
     }
 }

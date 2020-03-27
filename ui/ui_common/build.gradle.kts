@@ -31,6 +31,7 @@ dependencies {
 
     implementation(Libraries.material)
     implementation(Libraries.constraintLayout)
+    implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
     implementation(Libraries.coil)
 }

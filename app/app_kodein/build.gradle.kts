@@ -71,10 +71,9 @@ dependencies {
     implementation(Libraries.kotlinReflect)
     implementation(Libraries.timber)
 
-    implementation(Libraries.rxKotlin)
-
     kapt(Libraries.lifecycleCommonJava8)
     implementation(Libraries.navigationFragmentKtx)
+    implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
 
     implementation(Libraries.workRuntimeKtx)

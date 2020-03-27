@@ -51,6 +51,7 @@ dependencies {
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 
+    implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
 
     implementation(Libraries.paperwork)

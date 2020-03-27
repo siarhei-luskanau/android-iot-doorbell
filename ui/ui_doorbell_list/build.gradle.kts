@@ -53,13 +53,10 @@ dependencies {
     implementation(Libraries.constraintLayout)
     implementation(Libraries.lifecycleLivedataKtx)
     implementation(Libraries.lifecycleViewmodelKtx)
+    implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
-    implementation(Libraries.pagingRxjava2Ktx)
     implementation(Libraries.navigationUiKtx)
     implementation(Libraries.coil)
-
-    implementation(Libraries.rxJava)
-    implementation(Libraries.rxKotlin)
 
     // unit test
     testImplementation(project(":common:common_test"))
