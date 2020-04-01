@@ -1,6 +1,6 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-alpha04"
+    const val androidToolsBuildGradle = "4.1.0-alpha05"
     const val kotlin = "1.3.71"
     const val kotlinxCoroutines = "1.3.5"
     const val navigation = "2.3.0-alpha04"
@@ -47,7 +47,8 @@ private object Versions {
 }
 
 object BuildVersions {
-    const val compileSdkVersion = "android-R"
+    const val platformVersion = "R"
+    const val compileSdkVersion = "android-$platformVersion"
     const val targetSdkVersion = 30
     const val buildToolsVersion = "30.0.0-rc2"
     const val minSdkVersion = 21

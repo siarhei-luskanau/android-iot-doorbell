@@ -1,7 +1,9 @@
 package siarhei.luskanau.iot.doorbell.toothpick.di
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
@@ -9,12 +11,15 @@ import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
+import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import timber.log.Timber
 import toothpick.Scope
 
 class ToothpickViewModelFactory(
-    private val scope: Scope
+    private val scope: Scope,
+    private val appNavigation: AppNavigation,
+    private val args: Bundle?
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -23,6 +28,7 @@ class ToothpickViewModelFactory(
         return when {
 
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
+                appNavigation = appNavigation,
                 doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
                 thisDeviceRepository = scope.getInstance(ThisDeviceRepository::class.java),
                 cameraRepository = scope.getInstance(CameraRepository::class.java),
@@ -30,6 +36,8 @@ class ToothpickViewModelFactory(
             )
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
+                doorbellData = args?.let { ImageListFragmentArgs.fromBundle(it).doorbellData },
+                appNavigation = appNavigation,
                 doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
                 imagesDataSourceFactory = scope.getInstance(ImagesDataSourceFactory::class.java),
                 uptimeRepository = scope.getInstance(UptimeRepository::class.java)

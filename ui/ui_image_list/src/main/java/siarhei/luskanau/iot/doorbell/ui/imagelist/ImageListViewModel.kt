@@ -1,36 +1,44 @@
 package siarhei.luskanau.iot.doorbell.ui.imagelist
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Config
 import androidx.paging.toLiveData
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.common.AppConstants
+import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
+import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 
 class ImageListViewModel(
+    private val doorbellData: DoorbellData?,
+    private val appNavigation: AppNavigation,
     private val doorbellRepository: DoorbellRepository,
     private val imagesDataSourceFactory: ImagesDataSourceFactory,
     private val uptimeRepository: UptimeRepository
-) : ViewModel() {
+) : ViewModel(), ImageListPresenter {
 
     private val deviceIdLiveData = MutableLiveData<String>()
 
-    val imageListStateFlow: Flow<ImageListState> = deviceIdLiveData
+    override fun getImageListStateFlow(): Flow<ImageListState> = deviceIdLiveData
         .asFlow()
+        .onEach { loadingData.postValue(true) }
         .flatMapLatest { deviceId: String ->
+            delay(1_000L)
+
             imagesDataSourceFactory.createDataSourceFactory(deviceId).toLiveData(
                 config = Config(
                     pageSize = PAGE_SIZE,
@@ -62,36 +70,41 @@ class ImageListViewModel(
                     emit(ErrorImageListState(error = cause))
                 }
         }
-        .onStart {
-            loadingData.postValue(true)
-        }
-        .onEach {
-            loadingData.postValue(false)
-        }
+        .onEach { loadingData.postValue(false) }
 
-    val loadingData = MutableLiveData<Boolean>()
+    private val loadingData = MutableLiveData<Boolean>()
+    override fun getLoadingData(): LiveData<Boolean> = loadingData
 
-    fun requestData(deviceId: String) {
-        deviceIdLiveData.postValue(deviceId)
+    override fun requestData() {
+        doorbellData?.let { deviceIdLiveData.postValue(it.doorbellId) }
     }
 
-    fun onCameraClicked(doorbellData: DoorbellData, cameraData: CameraData) {
-        viewModelScope.launch {
-            doorbellRepository.sendCameraImageRequest(
-                deviceId = doorbellData.doorbellId,
-                cameraId = cameraData.cameraId,
-                isRequested = true
-            )
+    override fun onCameraClicked(cameraData: CameraData) {
+        doorbellData?.let {
+            viewModelScope.launch {
+                doorbellRepository.sendCameraImageRequest(
+                    deviceId = it.doorbellId,
+                    cameraId = cameraData.cameraId,
+                    isRequested = true
+                )
+            }
         }
     }
 
-    fun rebootDevice(doorbellId: String, currentTime: Long) {
-        viewModelScope.launch {
-            uptimeRepository.uptimeRebootRequest(
-                doorbellId = doorbellId,
-                rebootRequestTimeMillis = currentTime,
-                rebootRequestTimeString = AppConstants.DATE_FORMAT.format(currentTime)
-            )
+    override fun onImageClicked(imageData: ImageData) {
+        doorbellData?.let { appNavigation.navigateToImageDetails(it, imageData) }
+    }
+
+    override fun rebootDevice() {
+        doorbellData?.let {
+            viewModelScope.launch {
+                val currentTime = System.currentTimeMillis()
+                uptimeRepository.uptimeRebootRequest(
+                    doorbellId = it.doorbellId,
+                    rebootRequestTimeMillis = currentTime,
+                    rebootRequestTimeString = AppConstants.DATE_FORMAT.format(currentTime)
+                )
+            }
         }
     }
 

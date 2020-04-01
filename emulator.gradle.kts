@@ -83,8 +83,8 @@ tasks.register<Exec>("setupAndroidSDK") {
                 config.sdkmanager.absolutePath,
                 "tools",
                 "platform-tools",
-                "build-tools;30.0.0-rc2",
-                "platforms;android-29",
+                "build-tools;${BuildVersions.buildToolsVersion}",
+                "platforms;android-${BuildVersions.platformVersion}",
                 "emulator"
             ).apply { addAll(ANDROID_EMULATORS.map { it.sdkId }) }
             standardInput = YES_INPUT.byteInputStream()
@@ -333,7 +333,7 @@ private class AndroidSdkConfig {
         }
 
     private fun readAndroidSdkLocation(): String =
-        readAndroidSdkFromLocalProperties()?.let { it }
+        readAndroidSdkFromLocalProperties()
             ?: run { System.getenv("ANDROID_HOME") }
             ?: throw Error("Android sdk isn't defined in local properties or environment variable")
 

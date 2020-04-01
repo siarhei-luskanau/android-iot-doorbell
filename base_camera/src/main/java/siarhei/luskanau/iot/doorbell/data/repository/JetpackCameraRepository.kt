@@ -59,10 +59,9 @@ class JetpackCameraRepository(
                         // TODO use ImageAnalysis to check if camera is ready
                         Thread.sleep(1000)
 
+                        val photoFile = imageRepository.prepareFile(cameraId)
                         imageCapture.takePicture(
-                            ImageCapture.OutputFileOptions.Builder(
-                                imageRepository.prepareFile(cameraId)
-                            ).build(),
+                            ImageCapture.OutputFileOptions.Builder(photoFile).build(),
                             CameraXExecutors.ioExecutor(),
                             object : ImageCapture.OnImageSavedCallback {
 
@@ -74,7 +73,8 @@ class JetpackCameraRepository(
                                             CameraX.unbind(imageCapture)
                                             continuation.resume(
                                                 imageRepository.saveImage(
-                                                    outputFileResults.savedUri
+                                                    imageUri = outputFileResults.savedUri,
+                                                    file = photoFile
                                                 )
                                             )
                                         }.onFailure {

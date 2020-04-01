@@ -12,7 +12,7 @@ interface ImageRepository {
 
     fun saveImage(byteBuffer: ByteBuffer?, name: String): ImageFile
 
-    fun saveImage(imageUri: Uri?): ImageFile
+    fun saveImage(imageUri: Uri?, file: File): ImageFile
 
     fun openInputStream(imageFile: ImageFile): InputStream
 }

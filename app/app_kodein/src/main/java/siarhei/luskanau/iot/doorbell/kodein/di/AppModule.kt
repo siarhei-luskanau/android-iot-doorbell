@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -14,7 +13,6 @@ import org.kodein.di.generic.M
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.factory
 import org.kodein.di.generic.instance
-import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
@@ -46,8 +44,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
-import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenter
-import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
@@ -56,17 +52,13 @@ import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFrag
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
-import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenter
-import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsPresenter
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
-import timber.log.Timber
 
 val appModule = Kodein.Module(name = "appModule") {
     bind() from singleton { WorkManager.getInstance(instance()) }
-    bind<ViewModelProvider.Factory>() with singleton { KodeinViewModelFactory(injector = dkodein) }
     bind<ImageRepository>() with singleton { InternalStorageImageRepository(context = instance()) }
     bind<DoorbellRepository>() with singleton {
         FirebaseDoorbellRepository(imageRepository = instance())
@@ -133,6 +125,13 @@ val activityModule = Kodein.Module(name = "activityModule") {
     bind<FragmentFactory>() with factory { activity: FragmentActivity ->
         KodeinFragmentFactory(instance(arg = activity), dkodein)
     }
+    bind<ViewModelProvider.Factory>() with factory { appNavigation: AppNavigation, args: Bundle? ->
+        KodeinViewModelFactory(
+            injector = dkodein,
+            appNavigation = appNavigation,
+            args = args
+        )
+    }
 
     // Permissions
     bind<Fragment>(
@@ -151,20 +150,11 @@ val activityModule = Kodein.Module(name = "activityModule") {
         tag = DoorbellListFragment::class.simpleName
     ) with factory { appNavigation: AppNavigation ->
         DoorbellListFragment { fragment: Fragment ->
-            instance(arg = M(fragment, appNavigation))
+            val viewModelFactory: ViewModelProvider.Factory =
+                instance(arg = M(appNavigation, fragment.arguments))
+            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)
+                .get(DoorbellListViewModel::class.java)
         }
-    }
-    bind<DoorbellListPresenter>() with factory { lifecycleOwner: LifecycleOwner,
-                                                 appNavigation: AppNavigation ->
-        val viewModelFactory: ViewModelProvider.Factory = instance()
-        val viewModel = ViewModelProvider(lifecycleOwner as ViewModelStoreOwner, viewModelFactory)
-            .get(DoorbellListViewModel::class.java)
-        val thisDeviceRepository: ThisDeviceRepository = instance()
-        DoorbellListPresenterImpl(
-            doorbellListViewModel = viewModel,
-            appNavigation = appNavigation,
-            thisDeviceRepository = thisDeviceRepository
-        )
     }
 
     // ImageList
@@ -172,23 +162,11 @@ val activityModule = Kodein.Module(name = "activityModule") {
         tag = ImageListFragment::class.simpleName
     ) with factory { appNavigation: AppNavigation ->
         ImageListFragment { fragment: Fragment ->
-            val doorbellData = fragment.arguments?.let { args: Bundle ->
-                ImageListFragmentArgs.fromBundle(args).doorbellData
-            }
-            instance(arg = M(fragment, appNavigation, doorbellData))
+            val viewModelFactory: ViewModelProvider.Factory =
+                instance(arg = M(appNavigation, fragment.arguments))
+            ViewModelProvider(fragment, viewModelFactory)
+                .get(ImageListViewModel::class.java)
         }
-    }
-    bind<ImageListPresenter>() with factory { lifecycleOwner: LifecycleOwner,
-                                              appNavigation: AppNavigation,
-                                              doorbellData: DoorbellData ->
-        val viewModelFactory: ViewModelProvider.Factory = instance()
-        val viewModel = ViewModelProvider(lifecycleOwner as ViewModelStoreOwner, viewModelFactory)
-            .get(ImageListViewModel::class.java)
-        ImageListPresenterImpl(
-            doorbellData = doorbellData,
-            imageListViewModel = viewModel,
-            appNavigation = appNavigation
-        )
     }
 
     // ImageDetails
@@ -236,9 +214,11 @@ val activityModule = Kodein.Module(name = "activityModule") {
 }
 
 val viewModelModule = Kodein.Module(name = "viewModelModule") {
-    bind<ViewModel>(tag = DoorbellListViewModel::class.simpleName) with provider {
-        Timber.d("KodeinViewModelFactory:${DoorbellListViewModel::class.java.name}")
+    bind<ViewModel>(
+        tag = DoorbellListViewModel::class.simpleName
+    ) with factory { appNavigation: AppNavigation, _: Bundle? ->
         DoorbellListViewModel(
+            appNavigation = appNavigation,
             doorbellRepository = instance(),
             thisDeviceRepository = instance(),
             cameraRepository = instance(),
@@ -246,9 +226,13 @@ val viewModelModule = Kodein.Module(name = "viewModelModule") {
         )
     }
 
-    bind<ViewModel>(tag = ImageListViewModel::class.simpleName) with provider {
-        Timber.d("KodeinViewModelFactory:${ImageListViewModel::class.java.name}")
+    bind<ViewModel>(
+        tag = ImageListViewModel::class.simpleName
+    ) with factory { appNavigation: AppNavigation, args: Bundle? ->
+        val doorbellData = args?.let { ImageListFragmentArgs.fromBundle(it).doorbellData }
         ImageListViewModel(
+            doorbellData = doorbellData,
+            appNavigation = appNavigation,
             doorbellRepository = instance(),
             imagesDataSourceFactory = instance(),
             uptimeRepository = instance()

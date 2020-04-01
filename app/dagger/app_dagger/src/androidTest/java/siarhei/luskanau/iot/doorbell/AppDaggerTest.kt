@@ -14,7 +14,7 @@ import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 class AppDaggerTest {
 
     @get:Rule
-    val screenshotRule = TakeScreenshotAfterTestRule()
+    val screenshotRule = TakeScreenshotAfterTestRule(onSucceeded = false)
 
     @get:Rule
     val grantPermissionRule: GrantPermissionRule? =
@@ -26,5 +26,11 @@ class AppDaggerTest {
     @Test
     fun appTest() {
         activityScenarioRule.scenario.moveToState(Lifecycle.State.STARTED)
+        activityScenarioRule.scenario.onActivity {
+            screenshotRule.captureScreenshot(
+                name = javaClass.simpleName + ".screenshot",
+                activity = it
+            )
+        }
     }
 }

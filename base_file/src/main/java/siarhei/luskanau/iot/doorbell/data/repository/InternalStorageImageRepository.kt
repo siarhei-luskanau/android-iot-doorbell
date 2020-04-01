@@ -32,9 +32,14 @@ class InternalStorageImageRepository(
             ImageFile(throwable = it)
         }.getOrThrow()
 
-    override fun saveImage(imageUri: Uri?): ImageFile =
+    override fun saveImage(imageUri: Uri?, file: File): ImageFile =
         runCatching {
-            ImageFile(imageUri = imageUri)
+            ImageFile(
+                imageUri = imageUri,
+                name = file.name,
+                path = file.absolutePath,
+                size = file.length()
+            )
         }.onFailure {
             ImageFile(throwable = it)
         }.getOrThrow()

@@ -32,10 +32,7 @@ allprojects {
 
     afterEvaluate {
         plugins.forEach { plugin ->
-            // println("plugin: $plugin")
             (plugin as? com.android.build.gradle.internal.plugins.BasePlugin<*, *>)?.let { libraryPlugin ->
-                // println("LibraryPlugin: $libraryPlugin")
-
                 libraryPlugin.extension.apply {
                     compileSdkVersion(BuildVersions.compileSdkVersion)
                     buildToolsVersion = BuildVersions.buildToolsVersion
@@ -66,7 +63,7 @@ allprojects {
                         })
                     }
 
-                    viewBinding { isEnabled = true }
+                    buildFeatures.viewBinding = true
                 }
             }
         }

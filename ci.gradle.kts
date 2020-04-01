@@ -13,7 +13,6 @@ tasks.register<GradleBuild>("ciBuildApp") {
         "clean",
         "ktlint",
         "detekt",
-        "lint",
         "build",
         "testDebugUnitTest"
     )

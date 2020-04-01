@@ -10,7 +10,6 @@ import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerFragmentFactory
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
-import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 
 @Module
@@ -25,8 +24,10 @@ class DoorbellListBuilderModule {
 
     @Provides
     fun provideDoorbellListViewModel(
+        appNavigation: AppNavigation,
         commonComponent: CommonComponent
     ) = DoorbellListViewModel(
+        appNavigation = appNavigation,
         doorbellRepository = commonComponent.provideDoorbellRepository(),
         thisDeviceRepository = commonComponent.provideThisDeviceRepository(),
         cameraRepository = commonComponent.provideCameraRepository(),
@@ -35,17 +36,9 @@ class DoorbellListBuilderModule {
 
     @Provides
     fun provideDoorbellListFragment(
-        viewModelFactory: ViewModelProvider.Factory,
-        appNavigation: AppNavigation,
-        commonComponent: CommonComponent
+        viewModelFactory: ViewModelProvider.Factory
     ) = DoorbellListFragment { fragment: Fragment ->
-        val placeListViewModel =
-            ViewModelProvider(fragment, viewModelFactory)
-                .get(DoorbellListViewModel::class.java)
-        DoorbellListPresenterImpl(
-            doorbellListViewModel = placeListViewModel,
-            appNavigation = appNavigation,
-            thisDeviceRepository = commonComponent.provideThisDeviceRepository()
-        )
+        ViewModelProvider(fragment, viewModelFactory)
+            .get(DoorbellListViewModel::class.java)
     }
 }

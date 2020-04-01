@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.work.WorkManager
@@ -40,8 +39,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
-import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenter
-import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
@@ -52,16 +49,12 @@ import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePres
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
-import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenter
-import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsPresenter
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
-import timber.log.Timber
 
 val appModule = module {
-    single<ViewModelProvider.Factory> { KoinViewModelFactory(koin = getKoin()) }
     single { WorkManager.getInstance(get()) }
     single<ImageRepository> { InternalStorageImageRepository(context = get()) }
     single<DoorbellRepository> {
@@ -125,6 +118,13 @@ val activityModule = module {
             appNavigation = appNavigation
         )
     }
+    factory<ViewModelProvider.Factory> { (appNavigation: AppNavigation, args: Bundle?) ->
+        KoinViewModelFactory(
+            koin = getKoin(),
+            appNavigation = appNavigation,
+            args = args
+        )
+    }
 
     // Permissions
     factory { (appNavigation: AppNavigation) ->
@@ -137,59 +137,21 @@ val activityModule = module {
     // DoorbellList
     factory { (appNavigation: AppNavigation) ->
         DoorbellListFragment { fragment: Fragment ->
-            val thisDeviceRepository: ThisDeviceRepository = get()
-            get {
-                parametersOf(
-                    fragment,
-                    appNavigation,
-                    thisDeviceRepository
-                )
-            }
+            val viewModelFactory: ViewModelProvider.Factory =
+                get { parametersOf(appNavigation, fragment.arguments) }
+            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)
+                .get(DoorbellListViewModel::class.java)
         }
-    }
-    factory<DoorbellListPresenter> { (
-                                         lifecycleOwner: LifecycleOwner,
-                                         appNavigation: AppNavigation,
-                                         thisDeviceRepository: ThisDeviceRepository
-                                     ) ->
-        val viewModelFactory: ViewModelProvider.Factory = get()
-        val viewModel = ViewModelProvider(lifecycleOwner as ViewModelStoreOwner, viewModelFactory)
-            .get(DoorbellListViewModel::class.java)
-        DoorbellListPresenterImpl(
-            doorbellListViewModel = viewModel,
-            appNavigation = appNavigation,
-            thisDeviceRepository = thisDeviceRepository
-        )
     }
 
     // ImageList
     factory { (appNavigation: AppNavigation) ->
         ImageListFragment { fragment: Fragment ->
-            val doorbellData = fragment.arguments?.let { args: Bundle ->
-                ImageListFragmentArgs.fromBundle(args).doorbellData
-            }
-            get {
-                parametersOf(
-                    doorbellData,
-                    fragment,
-                    appNavigation
-                )
-            }
+            val viewModelFactory: ViewModelProvider.Factory =
+                get { parametersOf(appNavigation, fragment.arguments) }
+            ViewModelProvider(fragment, viewModelFactory)
+                .get(ImageListViewModel::class.java)
         }
-    }
-    factory<ImageListPresenter> { (
-                                      doorbellData: DoorbellData,
-                                      lifecycleOwner: LifecycleOwner,
-                                      appNavigation: AppNavigation
-                                  ) ->
-        val viewModelFactory: ViewModelProvider.Factory = get()
-        val viewModel = ViewModelProvider(lifecycleOwner as ViewModelStoreOwner, viewModelFactory)
-            .get(ImageListViewModel::class.java)
-        ImageListPresenterImpl(
-            doorbellData = doorbellData,
-            imageListViewModel = viewModel,
-            appNavigation = appNavigation
-        )
     }
 
     // ImageDetails
@@ -236,18 +198,20 @@ val activityModule = module {
 }
 
 val viewModelModule = module {
-    factory {
-        Timber.d("KoinViewModelFactory:${DoorbellListViewModel::class.java.name}")
+    factory { (appNavigation: AppNavigation, _: Bundle?) ->
         DoorbellListViewModel(
+            appNavigation = appNavigation,
             doorbellRepository = get(),
             thisDeviceRepository = get(),
             cameraRepository = get(),
             doorbellsDataSource = get()
         )
     }
-    factory {
-        Timber.d("KoinViewModelFactory:${ImageListViewModel::class.java.name}")
+    factory { (appNavigation: AppNavigation, args: Bundle?) ->
+        val doorbellData = args?.let { ImageListFragmentArgs.fromBundle(it).doorbellData }
         ImageListViewModel(
+            doorbellData = doorbellData,
+            appNavigation = appNavigation,
             doorbellRepository = get(),
             imagesDataSourceFactory = get(),
             uptimeRepository = get()

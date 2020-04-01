@@ -11,10 +11,10 @@ import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 
 @LargeTest
-class AppSingletonAndroidTest {
+class AppSingletonTest {
 
     @get:Rule
-    val screenshotRule = TakeScreenshotAfterTestRule()
+    val screenshotRule = TakeScreenshotAfterTestRule(onSucceeded = false)
 
     @get:Rule
     val grantPermissionRule: GrantPermissionRule? =
@@ -26,5 +26,11 @@ class AppSingletonAndroidTest {
     @Test
     fun appTest() {
         activityScenarioRule.scenario.moveToState(Lifecycle.State.STARTED)
+        activityScenarioRule.scenario.onActivity {
+            screenshotRule.captureScreenshot(
+                name = javaClass.simpleName + ".screenshot",
+                activity = it
+            )
+        }
     }
 }

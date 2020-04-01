@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
@@ -7,13 +8,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Config
 import androidx.paging.DataSource
 import androidx.paging.toLiveData
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
@@ -21,15 +22,15 @@ import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 
-@ExperimentalCoroutinesApi
 class DoorbellListViewModel(
+    private val appNavigation: AppNavigation,
     private val doorbellRepository: DoorbellRepository,
     private val thisDeviceRepository: ThisDeviceRepository,
     private val cameraRepository: CameraRepository,
     private val doorbellsDataSource: DoorbellsDataSource
-) : ViewModel() {
+) : ViewModel(), DoorbellListPresenter {
 
-    val doorbellListStateFlow: Flow<DoorbellListState> =
+    override fun getDoorbellListFlow(): Flow<DoorbellListState> =
         createDataSourceFactory()
             .toLiveData(
                 config = Config(
@@ -39,7 +40,10 @@ class DoorbellListViewModel(
                 )
             )
             .asFlow()
+            .onEach { loadingData.postValue(true) }
             .map { pagedList ->
+                delay(1_000L)
+
                 val cameraList = cameraRepository.getCamerasList()
                 if (pagedList.isNotEmpty()) {
                     NormalDoorbellListState(cameraList, pagedList)
@@ -50,22 +54,29 @@ class DoorbellListViewModel(
             .catch { cause: Throwable ->
                 emit(ErrorDoorbellListState(error = cause))
             }
-            .onStart {
-                loadingData.postValue(true)
-            }
-            .onEach {
-                loadingData.postValue(false)
-            }
+            .onEach { loadingData.postValue(false) }
 
-    val loadingData = MutableLiveData<Boolean>()
+    private val loadingData = MutableLiveData<Boolean>()
+    override fun getLoadingData(): LiveData<Boolean> = loadingData
 
-    fun onCameraClicked(cameraData: CameraData) {
+    override fun onCameraClicked(cameraData: CameraData) {
         viewModelScope.launch {
             doorbellRepository.sendCameraImageRequest(
                 deviceId = thisDeviceRepository.doorbellId(),
                 cameraId = cameraData.cameraId,
                 isRequested = true
             )
+        }
+    }
+
+    override fun onDoorbellClicked(doorbellData: DoorbellData) =
+        appNavigation.navigateToImageList(doorbellData)
+
+    override fun requestData() = Unit
+
+    override fun checkPermissions() {
+        if (thisDeviceRepository.isPermissionsGranted().not()) {
+            appNavigation.goDoorbellListToPermissions()
         }
     }
 

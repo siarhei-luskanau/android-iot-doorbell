@@ -1,11 +1,15 @@
 package siarhei.luskanau.iot.doorbell.common.test.ui
 
+import android.app.Activity
 import android.graphics.Bitmap
+import android.view.View
 import androidx.test.runner.screenshot.Screenshot
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
-class TakeScreenshotAfterTestRule : TestWatcher() {
+class TakeScreenshotAfterTestRule(
+    private val onSucceeded: Boolean = true
+) : TestWatcher() {
 
     init {
         Screenshot.setScreenshotProcessors(
@@ -14,15 +18,23 @@ class TakeScreenshotAfterTestRule : TestWatcher() {
     }
 
     override fun succeeded(description: Description) {
-        captureScreenshot(description.testClass.simpleName + "." + description.methodName)
+        if (onSucceeded) {
+            captureScreenshot(description.testClass.simpleName + "." + description.methodName)
+        }
     }
 
     override fun failed(e: Throwable?, description: Description) {
         captureScreenshot(description.testClass.simpleName + "." + description.methodName + "_fail")
     }
 
-    private fun captureScreenshot(name: String) {
-        val capture = Screenshot.capture()
+    fun captureScreenshot(
+        name: String,
+        view: View? = null,
+        activity: Activity? = null
+    ) {
+        val capture = view?.let { Screenshot.capture(it) }
+            ?: activity?.let { Screenshot.capture(it) }
+            ?: run { Screenshot.capture() }
         capture.format = Bitmap.CompressFormat.PNG
         capture.name = name
         capture.process()
