@@ -9,13 +9,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion(BuildVersions.compileSdkVersion)
-    buildToolsVersion = BuildVersions.buildToolsVersion
-
     defaultConfig {
         applicationId = "siarhei.luskanau.iot.doorbell"
-        minSdkVersion(BuildVersions.minSdkVersion)
-        targetSdkVersion(BuildVersions.targetSdkVersion)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

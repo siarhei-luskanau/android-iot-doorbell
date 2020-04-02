@@ -4,17 +4,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-android {
-    compileSdkVersion(BuildVersions.compileSdkVersion)
-    buildToolsVersion = BuildVersions.buildToolsVersion
-
-    defaultConfig {
-        minSdkVersion(BuildVersions.minSdkVersion)
-        targetSdkVersion(BuildVersions.targetSdkVersion)
-    }
-}
-
-
 dependencies {
     coreLibraryDesugaring(Libraries.desugarJdkLibs)
 

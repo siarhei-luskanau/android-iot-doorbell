@@ -36,14 +36,20 @@ allprojects {
             (plugin as? com.android.build.gradle.internal.plugins.BasePlugin<*,*>)?.let { libraryPlugin ->
                 // println("LibraryPlugin: $libraryPlugin")
 
-                libraryPlugin.extension.compileOptions {
-                    isCoreLibraryDesugaringEnabled = true
-                    sourceCompatibility = JavaVersion.VERSION_1_8
-                    targetCompatibility = JavaVersion.VERSION_1_8
-                }
+                libraryPlugin.extension.apply{
+                    compileSdkVersion(BuildVersions.compileSdkVersion)
+                    buildToolsVersion = BuildVersions.buildToolsVersion
 
-                libraryPlugin.extension.defaultConfig {
-                    multiDexEnabled = true
+                    defaultConfig {
+                        minSdkVersion(BuildVersions.minSdkVersion)
+                        targetSdkVersion(BuildVersions.targetSdkVersion)
+                    }
+
+                    compileOptions {
+                        isCoreLibraryDesugaringEnabled = true
+                        sourceCompatibility = JavaVersion.VERSION_1_8
+                        targetCompatibility = JavaVersion.VERSION_1_8
+                    }
                 }
             }
         }

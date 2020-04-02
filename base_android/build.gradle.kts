@@ -16,15 +16,6 @@ paperwork {
 }
 
 android {
-    compileSdkVersion(BuildVersions.compileSdkVersion)
-    buildToolsVersion = BuildVersions.buildToolsVersion
-
-    defaultConfig {
-        minSdkVersion(BuildVersions.minSdkVersion)
-        targetSdkVersion(BuildVersions.targetSdkVersion)
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
     androidExtensions {
         features = setOf("parcelize")
     }
