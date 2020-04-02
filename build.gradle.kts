@@ -33,16 +33,17 @@ allprojects {
     afterEvaluate {
         plugins.forEach { plugin ->
             // println("plugin: $plugin")
-            (plugin as? com.android.build.gradle.internal.plugins.BasePlugin<*,*>)?.let { libraryPlugin ->
+            (plugin as? com.android.build.gradle.internal.plugins.BasePlugin<*, *>)?.let { libraryPlugin ->
                 // println("LibraryPlugin: $libraryPlugin")
 
-                libraryPlugin.extension.apply{
+                libraryPlugin.extension.apply {
                     compileSdkVersion(BuildVersions.compileSdkVersion)
                     buildToolsVersion = BuildVersions.buildToolsVersion
 
                     defaultConfig {
                         minSdkVersion(BuildVersions.minSdkVersion)
                         targetSdkVersion(BuildVersions.targetSdkVersion)
+                        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     }
 
                     compileOptions {
@@ -50,6 +51,22 @@ allprojects {
                         sourceCompatibility = JavaVersion.VERSION_1_8
                         targetCompatibility = JavaVersion.VERSION_1_8
                     }
+
+                    testOptions {
+                        animationsDisabled = true
+                        unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {
+                            //isReturnDefaultValues = true
+                            all { test: Test ->
+                                test.testLogging.events = setOf(
+                                    org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                                    org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                                    org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+                                )
+                            }
+                        })
+                    }
+
+                    viewBinding { isEnabled = true }
                 }
             }
         }

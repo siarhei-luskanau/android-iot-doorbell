@@ -5,12 +5,6 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
 }
 
-android {
-    buildFeatures {
-        viewBinding = true
-    }
-}
-
 dependencies {
     coreLibraryDesugaring(Libraries.desugarJdkLibs)
 

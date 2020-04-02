@@ -19,20 +19,6 @@ android {
     androidExtensions {
         features = setOf("parcelize")
     }
-
-    testOptions {
-        animationsDisabled = true
-        unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {
-            //isReturnDefaultValues = true
-            all { test: Test ->
-                test.testLogging.events = setOf(
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-                )
-            }
-        })
-    }
 }
 
 dependencies {

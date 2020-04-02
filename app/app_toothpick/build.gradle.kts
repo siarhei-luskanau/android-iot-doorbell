@@ -12,7 +12,6 @@ android {
         applicationId = "siarhei.luskanau.iot.doorbell"
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -22,26 +21,8 @@ android {
         }
     }
 
-    buildFeatures {
-        viewBinding = true
-    }
-
     lintOptions {
         isAbortOnError = false
-    }
-
-    testOptions {
-        animationsDisabled = true
-        unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {
-            //isReturnDefaultValues = true
-            all { test: Test ->
-                test.testLogging.events = setOf(
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-                )
-            }
-        })
     }
 }
 

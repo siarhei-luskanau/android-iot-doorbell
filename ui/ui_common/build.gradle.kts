@@ -4,12 +4,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-android {
-    buildFeatures {
-        viewBinding = true
-    }
-}
-
 dependencies {
     coreLibraryDesugaring(Libraries.desugarJdkLibs)
 
