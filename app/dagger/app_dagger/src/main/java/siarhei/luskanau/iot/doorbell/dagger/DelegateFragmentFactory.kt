@@ -17,7 +17,7 @@ class DelegateFragmentFactory(
         var fragment: Fragment? = null
 
         for (provider in providers) {
-            val instantiateResult = kotlin.runCatching {
+            val instantiateResult = runCatching {
                 fragment = provider.invoke().instantiate(classLoader, className)
             }
             if (instantiateResult.isSuccess) {

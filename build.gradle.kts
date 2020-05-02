@@ -64,6 +64,7 @@ allprojects {
                     }
 
                     buildFeatures.viewBinding = true
+                    lintOptions.isAbortOnError = false
                 }
             }
         }
@@ -78,6 +79,7 @@ tasks.register("clean").configure {
     delete("build")
 }
 
+apply(from = "$rootDir/emulator.gradle.kts")
 apply(from = "$rootDir/ci.gradle.kts")
 
 println("gradle.startParameter.taskNames: ${gradle.startParameter.taskNames}")

@@ -8,11 +8,13 @@ plugins {
 }
 
 paperwork {
-    set = mapOf(
-        "gitSha" to gitSha(),
-        "gitBranch" to gitBranch(),
-        "buildDate" to buildTime("yyyy-MM-dd HH:mm:ss", "GMT")
-    )
+    set = runCatching {
+        mapOf(
+            "gitSha" to gitSha(),
+            "gitBranch" to gitBranch(),
+            "buildDate" to buildTime("yyyy-MM-dd HH:mm:ss", "GMT")
+        )
+    }.getOrNull()
 }
 
 android {

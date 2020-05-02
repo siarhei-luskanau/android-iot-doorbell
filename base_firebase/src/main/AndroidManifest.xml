@@ -1,13 +1,1 @@
-<manifest
-    package="siarhei.luskanau.iot.doorbell.data.firebase"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <application>
-
-        <meta-data
-            android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="face,ocr"/>
-
-    </application>
-
-</manifest>
+<manifest package="siarhei.luskanau.iot.doorbell.data.firebase" />

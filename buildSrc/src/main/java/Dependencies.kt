@@ -1,32 +1,32 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-alpha06"
+    const val androidToolsBuildGradle = "4.1.0-alpha08"
     const val kotlin = "1.3.72"
     const val kotlinxCoroutines = "1.3.5"
-    const val navigation = "2.3.0-alpha05"
+    const val navigation = "2.3.0-alpha06"
     const val timber = "4.7.1"
     const val androidxCamera = "1.0.0-beta03"
     const val androidxCameraExtensions = "1.0.0-alpha10"
     const val material = "1.2.0-alpha06"
-    const val swiperefreshlayout = "1.1.0-beta01"
-    const val fragment = "1.3.0-alpha03"
-    const val androidxCore = "1.3.0-beta01"
-    const val lifecycle = "2.3.0-alpha01"
+    const val swiperefreshlayout = "1.1.0-rc01"
+    const val fragment = "1.3.0-alpha04"
+    const val androidxCore = "1.3.0-rc01"
+    const val lifecycle = "2.3.0-alpha02"
     const val paging = "2.1.2"
     const val room = "2.2.5"
-    const val workManager = "2.4.0-alpha02"
+    const val workManager = "2.4.0-alpha03"
     const val constraintLayout = "2.0.0-beta4"
     const val moshi = "1.9.2"
-    const val coil = "0.9.5"
+    const val coil = "0.10.1"
     const val paperwork = "1.2.7"
 
-    // Play services versions
-    const val firebaseDatabase = "19.2.1"
+    // GMS versions
+    const val firebaseDatabase = "19.3.0"
     const val firebaseStorage = "19.1.1"
 
     // DI
-    const val dagger = "2.26"
-    const val kodein = "6.5.1"
+    const val dagger = "2.27"
+    const val kodein = "6.5.5"
     const val koin = "2.1.5"
     const val toothpick = "3.1.0"
 
@@ -38,19 +38,19 @@ private object Versions {
 
     // Testing
     const val mockitoKotlin = "2.2.0"
-    const val spek = "2.0.9"
+    const val spek = "2.0.10"
 
     // test instrumentation
-    const val androidTestCore = "1.3.0-alpha05"
-    const val espresso = "3.3.0-alpha05"
-    const val testExtJunit = "1.1.2-alpha05"
+    const val androidTestCore = "1.3.0-beta01"
+    const val espresso = "3.3.0-beta01"
+    const val testExtJunit = "1.1.2-beta01"
 }
 
 object BuildVersions {
     const val platformVersion = "R"
     const val compileSdkVersion = "android-$platformVersion"
     const val targetSdkVersion = 30
-    const val buildToolsVersion = "30.0.0-rc2"
+    const val buildToolsVersion = "30.0.0-rc3"
     const val minSdkVersion = 21
 }
 

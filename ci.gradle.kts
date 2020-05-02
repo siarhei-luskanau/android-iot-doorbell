@@ -1,21 +1,58 @@
-apply(from = "$rootDir/emulator.gradle.kts")
+tasks.register<Exec>("ciBuildApp") {
+    commandLine = listOf("java", "-version")
+    doLast {
+        exec {
+            commandLine = listOf(
+                File(project.rootDir, "gradlew").absolutePath,
+                "setupAndroidSDK", "setupAndroidEmulator", "runAndroidEmulator"
+            )
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
 
-tasks.register<GradleBuild>("ciRunAndroidEmulator") {
-    tasks = listOf(
-        "setupAndroidSDK",
-        "setupAndroidEmulator",
-        "runAndroidEmulator"
-    )
-}
+        exec {
+            commandLine = listOf(
+                File(project.rootDir, "gradlew").absolutePath,
+                "clean",
+                "ktlint",
+                "detekt",
+                "assembleDebug",
+                "testDebugUnitTest"
+            )
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
 
-tasks.register<GradleBuild>("ciBuildApp") {
-    tasks = listOf(
-        "clean",
-        "ktlint",
-        "detekt",
-        "build",
-        "testDebugUnitTest"
-    )
+        exec {
+            commandLine = listOf(
+                File(project.rootDir, "gradlew").absolutePath,
+                "waitAndroidEmulator"
+            )
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+
+        exec {
+            commandLine = listOf(
+                File(project.rootDir, "gradlew").absolutePath,
+                "connectedAndroidTest"
+            )
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+
+        exec {
+            commandLine = listOf(
+                File(project.rootDir, "gradlew").absolutePath,
+                "copyApkArtifacts", "moveScreenshotsFromDevices"
+            )
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+
+        exec {
+            commandLine = listOf(
+                File(project.rootDir, "gradlew").absolutePath,
+                "killAndroidEmulator"
+            )
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+    }
 }
 
 tasks.register<Copy>("copyApkArtifacts") {
