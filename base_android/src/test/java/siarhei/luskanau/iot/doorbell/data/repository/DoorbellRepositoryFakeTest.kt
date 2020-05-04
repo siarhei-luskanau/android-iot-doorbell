@@ -76,7 +76,7 @@ object DoorbellRepositoryFakeTest : Spek({
 
                 beforeEachTest {
                     actual = doorbellRepositoryFake.getFromToRange(
-                        startAt = data.startAt,
+                        startAt = data.startAt?.toInt(),
                         orderAsc = data.orderAsc,
                         minCount = MIN_COUNT,
                         maxCount = MAX_COUNT,

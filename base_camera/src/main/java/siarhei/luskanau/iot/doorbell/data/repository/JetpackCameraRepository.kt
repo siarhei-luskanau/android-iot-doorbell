@@ -43,13 +43,13 @@ class JetpackCameraRepository(
 
                         val imageCapture = ImageCapture.Builder()
                             .setCaptureMode(CAPTURE_MODE_MINIMIZE_LATENCY)
-                            .setTargetResolution(Size(480, 640))
+                            .setTargetResolution(Size(WIDTH, HEIGHT))
                             .build()
 
                         CameraX.bindToLifecycle(ProcessLifecycleOwner.get(), cameraSelector)
 
                         // TODO use ImageAnalysis to check if camera is ready
-                        Thread.sleep(1000)
+                        Thread.sleep(SLEEP)
 
                         val photoFile = imageRepository.prepareFile(cameraId)
                         imageCapture.takePicture(
@@ -88,4 +88,10 @@ class JetpackCameraRepository(
                 continuation.resumeWithException(it)
             }
         }
+
+    companion object {
+        private const val SLEEP = 1000L
+        private const val WIDTH = 480
+        private const val HEIGHT = 640
+    }
 }

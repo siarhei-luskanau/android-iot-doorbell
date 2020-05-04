@@ -42,7 +42,7 @@ class DoorbellListViewModel(
             .asFlow()
             .onEach { loadingData.postValue(true) }
             .map { pagedList ->
-                delay(1_000L)
+                delay(DELAY)
 
                 val cameraList = cameraRepository.getCamerasList()
                 if (pagedList.isNotEmpty()) {
@@ -87,5 +87,6 @@ class DoorbellListViewModel(
 
     companion object {
         private const val PAGE_SIZE = 20
+        private const val DELAY = 1_000L
     }
 }

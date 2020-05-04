@@ -30,16 +30,13 @@ class AndroidDeviceInfoProvider(
         return "${deviceId}_${Build.MODEL}"
     }
 
-    override fun buildDeviceName() = Build.MODEL
+    override fun buildDeviceName(): String = Build.MODEL
 
     override fun isAndroidThings(): Boolean =
-        try {
+        runCatching {
             PeripheralManager.getInstance()
             true
-        } catch (t: Throwable) {
-            // Timber.e(t)
-            false
-        }
+        }.getOrElse { false }
 
     override fun buildDeviceInfo() = mapOf<String, Serializable>(
         "DEVICE" to Build.DEVICE,

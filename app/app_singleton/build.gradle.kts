@@ -3,7 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
-    // id("de.mannodermaus.android-junit5")
+    id("de.mannodermaus.android-junit5")
     id("com.google.gms.google-services")
 }
 

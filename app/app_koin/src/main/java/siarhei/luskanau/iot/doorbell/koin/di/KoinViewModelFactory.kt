@@ -15,20 +15,19 @@ class KoinViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        Timber.d("KoinViewModelFactory:create:$modelClass")
-        return try {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T =
+        runCatching<T> {
+            Timber.d("KoinViewModelFactory:create:$modelClass")
             koin.get(
                 clazz = modelClass.kotlin,
                 qualifier = null,
                 parameters = { parametersOf(appNavigation, args) }
             )
-        } catch (kodeinThrowable: Throwable) {
-            try {
-                modelClass.newInstance()
-            } catch (t: Throwable) {
-                throw kodeinThrowable
-            }
         }
-    }
+            .getOrElse { koinThrowable: Throwable ->
+                runCatching {
+                    modelClass.newInstance()
+                }
+                    .getOrNull() ?: throw koinThrowable
+            }
 }

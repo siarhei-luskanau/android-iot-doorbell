@@ -12,17 +12,16 @@ class KodeinFragmentFactory(
     private val injector: DKodein
 ) : FragmentFactory() {
 
-    override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-        Timber.d("KodeinFragmentFactory:instantiate:$className")
-        return try {
+    override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
+        runCatching<Fragment> {
+            Timber.d("KodeinFragmentFactory:instantiate:$className")
             val clazz = loadFragmentClass(classLoader, className).kotlin
-            return injector.instance(tag = clazz.simpleName, arg = appNavigation)
-        } catch (kodeinThrowable: Throwable) {
-            try {
-                super.instantiate(classLoader, className)
-            } catch (t: Throwable) {
-                throw kodeinThrowable
-            }
+            injector.instance(tag = clazz.simpleName, arg = appNavigation)
         }
-    }
+            .getOrElse { kodeinThrowable: Throwable ->
+                runCatching {
+                    super.instantiate(classLoader, className)
+                }
+                    .getOrNull() ?: throw kodeinThrowable
+            }
 }

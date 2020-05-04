@@ -19,6 +19,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 
+@Suppress("TooManyFunctions")
 @Singleton
 @Component(modules = [CommonModule::class])
 interface CommonComponent {

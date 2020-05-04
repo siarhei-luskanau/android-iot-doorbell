@@ -147,7 +147,7 @@ object GradlePlugin {
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val navigationSafeArgsGradlePlugin =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
-    const val androidJunit5Plugin = "de.mannodermaus.gradle.plugins:android-junit5:1.6.0.0"
+    const val androidJunit5Plugin = "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
     const val googleServicePlugin = "com.google.gms:google-services:4.3.3"
     const val paperworkPlugin = "hu.supercluster:paperwork-plugin:${Versions.paperwork}"
     const val koinGradlePlugin = "org.koin:koin-gradle-plugin:${Versions.koin}"

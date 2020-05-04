@@ -89,7 +89,7 @@ abstract class BaseCameraRepository(
                         info["SCALER_STREAM_CONFIGURATION_MAP"] = configs.outputFormats
                             .associateBy(
                                 { outputFormat: Int ->
-                                    getOutputFormaName(outputFormat) + ":$outputFormat"
+                                    outputFormatName[outputFormat] ?: "$outputFormat:$outputFormat"
                                 },
                                 { outputFormat: Int ->
                                     configs.getOutputSizes(outputFormat)
@@ -153,30 +153,6 @@ abstract class BaseCameraRepository(
             else -> hardwareLevel.toString()
         } + ":$hardwareLevel"
 
-    private fun getOutputFormaName(outputFormat: Int): String =
-        when (outputFormat) {
-            ImageFormat.UNKNOWN -> "UNKNOWN"
-            ImageFormat.JPEG -> "JPEG"
-            ImageFormat.YV12 -> "YV12"
-            ImageFormat.YUY2 -> "YUY2"
-            ImageFormat.DEPTH16 -> "DEPTH16"
-            ImageFormat.DEPTH_POINT_CLOUD -> "DEPTH_POINT_CLOUD"
-            ImageFormat.FLEX_RGBA_8888 -> "FLEX_RGBA_8888"
-            ImageFormat.FLEX_RGB_888 -> "FLEX_RGB_888"
-            ImageFormat.NV16 -> "NV16"
-            ImageFormat.NV21 -> "NV21"
-            ImageFormat.PRIVATE -> "PRIVATE"
-            ImageFormat.RAW10 -> "RAW10"
-            ImageFormat.RAW12 -> "RAW12"
-            ImageFormat.RAW_PRIVATE -> "RAW_PRIVATE"
-            ImageFormat.RAW_SENSOR -> "RAW_SENSOR"
-            ImageFormat.RGB_565 -> "RGB_565"
-            ImageFormat.YUV_420_888 -> "YUV_420_888"
-            ImageFormat.YUV_422_888 -> "YUV_422_888"
-            ImageFormat.YUV_444_888 -> "YUV_444_888"
-            else -> outputFormat.toString()
-        }
-
     private fun getEffectName(effect: Int): String =
         when (effect) {
             CameraMetadata.CONTROL_EFFECT_MODE_OFF -> "CONTROL_EFFECT_MODE_OFF"
@@ -190,4 +166,28 @@ abstract class BaseCameraRepository(
             CameraMetadata.CONTROL_EFFECT_MODE_AQUA -> "CONTROL_EFFECT_MODE_AQUA"
             else -> effect.toString()
         }
+
+    companion object {
+        private val outputFormatName = mapOf(
+            ImageFormat.UNKNOWN to "UNKNOWN",
+            ImageFormat.JPEG to "JPEG",
+            ImageFormat.YV12 to "YV12",
+            ImageFormat.YUY2 to "YUY2",
+            ImageFormat.DEPTH16 to "DEPTH16",
+            ImageFormat.DEPTH_POINT_CLOUD to "DEPTH_POINT_CLOUD",
+            ImageFormat.FLEX_RGBA_8888 to "FLEX_RGBA_8888",
+            ImageFormat.FLEX_RGB_888 to "FLEX_RGB_888",
+            ImageFormat.NV16 to "NV16",
+            ImageFormat.NV21 to "NV21",
+            ImageFormat.PRIVATE to "PRIVATE",
+            ImageFormat.RAW10 to "RAW10",
+            ImageFormat.RAW12 to "RAW12",
+            ImageFormat.RAW_PRIVATE to "RAW_PRIVATE",
+            ImageFormat.RAW_SENSOR to "RAW_SENSOR",
+            ImageFormat.RGB_565 to "RGB_565",
+            ImageFormat.YUV_420_888 to "YUV_420_888",
+            ImageFormat.YUV_422_888 to "YUV_422_888",
+            ImageFormat.YUV_444_888 to "YUV_444_888"
+        )
+    }
 }

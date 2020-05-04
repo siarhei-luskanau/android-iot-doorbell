@@ -20,7 +20,7 @@ class DoorbellRepositoryFake : DoorbellRepository {
     ): List<DoorbellData> {
         val fromToPair = getFromToRange(
             size = size,
-            startAt = startAt,
+            startAt = startAt?.toInt(),
             orderAsc = orderAsc,
             minCount = MIN_COUNT,
             maxCount = DOORBELL_MAX_COUNT
@@ -86,7 +86,7 @@ class DoorbellRepositoryFake : DoorbellRepository {
     ): List<ImageData> {
         val fromToPair = getFromToRange(
             size = size,
-            startAt = imageIdAt,
+            startAt = imageIdAt?.toInt(),
             orderAsc = orderAsc,
             minCount = MIN_COUNT,
             maxCount = IMAGE_MAX_COUNT
@@ -106,14 +106,15 @@ class DoorbellRepositoryFake : DoorbellRepository {
         return list
     }
 
+    @Suppress("ComplexMethod", "ReturnCount")
     fun getFromToRange(
         size: Int,
-        startAt: String?,
+        startAt: Int?,
         orderAsc: Boolean,
         minCount: Int,
         maxCount: Int
     ): Pair<Int, Int>? {
-        startAt?.toInt()?.let { startAtInt ->
+        startAt?.let { startAtInt ->
             if (orderAsc && startAtInt >= maxCount - 1) {
                 return null
             }
@@ -123,15 +124,15 @@ class DoorbellRepositoryFake : DoorbellRepository {
         }
 
         val from: Int = if (orderAsc) {
-            startAt?.let { it.toInt() + 1 } ?: 0
+            startAt?.let { it + 1 } ?: 0
         } else {
-            startAt?.let { it.toInt() - 1 } ?: size - 1
+            startAt?.let { it - 1 } ?: size - 1
         }
 
         val to: Int = if (orderAsc) {
-            min(maxCount - 1, startAt?.let { it.toInt() + size } ?: size - 1)
+            min(maxCount - 1, startAt?.let { it + size } ?: size - 1)
         } else {
-            max(0, startAt?.let { max((it.toInt() - size), minCount) } ?: 0)
+            max(0, startAt?.let { max((it - size), minCount) } ?: 0)
         }
 
         return Pair(from, to)

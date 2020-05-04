@@ -37,7 +37,7 @@ class ImageListViewModel(
         .asFlow()
         .onEach { loadingData.postValue(true) }
         .flatMapLatest { deviceId: String ->
-            delay(1_000L)
+            delay(DELAY)
 
             imagesDataSourceFactory.createDataSourceFactory(deviceId).toLiveData(
                 config = Config(
@@ -110,5 +110,6 @@ class ImageListViewModel(
 
     companion object {
         private const val PAGE_SIZE = 20
+        private const val DELAY = 1_000L
     }
 }

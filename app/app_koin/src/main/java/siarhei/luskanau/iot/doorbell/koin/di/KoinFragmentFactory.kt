@@ -13,7 +13,7 @@ class KoinFragmentFactory(
 ) : FragmentFactory() {
 
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
-        try {
+        runCatching<Fragment> {
             Timber.d("KoinFragmentFactory:instantiate:$className")
             val clazz = loadFragmentClass(classLoader, className)
             koin.get(
@@ -21,11 +21,11 @@ class KoinFragmentFactory(
                 qualifier = null,
                 parameters = { parametersOf(appNavigation) }
             )
-        } catch (koinThrowable: Throwable) {
-            try {
-                super.instantiate(classLoader, className)
-            } catch (t: Throwable) {
-                throw koinThrowable
-            }
         }
+            .getOrElse { koinThrowable: Throwable ->
+                runCatching {
+                    super.instantiate(classLoader, className)
+                }
+                    .getOrNull() ?: throw koinThrowable
+            }
 }

@@ -16,20 +16,19 @@ class KodeinViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        Timber.d("KodeinViewModelFactory:create:$modelClass")
-        return try {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T =
+        runCatching {
+            Timber.d("KodeinViewModelFactory:create:$modelClass")
             val viewModel: ViewModel = injector.instance(
                 tag = modelClass.simpleName,
                 arg = M(appNavigation, args)
             )
             viewModel as T
-        } catch (kodeinThrowable: Throwable) {
-            try {
-                modelClass.newInstance()
-            } catch (t: Throwable) {
-                throw kodeinThrowable
-            }
         }
-    }
+            .getOrElse { kodeinThrowable: Throwable ->
+                runCatching {
+                    modelClass.newInstance()
+                }
+                    .getOrNull() ?: throw kodeinThrowable
+            }
 }
