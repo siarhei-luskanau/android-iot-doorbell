@@ -50,7 +50,7 @@ object BuildVersions {
     const val platformVersion = "R"
     const val compileSdkVersion = "android-$platformVersion"
     const val targetSdkVersion = 30
-    const val buildToolsVersion = "30.0.0-rc3"
+    const val buildToolsVersion = "30.0.0-rc4"
     const val minSdkVersion = 21
 }
 

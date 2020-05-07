@@ -1,5 +1,4 @@
-tasks.register<Exec>("ciBuildApp") {
-    commandLine = listOf("java", "-version")
+tasks.register("ciBuildApp") {
     doLast {
         exec {
             commandLine = listOf(

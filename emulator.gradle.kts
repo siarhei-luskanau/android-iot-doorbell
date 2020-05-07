@@ -4,13 +4,14 @@ import java.util.Properties
 
 // sudo apt-get install curl unzip openjdk-8-jdk
 // export ANDROID_HOME=$HOME/Android/Sdk
-// export PATH=$PATH:$ANDROID_HOME/tools
+// export PATH=$PATH:$ANDROID_HOME/tools/bin
 // ls ${ANDROID_HOME}/
 // rm -r ${ANDROID_HOME}/
 // mkdir -p ${ANDROID_HOME}/
-// curl https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -o ${ANDROID_HOME}/android-sdk.zip
-// unzip ${ANDROID_HOME}/android-sdk.zip -d ${ANDROID_HOME}/
-// rm ${ANDROID_HOME}/android-sdk.zip
+// curl https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip -o ${ANDROID_HOME}/commandlinetools-linux.zip
+// unzip ${ANDROID_HOME}/commandlinetools-linux.zip -d ${ANDROID_HOME}/
+// rm ${ANDROID_HOME}/commandlinetools-linux.zip
+// yes | ${ANDROID_HOME}/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses 
 // ./gradlew :setupAndroidSDK :setupAndroidEmulator
 
 data class EmulatorConfig(
@@ -49,30 +50,38 @@ val YES_INPUT: String = mutableListOf<String>()
 
 val EMULATOR_GRADLE = "EMULATOR_GRADLE"
 
-tasks.register<Exec>("setupAndroidSDK") {
+tasks.register("setupAndroidSDK") {
     group = EMULATOR_GRADLE
-    commandLine = listOf("java", "-version")
 
     doLast {
         val config = AndroidSdkConfig()
             .apply { this.printSdkPath() }
 
         exec {
-            commandLine = listOf(config.sdkmanager.absolutePath, "tools")
+            commandLine =
+                listOf(config.sdkmanager.absolutePath, "--sdk_root=${config.androidHome}", "tools")
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
 
         exec {
-            commandLine = listOf(config.sdkmanager.absolutePath, "--update")
+            commandLine = listOf(
+                config.sdkmanager.absolutePath,
+                "--sdk_root=${config.androidHome}",
+                "--update"
+            )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
 
         exec {
-            commandLine = listOf(config.sdkmanager.absolutePath, "--licenses")
+            commandLine = listOf(
+                config.sdkmanager.absolutePath,
+                "--sdk_root=${config.androidHome}",
+                "--licenses"
+            )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
             println("commandLine: ${this.commandLine}")
@@ -81,6 +90,7 @@ tasks.register<Exec>("setupAndroidSDK") {
         exec {
             commandLine = mutableListOf(
                 config.sdkmanager.absolutePath,
+                "--sdk_root=${config.androidHome}",
                 "tools",
                 "platform-tools",
                 "build-tools;${BuildVersions.buildToolsVersion}",
@@ -93,15 +103,15 @@ tasks.register<Exec>("setupAndroidSDK") {
         }.apply { println("ExecResult: $this") }
 
         exec {
-            commandLine = listOf(config.sdkmanager.absolutePath, "--list")
+            commandLine =
+                listOf(config.sdkmanager.absolutePath, "--sdk_root=${config.androidHome}", "--list")
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
     }
 }
 
-tasks.register<Exec>("setupAndroidEmulator") {
+tasks.register("setupAndroidEmulator") {
     group = EMULATOR_GRADLE
-    commandLine = listOf("java", "-version")
 
     doLast {
         val config = AndroidSdkConfig()
@@ -150,10 +160,9 @@ tasks.register<Exec>("setupAndroidEmulator") {
     }
 }
 
-tasks.register<Exec>("runAndroidEmulator") {
+tasks.register("runAndroidEmulator") {
     val config = AndroidSdkConfig()
     group = EMULATOR_GRADLE
-    commandLine = listOf(config.adb.absolutePath, "start-server")
 
     doLast {
         Thread.sleep(3000)
@@ -194,10 +203,9 @@ tasks.register<Exec>("runAndroidEmulator") {
     }
 }
 
-tasks.register<Exec>("waitAndroidEmulator") {
+tasks.register("waitAndroidEmulator") {
     val config = AndroidSdkConfig()
     group = EMULATOR_GRADLE
-    commandLine = listOf("java", "-version")
 
     doLast {
         config.getDevicesList().forEach { emulatorAttributes ->
@@ -218,10 +226,9 @@ tasks.register<Exec>("waitAndroidEmulator") {
     }
 }
 
-tasks.register<Exec>("moveScreenshotsFromDevices") {
+tasks.register("moveScreenshotsFromDevices") {
     val config = AndroidSdkConfig()
     group = EMULATOR_GRADLE
-    commandLine = listOf(config.adb.absolutePath, "start-server")
 
     doLast {
         val buildScreenshotsDirectory = File(File(project.buildDir, "artifacts"), "screenshots")
@@ -268,10 +275,9 @@ tasks.register<Exec>("moveScreenshotsFromDevices") {
     }
 }
 
-tasks.register<Exec>("killAndroidEmulator") {
+tasks.register("killAndroidEmulator") {
     val config = AndroidSdkConfig()
     group = EMULATOR_GRADLE
-    commandLine = listOf(config.adb.absolutePath, "devices", "-l")
 
     doLast {
         config.getDevicesList().forEach { emulatorAttributes ->
@@ -291,6 +297,7 @@ tasks.register<Exec>("killAndroidEmulator") {
 }
 
 private class AndroidSdkConfig {
+    val androidHome = readAndroidSdkLocation()
     val sdkmanager = sdkFile("tools", "bin", platformExecutable(name = "sdkmanager", ext = "bat"))
     val avdmanager = sdkFile("tools", "bin", platformExecutable(name = "avdmanager", ext = "bat"))
     val emulator = sdkFile("emulator", platformExecutable(name = "emulator"))
