@@ -14,36 +14,6 @@ import java.util.Properties
 // yes | ${ANDROID_HOME}/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses 
 // ./gradlew :setupAndroidSDK :setupAndroidEmulator
 
-data class EmulatorConfig(
-    val avdName: String,
-    val sdkId: String,
-    val deviceType: String,
-    val port: String
-)
-
-val ANDROID_EMULATORS = listOf(
-//    EmulatorConfig(
-//        avdName = "TestEmulator29",
-//        sdkId = "system-images;android-29;google_apis;x86",
-//        deviceType = "Nexus 5X",
-//        port = "5564"
-//    )
-//    ,
-//    EmulatorConfig(
-//        avdName = "TestEmulator28",
-//        sdkId = "system-images;android-28;google_apis;x86_64",
-//        deviceType = "Galaxy Nexus",
-//        port = "5562"
-//    )
-//    ,
-    EmulatorConfig(
-        avdName = "TestEmulator23",
-        sdkId = "system-images;android-23;google_apis;x86_64",
-        deviceType = "Nexus One",
-        port = "5560"
-    )
-)
-
 val YES_INPUT: String = mutableListOf<String>()
     .apply { repeat(10) { add("y\n") } }
     .joinToString()
@@ -165,41 +135,49 @@ tasks.register("runAndroidEmulator") {
     group = EMULATOR_GRADLE
 
     doLast {
-        Thread.sleep(3000)
-        ANDROID_EMULATORS.forEach { emulatorConfig ->
-            Thread {
-                println("Start emulator: ${emulatorConfig.avdName}")
-                val process = ProcessBuilder()
-                    .directory(projectDir)
-                    .command(
-                        config.emulator.absolutePath,
-                        "-avd",
-                        emulatorConfig.avdName,
-                        "-port",
-                        emulatorConfig.port,
-                        // "-no-window",
-                        "-no-boot-anim",
-                        "-no-audio",
-                        "-no-snapshot"
-                    )
-                    .apply { println("ProcessBuilder: ${this.command()}") }
-                    .start()
-
-                Thread.sleep(3000)
-
-                if (process.isAlive.not() && process.exitValue() != 0) {
-                    println(process.errorStream.bufferedReader().use { it.readText() })
-                    println(process.inputStream.bufferedReader().use { it.readText() })
-                    throw Error("Failed to start process")
-                }
-            }.start()
-        }
-
-        Thread.sleep(30 * 1000)
         exec {
-            commandLine = listOf(config.adb.absolutePath, "devices", "-l")
+            commandLine = listOf(config.adb.absolutePath, "start-server")
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
+
+        val avdName = System.getenv(ENV_EMULATOR_AVD_NAME).orEmpty()
+            .also { println("System.getenv(${ENV_EMULATOR_AVD_NAME}): $it") }
+        val emulatorConfig = requireNotNull(ANDROID_EMULATORS.find { it.avdName == avdName })
+            .also { println("EmulatorConfig: $it") }
+
+        Thread {
+            println("Start emulator: ${emulatorConfig.avdName}")
+            val process = ProcessBuilder()
+                .directory(projectDir)
+                .command(
+                    config.emulator.absolutePath,
+                    "-avd",
+                    emulatorConfig.avdName,
+                    "-port",
+                    emulatorConfig.port,
+                    // "-no-window",
+                    "-no-boot-anim",
+                    "-no-audio",
+                    "-no-snapshot"
+                )
+                .apply { println("ProcessBuilder: ${this.command()}") }
+                .start()
+
+            for (i in 1..30) {
+                if (process.isAlive.not()) {
+                    Thread.sleep(1_000)
+                } else {
+                    break
+                }
+            }
+            if (process.isAlive.not() && process.exitValue() != 0) {
+                println(process.errorStream.bufferedReader().use { it.readText() })
+                println(process.inputStream.bufferedReader().use { it.readText() })
+                throw Error("Failed to start process")
+            } else {
+                println("Emulator is started.")
+            }
+        }.start()
     }
 }
 
@@ -208,21 +186,36 @@ tasks.register("waitAndroidEmulator") {
     group = EMULATOR_GRADLE
 
     doLast {
-        config.getDevicesList().forEach { emulatorAttributes ->
-            println("WaitAndroidEmulator: $emulatorAttributes")
-            exec {
-                commandLine = listOf(
-                    config.adb.absolutePath,
-                    "-s",
-                    emulatorAttributes.first(),
-                    "wait-for-device",
-                    "shell",
-                    "while $(exit $(getprop sys.boot_completed)) ; do sleep 1; done;"
-                )
-                isIgnoreExitValue = true
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
+        for (i in 1..(6 * 5)) {
+            if (config.getDevicesList().isEmpty()) {
+                println("WaitAndroidEmulator: No emulators found! Wait $i...")
+                Thread.sleep(10_000)
+            } else {
+                break
+            }
         }
+
+        config.getDevicesList()
+            .also {
+                if (it.isEmpty()) {
+                    throw IllegalStateException("No emulators found!")
+                }
+            }
+            .forEach { emulatorAttributes ->
+                println("WaitAndroidEmulator: $emulatorAttributes")
+                exec {
+                    commandLine = listOf(
+                        config.adb.absolutePath,
+                        "-s",
+                        emulatorAttributes.first(),
+                        "wait-for-device",
+                        "shell",
+                        "while $(exit $(getprop sys.boot_completed)) ; do sleep 1; done;"
+                    )
+                    isIgnoreExitValue = true
+                    println("commandLine: ${this.commandLine}")
+                }.apply { println("ExecResult: $this") }
+            }
     }
 }
 
@@ -308,7 +301,7 @@ private class AndroidSdkConfig {
             exec {
                 commandLine = listOf(adb.absolutePath, "devices", "-l")
                 standardOutput = devicesOutput
-                println("commandLine: ${this.commandLine}")
+                println("getDevicesList: ${this.commandLine}")
             }.apply { println("ExecResult: $this") }
         }.let { devicesOutput ->
             println(devicesOutput)

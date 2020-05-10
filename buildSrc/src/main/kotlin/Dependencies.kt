@@ -1,6 +1,6 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-alpha08"
+    const val androidToolsBuildGradle = "4.0.0-beta05"
     const val kotlin = "1.3.72"
     const val kotlinxCoroutines = "1.3.5"
     const val navigation = "2.3.0-alpha06"
@@ -15,7 +15,7 @@ private object Versions {
     const val paging = "2.1.2"
     const val room = "2.2.5"
     const val workManager = "2.4.0-alpha03"
-    const val constraintLayout = "2.0.0-beta4"
+    const val constraintLayout = "2.0.0-beta5"
     const val moshi = "1.9.2"
     const val coil = "0.10.1"
     const val paperwork = "1.2.7"
@@ -31,7 +31,7 @@ private object Versions {
     const val toothpick = "3.1.0"
 
     // Development
-    const val leakCanary = "2.2"
+    const val leakCanary = "2.3"
 
     // Android Things
     const val androidthings = "1.0"

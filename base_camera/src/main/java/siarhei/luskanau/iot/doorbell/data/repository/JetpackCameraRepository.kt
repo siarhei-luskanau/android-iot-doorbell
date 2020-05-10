@@ -90,7 +90,7 @@ class JetpackCameraRepository(
         }
 
     companion object {
-        private const val SLEEP = 1000L
+        private const val SLEEP = 1_000L
         private const val WIDTH = 480
         private const val HEIGHT = 640
     }
