@@ -325,13 +325,6 @@ private class AndroidSdkConfig {
     private fun sdkFile(vararg path: String) =
         File(readAndroidSdkLocation(), path.joinToString(File.separator))
 
-    private fun platformExecutable(name: String, ext: String = "exe"): String =
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            "$name.$ext"
-        } else {
-            name
-        }
-
     private fun readAndroidSdkLocation(): String =
         readAndroidSdkFromLocalProperties()
             ?: run { System.getenv("ANDROID_HOME") }

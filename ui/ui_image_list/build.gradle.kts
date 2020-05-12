@@ -37,7 +37,7 @@ dependencies {
     androidTestImplementation(project(":common:common_test_ui"))
     androidTestImplementation(TestLibraries.kotlinTest)
     androidTestImplementation(TestLibraries.testEspressoCore)
-    androidTestImplementation(TestLibraries.androidTestCore)
+    androidTestImplementation(TestLibraries.androidTestCoreKtx)
     androidTestImplementation(TestLibraries.fragmentTesting)
     kaptAndroidTest(TestLibraries.databindingCompiler)
 }

@@ -16,7 +16,7 @@ dependencies {
     implementation(TestLibraries.testEspressoCore)
     implementation(TestLibraries.testEspressoIntents)
     implementation(TestLibraries.testEspressoContrib)
-    implementation(TestLibraries.androidTestCore)
+    implementation(TestLibraries.androidTestCoreKtx)
     implementation(TestLibraries.androidTestExtTruth)
-    implementation(TestLibraries.testExtJunit)
+    implementation(TestLibraries.testExtJunitKtx)
 }

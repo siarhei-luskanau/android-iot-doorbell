@@ -1,6 +1,6 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.0.0-beta05"
+    const val androidToolsBuildGradle = "4.0.0-rc01"
     const val kotlin = "1.3.72"
     const val kotlinxCoroutines = "1.3.5"
     const val navigation = "2.3.0-alpha06"
@@ -9,6 +9,7 @@ private object Versions {
     const val androidxCameraExtensions = "1.0.0-alpha10"
     const val material = "1.2.0-alpha06"
     const val swiperefreshlayout = "1.1.0-rc01"
+    const val activity = "1.2.0-alpha04"
     const val fragment = "1.3.0-alpha04"
     const val androidxCore = "1.3.0-rc01"
     const val lifecycle = "2.3.0-alpha02"
@@ -73,6 +74,7 @@ object Libraries {
         "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"
     const val constraintLayout =
         "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
+    const val activityKtx = "androidx.activity:activity-ktx:${Versions.activity}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val androidxCoreKtx = "androidx.core:core-ktx:${Versions.androidxCore}"
     const val lifecycleCommonJava8 =
@@ -130,12 +132,12 @@ object TestLibraries {
         "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinxCoroutines}"
     const val kotlinTest = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
     const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}"
-    const val androidTestCore = "androidx.test:core:${Versions.androidTestCore}"
+    const val androidTestCoreKtx = "androidx.test:core-ktx:${Versions.androidTestCore}"
     const val androidTestExtTruth = "androidx.test.ext:truth:${Versions.androidTestCore}"
     const val testEspressoCore = "androidx.test.espresso:espresso-core:${Versions.espresso}"
     const val testEspressoIntents = "androidx.test.espresso:espresso-intents:${Versions.espresso}"
     const val testEspressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso}"
-    const val testExtJunit = "androidx.test.ext:junit-ktx:${Versions.testExtJunit}"
+    const val testExtJunitKtx = "androidx.test.ext:junit-ktx:${Versions.testExtJunit}"
     const val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragment}"
     const val databindingCompiler =
         "androidx.databinding:databinding-compiler:${Versions.androidToolsBuildGradle}"

@@ -2,7 +2,7 @@ tasks.register("ciBuildApp") {
     doLast {
         exec {
             commandLine = listOf(
-                File(project.rootDir, "gradlew").absolutePath,
+                gradlewPath(),
                 "setupAndroidSDK",
                 "clean",
                 "ktlint",
@@ -16,7 +16,7 @@ tasks.register("ciBuildApp") {
 
         exec {
             commandLine = listOf(
-                File(project.rootDir, "gradlew").absolutePath,
+                gradlewPath(),
                 "killAndroidEmulator",
                 "setupAndroidEmulator"
             )
@@ -26,7 +26,7 @@ tasks.register("ciBuildApp") {
         ANDROID_EMULATORS.forEach { emulatorConfig ->
             exec {
                 commandLine = listOf(
-                    File(project.rootDir, "gradlew").absolutePath,
+                    gradlewPath(),
                     "runAndroidEmulator"
                 )
                 environment = environment.toMutableMap().apply {
@@ -37,7 +37,7 @@ tasks.register("ciBuildApp") {
 
             exec {
                 commandLine = listOf(
-                    File(project.rootDir, "gradlew").absolutePath,
+                    gradlewPath(),
                     "assembleAndroidTest"
                 )
                 println("commandLine: ${this.commandLine}")
@@ -45,38 +45,52 @@ tasks.register("ciBuildApp") {
 
             exec {
                 commandLine = listOf(
-                    File(project.rootDir, "gradlew").absolutePath,
+                    gradlewPath(),
                     "waitAndroidEmulator"
                 )
                 println("commandLine: ${this.commandLine}")
             }.apply { println("ExecResult: $this") }
 
-            exec {
-                commandLine = listOf(
-                    File(project.rootDir, "gradlew").absolutePath,
-                    "connectedAndroidTest"
-                )
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
+            runCatching {
+                exec {
+                    commandLine = listOf(
+                        gradlewPath(),
+                        "connectedAndroidTest"
+                    )
+                    println("commandLine: ${this.commandLine}")
+                }.apply { println("ExecResult: $this") }
 
-            exec {
-                commandLine = listOf(
-                    File(project.rootDir, "gradlew").absolutePath,
-                    "moveScreenshotsFromDevices"
-                )
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
+                exec {
+                    commandLine = listOf(
+                        gradlewPath(),
+                        "moveScreenshotsFromDevices"
+                    )
+                    println("commandLine: ${this.commandLine}")
+                }.apply { println("ExecResult: $this") }
 
-            exec {
-                commandLine = listOf(
-                    File(project.rootDir, "gradlew").absolutePath,
-                    "killAndroidEmulator"
-                )
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
+                exec {
+                    commandLine = listOf(
+                        gradlewPath(),
+                        "killAndroidEmulator"
+                    )
+                    println("commandLine: ${this.commandLine}")
+                }.apply { println("ExecResult: $this") }
+            }.onFailure {
+                exec {
+                    commandLine = listOf(
+                        gradlewPath(),
+                        "moveScreenshotsFromDevices"
+                    )
+                    println("commandLine: ${this.commandLine}")
+                }.apply { println("ExecResult: $this") }
+                throw it
+            }
         }
     }
 }
+
+fun gradlewPath() =
+    File(project.rootDir, platformExecutable(name = "gradlew", ext = "bat")).absolutePath
 
 tasks.register<Copy>("copyApkArtifacts") {
     from(project.subprojects.map { it.buildDir })

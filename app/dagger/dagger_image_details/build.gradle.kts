@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":app:dagger:dagger_common"))
 
     implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.activityKtx)
     implementation(Libraries.fragmentKtx)
     implementation(Libraries.navigationUiKtx)
 

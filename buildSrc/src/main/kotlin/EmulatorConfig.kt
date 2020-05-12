@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 const val ENV_EMULATOR_AVD_NAME = "ENV_EMULATOR_AVD_NAME"
 
 data class EmulatorConfig(
@@ -8,13 +10,13 @@ data class EmulatorConfig(
 )
 
 val ANDROID_EMULATORS = listOf(
-//    EmulatorConfig(
-//        avdName = "TestEmulatorR",
-//        sdkId = "system-images;android-R;google_apis;x86_64",
-//        deviceType = "Nexus 5X",
-//        port = "5566"
-//    )
-//    ,
+    EmulatorConfig(
+        avdName = "TestEmulatorR",
+        sdkId = "system-images;android-R;google_apis;x86_64",
+        deviceType = "Nexus 5X",
+        port = "5566"
+    )
+    ,
     EmulatorConfig(
         avdName = "TestEmulator29",
         sdkId = "system-images;android-29;google_apis;x86_64",
@@ -36,3 +38,9 @@ val ANDROID_EMULATORS = listOf(
         port = "5560"
     )
 )
+fun platformExecutable(name: String, ext: String = "exe"): String =
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        "$name.$ext"
+    } else {
+        name
+    }
