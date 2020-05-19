@@ -2,21 +2,23 @@ private object Versions {
     // Libraries
     const val androidToolsBuildGradle = "4.0.0-rc01"
     const val kotlin = "1.3.72"
-    const val kotlinxCoroutines = "1.3.5"
-    const val navigation = "2.3.0-alpha06"
+    const val kotlinxCoroutines = "1.3.7"
+    const val desugar = "1.0.5"
+    const val navigation = "2.3.0-beta01"
     const val timber = "4.7.1"
     const val androidxCamera = "1.0.0-beta03"
     const val androidxCameraExtensions = "1.0.0-alpha10"
     const val material = "1.2.0-alpha06"
     const val swiperefreshlayout = "1.1.0-rc01"
-    const val activity = "1.2.0-alpha04"
-    const val fragment = "1.3.0-alpha04"
-    const val androidxCore = "1.3.0-rc01"
-    const val lifecycle = "2.3.0-alpha02"
+    const val activity = "1.2.0-alpha05"
+    const val fragment = "1.3.0-alpha05"
+    const val androidxCore = "1.4.0-alpha01"
+    const val lifecycle = "2.3.0-alpha03"
+    const val lifecycleExtensions = "2.2.0"
     const val paging = "2.1.2"
     const val room = "2.2.5"
-    const val workManager = "2.4.0-alpha03"
-    const val constraintLayout = "2.0.0-beta5"
+    const val workManager = "2.4.0-beta01"
+    const val constraintLayout = "2.0.0-beta6"
     const val moshi = "1.9.2"
     const val coil = "0.10.1"
     const val paperwork = "1.2.7"
@@ -42,9 +44,9 @@ private object Versions {
     const val spek = "2.0.10"
 
     // test instrumentation
-    const val androidTestCore = "1.3.0-beta01"
-    const val espresso = "3.3.0-beta01"
-    const val testExtJunit = "1.1.2-beta01"
+    const val androidTestCore = "1.3.0-beta02"
+    const val espresso = "3.3.0-beta02"
+    const val testExtJunit = "1.1.2-beta02"
 }
 
 object BuildVersions {
@@ -56,7 +58,7 @@ object BuildVersions {
 }
 
 object Libraries {
-    const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.0.5"
+    const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:${Versions.desugar}"
     const val kotlinStdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
     const val kotlinxCoroutinesCore =
@@ -83,7 +85,7 @@ object Libraries {
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     const val lifecycleViewmodelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
-    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleExtensions}"
     const val pagingCommonKtx = "androidx.paging:paging-common-ktx:${Versions.paging}"
     const val pagingRuntimeKtx = "androidx.paging:paging-runtime-ktx:${Versions.paging}"
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"

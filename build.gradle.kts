@@ -17,7 +17,7 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.8.0")
+    id("io.gitlab.arturbosch.detekt").version("1.9.0")
 }
 
 allprojects {
@@ -66,7 +66,6 @@ allprojects {
                     }
 
                     buildFeatures.viewBinding = true
-                    lintOptions.isAbortOnError = false
                 }
             }
         }

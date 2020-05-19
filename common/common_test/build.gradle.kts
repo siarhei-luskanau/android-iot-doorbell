@@ -4,6 +4,18 @@ plugins {
     id("kotlin-kapt")
 }
 
+android {
+    packagingOptions {
+        excludes = setOf(
+            "META-INF/AL2.0",
+            "META-INF/LGPL2.1",
+            "META-INF/LICENSE",
+            "META-INF/MANIFEST.MF",
+            "META-INF/proguard/coroutines.pro"
+        )
+    }
+}
+
 dependencies {
     coreLibraryDesugaring(Libraries.desugarJdkLibs)
 
