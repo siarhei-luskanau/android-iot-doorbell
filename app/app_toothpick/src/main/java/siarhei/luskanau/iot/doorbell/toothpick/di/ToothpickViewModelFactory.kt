@@ -13,6 +13,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 import timber.log.Timber
 import toothpick.Scope
 
@@ -26,6 +27,10 @@ class ToothpickViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         Timber.d("AppViewModelFactory:instantiate:$modelClass")
         return when {
+
+            SplashViewModel::class.java.isAssignableFrom(modelClass) -> SplashViewModel(
+                appNavigation = appNavigation
+            )
 
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
                 appNavigation = appNavigation,

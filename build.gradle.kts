@@ -30,44 +30,40 @@ allprojects {
     apply(from = "$rootDir/ktlint.gradle.kts")
     apply(from = "$rootDir/detekt.gradle")
 
-    afterEvaluate {
-        plugins.forEach { plugin ->
-            (plugin as? com.android.build.gradle.internal.plugins.BasePlugin)?.let { libraryPlugin ->
-                libraryPlugin.extension.apply {
-                    compileSdkVersion(BuildVersions.compileSdkVersion)
-                    buildToolsVersion = BuildVersions.buildToolsVersion
+    plugins.configureEach {
+        (this as? com.android.build.gradle.internal.plugins.BasePlugin)?.extension?.apply {
+            compileSdkVersion(BuildVersions.compileSdkVersion)
+            buildToolsVersion = BuildVersions.buildToolsVersion
 
-                    defaultConfig {
-                        minSdkVersion(BuildVersions.minSdkVersion)
-                        targetSdkVersion(BuildVersions.targetSdkVersion)
-                        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-                    }
-
-                    compileOptions {
-                        coreLibraryDesugaringEnabled = true
-                        sourceCompatibility = JavaVersion.VERSION_1_8
-                        targetCompatibility = JavaVersion.VERSION_1_8
-                    }
-
-                    testOptions {
-                        animationsDisabled = true
-                        unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {
-                            //isReturnDefaultValues = true
-                            all(KotlinClosure1<Any, Test>({
-                                (this as Test).also { testTask ->
-                                    testTask.testLogging.events = setOf(
-                                        org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                                        org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-                                        org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-                                    )
-                                }
-                            }, this))
-                        })
-                    }
-
-                    buildFeatures.viewBinding = true
-                }
+            defaultConfig {
+                minSdkVersion(BuildVersions.minSdkVersion)
+                targetSdkVersion(BuildVersions.targetSdkVersion)
+                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
+
+            compileOptions {
+                coreLibraryDesugaringEnabled = true
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
+            }
+
+            testOptions {
+                animationsDisabled = true
+                unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {
+                    //isReturnDefaultValues = true
+                    all(KotlinClosure1<Any, Test>({
+                        (this as Test).also { testTask ->
+                            testTask.testLogging.events = setOf(
+                                org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                                org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                                org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+                            )
+                        }
+                    }, this))
+                })
+            }
+
+            buildFeatures.viewBinding = true
         }
     }
 

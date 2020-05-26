@@ -10,6 +10,7 @@ dependencies {
 
     implementation(project(":common:common"))
     implementation(project(":ui:ui_common"))
+    implementation(project(":ui:ui_splash"))
     implementation(project(":ui:ui_permissions"))
     implementation(project(":ui:ui_doorbell_list"))
     implementation(project(":ui:ui_image_list"))

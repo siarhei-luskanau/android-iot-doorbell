@@ -17,8 +17,11 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsPresenter
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 import timber.log.Timber
 
+@Suppress("LongMethod")
 class AppFragmentFactory(
     fragmentActivity: FragmentActivity,
     private val appModules: AppModules
@@ -29,6 +32,12 @@ class AppFragmentFactory(
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         Timber.d("AppFragmentFactory:instantiate:$className")
         return when (className) {
+
+            SplashFragment::class.java.name -> {
+                SplashFragment {
+                    SplashViewModel(appNavigation)
+                }
+            }
 
             PermissionsFragment::class.java.name -> {
                 PermissionsFragment {

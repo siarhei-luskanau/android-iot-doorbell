@@ -52,6 +52,8 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsPresenter
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 
 val appModule = module {
@@ -126,6 +128,16 @@ val activityModule = module {
         )
     }
 
+    // Splash
+    factory { (appNavigation: AppNavigation) ->
+        SplashFragment { fragment: Fragment ->
+            val viewModelFactory: ViewModelProvider.Factory =
+                get { parametersOf(appNavigation, fragment.arguments) }
+            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)
+                .get(SplashViewModel::class.java)
+        }
+    }
+
     // Permissions
     factory { (appNavigation: AppNavigation) ->
         PermissionsFragment { get { parametersOf(appNavigation) } }
@@ -198,6 +210,9 @@ val activityModule = module {
 }
 
 val viewModelModule = module {
+    factory { (appNavigation: AppNavigation, _: Bundle?) ->
+        SplashViewModel(appNavigation = appNavigation)
+    }
     factory { (appNavigation: AppNavigation, _: Bundle?) ->
         DoorbellListViewModel(
             appNavigation = appNavigation,

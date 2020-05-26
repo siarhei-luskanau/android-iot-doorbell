@@ -10,13 +10,13 @@ data class EmulatorConfig(
 )
 
 val ANDROID_EMULATORS = listOf(
-    EmulatorConfig(
-        avdName = "TestEmulatorR",
-        sdkId = "system-images;android-R;google_apis;x86_64",
-        deviceType = "Nexus 5X",
-        port = "5566"
-    )
-    ,
+//    EmulatorConfig(
+//        avdName = "TestEmulatorR",
+//        sdkId = "system-images;android-R;google_apis;x86_64",
+//        deviceType = "Nexus 5X",
+//        port = "5566"
+//    )
+//    ,
     EmulatorConfig(
         avdName = "TestEmulator29",
         sdkId = "system-images;android-29;google_apis;x86_64",

@@ -1,0 +1,13 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_splash_xml"
+    app:startDestination="@id/nav_splash_fragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/nav_splash_fragment"
+        android:name="siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment"
+        tools:layout="@layout/fragment_splash" />
+
+</navigation>

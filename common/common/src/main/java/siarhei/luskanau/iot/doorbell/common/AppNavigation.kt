@@ -6,6 +6,7 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 interface AppNavigation {
     fun goBack(): Boolean
+    fun goSplashToDoorbellList()
     fun goDoorbellListToPermissions()
     fun navigateToImageList(doorbellData: DoorbellData)
     fun navigateToImageDetails(doorbellData: DoorbellData, imageData: ImageData)

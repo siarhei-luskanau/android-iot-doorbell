@@ -17,9 +17,12 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsPresenter
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 import timber.log.Timber
 import toothpick.Scope
 
+@Suppress("LongMethod")
 class ToothpickFragmentFactory(
     fragmentActivity: FragmentActivity,
     private val scope: Scope
@@ -30,6 +33,18 @@ class ToothpickFragmentFactory(
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         Timber.d("AppFragmentFactory:instantiate:$className")
         return when (className) {
+
+            SplashFragment::class.java.name -> {
+                SplashFragment { fragment: Fragment ->
+                    val viewModelFactory: ViewModelProvider.Factory = ToothpickViewModelFactory(
+                        scope = scope,
+                        appNavigation = appNavigation,
+                        args = fragment.arguments
+                    )
+                    ViewModelProvider(fragment, viewModelFactory)
+                        .get(SplashViewModel::class.java)
+                }
+            }
 
             PermissionsFragment::class.java.name -> PermissionsFragment {
                 PermissionsPresenter(appNavigation)

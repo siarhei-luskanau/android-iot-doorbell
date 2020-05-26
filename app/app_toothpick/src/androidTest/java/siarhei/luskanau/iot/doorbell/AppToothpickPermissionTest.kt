@@ -5,7 +5,6 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.filters.LargeTest
-import androidx.test.rule.GrantPermissionRule
 import org.junit.Rule
 import org.junit.Test
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
@@ -16,10 +15,6 @@ class AppToothpickPermissionTest {
 
     @get:Rule
     val screenshotRule = TakeScreenshotAfterTestRule(onSucceeded = false)
-
-    @get:Rule
-    val grantPermissionRule: GrantPermissionRule? =
-        GrantPermissionRule.grant(android.Manifest.permission.CAMERA)
 
     @get:Rule
     val activityScenarioRule = activityScenarioRule<NavigationActivity>(

@@ -2,7 +2,9 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_root"
-    app:startDestination="@+id/nav_doorbell_list_xml">
+    app:startDestination="@id/nav_splash_xml">
+
+    <include app:graph="@navigation/nav_included_splash" />
 
     <include app:graph="@navigation/nav_included_permissions" />
 
@@ -11,6 +13,13 @@
     <include app:graph="@navigation/nav_included_image_list" />
 
     <include app:graph="@navigation/nav_included_image_details" />
+
+    <action
+        android:id="@+id/action_splash_to_doorbell_list"
+        app:destination="@id/nav_doorbell_list_xml"
+        app:launchSingleTop="true"
+        app:popUpTo="@id/nav_splash_xml"
+        app:popUpToInclusive="true" />
 
     <action
         android:id="@+id/action_doorbell_list_to_image_list"

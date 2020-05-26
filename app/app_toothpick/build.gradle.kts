@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":base_cache"))
     implementation(project(":base_work_manager"))
     implementation(project(":ui:ui_common"))
+    implementation(project(":ui:ui_splash"))
     implementation(project(":ui:ui_permissions"))
     implementation(project(":ui:ui_doorbell_list"))
     implementation(project(":ui:ui_image_list"))

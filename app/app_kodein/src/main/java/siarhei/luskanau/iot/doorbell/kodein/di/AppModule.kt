@@ -55,6 +55,8 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsPresenter
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 
 val appModule = Kodein.Module(name = "appModule") {
@@ -131,6 +133,18 @@ val activityModule = Kodein.Module(name = "activityModule") {
             appNavigation = appNavigation,
             args = args
         )
+    }
+
+    // Splash
+    bind<Fragment>(
+        tag = SplashFragment::class.simpleName
+    ) with factory { appNavigation: AppNavigation ->
+        SplashFragment { fragment: Fragment ->
+            val viewModelFactory: ViewModelProvider.Factory =
+                instance(arg = M(appNavigation, fragment.arguments))
+            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)
+                .get(SplashViewModel::class.java)
+        }
     }
 
     // Permissions
@@ -214,6 +228,12 @@ val activityModule = Kodein.Module(name = "activityModule") {
 }
 
 val viewModelModule = Kodein.Module(name = "viewModelModule") {
+    bind<ViewModel>(
+        tag = SplashViewModel::class.simpleName
+    ) with factory { appNavigation: AppNavigation, _: Bundle? ->
+        SplashViewModel(appNavigation = appNavigation)
+    }
+
     bind<ViewModel>(
         tag = DoorbellListViewModel::class.simpleName
     ) with factory { appNavigation: AppNavigation, _: Bundle? ->

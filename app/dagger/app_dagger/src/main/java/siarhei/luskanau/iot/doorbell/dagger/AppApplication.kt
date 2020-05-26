@@ -12,6 +12,7 @@ import siarhei.luskanau.iot.doorbell.dagger.doorbelllist.DaggerDoorbellListCompo
 import siarhei.luskanau.iot.doorbell.dagger.imagedetails.DaggerImageDetailsComponent
 import siarhei.luskanau.iot.doorbell.dagger.imagelist.DaggerImageListComponent
 import siarhei.luskanau.iot.doorbell.dagger.permissions.DaggerPermissionsComponent
+import siarhei.luskanau.iot.doorbell.dagger.splash.DaggerSplashComponent
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallbacks
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
@@ -48,6 +49,12 @@ class AppApplication : Application() {
                 val fragmentFactory =
                     DelegateFragmentFactory(
                         listOf(
+                            {
+                                DaggerSplashComponent.factory()
+                                    .create(appNavigation)
+                                    .provideFragmentFactory()
+                                    .get()
+                            },
                             {
                                 DaggerPermissionsComponent.factory()
                                     .create(appNavigation)
