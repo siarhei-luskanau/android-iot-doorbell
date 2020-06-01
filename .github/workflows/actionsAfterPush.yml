@@ -16,10 +16,15 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: apk
-          path: build/artifacts/outputs/apk/
+          path: build/apk/
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: jacoco
+          path: build/reports/jacoco/
 
       - uses: actions/upload-artifact@v1
         if: always()
         with:
           name: screenshots
-          path: build/artifacts/screenshots/
+          path: build/screenshots/

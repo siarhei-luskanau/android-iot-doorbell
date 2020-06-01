@@ -1,101 +1,64 @@
 tasks.register("ciBuildApp") {
     doLast {
-        exec {
-            commandLine = listOf(
-                gradlewPath(),
-                "setupAndroidSDK",
-                "clean",
-                "ktlint",
-                "detekt",
-                "assembleDebug",
-                "copyApkArtifacts",
-                "testDebugUnitTest"
-            )
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        gradlew(
+            "setupAndroidSDK",
+            "clean",
+            "ktlint",
+            "detekt",
+            "assembleDebug",
+            "jacocoTestReportDebug",
+            "jacocoTestReportMerged"
+        )
 
-        exec {
-            commandLine = listOf(
-                gradlewPath(),
-                "killAndroidEmulator",
-                "setupAndroidEmulator"
-            )
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        copy {
+            from(rootProject.subprojects.map { it.buildDir })
+            include("**/*.apk")
+            exclude("**/apk/androidTest/**")
+            eachFile { path = name }
+            includeEmptyDirs = false
+            into("$buildDir/apk/")
+        }
+
+        gradlew(
+            "killAndroidEmulator",
+            "setupAndroidEmulator"
+        )
 
         ANDROID_EMULATORS.forEach { emulatorConfig ->
-            exec {
-                commandLine = listOf(
-                    gradlewPath(),
-                    "runAndroidEmulator"
-                )
-                environment = environment.toMutableMap().apply {
-                    put(ENV_EMULATOR_AVD_NAME, emulatorConfig.avdName)
-                }
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
+            gradlew(
+                "runAndroidEmulator",
+                addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorConfig.avdName)
+            )
 
-            exec {
-                commandLine = listOf(
-                    gradlewPath(),
-                    "assembleAndroidTest"
-                )
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
-
-            exec {
-                commandLine = listOf(
-                    gradlewPath(),
-                    "waitAndroidEmulator"
-                )
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
+            gradlew("assembleAndroidTest")
+            gradlew("waitAndroidEmulator")
 
             runCatching {
-                exec {
-                    commandLine = listOf(
-                        gradlewPath(),
-                        "connectedAndroidTest"
-                    )
-                    println("commandLine: ${this.commandLine}")
-                }.apply { println("ExecResult: $this") }
-
-                exec {
-                    commandLine = listOf(
-                        gradlewPath(),
-                        "moveScreenshotsFromDevices"
-                    )
-                    println("commandLine: ${this.commandLine}")
-                }.apply { println("ExecResult: $this") }
-
-                exec {
-                    commandLine = listOf(
-                        gradlewPath(),
-                        "killAndroidEmulator"
-                    )
-                    println("commandLine: ${this.commandLine}")
-                }.apply { println("ExecResult: $this") }
+                gradlew("connectedAndroidTest")
+                gradlew("moveScreenshotsFromDevices")
+                gradlew("killAndroidEmulator")
             }.onFailure {
-                exec {
-                    commandLine = listOf(
-                        gradlewPath(),
-                        "moveScreenshotsFromDevices"
-                    )
-                    println("commandLine: ${this.commandLine}")
-                }.apply { println("ExecResult: $this") }
+                gradlew("moveScreenshotsFromDevices")
                 throw it
             }
         }
     }
 }
 
-fun gradlewPath() =
-    File(project.rootDir, platformExecutable(name = "gradlew", ext = "bat")).absolutePath
-
-tasks.register<Copy>("copyApkArtifacts") {
-    from(project.subprojects.map { it.buildDir })
-    include("**/*.apk")
-    exclude("**/apk/androidTest/**")
-    includeEmptyDirs = false
-    into("$buildDir/artifacts")
+fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null) {
+    exec {
+        val gradlePath = File(
+            project.rootDir,
+            platformExecutable(name = "gradlew", ext = "bat")
+        ).absolutePath
+        commandLine = mutableListOf<String>().apply {
+            add(gradlePath)
+            addAll(tasks)
+            add("--stacktrace")
+        }
+        addToEnvironment?.let {
+            environment = environment.orEmpty().toMutableMap().apply { putAll(it) }
+        }
+        println("commandLine: ${this.commandLine}")
+    }.apply { println("ExecResult: $this") }
 }

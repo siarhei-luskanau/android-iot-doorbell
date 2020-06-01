@@ -224,7 +224,7 @@ tasks.register("moveScreenshotsFromDevices") {
     group = EMULATOR_GRADLE
 
     doLast {
-        val buildScreenshotsDirectory = File(File(project.buildDir, "artifacts"), "screenshots")
+        val buildScreenshotsDirectory = File(project.buildDir, "screenshots")
             .apply { mkdirs() }
 
         config.getDevicesList().forEach { emulatorAttributes ->

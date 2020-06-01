@@ -1,14 +1,14 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.0.0-rc01"
+    const val androidToolsBuildGradle = "4.0.0"
     const val kotlin = "1.3.72"
     const val kotlinxCoroutines = "1.3.7"
     const val desugar = "1.0.5"
     const val navigation = "2.3.0-beta01"
     const val timber = "4.7.1"
-    const val androidxCamera = "1.0.0-beta03"
-    const val androidxCameraExtensions = "1.0.0-alpha10"
-    const val material = "1.2.0-alpha06"
+    const val androidxCamera = "1.0.0-beta04"
+    const val androidxCameraExtensions = "1.0.0-alpha11"
+    const val material = "1.2.0-beta01"
     const val swiperefreshlayout = "1.1.0-rc01"
     const val activity = "1.2.0-alpha05"
     const val fragment = "1.3.0-alpha05"
@@ -44,7 +44,7 @@ private object Versions {
     const val spek = "2.0.10"
 
     // test instrumentation
-    const val androidTestCore = "1.3.0-beta02"
+    const val androidTestCore = "1.3.0-rc01"
     const val espresso = "3.3.0-beta02"
     const val testExtJunit = "1.1.2-beta02"
 }
