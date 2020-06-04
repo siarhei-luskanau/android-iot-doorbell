@@ -19,10 +19,10 @@ class NavigationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         ActivityNavigationBinding.inflate(LayoutInflater.from(this))
-                .also { binding ->
-                    setContentView(binding.root)
-                    setSupportActionBar(binding.toolbar)
-                }
+            .also { binding ->
+                setContentView(binding.root)
+                setSupportActionBar(binding.toolbar)
+            }
 
         navController = Navigation.findNavController(this, R.id.navHostFragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -30,5 +30,5 @@ class NavigationActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean =
-            navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 }

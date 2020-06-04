@@ -41,14 +41,17 @@ class AppApplication : Application() {
         scope.getInstance<ScheduleWorkManagerService>().startUptimeNotifications()
         scope.getInstance<AppBackgroundServices>().startServices()
 
-        registerActivityLifecycleCallbacks(OnActivityCreatedLifecycleCallbacks {
-            (it as? FragmentActivity?)?.let { fragmentActivity ->
-                fragmentActivity.supportFragmentManager.fragmentFactory = ToothpickFragmentFactory(
-                    fragmentActivity = fragmentActivity,
-                    scope = scope
-                )
+        registerActivityLifecycleCallbacks(
+            OnActivityCreatedLifecycleCallbacks {
+                (it as? FragmentActivity?)?.let { fragmentActivity ->
+                    fragmentActivity.supportFragmentManager.fragmentFactory =
+                        ToothpickFragmentFactory(
+                            fragmentActivity = fragmentActivity,
+                            scope = scope
+                        )
+                }
             }
-        })
+        )
     }
 
     override fun onTrimMemory(level: Int) {

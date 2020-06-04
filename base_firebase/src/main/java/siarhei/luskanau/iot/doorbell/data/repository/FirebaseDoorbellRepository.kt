@@ -106,20 +106,22 @@ class FirebaseDoorbellRepository(
     override suspend fun sendCamerasList(deviceId: String, list: List<CameraData>) =
         setValueToDatabase(
             getAppDatabase().child(CAMERAS_KEY).child(deviceId),
-            serializeByMoshi(list.map {
-                CameraDto(
-                    cameraId = it.cameraId,
-                    name = it.name,
-                    sizes = it.sizes?.mapValues { entry ->
-                        SizeDto(
-                            width = entry.value.width,
-                            height = entry.value.height
-                        )
-                    },
-                    info = it.info,
-                    cameraxInfo = it.cameraxInfo
-                )
-            })
+            serializeByMoshi(
+                list.map {
+                    CameraDto(
+                        cameraId = it.cameraId,
+                        name = it.name,
+                        sizes = it.sizes?.mapValues { entry ->
+                            SizeDto(
+                                width = entry.value.width,
+                                height = entry.value.height
+                            )
+                        },
+                        info = it.info,
+                        cameraxInfo = it.cameraxInfo
+                    )
+                }
+            )
         )
 
     override suspend fun sendCameraImageRequest(

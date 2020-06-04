@@ -10,9 +10,9 @@ interface ImageDao {
 
     @Query(
         "SELECT * FROM images " +
-                "WHERE device_id = :deviceId " +
-                "ORDER BY image_id DESC " +
-                "LIMIT :limit"
+            "WHERE device_id = :deviceId " +
+            "ORDER BY image_id DESC " +
+            "LIMIT :limit"
     )
     fun getImages(
         deviceId: String,
@@ -21,10 +21,10 @@ interface ImageDao {
 
     @Query(
         "SELECT * FROM images " +
-                "WHERE device_id = :deviceId " +
-                "AND image_id > :afterImageId " +
-                "ORDER BY image_id DESC " +
-                "LIMIT :limit"
+            "WHERE device_id = :deviceId " +
+            "AND image_id > :afterImageId " +
+            "ORDER BY image_id DESC " +
+            "LIMIT :limit"
     )
     fun getImages(
         deviceId: String,

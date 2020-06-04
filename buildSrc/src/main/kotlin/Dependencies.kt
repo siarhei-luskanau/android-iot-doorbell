@@ -8,7 +8,7 @@ private object Versions {
     const val timber = "4.7.1"
     const val androidxCamera = "1.0.0-beta04"
     const val androidxCameraExtensions = "1.0.0-alpha11"
-    const val material = "1.2.0-beta01"
+    const val material = "1.3.0-alpha01"
     const val swiperefreshlayout = "1.1.0-rc01"
     const val activity = "1.2.0-alpha05"
     const val fragment = "1.3.0-alpha05"

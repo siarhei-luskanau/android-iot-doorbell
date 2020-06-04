@@ -56,9 +56,9 @@ class PermissionsFragment(
     private fun hasPermissions(): Boolean {
         for (permission in PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    permission
-                ) != PackageManager.PERMISSION_GRANTED
+                requireContext(),
+                permission
+            ) != PackageManager.PERMISSION_GRANTED
             ) {
                 return false
             }

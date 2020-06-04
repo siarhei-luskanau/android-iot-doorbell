@@ -36,13 +36,15 @@ class AppApplication : Application() {
         appModules.scheduleWorkManagerService.startUptimeNotifications()
         appModules.appBackgroundServices.startServices()
 
-        registerActivityLifecycleCallbacks(OnActivityCreatedLifecycleCallbacks {
-            (it as? FragmentActivity?)?.let { fragmentActivity ->
-                fragmentActivity.supportFragmentManager.fragmentFactory = AppFragmentFactory(
-                    fragmentActivity = fragmentActivity,
-                    appModules = appModules
-                )
+        registerActivityLifecycleCallbacks(
+            OnActivityCreatedLifecycleCallbacks {
+                (it as? FragmentActivity?)?.let { fragmentActivity ->
+                    fragmentActivity.supportFragmentManager.fragmentFactory = AppFragmentFactory(
+                        fragmentActivity = fragmentActivity,
+                        appModules = appModules
+                    )
+                }
             }
-        })
+        )
     }
 }

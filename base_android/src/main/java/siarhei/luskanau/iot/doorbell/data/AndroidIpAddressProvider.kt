@@ -21,7 +21,7 @@ class AndroidIpAddressProvider : IpAddressProvider {
                     }
                     .map { inetAddress: InetAddress ->
                         inetAddress.hostAddress + " " +
-                                AppConstants.DATE_FORMAT.format(System.currentTimeMillis())
+                            AppConstants.DATE_FORMAT.format(System.currentTimeMillis())
                     }
                     .forEach { hostAddress: String ->
                         ipAddressList[networkInterface.name] = hostAddress

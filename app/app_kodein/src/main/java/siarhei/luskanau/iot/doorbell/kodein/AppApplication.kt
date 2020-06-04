@@ -57,11 +57,13 @@ class AppApplication : Application(), KodeinAware {
         scheduleWorkManagerService.startUptimeNotifications()
         appBackgroundServices.startServices()
 
-        registerActivityLifecycleCallbacks(OnActivityCreatedLifecycleCallbacks {
-            (it as? FragmentActivity?)?.let { fragmentActivity ->
-                fragmentActivity.supportFragmentManager.fragmentFactory =
-                    kodein.direct.instance(arg = fragmentActivity)
+        registerActivityLifecycleCallbacks(
+            OnActivityCreatedLifecycleCallbacks {
+                (it as? FragmentActivity?)?.let { fragmentActivity ->
+                    fragmentActivity.supportFragmentManager.fragmentFactory =
+                        kodein.direct.instance(arg = fragmentActivity)
+                }
             }
-        })
+        )
     }
 }

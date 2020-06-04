@@ -12,11 +12,11 @@ class DefaultPersistenceRepository(
 ) : PersistenceRepository {
 
     private val appDatabase: AppDatabase =
-            Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "${context.packageName}.db"
-            ).build()
+        Room.databaseBuilder(
+            context.applicationContext,
+            AppDatabase::class.java,
+            "${context.packageName}.db"
+        ).build()
 
     private val mapper = ImageEntityMapper()
 
@@ -25,13 +25,13 @@ class DefaultPersistenceRepository(
         afterImageId: String?,
         limit: Int
     ): Flow<List<ImageData>> =
-            if (afterImageId != null) {
-                appDatabase.imageDao().getImages(deviceId, afterImageId, limit)
-            } else {
-                appDatabase.imageDao().getImages(deviceId, limit)
-            }
-                    .map { mapper.fromEntityList(it) }
+        if (afterImageId != null) {
+            appDatabase.imageDao().getImages(deviceId, afterImageId, limit)
+        } else {
+            appDatabase.imageDao().getImages(deviceId, limit)
+        }
+            .map { mapper.fromEntityList(it) }
 
     override suspend fun insertImages(deviceId: String, images: List<ImageData>) =
-            appDatabase.imageDao().insertImages(mapper.toEntityList(deviceId, images))
+        appDatabase.imageDao().insertImages(mapper.toEntityList(deviceId, images))
 }

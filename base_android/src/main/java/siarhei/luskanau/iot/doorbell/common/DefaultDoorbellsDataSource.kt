@@ -12,10 +12,10 @@ class DefaultDoorbellsDataSource(
         params: LoadInitialParams<String>,
         callback: LoadInitialCallback<DoorbellData>
     ) =
-            getDoorbellsList(callback, params.requestedLoadSize, params.requestedInitialKey)
+        getDoorbellsList(callback, params.requestedLoadSize, params.requestedInitialKey)
 
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<DoorbellData>) =
-            getDoorbellsList(callback, params.requestedLoadSize, params.key)
+        getDoorbellsList(callback, params.requestedLoadSize, params.key)
 
     override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<DoorbellData>) = Unit
 

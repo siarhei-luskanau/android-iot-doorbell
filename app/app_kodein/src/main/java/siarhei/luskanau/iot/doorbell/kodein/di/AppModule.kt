@@ -197,10 +197,11 @@ val activityModule = Kodein.Module(name = "activityModule") {
             instance(arg = M(appNavigation, fragment, doorbellData, imageData))
         }
     }
-    bind() from factory { appNavigation: AppNavigation,
-                          fragment: Fragment,
-                          doorbellData: DoorbellData,
-                          imageData: ImageData ->
+    bind() from factory {
+        appNavigation: AppNavigation,
+        fragment: Fragment,
+        doorbellData: DoorbellData,
+        imageData: ImageData ->
         ImageDetailsPresenterImpl(
             appNavigation = appNavigation,
             fragment = fragment,

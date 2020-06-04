@@ -60,11 +60,13 @@ abstract class BaseCameraRepository(
                 val characteristics = cameraManager.getCameraCharacteristics(cameraId)
                 characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                     ?.let { configs: StreamConfigurationMap ->
-                        sizes.putAll(configs.getOutputSizes(ImageFormat.JPEG)
-                            .associateBy(
-                                { size: Size -> size.height * size.width },
-                                { size: Size -> size }
-                            ))
+                        sizes.putAll(
+                            configs.getOutputSizes(ImageFormat.JPEG)
+                                .associateBy(
+                                    { size: Size -> size.height * size.width },
+                                    { size: Size -> size }
+                                )
+                        )
                     }
             }.onFailure {
                 Timber.e(it)
@@ -103,10 +105,10 @@ abstract class BaseCameraRepository(
 
                 info["CONTROL_AVAILABLE_EFFECTS"] =
                     characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS)
-                        ?.associateBy(
-                            { effect: Int -> getEffectName(effect) },
-                            { effect: Int -> effect }
-                        ) as Serializable
+                    ?.associateBy(
+                        { effect: Int -> getEffectName(effect) },
+                        { effect: Int -> effect }
+                    ) as Serializable
             }.onFailure {
                 info["error"] = it.message as Serializable
                 Timber.d("Cam access exception getting characteristics.")

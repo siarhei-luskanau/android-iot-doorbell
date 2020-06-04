@@ -55,11 +55,13 @@ class AppApplication : Application() {
         inject<ScheduleWorkManagerService>().value.startUptimeNotifications()
         inject<AppBackgroundServices>().value.startServices()
 
-        registerActivityLifecycleCallbacks(OnActivityCreatedLifecycleCallbacks {
-            (it as? FragmentActivity?)?.let { fragmentActivity ->
-                fragmentActivity.supportFragmentManager.fragmentFactory =
-                    get { parametersOf(fragmentActivity) }
+        registerActivityLifecycleCallbacks(
+            OnActivityCreatedLifecycleCallbacks {
+                (it as? FragmentActivity?)?.let { fragmentActivity ->
+                    fragmentActivity.supportFragmentManager.fragmentFactory =
+                        get { parametersOf(fragmentActivity) }
+                }
             }
-        })
+        )
     }
 }

@@ -179,11 +179,11 @@ val activityModule = module {
         }
     }
     factory<ImageDetailsPresenter> { (
-                                         appNavigation: AppNavigation,
-                                         fragment: Fragment,
-                                         doorbellData: DoorbellData,
-                                         imageData: ImageData
-                                     ) ->
+        appNavigation: AppNavigation,
+        fragment: Fragment,
+        doorbellData: DoorbellData,
+        imageData: ImageData
+    ) ->
         ImageDetailsPresenterImpl(
             appNavigation = appNavigation,
             fragment = fragment,

@@ -42,48 +42,50 @@ class AppApplication : Application() {
         commonComponent.provideScheduleWorkManagerService().startUptimeNotifications()
         commonComponent.provideAppBackgroundServices().startServices()
 
-        registerActivityLifecycleCallbacks(OnActivityCreatedLifecycleCallbacks {
-            (it as? FragmentActivity?)?.let { fragmentActivity ->
-                val appNavigation: AppNavigation = DefaultAppNavigation(fragmentActivity)
+        registerActivityLifecycleCallbacks(
+            OnActivityCreatedLifecycleCallbacks {
+                (it as? FragmentActivity?)?.let { fragmentActivity ->
+                    val appNavigation: AppNavigation = DefaultAppNavigation(fragmentActivity)
 
-                val fragmentFactory =
-                    DelegateFragmentFactory(
-                        listOf(
-                            {
-                                DaggerSplashComponent.factory()
-                                    .create(appNavigation)
-                                    .provideFragmentFactory()
-                                    .get()
-                            },
-                            {
-                                DaggerPermissionsComponent.factory()
-                                    .create(appNavigation)
-                                    .provideFragmentFactory()
-                                    .get()
-                            },
-                            {
-                                DaggerDoorbellListComponent.factory()
-                                    .create(appNavigation, commonComponent)
-                                    .provideFragmentFactory()
-                                    .get()
-                            },
-                            {
-                                DaggerImageListComponent.factory()
-                                    .create(appNavigation, commonComponent)
-                                    .provideFragmentFactory()
-                                    .get()
-                            },
-                            {
-                                DaggerImageDetailsComponent.factory()
-                                    .create(appNavigation)
-                                    .provideFragmentFactory()
-                                    .get()
-                            }
+                    val fragmentFactory =
+                        DelegateFragmentFactory(
+                            listOf(
+                                {
+                                    DaggerSplashComponent.factory()
+                                        .create(appNavigation)
+                                        .provideFragmentFactory()
+                                        .get()
+                                },
+                                {
+                                    DaggerPermissionsComponent.factory()
+                                        .create(appNavigation)
+                                        .provideFragmentFactory()
+                                        .get()
+                                },
+                                {
+                                    DaggerDoorbellListComponent.factory()
+                                        .create(appNavigation, commonComponent)
+                                        .provideFragmentFactory()
+                                        .get()
+                                },
+                                {
+                                    DaggerImageListComponent.factory()
+                                        .create(appNavigation, commonComponent)
+                                        .provideFragmentFactory()
+                                        .get()
+                                },
+                                {
+                                    DaggerImageDetailsComponent.factory()
+                                        .create(appNavigation)
+                                        .provideFragmentFactory()
+                                        .get()
+                                }
+                            )
                         )
-                    )
 
-                fragmentActivity.supportFragmentManager.fragmentFactory = fragmentFactory
+                    fragmentActivity.supportFragmentManager.fragmentFactory = fragmentFactory
+                }
             }
-        })
+        )
     }
 }
