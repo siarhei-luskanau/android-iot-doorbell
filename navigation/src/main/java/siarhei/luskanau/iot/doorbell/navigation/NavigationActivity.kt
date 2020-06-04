@@ -1,31 +1,30 @@
 package siarhei.luskanau.iot.doorbell.navigation
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import siarhei.luskanau.iot.doorbell.navigation.databinding.ActivityNavigationBinding
 
-class NavigationActivity : AppCompatActivity() {
+class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var navController: NavController
+    private val binding by viewBinding { activity ->
+        ActivityNavigationBinding.bind(activity.findViewById(R.id.container))
+    }
+    private val navController by lazy {
+        Navigation.findNavController(this, R.id.navHostFragment)
+    }
+    private val appBarConfiguration by lazy {
+        AppBarConfiguration(navController.graph)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ActivityNavigationBinding.inflate(LayoutInflater.from(this))
-            .also { binding ->
-                setContentView(binding.root)
-                setSupportActionBar(binding.toolbar)
-            }
-
-        navController = Navigation.findNavController(this, R.id.navHostFragment)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 

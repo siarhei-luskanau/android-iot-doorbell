@@ -18,6 +18,7 @@ dependencies {
 
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.timber)
+    implementation(Libraries.viewBindingPropertyDelegate)
     implementation(Libraries.material)
     implementation(Libraries.navigationUiKtx)
     implementation(Libraries.navigationFragmentKtx)

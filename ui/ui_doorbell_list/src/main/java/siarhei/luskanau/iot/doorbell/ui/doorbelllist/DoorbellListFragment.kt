@@ -1,14 +1,13 @@
 package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.flow.collect
 import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
 import siarhei.luskanau.iot.doorbell.ui.DoorbellsAdapter
@@ -21,62 +20,31 @@ import timber.log.Timber
 
 class DoorbellListFragment(
     presenterProvider: (fragment: Fragment) -> DoorbellListPresenter
-) : BaseFragment<DoorbellListPresenter>(presenterProvider) {
+) : BaseFragment<DoorbellListPresenter>(R.layout.fragment_doorbell_list, presenterProvider) {
 
-    private lateinit var fragmentBinding: FragmentDoorbellListBinding
-    private lateinit var normalStateBinding: LayoutDoorbellListNormalBinding
-    private lateinit var emptyStateBinding: LayoutGenericEmptyBinding
-    private lateinit var errorStateBinding: LayoutGenericErrorBinding
+    private val fragmentBinding by viewBinding { fragment ->
+        FragmentDoorbellListBinding.bind(fragment.requireView())
+    }
+    private val normalStateBinding by viewBinding { fragment ->
+        LayoutDoorbellListNormalBinding.inflate(fragment.layoutInflater, null, false)
+    }
+    private val emptyStateBinding by viewBinding { fragment ->
+        LayoutGenericEmptyBinding.inflate(fragment.layoutInflater, null, false)
+    }
+    private val errorStateBinding by viewBinding { fragment ->
+        LayoutGenericErrorBinding.inflate(fragment.layoutInflater, null, false)
+    }
 
     private val camerasAdapter = CameraAdapter()
     private val doorbellsAdapter = DoorbellsAdapter()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        FragmentDoorbellListBinding.inflate(
-            inflater,
-            container,
-            false
-        ).also {
-            fragmentBinding = it
-            fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.requestData() }
-            fragmentBinding.camerasRecyclerView.adapter = camerasAdapter
-        }
-
-        LayoutDoorbellListNormalBinding.inflate(
-            inflater,
-            container,
-            false
-        ).also {
-            normalStateBinding = it
-            normalStateBinding.doorbellsRecyclerView.adapter = doorbellsAdapter
-        }
-
-        LayoutGenericEmptyBinding.inflate(
-            inflater,
-            container,
-            false
-        ).also {
-            emptyStateBinding = it
-        }
-
-        LayoutGenericErrorBinding.inflate(
-            inflater,
-            container,
-            false
-        ).also {
-            errorStateBinding = it
-        }
-
-        return fragmentBinding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = javaClass.simpleName
+
+        fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.requestData() }
+        fragmentBinding.camerasRecyclerView.adapter = camerasAdapter
+        normalStateBinding.doorbellsRecyclerView.adapter = doorbellsAdapter
 
         camerasAdapter.onItemClickListener = { _, _, position ->
             presenter.onCameraClicked(camerasAdapter.getItem(position))

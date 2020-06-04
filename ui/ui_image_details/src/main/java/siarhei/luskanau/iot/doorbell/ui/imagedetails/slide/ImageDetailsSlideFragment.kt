@@ -1,12 +1,11 @@
 package siarhei.luskanau.iot.doorbell.ui.imagedetails.slide
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.api.load
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericErrorBinding
@@ -17,42 +16,16 @@ import timber.log.Timber
 
 class ImageDetailsSlideFragment(
     presenterProvider: (fragment: Fragment) -> ImageDetailsSlidePresenter
-) : BaseFragment<ImageDetailsSlidePresenter>(presenterProvider) {
+) : BaseFragment<ImageDetailsSlidePresenter>(R.layout.fragment_image_details, presenterProvider) {
 
-    private lateinit var fragmentBinding: FragmentImageDetailsBinding
-    private lateinit var normalStateBinding: LayoutImageDetailsSlideNormalBinding
-    private lateinit var errorStateBinding: LayoutGenericErrorBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        FragmentImageDetailsBinding.inflate(
-            inflater,
-            container,
-            false
-        ).also {
-            fragmentBinding = it
-        }
-
-        LayoutImageDetailsSlideNormalBinding.inflate(
-            inflater,
-            container,
-            false
-        ).also {
-            normalStateBinding = it
-        }
-
-        LayoutGenericErrorBinding.inflate(
-            inflater,
-            container,
-            false
-        ).also {
-            errorStateBinding = it
-        }
-
-        return fragmentBinding.root
+    private val fragmentBinding by viewBinding { fragment ->
+        FragmentImageDetailsBinding.bind(fragment.requireView())
+    }
+    private val normalStateBinding by viewBinding { fragment ->
+        LayoutImageDetailsSlideNormalBinding.inflate(fragment.layoutInflater, null, false)
+    }
+    private val errorStateBinding by viewBinding { fragment ->
+        LayoutGenericErrorBinding.inflate(fragment.layoutInflater, null, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -21,6 +21,7 @@ private object Versions {
     const val constraintLayout = "2.0.0-beta6"
     const val moshi = "1.9.2"
     const val coil = "0.10.1"
+    const val viewBindingPropertyDelegate = "0.3"
     const val paperwork = "1.2.7"
 
     // GMS versions
@@ -68,7 +69,8 @@ object Libraries {
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
     const val androidxCamera = "androidx.camera:camera-camera2:${Versions.androidxCamera}"
-    const val androidxCameraView = "androidx.camera:camera-view:${Versions.androidxCameraExtensions}"
+    const val androidxCameraView =
+        "androidx.camera:camera-view:${Versions.androidxCameraExtensions}"
     const val androidxCameraExtensions =
         "androidx.camera:camera-extensions:${Versions.androidxCameraExtensions}"
     const val material = "com.google.android.material:material:${Versions.material}"
@@ -85,7 +87,8 @@ object Libraries {
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     const val lifecycleViewmodelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
-    const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleExtensions}"
+    const val lifecycleExtensions =
+        "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleExtensions}"
     const val pagingCommonKtx = "androidx.paging:paging-common-ktx:${Versions.paging}"
     const val pagingRuntimeKtx = "androidx.paging:paging-runtime-ktx:${Versions.paging}"
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
@@ -94,6 +97,8 @@ object Libraries {
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
     const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
     const val coil = "io.coil-kt:coil:${Versions.coil}"
+    const val viewBindingPropertyDelegate =
+        "com.github.kirich1409:ViewBindingPropertyDelegate:${Versions.viewBindingPropertyDelegate}"
     const val paperwork = "hu.supercluster:paperwork:${Versions.paperwork}"
 
     // firebase
