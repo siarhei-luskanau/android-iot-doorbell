@@ -216,9 +216,7 @@ val viewModelModule = module {
     factory { (appNavigation: AppNavigation, _: Bundle?) ->
         DoorbellListViewModel(
             appNavigation = appNavigation,
-            doorbellRepository = get(),
             thisDeviceRepository = get(),
-            cameraRepository = get(),
             doorbellsDataSource = get()
         )
     }

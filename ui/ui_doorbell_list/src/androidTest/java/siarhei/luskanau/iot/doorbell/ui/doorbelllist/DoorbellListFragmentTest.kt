@@ -9,11 +9,9 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
-import siarhei.luskanau.iot.doorbell.data.model.CameraData
 
 class DoorbellListFragmentTest {
 
@@ -32,10 +30,7 @@ class DoorbellListFragmentTest {
     @Test
     fun testNormalState() {
         val fragmentFactory = createFragmentFactory(
-            state = NormalDoorbellListState(
-                cameraList = listOf(CameraData("NormalCameraId")),
-                doorbellList = null
-            )
+            state = NormalDoorbellListState(doorbellList = null)
         )
         launchFragmentInContainer<DoorbellListFragment>(
             factory = fragmentFactory,
@@ -45,8 +40,6 @@ class DoorbellListFragmentTest {
         }
 
         // normal view is displayed
-        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.doorbellsRecyclerView))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
@@ -60,9 +53,7 @@ class DoorbellListFragmentTest {
     @Test
     fun testEmptyState() {
         val fragmentFactory = createFragmentFactory(
-            state = EmptyDoorbellListState(
-                cameraList = listOf(CameraData("EmptyCameraId"))
-            )
+            state = EmptyDoorbellListState
         )
         launchFragmentInContainer<DoorbellListFragment>(
             factory = fragmentFactory,
@@ -72,8 +63,6 @@ class DoorbellListFragmentTest {
         }
 
         // empty view is displayed
-        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.empty_message))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
@@ -104,10 +93,6 @@ class DoorbellListFragmentTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(expectedErrorMessage))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        // reboot button should be gone
-        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
-            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
 
         // other views does not exist
         Espresso.onView(ViewMatchers.withId(R.id.doorbellsRecyclerView))

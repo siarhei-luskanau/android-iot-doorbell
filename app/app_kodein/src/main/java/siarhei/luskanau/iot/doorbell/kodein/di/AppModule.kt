@@ -240,9 +240,7 @@ val viewModelModule = Kodein.Module(name = "viewModelModule") {
     ) with factory { appNavigation: AppNavigation, _: Bundle? ->
         DoorbellListViewModel(
             appNavigation = appNavigation,
-            doorbellRepository = instance(),
             thisDeviceRepository = instance(),
-            cameraRepository = instance(),
             doorbellsDataSource = instance()
         )
     }

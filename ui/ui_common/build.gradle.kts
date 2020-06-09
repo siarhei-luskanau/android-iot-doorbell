@@ -7,8 +7,6 @@ plugins {
 dependencies {
     coreLibraryDesugaring(Libraries.desugarJdkLibs)
 
-    implementation(project(":common:common"))
-
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.timber)
 

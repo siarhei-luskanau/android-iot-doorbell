@@ -28,9 +28,7 @@ class DoorbellListBuilderModule {
         commonComponent: CommonComponent
     ) = DoorbellListViewModel(
         appNavigation = appNavigation,
-        doorbellRepository = commonComponent.provideDoorbellRepository(),
         thisDeviceRepository = commonComponent.provideThisDeviceRepository(),
-        cameraRepository = commonComponent.provideCameraRepository(),
         doorbellsDataSource = commonComponent.provideDoorbellsDataSource()
     )
 

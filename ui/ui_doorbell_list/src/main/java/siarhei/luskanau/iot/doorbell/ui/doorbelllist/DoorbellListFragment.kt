@@ -3,14 +3,11 @@ package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.flow.collect
-import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
-import siarhei.luskanau.iot.doorbell.ui.DoorbellsAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericEmptyBinding
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericErrorBinding
@@ -35,7 +32,6 @@ class DoorbellListFragment(
         LayoutGenericErrorBinding.inflate(fragment.layoutInflater, null, false)
     }
 
-    private val camerasAdapter = CameraAdapter()
     private val doorbellsAdapter = DoorbellsAdapter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,12 +39,7 @@ class DoorbellListFragment(
         (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = javaClass.simpleName
 
         fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.requestData() }
-        fragmentBinding.camerasRecyclerView.adapter = camerasAdapter
         normalStateBinding.doorbellsRecyclerView.adapter = doorbellsAdapter
-
-        camerasAdapter.onItemClickListener = { _, _, position ->
-            presenter.onCameraClicked(camerasAdapter.getItem(position))
-        }
         doorbellsAdapter.onItemClickListener = { _, _, position ->
             doorbellsAdapter.currentList?.get(position)?.let { presenter.onDoorbellClicked(it) }
         }
@@ -80,14 +71,11 @@ class DoorbellListFragment(
             fragmentBinding.containerContent.addView(stateBinding.root)
         }
 
-        fragmentBinding.camerasRecyclerView.isVisible = (state is ErrorDoorbellListState).not()
         when (state) {
             is EmptyDoorbellListState -> {
-                camerasAdapter.submitList(state.cameraList)
             }
 
             is NormalDoorbellListState -> {
-                camerasAdapter.submitList(state.cameraList)
                 doorbellsAdapter.submitList(state.doorbellList)
             }
 

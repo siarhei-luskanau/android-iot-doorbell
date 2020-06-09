@@ -22,9 +22,7 @@ class AppViewModelFactory(
 
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
                 appNavigation = appNavigation,
-                doorbellRepository = appModules.doorbellRepository,
                 thisDeviceRepository = appModules.thisDeviceRepository,
-                cameraRepository = appModules.cameraRepository,
                 doorbellsDataSource = appModules.doorbellsDataSource
             )
 

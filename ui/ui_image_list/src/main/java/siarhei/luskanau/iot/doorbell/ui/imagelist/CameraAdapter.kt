@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.ui
+package siarhei.luskanau.iot.doorbell.ui.imagelist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -20,7 +20,7 @@ class CameraAdapter : BaseRecyclerClickableListAdapter<CameraData, ViewItemCamer
 
     override fun onBindViewHolder(holder: BindingViewHolder<ViewItemCameraBinding>, position: Int) {
         getItem(position).let { item ->
-            holder.binding.name.text = item.name?.let { it } ?: run { item.cameraId }
+            holder.binding.name.text = item.name ?: run { item.cameraId }
         }
     }
 

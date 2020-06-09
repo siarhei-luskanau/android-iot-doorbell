@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.ui
+package siarhei.luskanau.iot.doorbell.ui.imagelist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

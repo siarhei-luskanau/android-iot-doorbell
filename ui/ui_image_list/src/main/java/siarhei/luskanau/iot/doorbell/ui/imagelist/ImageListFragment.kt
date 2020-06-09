@@ -9,8 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import by.kirich1409.viewbindingdelegate.viewBinding
 import kotlinx.coroutines.flow.collect
-import siarhei.luskanau.iot.doorbell.ui.CameraAdapter
-import siarhei.luskanau.iot.doorbell.ui.ImageAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericEmptyBinding
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericErrorBinding

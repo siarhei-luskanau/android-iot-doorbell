@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
-import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
@@ -34,9 +33,7 @@ class ToothpickViewModelFactory(
 
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
                 appNavigation = appNavigation,
-                doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
                 thisDeviceRepository = scope.getInstance(ThisDeviceRepository::class.java),
-                cameraRepository = scope.getInstance(CameraRepository::class.java),
                 doorbellsDataSource = scope.getInstance(DoorbellsDataSource::class.java)
             )
 
