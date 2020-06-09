@@ -2,29 +2,20 @@ package siarhei.luskanau.iot.doorbell.dagger
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import timber.log.Timber
+import java.lang.Exception
 
+@Suppress("TooGenericExceptionCaught")
 class DelegateFragmentFactory(
     private val providers: List<() -> FragmentFactory>
 ) : FragmentFactory() {
-
-    override fun instantiate(
-        classLoader: ClassLoader,
-        className: String
-    ): Fragment {
-        Timber.d("DelegateFragmentFactory.instantiate: $className")
-
-        var fragment: Fragment? = null
-
+    override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         for (provider in providers) {
-            val instantiateResult = runCatching {
-                fragment = provider.invoke().instantiate(classLoader, className)
-            }
-            if (instantiateResult.isSuccess) {
-                break
+            try {
+                return provider.invoke().instantiate(classLoader, className)
+            } catch (e: Exception) {
+                // do nothing
             }
         }
-
-        return fragment ?: super.instantiate(classLoader, className)
+        return super.instantiate(classLoader, className)
     }
 }
