@@ -10,18 +10,18 @@ data class EmulatorConfig(
 )
 
 val ANDROID_EMULATORS = listOf(
-//    EmulatorConfig(
-//        avdName = "TestEmulatorR",
-//        sdkId = "system-images;android-R;google_apis;x86_64",
-//        deviceType = "Nexus 5X",
-//        port = "5566"
-//    )
-//    ,
     EmulatorConfig(
-        avdName = "TestEmulator29",
-        sdkId = "system-images;android-29;google_apis;x86_64",
+        avdName = "TestEmulator23",
+        sdkId = "system-images;android-23;google_apis;x86_64",
+        deviceType = "Nexus One",
+        port = "5560"
+    )
+    ,
+    EmulatorConfig(
+        avdName = "TestEmulator30",
+        sdkId = "system-images;android-30;google_apis;x86_64",
         deviceType = "Nexus 5X",
-        port = "5564"
+        port = "5566"
     )
     ,
     EmulatorConfig(
@@ -32,12 +32,13 @@ val ANDROID_EMULATORS = listOf(
     )
     ,
     EmulatorConfig(
-        avdName = "TestEmulator23",
-        sdkId = "system-images;android-23;google_apis;x86_64",
-        deviceType = "Nexus One",
-        port = "5560"
+        avdName = "TestEmulator29",
+        sdkId = "system-images;android-29;google_apis;x86_64",
+        deviceType = "Nexus 5X",
+        port = "5564"
     )
 )
+
 fun platformExecutable(name: String, ext: String = "exe"): String =
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         "$name.$ext"

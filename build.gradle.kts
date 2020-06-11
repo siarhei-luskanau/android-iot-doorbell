@@ -39,7 +39,7 @@ allprojects {
     apply(plugin = "jacoco")
 
     plugins.configureEach {
-        (this as? com.android.build.gradle.internal.plugins.BasePlugin)?.extension?.apply {
+        (this as? com.android.build.gradle.internal.plugins.BasePlugin<*, *>)?.extension?.apply {
             compileSdkVersion(BuildVersions.compileSdkVersion)
             buildToolsVersion = BuildVersions.buildToolsVersion
 
@@ -50,7 +50,7 @@ allprojects {
             }
 
             compileOptions {
-                coreLibraryDesugaringEnabled = true
+                isCoreLibraryDesugaringEnabled = true
                 sourceCompatibility = JavaVersion.VERSION_1_8
                 targetCompatibility = JavaVersion.VERSION_1_8
             }
@@ -59,15 +59,13 @@ allprojects {
                 animationsDisabled = true
                 unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {
                     //isReturnDefaultValues = true
-                    all(KotlinClosure1<Any, Test>({
-                        (this as Test).also { testTask ->
-                            testTask.testLogging.events = setOf(
-                                org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                                org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-                                org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-                            )
-                        }
-                    }, this))
+                    all { test: Test ->
+                        test.testLogging.events = setOf(
+                            org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                            org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                            org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+                        )
+                    }
                 })
             }
 

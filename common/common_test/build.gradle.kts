@@ -6,13 +6,11 @@ plugins {
 
 android {
     packagingOptions {
-        excludes = setOf(
-            "META-INF/AL2.0",
-            "META-INF/LGPL2.1",
-            "META-INF/LICENSE",
-            "META-INF/MANIFEST.MF",
-            "META-INF/proguard/coroutines.pro"
-        )
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
+        exclude("META-INF/LICENSE")
+        exclude("META-INF/MANIFEST.MF")
+        exclude("META-INF/proguard/coroutines.pro")
     }
 }
 
