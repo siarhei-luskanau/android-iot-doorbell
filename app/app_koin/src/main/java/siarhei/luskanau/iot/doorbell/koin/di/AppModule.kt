@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.work.WorkManager
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
-import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
@@ -24,7 +23,6 @@ import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
@@ -69,12 +67,6 @@ val appModule = module {
             workManager = { get() }
         )
     }
-    single<CachedRepository> {
-        DefaultCachedRepository(
-            doorbellRepository = get(),
-            persistenceRepository = get()
-        )
-    }
     single<CameraRepository> {
         JetpackCameraRepository(
             context = get(),
@@ -91,7 +83,7 @@ val appModule = module {
     single<IpAddressProvider> { AndroidIpAddressProvider() }
     single<ImagesDataSourceFactory> {
         ImagesDataSourceFactoryImpl(
-            cachedRepository = get()
+            doorbellRepository = get()
         )
     }
     single<ThisDeviceRepository> {

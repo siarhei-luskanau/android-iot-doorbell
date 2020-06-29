@@ -1,19 +1,26 @@
 package siarhei.luskanau.iot.doorbell.common
 
-import androidx.paging.DataSource
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
 class ImagesDataSourceFactoryImpl(
-    private val cachedRepository: CachedRepository
+    private val doorbellRepository: DoorbellRepository
 ) : ImagesDataSourceFactory {
 
-    override fun createDataSourceFactory(deviceId: String) =
-        object : DataSource.Factory<String, ImageData>() {
-            override fun create(): DataSource<String, ImageData> =
+    override fun createPager(deviceId: String) =
+
+        Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = {
                 ImagesDataSourceImpl(
-                    cachedRepository,
-                    deviceId
+                    doorbellRepository = doorbellRepository,
+                    deviceId = deviceId
                 )
-        }
+            }
+        )
+
+    companion object {
+        private const val PAGE_SIZE = 20
+    }
 }

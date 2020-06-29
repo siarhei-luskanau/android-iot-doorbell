@@ -41,7 +41,7 @@ class DoorbellListFragment(
         fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.requestData() }
         normalStateBinding.doorbellsRecyclerView.adapter = doorbellsAdapter
         doorbellsAdapter.onItemClickListener = { _, _, position ->
-            doorbellsAdapter.currentList?.get(position)?.let { presenter.onDoorbellClicked(it) }
+            doorbellsAdapter.getItem1(position)?.let { presenter.onDoorbellClicked(it) }
         }
 
         presenter.checkPermissions()
@@ -59,7 +59,7 @@ class DoorbellListFragment(
         }
     }
 
-    private fun changeState(state: DoorbellListState) {
+    private suspend fun changeState(state: DoorbellListState) {
         val stateBinding = when (state) {
             is NormalDoorbellListState -> normalStateBinding
             is EmptyDoorbellListState -> emptyStateBinding
@@ -76,7 +76,7 @@ class DoorbellListFragment(
             }
 
             is NormalDoorbellListState -> {
-                doorbellsAdapter.submitList(state.doorbellList)
+                doorbellsAdapter.submitData(state.pagingData)
             }
 
             is ErrorDoorbellListState -> {

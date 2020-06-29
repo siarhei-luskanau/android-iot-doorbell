@@ -14,7 +14,6 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.factory
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
-import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
@@ -29,7 +28,6 @@ import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
@@ -74,12 +72,6 @@ val appModule = Kodein.Module(name = "appModule") {
     bind<ScheduleWorkManagerService>() with singleton {
         DefaultScheduleWorkManagerService(workManager = { instance() })
     }
-    bind<CachedRepository>() with singleton {
-        DefaultCachedRepository(
-            doorbellRepository = instance(),
-            persistenceRepository = instance()
-        )
-    }
     bind<CameraRepository>() with singleton {
         JetpackCameraRepository(
             context = instance(),
@@ -100,7 +92,7 @@ val appModule = Kodein.Module(name = "appModule") {
     bind<IpAddressProvider>() with singleton { AndroidIpAddressProvider() }
     bind<ImagesDataSourceFactory>() with singleton {
         ImagesDataSourceFactoryImpl(
-            cachedRepository = instance()
+            doorbellRepository = instance()
         )
     }
     bind<ThisDeviceRepository>() with singleton {

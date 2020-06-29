@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.toothpick.di
 import android.app.Application
 import android.content.Context
 import androidx.work.WorkManager
-import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
@@ -15,7 +14,6 @@ import siarhei.luskanau.iot.doorbell.data.AndroidIpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
-import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
@@ -89,17 +87,9 @@ class AppModule(application: Application) : Module() {
         }
         bind(PersistenceRepository::class.java).toProviderInstance { persistenceRepository }
 
-        val cachedRepository: CachedRepository by lazy {
-            DefaultCachedRepository(
-                doorbellRepository = doorbellRepository,
-                persistenceRepository = persistenceRepository
-            )
-        }
-        bind(CachedRepository::class.java).toProviderInstance { cachedRepository }
-
         val imagesDataSourceFactory: ImagesDataSourceFactory by lazy {
             ImagesDataSourceFactoryImpl(
-                cachedRepository = cachedRepository
+                doorbellRepository = doorbellRepository
             )
         }
         bind(ImagesDataSourceFactory::class.java).toProviderInstance { imagesDataSourceFactory }

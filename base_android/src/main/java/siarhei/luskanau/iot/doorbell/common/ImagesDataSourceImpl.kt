@@ -1,48 +1,24 @@
 package siarhei.luskanau.iot.doorbell.common
 
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
+import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
 class ImagesDataSourceImpl(
-    private val cachedRepository: CachedRepository,
+    private val doorbellRepository: DoorbellRepository,
     private val deviceId: String
 ) : ImagesDataSource() {
 
-    override fun loadInitial(
-        params: LoadInitialParams<String>,
-        callback: LoadInitialCallback<ImageData>
-    ): Unit =
-        cachedRepository.loadAfterImages(
-            deviceId,
-            params.requestedLoadSize,
-            params.requestedInitialKey,
-            { callback.onResult(it) },
-            { invalidate() }
+    override suspend fun load(params: LoadParams<String>): LoadResult<String, ImageData> {
+        val data = doorbellRepository.getImagesList(
+            deviceId = deviceId,
+            size = params.loadSize,
+            imageIdAt = params.key,
+            orderAsc = true
         )
-
-    override fun loadAfter(
-        params: LoadParams<String>,
-        callback: LoadCallback<ImageData>
-    ) =
-        cachedRepository.loadAfterImages(
-            deviceId,
-            params.requestedLoadSize,
-            params.key,
-            { callback.onResult(it) },
-            { invalidate() }
+        return LoadResult.Page(
+            data = data,
+            prevKey = params.key,
+            nextKey = data.lastOrNull()?.imageId
         )
-
-    override fun loadBefore(
-        params: LoadParams<String>,
-        callback: LoadCallback<ImageData>
-    ) =
-        cachedRepository.loadBeforeImages(
-            deviceId,
-            params.requestedLoadSize,
-            params.key,
-            { callback.onResult(it) },
-            { invalidate() }
-        )
-
-    override fun getKey(item: ImageData): String = item.imageId
+    }
 }

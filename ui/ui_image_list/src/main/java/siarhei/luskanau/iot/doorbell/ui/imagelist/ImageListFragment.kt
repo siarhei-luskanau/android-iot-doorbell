@@ -49,7 +49,7 @@ class ImageListFragment(
             presenter.onCameraClicked(camerasAdapter.getItem(position))
         }
         imageAdapter.onItemClickListener = { _, _, position ->
-            imageAdapter.currentList?.get(position)?.let { presenter.onImageClicked(it) }
+            imageAdapter.getItem1(position)?.let { presenter.onImageClicked(it) }
         }
 
         presenter.requestData()
@@ -67,7 +67,7 @@ class ImageListFragment(
         }
     }
 
-    private fun changeState(state: ImageListState) {
+    private suspend fun changeState(state: ImageListState) {
         val stateBinding = when (state) {
             is NormalImageListState -> normalStateBinding
             is EmptyImageListState -> emptyStateBinding
@@ -89,7 +89,7 @@ class ImageListFragment(
 
             is NormalImageListState -> {
                 camerasAdapter.submitList(state.cameraList)
-                imageAdapter.submitList(state.imageList)
+                imageAdapter.submitData(state.pagingData)
                 fragmentBinding.uptimeCardView.isVisible = state.isAndroidThings
                 fragmentBinding.rebootButton.isVisible = state.isAndroidThings
             }

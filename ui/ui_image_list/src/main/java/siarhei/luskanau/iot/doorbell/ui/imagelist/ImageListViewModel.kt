@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Config
-import androidx.paging.toLiveData
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -39,36 +36,22 @@ class ImageListViewModel(
         .flatMapLatest { deviceId: String ->
             delay(DELAY)
 
-            imagesDataSourceFactory.createDataSourceFactory(deviceId).toLiveData(
-                config = Config(
-                    pageSize = PAGE_SIZE,
-                    prefetchDistance = PAGE_SIZE,
-                    initialLoadSizeHint = PAGE_SIZE
-                )
-            )
-                .asFlow()
-                .map { pagedList ->
+            imagesDataSourceFactory.createPager(deviceId)
+                .flow
+                .map { pagingData ->
                     val cameraList = doorbellRepository.getCamerasList(deviceId)
 
                     val doorbellData = doorbellRepository.getDoorbell(deviceId)
 
-                    val state = if (pagedList.isNotEmpty()) {
-                        NormalImageListState(
-                            cameraList = cameraList,
-                            imageList = pagedList,
-                            isAndroidThings = doorbellData?.isAndroidThings == true
-                        )
-                    } else {
-                        EmptyImageListState(
-                            cameraList = cameraList,
-                            isAndroidThings = doorbellData?.isAndroidThings == true
-                        )
-                    }
-                    state
+                    NormalImageListState(
+                        cameraList = cameraList,
+                        pagingData = pagingData,
+                        isAndroidThings = doorbellData?.isAndroidThings == true
+                    )
                 }
-                .catch { cause: Throwable ->
-                    emit(ErrorImageListState(error = cause))
-                }
+//                .catch { cause: Throwable ->
+//                    emit(ErrorImageListState(error = cause))
+//                }
         }
         .onEach { loadingData.postValue(false) }
 
@@ -109,7 +92,6 @@ class ImageListViewModel(
     }
 
     companion object {
-        private const val PAGE_SIZE = 20
         private const val DELAY = 1_000L
     }
 }

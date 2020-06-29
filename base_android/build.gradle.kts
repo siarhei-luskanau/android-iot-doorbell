@@ -1,3 +1,5 @@
+import de.mannodermaus.gradle.plugins.junit5.junitPlatform
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -6,6 +8,8 @@ plugins {
     id("de.mannodermaus.android-junit5")
     id("hu.supercluster.paperwork")
 }
+
+android.testOptions.junitPlatform.jacocoOptions.taskGenerationEnabled = false
 
 paperwork {
     set = runCatching {

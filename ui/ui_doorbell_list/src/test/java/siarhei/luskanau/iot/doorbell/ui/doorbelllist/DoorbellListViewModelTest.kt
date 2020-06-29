@@ -1,6 +1,6 @@
 package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 
-import androidx.paging.PagedList
+import androidx.paging.PagingData
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
@@ -48,7 +48,7 @@ object DoorbellListViewModelTest : Spek({
 
             it("should load initial doorbell list") {
                 runBlockingTest {
-                    verify(doorbellsDataSource, times(1)).loadInitial(any(), any())
+                    verify(doorbellsDataSource, times(1)).load(any())
                 }
             }
 
@@ -70,7 +70,7 @@ object DoorbellListViewModelTest : Spek({
             context("when doorbell list is filled") {
 
                 val values = mutableListOf<DoorbellListState>()
-                val pagedList by memoized { mock<PagedList<DoorbellData>>() }
+                val pagedList by memoized { mock<PagingData<DoorbellData>>() }
 
                 beforeEachTest {
                     runBlockingTest {

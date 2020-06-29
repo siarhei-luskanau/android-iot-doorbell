@@ -1,3 +1,5 @@
+import de.mannodermaus.gradle.plugins.junit5.junitPlatform
+
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -5,6 +7,8 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
 }
+
+android.testOptions.junitPlatform.jacocoOptions.taskGenerationEnabled = false
 
 dependencies {
     coreLibraryDesugaring(Libraries.desugarJdkLibs)

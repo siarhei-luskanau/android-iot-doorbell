@@ -7,7 +7,6 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
 import javax.inject.Singleton
-import siarhei.luskanau.iot.doorbell.cache.DefaultCachedRepository
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
@@ -19,7 +18,6 @@ import siarhei.luskanau.iot.doorbell.data.AndroidIpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
-import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
@@ -74,17 +72,6 @@ class CommonModule {
 
     @Provides
     @Singleton
-    fun provideCachedRepository(
-        doorbellRepository: Provider<DoorbellRepository>,
-        persistenceRepository: Provider<PersistenceRepository>
-    ): CachedRepository =
-        DefaultCachedRepository(
-            doorbellRepository = doorbellRepository.get(),
-            persistenceRepository = persistenceRepository.get()
-        )
-
-    @Provides
-    @Singleton
     fun provideCameraRepository(
         context: Provider<Context>,
         imageRepository: Provider<ImageRepository>
@@ -121,10 +108,10 @@ class CommonModule {
     @Provides
     @Singleton
     fun provideImagesDataSourceFactory(
-        cachedRepository: Provider<CachedRepository>
+        doorbellRepository: Provider<DoorbellRepository>
     ): ImagesDataSourceFactory =
         ImagesDataSourceFactoryImpl(
-            cachedRepository = cachedRepository.get()
+            doorbellRepository = doorbellRepository.get()
         )
 
     @Provides

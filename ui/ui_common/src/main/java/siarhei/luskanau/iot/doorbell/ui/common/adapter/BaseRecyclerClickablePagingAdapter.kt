@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseRecyclerClickablePagingAdapter<T, B : ViewBinding>(
+abstract class BaseRecyclerClickablePagingAdapter<T : Any, B : ViewBinding>(
     diffCallback: DiffUtil.ItemCallback<T>
-) : PagedListAdapter<T, BindingViewHolder<B>>(
+) : PagingDataAdapter<T, BindingViewHolder<B>>(
     diffCallback
 ) {
 
@@ -23,7 +23,7 @@ abstract class BaseRecyclerClickablePagingAdapter<T, B : ViewBinding>(
     @Suppress("UNCHECKED_CAST")
     private val innerClickListener = View.OnClickListener { view ->
         val holder = view.tag as BindingViewHolder<B>
-        onItemClickListener(holder.itemView.context, holder, holder.adapterPosition)
+        onItemClickListener(holder.itemView.context, holder, holder.bindingAdapterPosition)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<B> {
@@ -39,4 +39,6 @@ abstract class BaseRecyclerClickablePagingAdapter<T, B : ViewBinding>(
         parent: ViewGroup,
         viewType: Int
     ): BindingViewHolder<B>
+
+    fun getItem1(position: Int) = super.getItem(position)
 }

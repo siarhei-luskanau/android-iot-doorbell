@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
+import androidx.paging.PagingData
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -34,7 +35,7 @@ class ImageListFragmentTest {
         val fragmentFactory = createFragmentFactory(
             state = NormalImageListState(
                 cameraList = listOf(CameraData("NormalCameraId")),
-                imageList = null,
+                pagingData = PagingData.empty(),
                 isAndroidThings = true
             )
         )
@@ -69,7 +70,7 @@ class ImageListFragmentTest {
         val fragmentFactory = createFragmentFactory(
             state = NormalImageListState(
                 cameraList = listOf(CameraData("NormalCameraId")),
-                imageList = null,
+                pagingData = PagingData.empty(),
                 isAndroidThings = false
             )
         )

@@ -1,48 +1,48 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-beta01"
+    const val androidToolsBuildGradle = "4.1.0-beta02"
     const val kotlin = "1.3.72"
     const val kotlinxCoroutines = "1.3.7"
-    const val desugar = "1.0.5"
-    const val navigation = "2.3.0-rc01"
+    const val desugar = "1.0.9"
+    const val navigation = "2.3.0"
     const val timber = "4.7.1"
     const val androidxCamera = "1.0.0-beta05"
     const val androidxCameraExtensions = "1.0.0-alpha12"
     const val material = "1.3.0-alpha01"
-    const val swiperefreshlayout = "1.1.0-rc01"
+    const val swiperefreshlayout = "1.1.0"
     const val activity = "1.2.0-alpha06"
     const val fragment = "1.3.0-alpha06"
     const val androidxCore = "1.5.0-alpha01"
-    const val lifecycle = "2.3.0-alpha04"
+    const val lifecycle = "2.3.0-alpha05"
     const val lifecycleExtensions = "2.2.0"
-    const val paging = "2.1.2"
+    const val paging = "3.0.0-alpha02"
     const val room = "2.3.0-alpha01"
-    const val workManager = "2.4.0-beta01"
-    const val constraintLayout = "2.0.0-beta6"
-    const val moshi = "1.9.2"
-    const val coil = "0.10.1"
-    const val viewBindingPropertyDelegate = "0.3"
+    const val workManager = "2.4.0-rc01"
+    const val constraintLayout = "2.0.0-beta7"
+    const val moshi = "1.9.3"
+    const val coil = "0.11.0"
+    const val viewBindingPropertyDelegate = "1.0.0-beta1"
     const val paperwork = "1.2.7"
 
     // GMS versions
-    const val firebaseDatabase = "19.3.0"
+    const val firebaseDatabase = "19.3.1"
     const val firebaseStorage = "19.1.1"
 
     // DI
-    const val dagger = "2.27"
+    const val dagger = "2.28.1"
     const val kodein = "6.5.5"
-    const val koin = "2.1.5"
+    const val koin = "2.1.6"
     const val toothpick = "3.1.0"
 
     // Development
-    const val leakCanary = "2.3"
+    const val leakCanary = "2.4"
 
     // Android Things
     const val androidthings = "1.0"
 
     // Testing
     const val mockitoKotlin = "2.2.0"
-    const val spek = "2.0.10"
+    const val spek = "2.0.11"
 
     // test instrumentation
     const val androidTestCore = "1.3.0-rc01"
@@ -132,7 +132,6 @@ object Libraries {
 }
 
 object TestLibraries {
-
     const val spekRunnerJunit5 = "org.spekframework.spek2:spek-runner-junit5:${Versions.spek}"
     const val spekDslJvm = "org.spekframework.spek2:spek-dsl-jvm:${Versions.spek}"
     const val kotlinxCoroutinesTest =

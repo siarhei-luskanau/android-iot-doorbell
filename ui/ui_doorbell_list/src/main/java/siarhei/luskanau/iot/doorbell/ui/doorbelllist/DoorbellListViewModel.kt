@@ -3,13 +3,10 @@ package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asFlow
-import androidx.paging.Config
-import androidx.paging.DataSource
-import androidx.paging.toLiveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
@@ -24,28 +21,19 @@ class DoorbellListViewModel(
 ) : ViewModel(), DoorbellListPresenter {
 
     override fun getDoorbellListFlow(): Flow<DoorbellListState> =
-        createDataSourceFactory()
-            .toLiveData(
-                config = Config(
-                    pageSize = PAGE_SIZE,
-                    prefetchDistance = PAGE_SIZE,
-                    initialLoadSizeHint = PAGE_SIZE
-                )
-            )
-            .asFlow()
+        Pager(
+            config = PagingConfig(pageSize = PAGE_SIZE),
+            pagingSourceFactory = { doorbellsDataSource }
+        )
+            .flow
             .onEach { loadingData.postValue(true) }
-            .map { pagedList ->
+            .map { pagingData ->
                 delay(DELAY)
-
-                if (pagedList.isNotEmpty()) {
-                    NormalDoorbellListState(pagedList)
-                } else {
-                    EmptyDoorbellListState
-                }
+                NormalDoorbellListState(pagingData)
             }
-            .catch { cause: Throwable ->
-                emit(ErrorDoorbellListState(error = cause))
-            }
+//            .catch { cause: Throwable ->
+//                emit(ErrorDoorbellListState(error = cause))
+//            }
             .onEach { loadingData.postValue(false) }
 
     private val loadingData = MutableLiveData<Boolean>()
@@ -61,11 +49,6 @@ class DoorbellListViewModel(
             appNavigation.goDoorbellListToPermissions()
         }
     }
-
-    private fun createDataSourceFactory(): DataSource.Factory<String, DoorbellData> =
-        object : DataSource.Factory<String, DoorbellData>() {
-            override fun create() = doorbellsDataSource
-        }
 
     companion object {
         private const val PAGE_SIZE = 20

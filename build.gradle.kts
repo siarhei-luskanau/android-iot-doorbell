@@ -19,7 +19,7 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.9.0")
+    id("io.gitlab.arturbosch.detekt").version("1.10.0")
     id("com.vanniktech.android.junit.jacoco").version("0.16.0")
 }
 
