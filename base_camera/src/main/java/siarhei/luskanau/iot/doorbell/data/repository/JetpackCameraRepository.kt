@@ -5,11 +5,13 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Size
+import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraX
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
 import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.impl.CameraInfoInternal
 import androidx.camera.core.impl.utils.executor.CameraXExecutors
 import androidx.lifecycle.ProcessLifecycleOwner
 import kotlin.coroutines.Continuation
@@ -23,7 +25,7 @@ class JetpackCameraRepository(
     private val imageRepository: ImageRepository
 ) : BaseCameraRepository(context) {
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "UnsafeExperimentalUsageError")
     override suspend fun makeImage(
         deviceId: String,
         cameraId: String
@@ -34,10 +36,15 @@ class JetpackCameraRepository(
                 handler.post {
                     runCatching {
                         val cameraSelector = CameraSelector.Builder()
-                            .appendFilter { cameras ->
-                                cameras.filter { camera ->
-                                    camera.cameraInfoInternal.cameraId == cameraId
-                                }.toSet()
+                            .addCameraFilter { cameras ->
+                                LinkedHashSet<Camera>().apply {
+                                    addAll(
+                                        cameras.filter { camera ->
+                                            val cameraInfo = camera.cameraInfo as CameraInfoInternal
+                                            cameraInfo.cameraId == cameraId
+                                        }
+                                    )
+                                }
                             }
                             .build()
 

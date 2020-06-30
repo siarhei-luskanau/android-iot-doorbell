@@ -6,8 +6,8 @@ private object Versions {
     const val desugar = "1.0.9"
     const val navigation = "2.3.0"
     const val timber = "4.7.1"
-    const val androidxCamera = "1.0.0-beta05"
-    const val androidxCameraExtensions = "1.0.0-alpha12"
+    const val androidxCamera = "1.0.0-beta06"
+    const val androidxCameraExt = "1.0.0-alpha13"
     const val material = "1.3.0-alpha01"
     const val swiperefreshlayout = "1.1.0"
     const val activity = "1.2.0-alpha06"
@@ -70,9 +70,9 @@ object Libraries {
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
     const val androidxCamera = "androidx.camera:camera-camera2:${Versions.androidxCamera}"
     const val androidxCameraView =
-        "androidx.camera:camera-view:${Versions.androidxCameraExtensions}"
+        "androidx.camera:camera-view:${Versions.androidxCameraExt}"
     const val androidxCameraExtensions =
-        "androidx.camera:camera-extensions:${Versions.androidxCameraExtensions}"
+        "androidx.camera:camera-extensions:${Versions.androidxCameraExt}"
     const val material = "com.google.android.material:material:${Versions.material}"
     const val swiperefreshlayout =
         "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"
