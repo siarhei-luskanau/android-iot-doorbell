@@ -1,6 +1,5 @@
 package siarhei.luskanau.iot.doorbell.kodein.di
 
-import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
@@ -8,12 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.work.WorkManager
-import org.kodein.di.Kodein
-import org.kodein.di.generic.M
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.factory
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.singleton
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.factory
+import org.kodein.di.instance
+import org.kodein.di.singleton
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
@@ -26,7 +24,6 @@ import siarhei.luskanau.iot.doorbell.data.AndroidIpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
@@ -57,7 +54,7 @@ import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 
-val appModule = Kodein.Module(name = "appModule") {
+val appModule = DI.Module(name = "appModule") {
     bind() from singleton { WorkManager.getInstance(instance()) }
     bind<ImageRepository>() with singleton { InternalStorageImageRepository(context = instance()) }
     bind<DoorbellRepository>() with singleton {
@@ -112,18 +109,18 @@ val appModule = Kodein.Module(name = "appModule") {
     }
 }
 
-val activityModule = Kodein.Module(name = "activityModule") {
+val activityModule = DI.Module(name = "activityModule") {
     bind<AppNavigation>() with factory { activity: FragmentActivity ->
         DefaultAppNavigation(activity)
     }
     bind<FragmentFactory>() with factory { activity: FragmentActivity ->
-        KodeinFragmentFactory(instance(arg = activity), dkodein)
+        KodeinFragmentFactory(instance(arg = activity), directDI)
     }
-    bind<ViewModelProvider.Factory>() with factory { appNavigation: AppNavigation, args: Bundle? ->
+    bind<ViewModelProvider.Factory>() with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
         KodeinViewModelFactory(
-            injector = dkodein,
-            appNavigation = appNavigation,
-            args = args
+            injector = directDI,
+            appNavigation = viewModelFactoryArgs.appNavigation,
+            args = viewModelFactoryArgs.args
         )
     }
 
@@ -133,7 +130,12 @@ val activityModule = Kodein.Module(name = "activityModule") {
     ) with factory { appNavigation: AppNavigation ->
         SplashFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
-                instance(arg = M(appNavigation, fragment.arguments))
+                instance(
+                    arg = ViewModelFactoryArgs(
+                        appNavigation = appNavigation,
+                        args = fragment.arguments
+                    )
+                )
             ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)
                 .get(SplashViewModel::class.java)
         }
@@ -157,7 +159,12 @@ val activityModule = Kodein.Module(name = "activityModule") {
     ) with factory { appNavigation: AppNavigation ->
         DoorbellListFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
-                instance(arg = M(appNavigation, fragment.arguments))
+                instance(
+                    arg = ViewModelFactoryArgs(
+                        appNavigation = appNavigation,
+                        args = fragment.arguments
+                    )
+                )
             ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)
                 .get(DoorbellListViewModel::class.java)
         }
@@ -169,7 +176,12 @@ val activityModule = Kodein.Module(name = "activityModule") {
     ) with factory { appNavigation: AppNavigation ->
         ImageListFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
-                instance(arg = M(appNavigation, fragment.arguments))
+                instance(
+                    arg = ViewModelFactoryArgs(
+                        appNavigation = appNavigation,
+                        args = fragment.arguments
+                    )
+                )
             ViewModelProvider(fragment, viewModelFactory)
                 .get(ImageListViewModel::class.java)
         }
@@ -186,19 +198,22 @@ val activityModule = Kodein.Module(name = "activityModule") {
             val imageData = fragment.arguments?.let { args ->
                 ImageDetailsFragmentArgs.fromBundle(args).imageData
             }
-            instance(arg = M(appNavigation, fragment, doorbellData, imageData))
+            instance(
+                arg = ImageDetailsPresenterArgs(
+                    appNavigation = appNavigation,
+                    fragment = fragment,
+                    doorbellData = doorbellData,
+                    imageData = imageData
+                )
+            )
         }
     }
-    bind() from factory {
-        appNavigation: AppNavigation,
-        fragment: Fragment,
-        doorbellData: DoorbellData,
-        imageData: ImageData ->
+    bind() from factory { imageDetailsPresenterArgs: ImageDetailsPresenterArgs ->
         ImageDetailsPresenterImpl(
-            appNavigation = appNavigation,
-            fragment = fragment,
-            doorbellData = doorbellData,
-            imageData = imageData
+            appNavigation = imageDetailsPresenterArgs.appNavigation,
+            fragment = imageDetailsPresenterArgs.fragment,
+            doorbellData = imageDetailsPresenterArgs.doorbellData,
+            imageData = imageDetailsPresenterArgs.imageData
         )
     }
 
@@ -210,7 +225,7 @@ val activityModule = Kodein.Module(name = "activityModule") {
             val imageData = fragment.arguments?.let { args ->
                 ImageDetailsFragmentArgs.fromBundle(args).imageData
             }
-            instance(arg = imageData)
+            instance(arg = imageData as ImageData)
         }
     }
     bind() from factory { imageData: ImageData ->
@@ -220,18 +235,18 @@ val activityModule = Kodein.Module(name = "activityModule") {
     }
 }
 
-val viewModelModule = Kodein.Module(name = "viewModelModule") {
+val viewModelModule = DI.Module(name = "viewModelModule") {
     bind<ViewModel>(
         tag = SplashViewModel::class.simpleName
-    ) with factory { appNavigation: AppNavigation, _: Bundle? ->
-        SplashViewModel(appNavigation = appNavigation)
+    ) with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
+        SplashViewModel(appNavigation = viewModelFactoryArgs.appNavigation)
     }
 
     bind<ViewModel>(
         tag = DoorbellListViewModel::class.simpleName
-    ) with factory { appNavigation: AppNavigation, _: Bundle? ->
+    ) with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
         DoorbellListViewModel(
-            appNavigation = appNavigation,
+            appNavigation = viewModelFactoryArgs.appNavigation,
             thisDeviceRepository = instance(),
             doorbellsDataSource = instance()
         )
@@ -239,11 +254,13 @@ val viewModelModule = Kodein.Module(name = "viewModelModule") {
 
     bind<ViewModel>(
         tag = ImageListViewModel::class.simpleName
-    ) with factory { appNavigation: AppNavigation, args: Bundle? ->
-        val doorbellData = args?.let { ImageListFragmentArgs.fromBundle(it).doorbellData }
+    ) with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
+        val doorbellData = viewModelFactoryArgs.args?.let {
+            ImageListFragmentArgs.fromBundle(it).doorbellData
+        }
         ImageListViewModel(
             doorbellData = doorbellData,
-            appNavigation = appNavigation,
+            appNavigation = viewModelFactoryArgs.appNavigation,
             doorbellRepository = instance(),
             imagesDataSourceFactory = instance(),
             uptimeRepository = instance()

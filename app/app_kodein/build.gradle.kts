@@ -57,7 +57,6 @@ dependencies {
     implementation(Libraries.workRuntimeKtx)
 
     // kodein
-    implementation(Libraries.kodeinDiGenericJvm)
     implementation(Libraries.kodeinDiFrameworkAndroidX)
 
     // Development

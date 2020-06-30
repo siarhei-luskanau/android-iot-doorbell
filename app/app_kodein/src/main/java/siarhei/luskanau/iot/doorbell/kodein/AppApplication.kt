@@ -4,11 +4,11 @@ import android.app.Application
 import androidx.fragment.app.FragmentActivity
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
+import org.kodein.di.DI
+import org.kodein.di.DIAware
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.direct
-import org.kodein.di.generic.instance
+import org.kodein.di.instance
 import siarhei.luskanau.iot.doorbell.BuildConfig
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
@@ -23,7 +23,7 @@ import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallba
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
 import timber.log.Timber
 
-class AppApplication : Application(), KodeinAware {
+class AppApplication : Application(), DIAware {
 
     private val thisDeviceRepository: ThisDeviceRepository by instance()
     private val doorbellRepository: DoorbellRepository by instance()
@@ -32,7 +32,7 @@ class AppApplication : Application(), KodeinAware {
     private val scheduleWorkManagerService: ScheduleWorkManagerService by instance()
     private val appBackgroundServices: AppBackgroundServices by instance()
 
-    override val kodein by Kodein.lazy {
+    override val di by DI.lazy {
         import(androidXModule(this@AppApplication))
         import(appModule)
         import(activityModule)
@@ -61,7 +61,7 @@ class AppApplication : Application(), KodeinAware {
             OnActivityCreatedLifecycleCallbacks {
                 (it as? FragmentActivity?)?.let { fragmentActivity ->
                     fragmentActivity.supportFragmentManager.fragmentFactory =
-                        kodein.direct.instance(arg = fragmentActivity)
+                        di.direct.instance(arg = fragmentActivity)
                 }
             }
         )

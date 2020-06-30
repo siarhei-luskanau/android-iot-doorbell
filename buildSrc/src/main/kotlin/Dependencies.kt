@@ -30,7 +30,7 @@ private object Versions {
 
     // DI
     const val dagger = "2.28.1"
-    const val kodein = "6.5.5"
+    const val kodein = "7.0.0"
     const val koin = "2.1.6"
     const val toothpick = "3.1.0"
 
@@ -112,7 +112,6 @@ object Libraries {
     const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
 
     // kodein
-    const val kodeinDiGenericJvm = "org.kodein.di:kodein-di-generic-jvm:${Versions.kodein}"
     const val kodeinDiFrameworkAndroidX =
         "org.kodein.di:kodein-di-framework-android-x:${Versions.kodein}"
 
