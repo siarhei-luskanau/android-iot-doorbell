@@ -1,6 +1,6 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-beta02"
+    const val androidToolsBuildGradle = "4.1.0-beta03"
     const val kotlin = "1.3.72"
     const val kotlinxCoroutines = "1.3.7"
     const val desugar = "1.0.9"
