@@ -1,6 +1,6 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-beta03"
+    const val androidToolsBuildGradle = "4.1.0-beta04"
     const val kotlin = "1.3.72"
     const val kotlinxCoroutines = "1.3.7"
     const val desugar = "1.0.9"
@@ -18,7 +18,7 @@ private object Versions {
     const val paging = "3.0.0-alpha02"
     const val room = "2.3.0-alpha01"
     const val workManager = "2.4.0-rc01"
-    const val constraintLayout = "2.0.0-beta7"
+    const val constraintLayout = "2.0.0-beta8"
     const val moshi = "1.9.3"
     const val coil = "0.11.0"
     const val viewBindingPropertyDelegate = "1.0.0-beta1"

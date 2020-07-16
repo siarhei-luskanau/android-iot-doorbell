@@ -3,7 +3,6 @@ package androidx.test.runner.screenshot
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
-import android.os.Environment
 import androidx.annotation.RequiresApi
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
@@ -14,8 +13,7 @@ import java.time.format.DateTimeFormatter
 class ExternalFilesScreenCaptureProcessor(
     private val destPath: String = SCREENSHOTS_PATH,
     defaultScreenshotPath: File = File(
-        ApplicationProvider.getApplicationContext<Context>()
-            .getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+        ApplicationProvider.getApplicationContext<Context>().cacheDir,
         "screenshots"
     )
 ) : BasicScreenCaptureProcessor(defaultScreenshotPath) {
