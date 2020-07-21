@@ -2,7 +2,7 @@ private object Versions {
     // Libraries
     const val androidToolsBuildGradle = "4.1.0-beta04"
     const val kotlin = "1.3.72"
-    const val kotlinxCoroutines = "1.3.7"
+    const val kotlinxCoroutines = "1.3.8"
     const val desugar = "1.0.9"
     const val navigation = "2.3.0"
     const val timber = "4.7.1"
@@ -14,7 +14,6 @@ private object Versions {
     const val fragment = "1.3.0-alpha06"
     const val androidxCore = "1.5.0-alpha01"
     const val lifecycle = "2.3.0-alpha05"
-    const val lifecycleExtensions = "2.2.0"
     const val paging = "3.0.0-alpha02"
     const val room = "2.3.0-alpha01"
     const val workManager = "2.4.0-rc01"
@@ -87,8 +86,7 @@ object Libraries {
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     const val lifecycleViewmodelKtx =
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
-    const val lifecycleExtensions =
-        "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleExtensions}"
+    const val lifecycleProcess = "androidx.lifecycle:lifecycle-process:${Versions.lifecycle}"
     const val pagingCommonKtx = "androidx.paging:paging-common-ktx:${Versions.paging}"
     const val pagingRuntimeKtx = "androidx.paging:paging-runtime-ktx:${Versions.paging}"
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"

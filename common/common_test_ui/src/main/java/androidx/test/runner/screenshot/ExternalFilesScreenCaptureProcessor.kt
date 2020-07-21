@@ -3,6 +3,7 @@ package androidx.test.runner.screenshot
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
+import android.os.Environment
 import androidx.annotation.RequiresApi
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
@@ -13,7 +14,12 @@ import java.time.format.DateTimeFormatter
 class ExternalFilesScreenCaptureProcessor(
     private val destPath: String = SCREENSHOTS_PATH,
     defaultScreenshotPath: File = File(
-        ApplicationProvider.getApplicationContext<Context>().cacheDir,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            ApplicationProvider.getApplicationContext<Context>().cacheDir
+        } else {
+            ApplicationProvider.getApplicationContext<Context>()
+                .getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        },
         "screenshots"
     )
 ) : BasicScreenCaptureProcessor(defaultScreenshotPath) {
@@ -37,6 +43,7 @@ class ExternalFilesScreenCaptureProcessor(
     companion object {
         @SuppressLint("SdCardPath")
         private val SCREENSHOTS_PATH = "/sdcard/Pictures/screenshots/"
+
         @RequiresApi(Build.VERSION_CODES.O)
         private val FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss.S")
     }
