@@ -1,7 +1,5 @@
 package siarhei.luskanau.iot.doorbell.ui.imagedetails.slide
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
@@ -20,14 +18,11 @@ class ImageDetailsSlideFragmentTest {
     @get:Rule
     val screenshotRule = TakeScreenshotAfterTestRule()
 
-    private fun createFragmentFactory(state: ImageDetailsSlideState) = object : FragmentFactory() {
-        override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
-            ImageDetailsSlideFragment {
-                object : ImageDetailsSlidePresenter {
-                    override fun getImageDetailsSlideStateData(): LiveData<ImageDetailsSlideState> =
-                        MutableLiveData<ImageDetailsSlideState>().apply { value = state }
-                }
-            }
+    private fun createFragment(state: ImageDetailsSlideState) = ImageDetailsSlideFragment {
+        object : ImageDetailsSlidePresenter {
+            override fun getImageDetailsSlideStateData(): LiveData<ImageDetailsSlideState> =
+                MutableLiveData<ImageDetailsSlideState>().apply { value = state }
+        }
     }
 
     @Test
@@ -37,13 +32,9 @@ class ImageDetailsSlideFragmentTest {
             imageUri = "expectedImageUri",
             timestampString = "timestampString"
         )
-        val fragmentFactory = createFragmentFactory(
-            state = NormalImageDetailsSlideState(imageData = expectedImageData)
-        )
-        launchFragmentInContainer<ImageDetailsSlideFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.AppTheme
-        ).apply {
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            createFragment(state = NormalImageDetailsSlideState(imageData = expectedImageData))
+        }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 
@@ -59,15 +50,11 @@ class ImageDetailsSlideFragmentTest {
     @Test
     fun testErrorState() {
         val expectedErrorMessage = "Test Exception"
-        val fragmentFactory = createFragmentFactory(
-            state = ErrorImageDetailsSlideState(
-                error = RuntimeException(expectedErrorMessage)
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            createFragment(
+                state = ErrorImageDetailsSlideState(error = RuntimeException(expectedErrorMessage))
             )
-        )
-        launchFragmentInContainer<ImageDetailsSlideFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.AppTheme
-        ).apply {
+        }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 

@@ -46,10 +46,14 @@ dependencies {
     implementation(project(":navigation"))
 
     implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.kotlinReflect)
     implementation(Libraries.timber)
 
     kapt(Libraries.lifecycleCommonJava8)
+    implementation(Libraries.material)
+    implementation(Libraries.activityKtx)
+    implementation(Libraries.fragmentKtx)
     implementation(Libraries.navigationFragmentKtx)
     implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)

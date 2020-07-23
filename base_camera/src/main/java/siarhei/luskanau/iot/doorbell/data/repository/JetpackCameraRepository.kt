@@ -7,12 +7,12 @@ import android.os.Looper
 import android.util.Size
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.CameraX
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.impl.CameraInfoInternal
 import androidx.camera.core.impl.utils.executor.CameraXExecutors
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.lifecycle.ProcessLifecycleOwner
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
@@ -21,7 +21,7 @@ import kotlin.coroutines.suspendCoroutine
 import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 
 class JetpackCameraRepository(
-    context: Context,
+    private val context: Context,
     private val imageRepository: ImageRepository
 ) : BaseCameraRepository(context) {
 
@@ -53,7 +53,11 @@ class JetpackCameraRepository(
                             .setTargetResolution(Size(WIDTH, HEIGHT))
                             .build()
 
-                        CameraX.bindToLifecycle(ProcessLifecycleOwner.get(), cameraSelector)
+                        val processCameraProvider = ProcessCameraProvider.getInstance(context).get()
+                        processCameraProvider.bindToLifecycle(
+                            ProcessLifecycleOwner.get(),
+                            cameraSelector
+                        )
 
                         // TODO use ImageAnalysis to check if camera is ready
                         Thread.sleep(SLEEP)
@@ -69,7 +73,7 @@ class JetpackCameraRepository(
                                 ) {
                                     handler.post {
                                         runCatching {
-                                            CameraX.unbind(imageCapture)
+                                            processCameraProvider.unbind(imageCapture)
                                             continuation.resume(
                                                 imageRepository.saveImage(
                                                     imageUri = outputFileResults.savedUri,

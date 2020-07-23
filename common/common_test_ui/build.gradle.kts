@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":common:common"))
 
     implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.kotlinxCoroutinesCore)
 
     // android test, but implementation
     implementation(TestLibraries.kotlinTest)

@@ -1,26 +1,26 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-beta04"
+    const val androidToolsBuildGradle = "4.1.0-beta05"
     const val kotlin = "1.3.72"
     const val kotlinxCoroutines = "1.3.8"
     const val desugar = "1.0.9"
     const val navigation = "2.3.0"
     const val timber = "4.7.1"
-    const val androidxCamera = "1.0.0-beta06"
-    const val androidxCameraExt = "1.0.0-alpha13"
+    const val androidxCamera = "1.0.0-beta07"
+    const val androidxCameraExt = "1.0.0-alpha14"
     const val material = "1.3.0-alpha01"
     const val swiperefreshlayout = "1.1.0"
-    const val activity = "1.2.0-alpha06"
-    const val fragment = "1.3.0-alpha06"
+    const val activity = "1.2.0-alpha07"
+    const val fragment = "1.3.0-alpha07"
     const val androidxCore = "1.5.0-alpha01"
-    const val lifecycle = "2.3.0-alpha05"
-    const val paging = "3.0.0-alpha02"
-    const val room = "2.3.0-alpha01"
-    const val workManager = "2.4.0-rc01"
+    const val lifecycle = "2.3.0-alpha06"
+    const val paging = "3.0.0-alpha03"
+    const val room = "2.3.0-alpha02"
+    const val workManager = "2.4.0"
     const val constraintLayout = "2.0.0-beta8"
     const val moshi = "1.9.3"
     const val coil = "0.11.0"
-    const val viewBindingPropertyDelegate = "1.0.0-beta1"
+    const val viewBindingPropertyDelegate = "1.0.0"
     const val paperwork = "1.2.7"
 
     // GMS versions
@@ -53,7 +53,7 @@ object BuildVersions {
     const val platformVersion = 30
     const val compileSdkVersion = platformVersion
     const val targetSdkVersion = 30
-    const val buildToolsVersion = "30.0.0"
+    const val buildToolsVersion = "30.0.1"
     const val minSdkVersion = 21
 }
 
@@ -67,9 +67,9 @@ object Libraries {
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
-    const val androidxCamera = "androidx.camera:camera-camera2:${Versions.androidxCamera}"
-    const val androidxCameraView =
-        "androidx.camera:camera-view:${Versions.androidxCameraExt}"
+    const val androidxCameraLifecycle =
+        "androidx.camera:camera-lifecycle:${Versions.androidxCamera}"
+    const val androidxCameraView = "androidx.camera:camera-view:${Versions.androidxCameraExt}"
     const val androidxCameraExtensions =
         "androidx.camera:camera-extensions:${Versions.androidxCameraExt}"
     const val material = "com.google.android.material:material:${Versions.material}"
@@ -96,7 +96,8 @@ object Libraries {
     const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
     const val coil = "io.coil-kt:coil:${Versions.coil}"
     const val viewBindingPropertyDelegate =
-        "com.github.kirich1409:ViewBindingPropertyDelegate:${Versions.viewBindingPropertyDelegate}"
+        "com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:" +
+                Versions.viewBindingPropertyDelegate
     const val paperwork = "hu.supercluster:paperwork:${Versions.paperwork}"
 
     // firebase

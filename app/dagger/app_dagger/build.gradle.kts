@@ -45,9 +45,13 @@ dependencies {
     implementation(project(":app:dagger:dagger_image_details"))
 
     implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 
     kapt(Libraries.lifecycleCommonJava8)
+    implementation(Libraries.material)
+    implementation(Libraries.activityKtx)
+    implementation(Libraries.fragmentKtx)
     implementation(Libraries.navigationFragmentKtx)
 
     implementation(Libraries.workRuntimeKtx)

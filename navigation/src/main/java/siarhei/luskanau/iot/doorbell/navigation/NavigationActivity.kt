@@ -2,7 +2,7 @@ package siarhei.luskanau.iot.doorbell.navigation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -15,7 +15,8 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
         ActivityNavigationBinding.bind(activity.findViewById(R.id.container))
     }
     private val navController by lazy {
-        Navigation.findNavController(this, R.id.navHostFragment)
+        (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
+            .navController
     }
     private val appBarConfiguration by lazy {
         AppBarConfiguration(navController.graph)

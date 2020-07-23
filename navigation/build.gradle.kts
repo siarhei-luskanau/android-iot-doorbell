@@ -17,9 +17,12 @@ dependencies {
     implementation(project(":ui:ui_image_details"))
 
     implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
     implementation(Libraries.viewBindingPropertyDelegate)
     implementation(Libraries.material)
+    implementation(Libraries.activityKtx)
+    implementation(Libraries.fragmentKtx)
     implementation(Libraries.navigationUiKtx)
     implementation(Libraries.navigationFragmentKtx)
 }

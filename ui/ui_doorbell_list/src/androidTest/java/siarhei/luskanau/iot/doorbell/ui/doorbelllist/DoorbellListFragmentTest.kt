@@ -1,7 +1,5 @@
 package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
@@ -19,24 +17,17 @@ class DoorbellListFragmentTest {
     @get:Rule
     val screenshotRule = TakeScreenshotAfterTestRule()
 
-    private fun createFragmentFactory(state: DoorbellListState) = object : FragmentFactory() {
-        override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
-            DoorbellListFragment {
-                object : StubDoorbellListPresenter() {
-                    override fun getDoorbellListFlow(): Flow<DoorbellListState> = flowOf(state)
-                }
-            }
+    private fun createFragment(state: DoorbellListState) = DoorbellListFragment {
+        object : StubDoorbellListPresenter() {
+            override fun getDoorbellListFlow(): Flow<DoorbellListState> = flowOf(state)
+        }
     }
 
     @Test
     fun testNormalState() {
-        val fragmentFactory = createFragmentFactory(
-            state = NormalDoorbellListState(pagingData = PagingData.empty())
-        )
-        launchFragmentInContainer<DoorbellListFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.AppTheme
-        ).apply {
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            createFragment(state = NormalDoorbellListState(pagingData = PagingData.empty()))
+        }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 
@@ -53,13 +44,9 @@ class DoorbellListFragmentTest {
 
     @Test
     fun testEmptyState() {
-        val fragmentFactory = createFragmentFactory(
-            state = EmptyDoorbellListState
-        )
-        launchFragmentInContainer<DoorbellListFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.AppTheme
-        ).apply {
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            createFragment(state = EmptyDoorbellListState)
+        }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 
@@ -77,15 +64,11 @@ class DoorbellListFragmentTest {
     @Test
     fun testErrorState() {
         val expectedErrorMessage = "Test Exception"
-        val fragmentFactory = createFragmentFactory(
-            state = ErrorDoorbellListState(
-                error = RuntimeException(expectedErrorMessage)
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            createFragment(
+                state = ErrorDoorbellListState(error = RuntimeException(expectedErrorMessage))
             )
-        )
-        launchFragmentInContainer<DoorbellListFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.AppTheme
-        ).apply {
+        }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 

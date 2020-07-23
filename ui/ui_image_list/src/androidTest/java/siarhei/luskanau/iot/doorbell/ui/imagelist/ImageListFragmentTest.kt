@@ -1,7 +1,5 @@
 package siarhei.luskanau.iot.doorbell.ui.imagelist
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
@@ -21,28 +19,23 @@ class ImageListFragmentTest {
     @get:Rule
     val screenshotRule = TakeScreenshotAfterTestRule()
 
-    private fun createFragmentFactory(state: ImageListState) = object : FragmentFactory() {
-        override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
-            ImageListFragment {
-                object : StubImageListPresenter() {
-                    override fun getImageListStateFlow(): Flow<ImageListState> = flowOf(state)
-                }
-            }
+    private fun createFragment(state: ImageListState) = ImageListFragment {
+        object : StubImageListPresenter() {
+            override fun getImageListStateFlow(): Flow<ImageListState> = flowOf(state)
+        }
     }
 
     @Test
     fun testNormalStateAndIsAndroidThings() {
-        val fragmentFactory = createFragmentFactory(
-            state = NormalImageListState(
-                cameraList = listOf(CameraData("NormalCameraId")),
-                pagingData = PagingData.empty(),
-                isAndroidThings = true
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            createFragment(
+                state = NormalImageListState(
+                    cameraList = listOf(CameraData("NormalCameraId")),
+                    pagingData = PagingData.empty(),
+                    isAndroidThings = true
+                )
             )
-        )
-        launchFragmentInContainer<ImageListFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.AppTheme
-        ).apply {
+        }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 
@@ -67,17 +60,15 @@ class ImageListFragmentTest {
 
     @Test
     fun testNormalStateAndNotAndroidThings() {
-        val fragmentFactory = createFragmentFactory(
-            state = NormalImageListState(
-                cameraList = listOf(CameraData("NormalCameraId")),
-                pagingData = PagingData.empty(),
-                isAndroidThings = false
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            createFragment(
+                state = NormalImageListState(
+                    cameraList = listOf(CameraData("NormalCameraId")),
+                    pagingData = PagingData.empty(),
+                    isAndroidThings = false
+                )
             )
-        )
-        launchFragmentInContainer<ImageListFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.AppTheme
-        ).apply {
+        }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 
@@ -102,16 +93,14 @@ class ImageListFragmentTest {
 
     @Test
     fun testEmptyState() {
-        val fragmentFactory = createFragmentFactory(
-            state = EmptyImageListState(
-                cameraList = listOf(CameraData("EmptyCameraId")),
-                isAndroidThings = false
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            createFragment(
+                state = EmptyImageListState(
+                    cameraList = listOf(CameraData("EmptyCameraId")),
+                    isAndroidThings = false
+                )
             )
-        )
-        launchFragmentInContainer<ImageListFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.AppTheme
-        ).apply {
+        }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 
@@ -137,15 +126,11 @@ class ImageListFragmentTest {
     @Test
     fun testErrorState() {
         val expectedErrorMessage = "Test Exception"
-        val fragmentFactory = createFragmentFactory(
-            state = ErrorImageListState(
-                error = RuntimeException(expectedErrorMessage)
+        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+            createFragment(
+                state = ErrorImageListState(error = RuntimeException(expectedErrorMessage))
             )
-        )
-        launchFragmentInContainer<ImageListFragment>(
-            factory = fragmentFactory,
-            themeResId = R.style.AppTheme
-        ).apply {
+        }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 

@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":common:common"))
 
     implementation(Libraries.kotlinStdlibJdk8)
+    implementation(Libraries.kotlinxCoroutinesCore)
     implementation(TestLibraries.kotlinxCoroutinesTest)
     implementation(Libraries.lifecycleLivedataKtx)
     implementation(TestLibraries.spekDslJvm)
