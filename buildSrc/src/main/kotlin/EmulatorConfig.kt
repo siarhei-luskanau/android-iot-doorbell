@@ -16,13 +16,13 @@ val ANDROID_EMULATORS = listOf(
         deviceType = "Nexus One",
         port = "5560"
     )
-    ,
-    EmulatorConfig(
-        avdName = "TestEmulator30",
-        sdkId = "system-images;android-30;google_apis;x86_64",
-        deviceType = "Nexus 5X",
-        port = "5566"
-    )
+//    ,
+//    EmulatorConfig(
+//        avdName = "TestEmulator30",
+//        sdkId = "system-images;android-30;google_apis;x86_64",
+//        deviceType = "Nexus 5X",
+//        port = "5566"
+//    )
     ,
     EmulatorConfig(
         avdName = "TestEmulator28",
