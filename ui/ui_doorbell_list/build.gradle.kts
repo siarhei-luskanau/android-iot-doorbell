@@ -25,7 +25,6 @@ dependencies {
     implementation(Libraries.activityKtx)
     implementation(Libraries.fragmentKtx)
     implementation(Libraries.swiperefreshlayout)
-    implementation(Libraries.constraintLayout)
     implementation(Libraries.lifecycleLivedataKtx)
     implementation(Libraries.lifecycleViewmodelKtx)
     implementation(Libraries.pagingCommonKtx)

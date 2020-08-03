@@ -6,9 +6,9 @@ import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 interface ImageListPresenter {
-    fun getImageListStateFlow(): Flow<ImageListState>
-    fun getLoadingData(): LiveData<Boolean>
-    fun requestData()
+    val imageListStateFlow: Flow<ImageListState>
+    val loadingData: LiveData<Boolean>
+    fun refreshData()
     fun onCameraClicked(cameraData: CameraData)
     fun onImageClicked(imageData: ImageData)
     fun rebootDevice()

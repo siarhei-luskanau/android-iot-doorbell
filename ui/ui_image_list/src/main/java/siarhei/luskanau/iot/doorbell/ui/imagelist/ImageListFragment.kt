@@ -42,7 +42,7 @@ class ImageListFragment(
 
         fragmentBinding.camerasRecyclerView.adapter = camerasAdapter
         fragmentBinding.rebootButton.setOnClickListener { presenter.rebootDevice() }
-        fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.requestData() }
+        fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.refreshData() }
         normalStateBinding.imagesRecyclerView.adapter = imageAdapter
 
         camerasAdapter.onItemClickListener = { _, _, position ->
@@ -51,18 +51,16 @@ class ImageListFragment(
         imageAdapter.onItemClickListener = { _, _, position ->
             imageAdapter.getItem1(position)?.let { presenter.onImageClicked(it) }
         }
-
-        presenter.requestData()
     }
 
     override fun observeDataSources() {
         super.observeDataSources()
         lifecycleScope.launchWhenStarted {
-            presenter.getImageListStateFlow().collect {
+            presenter.imageListStateFlow.collect {
                 changeState(it)
             }
         }
-        presenter.getLoadingData().observe(viewLifecycleOwner) {
+        presenter.loadingData.observe(viewLifecycleOwner) {
             fragmentBinding.pullToRefresh.isRefreshing = it
         }
     }

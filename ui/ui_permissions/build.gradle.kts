@@ -23,7 +23,6 @@ dependencies {
     implementation(Libraries.material)
     implementation(Libraries.activityKtx)
     implementation(Libraries.fragmentKtx)
-    implementation(Libraries.constraintLayout)
     implementation(Libraries.navigationUiKtx)
 
     // unit test

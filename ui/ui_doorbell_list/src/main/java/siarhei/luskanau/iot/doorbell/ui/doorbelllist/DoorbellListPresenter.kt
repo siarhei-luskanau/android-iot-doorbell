@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.Flow
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 
 interface DoorbellListPresenter {
-    fun getDoorbellListFlow(): Flow<DoorbellListState>
-    fun getLoadingData(): LiveData<Boolean>
-    fun requestData()
+    val doorbellListFlow: Flow<DoorbellListState>
+    val loadingData: LiveData<Boolean>
+    fun refreshData()
     fun checkPermissions()
     fun onDoorbellClicked(doorbellData: DoorbellData)
 }

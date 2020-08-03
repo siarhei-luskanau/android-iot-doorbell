@@ -19,7 +19,7 @@ class DoorbellListFragmentTest {
 
     private fun createFragment(state: DoorbellListState) = DoorbellListFragment {
         object : StubDoorbellListPresenter() {
-            override fun getDoorbellListFlow(): Flow<DoorbellListState> = flowOf(state)
+            override val doorbellListFlow: Flow<DoorbellListState> = flowOf(state)
         }
     }
 

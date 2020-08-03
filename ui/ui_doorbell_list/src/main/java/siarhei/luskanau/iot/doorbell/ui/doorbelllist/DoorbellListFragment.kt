@@ -38,7 +38,7 @@ class DoorbellListFragment(
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = javaClass.simpleName
 
-        fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.requestData() }
+        fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.refreshData() }
         normalStateBinding.doorbellsRecyclerView.adapter = doorbellsAdapter
         doorbellsAdapter.onItemClickListener = { _, _, position ->
             doorbellsAdapter.getItem1(position)?.let { presenter.onDoorbellClicked(it) }
@@ -50,11 +50,11 @@ class DoorbellListFragment(
     override fun observeDataSources() {
         super.observeDataSources()
         lifecycleScope.launchWhenStarted {
-            presenter.getDoorbellListFlow().collect {
+            presenter.doorbellListFlow.collect {
                 changeState(it)
             }
         }
-        presenter.getLoadingData().observe(viewLifecycleOwner) {
+        presenter.loadingData.observe(viewLifecycleOwner) {
             fragmentBinding.pullToRefresh.isRefreshing = it
         }
     }

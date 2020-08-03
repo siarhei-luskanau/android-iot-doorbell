@@ -14,7 +14,6 @@ dependencies {
     implementation(Libraries.material)
     implementation(Libraries.activityKtx)
     implementation(Libraries.fragmentKtx)
-    implementation(Libraries.constraintLayout)
     implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
     implementation(Libraries.coil)

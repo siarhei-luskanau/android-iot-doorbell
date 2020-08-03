@@ -42,7 +42,7 @@ object DoorbellListViewModelTest : Spek({
 
             beforeEachTest {
                 runBlockingTest {
-                    doorbellListViewModel.getDoorbellListFlow().collect()
+                    doorbellListViewModel.doorbellListFlow.collect()
                 }
             }
 
@@ -58,7 +58,7 @@ object DoorbellListViewModelTest : Spek({
 
                 beforeEachTest {
                     runBlockingTest {
-                        doorbellListViewModel.getDoorbellListFlow().collect { values.add(it) }
+                        doorbellListViewModel.doorbellListFlow.collect { values.add(it) }
                     }
                 }
 
@@ -74,7 +74,7 @@ object DoorbellListViewModelTest : Spek({
 
                 beforeEachTest {
                     runBlockingTest {
-                        doorbellListViewModel.getDoorbellListFlow().collect { values.add(it) }
+                        doorbellListViewModel.doorbellListFlow.collect { values.add(it) }
                     }
                 }
 

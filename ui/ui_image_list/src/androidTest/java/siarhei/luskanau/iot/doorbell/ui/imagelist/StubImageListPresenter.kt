@@ -8,17 +8,10 @@ import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 open class StubImageListPresenter : ImageListPresenter {
-
-    override fun getImageListStateFlow(): Flow<ImageListState> = emptyFlow()
-
-    override fun getLoadingData(): LiveData<Boolean> =
-        MutableLiveData()
-
-    override fun requestData() = Unit
-
+    override val imageListStateFlow: Flow<ImageListState> = emptyFlow()
+    override val loadingData: LiveData<Boolean> = MutableLiveData()
+    override fun refreshData() = Unit
     override fun onCameraClicked(cameraData: CameraData) = Unit
-
     override fun onImageClicked(imageData: ImageData) = Unit
-
     override fun rebootDevice() = Unit
 }

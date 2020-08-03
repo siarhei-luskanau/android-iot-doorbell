@@ -21,7 +21,7 @@ class ImageListFragmentTest {
 
     private fun createFragment(state: ImageListState) = ImageListFragment {
         object : StubImageListPresenter() {
-            override fun getImageListStateFlow(): Flow<ImageListState> = flowOf(state)
+            override val imageListStateFlow: Flow<ImageListState> = flowOf(state)
         }
     }
 
