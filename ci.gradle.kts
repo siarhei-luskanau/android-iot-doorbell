@@ -1,7 +1,10 @@
+val CI_GRADLE = "CI_GRADLE"
+
 tasks.register("ciBuildApp") {
+    group = CI_GRADLE
     doLast {
+        gradlew("setupAndroidSDK")
         gradlew(
-            "setupAndroidSDK",
             "clean",
             "ktlint",
             "detekt",
@@ -9,7 +12,6 @@ tasks.register("ciBuildApp") {
             "jacocoTestReportDebug",
             "jacocoTestReportMerged"
         )
-
         copy {
             from(rootProject.subprojects.map { it.buildDir })
             include("**/*.apk")
@@ -18,30 +20,58 @@ tasks.register("ciBuildApp") {
             includeEmptyDirs = false
             into("$buildDir/apk/")
         }
+    }
+}
 
-        gradlew(
-            "killAndroidEmulator",
-            "setupAndroidEmulator"
-        )
+tasks.register("ciEmulator23") {
+    group = CI_GRADLE
+    doLast {
+        runOnEmulator("TestEmulator23")
+    }
+}
 
-        ANDROID_EMULATORS.forEach { emulatorConfig ->
-            gradlew(
-                "runAndroidEmulator",
-                addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorConfig.avdName)
-            )
+tasks.register("ciEmulator28") {
+    group = CI_GRADLE
+    doLast {
+        runOnEmulator("TestEmulator28")
+    }
+}
 
-            gradlew("assembleAndroidTest")
-            gradlew("waitAndroidEmulator")
+tasks.register("ciEmulator29") {
+    group = CI_GRADLE
+    doLast {
+        runOnEmulator("TestEmulator29")
+    }
+}
 
-            runCatching {
-                gradlew("connectedAndroidTest")
-                gradlew("moveScreenshotsFromDevices")
-                gradlew("killAndroidEmulator")
-            }.onFailure {
-                gradlew("moveScreenshotsFromDevices")
-                throw it
-            }
-        }
+tasks.register("ciEmulator30") {
+    group = CI_GRADLE
+    doLast {
+        runOnEmulator("TestEmulator30")
+    }
+}
+
+fun runOnEmulator(emulatorName: String) {
+    gradlew(
+        "setupAndroidSDK",
+        addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
+    )
+    gradlew("killAndroidEmulator")
+    gradlew(
+        "setupAndroidEmulator",
+        "runAndroidEmulator",
+        addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
+    )
+    gradlew("assembleAndroidTest")
+    gradlew("waitAndroidEmulator")
+
+    runCatching {
+        gradlew("connectedAndroidTest")
+        gradlew("moveScreenshotsFromDevices")
+        gradlew("killAndroidEmulator")
+    }.onFailure {
+        gradlew("moveScreenshotsFromDevices")
+        throw it
     }
 }
 

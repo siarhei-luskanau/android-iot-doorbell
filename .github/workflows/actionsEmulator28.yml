@@ -1,0 +1,20 @@
+name: actionsEmulator28
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2.0.0
+
+      - name: ciBuildApp
+        run: bash ./gradlew ciEmulator28 --stacktrace
+
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: screenshots
+          path: build/screenshots/

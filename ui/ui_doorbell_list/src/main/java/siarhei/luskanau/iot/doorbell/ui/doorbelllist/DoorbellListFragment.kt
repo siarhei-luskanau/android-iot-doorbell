@@ -19,9 +19,7 @@ class DoorbellListFragment(
     presenterProvider: (fragment: Fragment) -> DoorbellListPresenter
 ) : BaseFragment<DoorbellListPresenter>(R.layout.fragment_doorbell_list, presenterProvider) {
 
-    private val fragmentBinding by viewBinding { fragment ->
-        FragmentDoorbellListBinding.bind(fragment.requireView())
-    }
+    private val fragmentBinding: FragmentDoorbellListBinding by viewBinding()
     private val normalStateBinding by viewBinding { fragment ->
         LayoutDoorbellListNormalBinding.inflate(fragment.layoutInflater, null, false)
     }

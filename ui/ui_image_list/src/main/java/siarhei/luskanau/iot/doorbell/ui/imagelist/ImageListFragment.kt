@@ -20,9 +20,7 @@ class ImageListFragment(
     presenterProvider: (fragment: Fragment) -> ImageListPresenter
 ) : BaseFragment<ImageListPresenter>(R.layout.fragment_image_list, presenterProvider) {
 
-    private val fragmentBinding by viewBinding { fragment ->
-        FragmentImageListBinding.bind(fragment.requireView())
-    }
+    private val fragmentBinding: FragmentImageListBinding by viewBinding()
     private val normalStateBinding by viewBinding { fragment ->
         LayoutImageListNormalBinding.inflate(fragment.layoutInflater, null, false)
     }

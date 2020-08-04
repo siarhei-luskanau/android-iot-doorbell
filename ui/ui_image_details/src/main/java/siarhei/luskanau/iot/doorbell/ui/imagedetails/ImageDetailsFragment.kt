@@ -16,9 +16,7 @@ class ImageDetailsFragment(
     presenterProvider: (fragment: Fragment) -> ImageDetailsPresenter
 ) : BaseFragment<ImageDetailsPresenter>(R.layout.fragment_image_details, presenterProvider) {
 
-    private val fragmentBinding by viewBinding { fragment ->
-        FragmentImageDetailsBinding.bind(fragment.requireView())
-    }
+    private val fragmentBinding: FragmentImageDetailsBinding by viewBinding()
     private val normalStateBinding by viewBinding { fragment ->
         LayoutImageDetailsNormalBinding.inflate(fragment.layoutInflater, null, false)
     }

@@ -1,4 +1,4 @@
-name: actionsAfterPush
+name: actionsBuildApp
 
 on: [push]
 
@@ -22,9 +22,3 @@ jobs:
         with:
           name: jacoco
           path: build/reports/jacoco/
-
-      - uses: actions/upload-artifact@v1
-        if: always()
-        with:
-          name: screenshots
-          path: build/screenshots/

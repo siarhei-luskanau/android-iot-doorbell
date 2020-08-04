@@ -14,7 +14,7 @@ private object Versions {
     const val swiperefreshlayout = "1.1.0"
     const val androidxCore = "1.5.0-alpha01"
     const val lifecycle = "2.3.0-alpha06"
-    const val paging = "3.0.0-alpha03"
+    const val paging = "3.0.0-alpha04"
     const val room = "2.3.0-alpha02"
     const val workManager = "2.4.0"
     const val moshi = "1.9.3"
@@ -43,9 +43,9 @@ private object Versions {
     const val spek = "2.0.11"
 
     // test instrumentation
-    const val androidTestCore = "1.3.0-rc01"
-    const val espresso = "3.3.0-rc01"
-    const val testExtJunit = "1.1.2-rc01"
+    const val androidTestCore = "1.3.0-rc03"
+    const val espresso = "3.3.0-rc03"
+    const val testExtJunit = "1.1.2-rc03"
 }
 
 object BuildVersions {
@@ -53,7 +53,7 @@ object BuildVersions {
     const val compileSdkVersion = platformVersion
     const val targetSdkVersion = 30
     const val buildToolsVersion = "30.0.1"
-    const val minSdkVersion = 21
+    const val minSdkVersion = 23
 }
 
 object Libraries {

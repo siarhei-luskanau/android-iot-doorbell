@@ -11,9 +11,7 @@ import siarhei.luskanau.iot.doorbell.navigation.databinding.ActivityNavigationBi
 
 class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
 
-    private val binding by viewBinding { activity ->
-        ActivityNavigationBinding.bind(activity.findViewById(R.id.container))
-    }
+    private val binding: ActivityNavigationBinding by viewBinding(R.id.container)
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
             .navController

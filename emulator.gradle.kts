@@ -64,9 +64,15 @@ tasks.register("setupAndroidSDK") {
                 "tools",
                 "platform-tools",
                 "build-tools;${BuildVersions.buildToolsVersion}",
-                "platforms;android-${BuildVersions.platformVersion}",
-                "emulator"
-            ).apply { addAll(ANDROID_EMULATORS.map { it.sdkId }) }
+                "platforms;android-${BuildVersions.platformVersion}"
+            ).apply {
+                val avdName = System.getenv(ENV_EMULATOR_AVD_NAME).orEmpty()
+                val emulatorConfig = ANDROID_EMULATORS.find { it.avdName == avdName }
+                if (emulatorConfig != null) {
+                    add("emulator")
+                    add(emulatorConfig.sdkId)
+                }
+            }
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
             println("commandLine: ${this.commandLine}")
@@ -87,41 +93,59 @@ tasks.register("setupAndroidEmulator") {
         val config = AndroidSdkConfig()
             .apply { this.printSdkPath() }
 
-        ANDROID_EMULATORS.forEach { emulatorConfig ->
-            exec {
-                commandLine = listOf(
-                    config.avdmanager.absolutePath,
-                    "-v",
-                    "delete",
-                    "avd",
-                    "-n",
-                    emulatorConfig.avdName
-                )
-                isIgnoreExitValue = true
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
-        }
+        val avdName = System.getenv(ENV_EMULATOR_AVD_NAME).orEmpty()
 
-        ANDROID_EMULATORS.forEach { emulatorConfig ->
-            exec {
-                commandLine = listOf(
-                    config.avdmanager.absolutePath,
-                    "-v",
-                    "create",
-                    "avd",
-                    "-n",
-                    emulatorConfig.avdName,
-                    "--sdcard",
-                    "100M",
-                    "--device",
-                    emulatorConfig.deviceType,
-                    "-k",
-                    emulatorConfig.sdkId
-                )
-                standardOutput = ByteArrayOutputStream()
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
-        }
+        ANDROID_EMULATORS
+            .filter {
+                if (avdName.isNotEmpty()) {
+                    it.avdName == avdName
+                } else {
+                    true
+                }
+            }
+            .forEach { emulatorConfig ->
+                exec {
+                    commandLine = listOf(
+                        config.avdmanager.absolutePath,
+                        "-v",
+                        "delete",
+                        "avd",
+                        "-n",
+                        emulatorConfig.avdName
+                    )
+                    isIgnoreExitValue = true
+                    println("commandLine: ${this.commandLine}")
+                }.apply { println("ExecResult: $this") }
+            }
+
+        ANDROID_EMULATORS
+            .filter {
+                if (avdName.isNotEmpty()) {
+                    it.avdName == avdName
+                } else {
+                    true
+                }
+            }
+            .forEach { emulatorConfig ->
+                exec {
+                    commandLine = listOf(
+                        config.avdmanager.absolutePath,
+                        "-v",
+                        "create",
+                        "avd",
+                        "-n",
+                        emulatorConfig.avdName,
+                        "--sdcard",
+                        "100M",
+                        "--device",
+                        emulatorConfig.deviceType,
+                        "-k",
+                        emulatorConfig.sdkId
+                    )
+                    standardOutput = ByteArrayOutputStream()
+                    println("commandLine: ${this.commandLine}")
+                }.apply { println("ExecResult: $this") }
+            }
 
         exec {
             commandLine = listOf(config.avdmanager.absolutePath, "-v", "list", "avd")
@@ -155,7 +179,8 @@ tasks.register("runAndroidEmulator") {
                     emulatorConfig.avdName,
                     "-port",
                     emulatorConfig.port,
-                    // "-no-window",
+                    "-partition-size",
+                    emulatorConfig.partitionSize ?: "1024",
                     "-no-boot-anim",
                     "-no-audio",
                     "-no-snapshot"
