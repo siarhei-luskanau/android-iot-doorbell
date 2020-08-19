@@ -1,22 +1,22 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-beta05"
-    const val kotlin = "1.3.72"
-    const val kotlinxCoroutines = "1.3.8"
+    const val androidToolsBuildGradle = "4.1.0-rc01"
+    const val kotlin = "1.4.0"
+    const val kotlinxCoroutines = "1.3.9"
     const val desugar = "1.0.10"
     const val navigation = "2.3.0"
     const val timber = "4.7.1"
-    const val androidxCamera = "1.0.0-beta07"
-    const val androidxCameraExt = "1.0.0-alpha14"
+    const val androidxCamera = "1.0.0-beta08"
+    const val androidxCameraExt = "1.0.0-alpha15"
     const val material = "1.3.0-alpha02"
-    const val activity = "1.2.0-alpha07"
-    const val fragment = "1.3.0-alpha07"
-    const val swiperefreshlayout = "1.1.0"
-    const val androidxCore = "1.5.0-alpha01"
-    const val lifecycle = "2.3.0-alpha06"
-    const val paging = "3.0.0-alpha04"
+    const val activity = "1.2.0-alpha08"
+    const val fragment = "1.3.0-alpha08"
+    const val swiperefreshlayout = "1.2.0-alpha01"
+    const val androidxCore = "1.5.0-alpha02"
+    const val lifecycle = "2.3.0-alpha07"
+    const val paging = "3.0.0-alpha05"
     const val room = "2.3.0-alpha02"
-    const val workManager = "2.4.0"
+    const val workManager = "2.5.0-alpha01"
     const val moshi = "1.9.3"
     const val coil = "0.11.0"
     const val viewBindingPropertyDelegate = "1.0.0"
@@ -52,7 +52,7 @@ object BuildVersions {
     const val platformVersion = 30
     const val compileSdkVersion = platformVersion
     const val targetSdkVersion = 30
-    const val buildToolsVersion = "30.0.1"
+    const val buildToolsVersion = "30.0.2"
     const val minSdkVersion = 23
 }
 

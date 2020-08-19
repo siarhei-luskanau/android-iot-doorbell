@@ -35,7 +35,7 @@ class AppApplication : Application() {
         }
 
         startKoin {
-            androidLogger(Level.DEBUG)
+            androidLogger(Level.ERROR)
             androidContext(this@AppApplication)
             androidFileProperties()
             modules(

@@ -8,9 +8,13 @@ import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CameraMetadata
 import android.hardware.camera2.params.StreamConfigurationMap
 import android.util.Size
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraX
+import androidx.camera.core.impl.CameraInfoInternal
 import androidx.core.content.getSystemService
 import java.io.Serializable
+import java.util.LinkedHashSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.SizeData
 import timber.log.Timber
@@ -115,14 +119,29 @@ abstract class BaseCameraRepository(
             }
         }
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "UnsafeExperimentalUsageError")
     private fun getCameraxInfo(cameraId: String): Map<String, Serializable> =
         mutableMapOf<String, Serializable>().also { cameraxInfo ->
             runCatching {
-                CameraX.getCameraInfo(cameraId).let { cameraInfo ->
-                    cameraxInfo["CameraInfo:lensFacing"] = cameraInfo.lensFacing.toString()
+                val cameraSelector = CameraSelector.Builder()
+                    .addCameraFilter { cameras ->
+                        LinkedHashSet<Camera>().apply {
+                            addAll(
+                                cameras.filter { camera ->
+                                    val cameraInfo = camera.cameraInfo as CameraInfoInternal
+                                    cameraInfo.cameraId == cameraId
+                                }
+                            )
+                        }
+                    }
+                    .build()
+                CameraX.getCameraWithCameraSelector(cameraSelector).let { cameraInternal ->
+                    cameraxInfo["CameraInfo:implementationType"] =
+                        cameraInternal.cameraInfo.implementationType
                     cameraxInfo["CameraInfo:sensorRotationDegrees"] =
-                        cameraInfo.sensorRotationDegrees
+                        cameraInternal.cameraInfo.sensorRotationDegrees
+                    cameraxInfo["CameraInfo:hasFlashUnit"] =
+                        cameraInternal.cameraInfo.hasFlashUnit()
                 }
             }.onFailure {
                 cameraxInfo["error"] = it.message as Serializable
