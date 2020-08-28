@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModelStoreOwner
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
+import siarhei.luskanau.iot.doorbell.koin.common.di.fragment
+import siarhei.luskanau.iot.doorbell.koin.common.di.viewModel
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 
 val splashModule = module {
 
-    factory { (appNavigation: AppNavigation) ->
+    fragment { appNavigation: AppNavigation ->
         SplashFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
                 get { parametersOf(appNavigation, fragment.arguments) }
@@ -21,7 +23,7 @@ val splashModule = module {
         }
     }
 
-    factory { (appNavigation: AppNavigation, _: Bundle?) ->
+    viewModel { appNavigation: AppNavigation, _: Bundle? ->
         SplashViewModel(appNavigation = appNavigation)
     }
 }

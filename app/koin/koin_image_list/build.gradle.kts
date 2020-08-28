@@ -7,6 +7,7 @@ plugins {
 dependencies {
     coreLibraryDesugaring(Libraries.desugarJdkLibs)
 
+    implementation(project(":app:koin:koin_common"))
     implementation(project(":common:common"))
     implementation(project(":ui:ui_common"))
     implementation(project(":ui:ui_image_list"))

@@ -43,9 +43,9 @@ private object Versions {
     const val spek = "2.0.11"
 
     // test instrumentation
-    const val androidTestCore = "1.3.0-rc03"
-    const val espresso = "3.3.0-rc03"
-    const val testExtJunit = "1.1.2-rc03"
+    const val androidTestCore = "1.3.0"
+    const val espresso = "3.3.0"
+    const val testExtJunit = "1.1.2"
 }
 
 object BuildVersions {

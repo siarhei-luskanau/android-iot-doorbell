@@ -6,6 +6,7 @@ import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
+import siarhei.luskanau.iot.doorbell.koin.common.di.fragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenter
@@ -16,7 +17,7 @@ import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePres
 
 val imageDetailsModule = module {
 
-    factory { (appNavigation: AppNavigation) ->
+    fragment { appNavigation: AppNavigation ->
         ImageDetailsFragment { fragment: Fragment ->
             val doorbellData = fragment.arguments?.let { args ->
                 ImageDetailsFragmentArgs.fromBundle(args).doorbellData

@@ -6,13 +6,15 @@ import androidx.lifecycle.ViewModelProvider
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
+import siarhei.luskanau.iot.doorbell.koin.common.di.fragment
+import siarhei.luskanau.iot.doorbell.koin.common.di.viewModel
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 
 val imageListModule = module {
 
-    factory { (appNavigation: AppNavigation) ->
+    fragment { appNavigation: AppNavigation ->
         ImageListFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
                 get { parametersOf(appNavigation, fragment.arguments) }
@@ -21,7 +23,7 @@ val imageListModule = module {
         }
     }
 
-    factory { (appNavigation: AppNavigation, args: Bundle?) ->
+    viewModel { appNavigation: AppNavigation, args: Bundle? ->
         val doorbellData = args?.let { ImageListFragmentArgs.fromBundle(it).doorbellData }
         ImageListViewModel(
             doorbellData = doorbellData,
