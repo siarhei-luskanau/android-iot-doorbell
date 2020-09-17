@@ -6,12 +6,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import by.kirich1409.viewbindingdelegate.viewBinding
 import siarhei.luskanau.iot.doorbell.navigation.databinding.ActivityNavigationBinding
 
 class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
 
-    private val binding: ActivityNavigationBinding by viewBinding(R.id.container)
+    private val binding by lazy {
+        ActivityNavigationBinding.bind(findViewById(R.id.container))
+    }
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
             .navController

@@ -8,17 +8,21 @@ class ImagesDataSourceImpl(
     private val deviceId: String
 ) : ImagesDataSource() {
 
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, ImageData> {
-        val data = doorbellRepository.getImagesList(
-            deviceId = deviceId,
-            size = params.loadSize,
-            imageIdAt = params.key,
-            orderAsc = true
-        )
-        return LoadResult.Page(
-            data = data,
-            prevKey = params.key,
-            nextKey = data.lastOrNull()?.imageId
-        )
-    }
+    @Suppress("TooGenericExceptionCaught")
+    override suspend fun load(params: LoadParams<String>): LoadResult<String, ImageData> =
+        try {
+            val data = doorbellRepository.getImagesList(
+                deviceId = deviceId,
+                size = params.loadSize,
+                imageIdAt = params.key,
+                orderAsc = true
+            )
+            LoadResult.Page(
+                data = data,
+                prevKey = params.key,
+                nextKey = data.lastOrNull()?.imageId
+            )
+        } catch (exception: Exception) {
+            LoadResult.Error(exception)
+        }
 }

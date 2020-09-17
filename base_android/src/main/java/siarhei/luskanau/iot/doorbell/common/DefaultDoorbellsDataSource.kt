@@ -7,12 +7,16 @@ class DefaultDoorbellsDataSource(
     private val doorbellRepository: DoorbellRepository
 ) : DoorbellsDataSource() {
 
-    override suspend fun load(params: LoadParams<String>): LoadResult<String, DoorbellData> {
-        val data = doorbellRepository.getDoorbellsList(params.loadSize, params.key)
-        return LoadResult.Page(
-            data = data,
-            prevKey = params.key,
-            nextKey = data.lastOrNull()?.doorbellId
-        )
-    }
+    @Suppress("TooGenericExceptionCaught")
+    override suspend fun load(params: LoadParams<String>): LoadResult<String, DoorbellData> =
+        try {
+            val data = doorbellRepository.getDoorbellsList(params.loadSize, params.key)
+            LoadResult.Page(
+                data = data,
+                prevKey = params.key,
+                nextKey = data.lastOrNull()?.doorbellId
+            )
+        } catch (exception: Exception) {
+            LoadResult.Error(exception)
+        }
 }

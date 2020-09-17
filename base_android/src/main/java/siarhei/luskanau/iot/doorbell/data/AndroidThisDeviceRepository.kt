@@ -49,9 +49,9 @@ class AndroidThisDeviceRepository(
     override fun isPermissionsGranted(): Boolean {
         for (permission in AppConstants.PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(
-                context,
-                permission
-            ) != PackageManager.PERMISSION_GRANTED
+                    context,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
             ) {
                 return false
             }

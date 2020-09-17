@@ -1,33 +1,34 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.1.0-rc01"
-    const val kotlin = "1.4.0"
+    const val androidToolsBuildGradle = "4.2.0-alpha11"
+    const val kotlin = "1.4.10"
     const val kotlinxCoroutines = "1.3.9"
     const val desugar = "1.0.10"
     const val navigation = "2.3.0"
     const val timber = "4.7.1"
-    const val androidxCamera = "1.0.0-beta08"
-    const val androidxCameraExt = "1.0.0-alpha15"
+    const val androidxCamera = "1.0.0-beta09"
+    const val androidxCameraExt = "1.0.0-alpha16"
     const val material = "1.3.0-alpha02"
     const val activity = "1.2.0-alpha08"
     const val fragment = "1.3.0-alpha08"
     const val swiperefreshlayout = "1.2.0-alpha01"
-    const val androidxCore = "1.5.0-alpha02"
+    const val androidxCore = "1.5.0-alpha03"
     const val lifecycle = "2.3.0-alpha07"
-    const val paging = "3.0.0-alpha05"
+    const val paging = "3.0.0-alpha06"
     const val room = "2.3.0-alpha02"
-    const val workManager = "2.5.0-alpha01"
-    const val moshi = "1.9.3"
-    const val coil = "0.11.0"
-    const val viewBindingPropertyDelegate = "1.0.0"
+    const val workManager = "2.5.0-alpha02"
+    const val moshi = "1.10.0"
+    const val coil = "1.0.0-rc2"
     const val paperwork = "1.2.7"
+    const val androidJunit5 = "1.6.2.0"
+    const val googleServices = "4.3.3"
 
     // GMS versions
-    const val firebaseDatabase = "19.3.1"
-    const val firebaseStorage = "19.1.1"
+    const val firebaseDatabase = "19.4.0"
+    const val firebaseStorage = "19.2.0"
 
     // DI
-    const val dagger = "2.28.1"
+    const val dagger = "2.29"
     const val kodein = "7.0.0"
     const val koin = "2.1.6"
     const val toothpick = "3.1.0"
@@ -40,7 +41,7 @@ private object Versions {
 
     // Testing
     const val mockitoKotlin = "2.2.0"
-    const val spek = "2.0.11"
+    const val spek = "2.0.13"
 
     // test instrumentation
     const val androidTestCore = "1.3.0"
@@ -92,9 +93,6 @@ object Libraries {
     const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
     const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
     const val coil = "io.coil-kt:coil:${Versions.coil}"
-    const val viewBindingPropertyDelegate =
-        "com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:" +
-                Versions.viewBindingPropertyDelegate
     const val paperwork = "hu.supercluster:paperwork:${Versions.paperwork}"
 
     // firebase
@@ -150,8 +148,9 @@ object GradlePlugin {
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val navigationSafeArgsGradlePlugin =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
-    const val androidJunit5Plugin = "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
-    const val googleServicePlugin = "com.google.gms:google-services:4.3.3"
+    const val androidJunit5Plugin =
+        "de.mannodermaus.gradle.plugins:android-junit5:${Versions.androidJunit5}"
+    const val googleServicePlugin = "com.google.gms:google-services:${Versions.googleServices}"
     const val paperworkPlugin = "hu.supercluster:paperwork-plugin:${Versions.paperwork}"
     const val koinGradlePlugin = "org.koin:koin-gradle-plugin:${Versions.koin}"
 }

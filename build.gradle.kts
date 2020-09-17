@@ -19,7 +19,7 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.10.0")
+    id("io.gitlab.arturbosch.detekt").version("1.13.1")
     id("com.vanniktech.android.junit.jacoco").version("0.16.0")
 }
 
@@ -35,7 +35,7 @@ allprojects {
     }
 
     apply(from = "$rootDir/ktlint.gradle.kts")
-    apply(from = "$rootDir/detekt.gradle")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(plugin = "jacoco")
 
     plugins.configureEach {
