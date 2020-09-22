@@ -20,9 +20,7 @@ class AppApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+        Timber.plant(Timber.DebugTree())
 
         val workerFactory = DefaultWorkerFactory(
             thisDeviceRepository = { appModules.thisDeviceRepository },

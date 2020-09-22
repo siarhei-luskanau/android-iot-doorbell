@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.fragment.app.FragmentActivity
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import siarhei.luskanau.iot.doorbell.BuildConfig
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerCommonComponent
@@ -26,9 +25,7 @@ class AppApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+        Timber.plant(Timber.DebugTree())
 
         val workerFactory = DefaultWorkerFactory(
             thisDeviceRepository = { commonComponent.provideThisDeviceRepository() },

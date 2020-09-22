@@ -12,8 +12,6 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(Libraries.desugarJdkLibs)
-
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)

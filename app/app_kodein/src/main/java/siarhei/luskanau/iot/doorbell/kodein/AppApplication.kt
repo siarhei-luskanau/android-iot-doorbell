@@ -9,7 +9,6 @@ import org.kodein.di.DIAware
 import org.kodein.di.android.x.androidXModule
 import org.kodein.di.direct
 import org.kodein.di.instance
-import siarhei.luskanau.iot.doorbell.BuildConfig
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
@@ -41,9 +40,7 @@ class AppApplication : Application(), DIAware {
 
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+        Timber.plant(Timber.DebugTree())
 
         val workerFactory = DefaultWorkerFactory(
             thisDeviceRepository = { thisDeviceRepository },

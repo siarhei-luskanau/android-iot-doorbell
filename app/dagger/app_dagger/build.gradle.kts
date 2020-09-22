@@ -27,8 +27,6 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(Libraries.desugarJdkLibs)
-
     implementation(project(":common:common"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))

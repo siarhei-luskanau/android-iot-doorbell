@@ -1,13 +1,14 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "4.2.0-alpha11"
+    const val androidToolsBuildGradle = "4.2.0-alpha12"
     const val kotlin = "1.4.10"
     const val kotlinxCoroutines = "1.3.9"
     const val desugar = "1.0.10"
     const val navigation = "2.3.0"
     const val timber = "4.7.1"
-    const val androidxCamera = "1.0.0-beta09"
-    const val androidxCameraExt = "1.0.0-alpha16"
+    const val androidxCamera = "1.0.0-beta10"
+    const val androidxCameraExt = "1.0.0-alpha17"
+    const val compose = "1.0.0-alpha03"
     const val material = "1.3.0-alpha02"
     const val activity = "1.2.0-alpha08"
     const val fragment = "1.3.0-alpha08"
@@ -49,6 +50,14 @@ private object Versions {
     const val testExtJunit = "1.1.2"
 }
 
+object PublicVersions {
+    const val kotlin = Versions.kotlin
+    const val compose = Versions.compose
+    const val detekt = "1.13.1"
+    const val jacoco = "0.8.6"
+    const val androidJunitJacoco = "0.16.0"
+}
+
 object BuildVersions {
     const val platformVersion = 30
     const val compileSdkVersion = platformVersion
@@ -72,6 +81,10 @@ object Libraries {
     const val androidxCameraView = "androidx.camera:camera-view:${Versions.androidxCameraExt}"
     const val androidxCameraExtensions =
         "androidx.camera:camera-extensions:${Versions.androidxCameraExt}"
+    const val composeRuntime = "androidx.compose.runtime:runtime:${Versions.compose}"
+    const val uiTooling = "androidx.ui:ui-tooling:${Versions.compose}"
+    const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
+    const val composeUi = "androidx.compose.ui:ui:${Versions.compose}"
     const val material = "com.google.android.material:material:${Versions.material}"
     const val swiperefreshlayout =
         "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"

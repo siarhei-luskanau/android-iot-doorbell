@@ -28,8 +28,6 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(Libraries.desugarJdkLibs)
-
     implementation(project(":common:common"))
 
     implementation(Libraries.kotlinStdlibJdk8)

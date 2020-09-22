@@ -19,8 +19,8 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.13.1")
-    id("com.vanniktech.android.junit.jacoco").version("0.16.0")
+    id("io.gitlab.arturbosch.detekt").version(PublicVersions.detekt)
+    id("com.vanniktech.android.junit.jacoco").version(PublicVersions.androidJunitJacoco)
 }
 
 apply(from = "$rootDir/emulator.gradle.kts")
@@ -39,7 +39,7 @@ allprojects {
     apply(plugin = "jacoco")
 
     plugins.configureEach {
-        (this as? com.android.build.gradle.internal.plugins.BasePlugin<*, *>)?.extension?.apply {
+        (this as? com.android.build.gradle.internal.plugins.BasePlugin<*, *, *>)?.extension?.apply {
             compileSdkVersion(BuildVersions.compileSdkVersion)
             buildToolsVersion = BuildVersions.buildToolsVersion
 
@@ -49,10 +49,19 @@ allprojects {
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
 
+            buildFeatures.viewBinding = true
+            buildFeatures.buildConfig = false
+            buildFeatures.compose = true
+
             compileOptions {
                 isCoreLibraryDesugaringEnabled = true
                 sourceCompatibility = JavaVersion.VERSION_1_8
                 targetCompatibility = JavaVersion.VERSION_1_8
+            }
+
+            composeOptions {
+                kotlinCompilerVersion = PublicVersions.kotlin
+                kotlinCompilerExtensionVersion = PublicVersions.compose
             }
 
             testOptions {
@@ -69,7 +78,10 @@ allprojects {
                 })
             }
 
-            buildFeatures.viewBinding = true
+            dependencies {
+                "coreLibraryDesugaring"(Libraries.desugarJdkLibs)
+                "implementation"(Libraries.composeRuntime)
+            }
         }
     }
 
@@ -83,7 +95,7 @@ tasks.register("clean").configure {
 }
 
 junitJacoco {
-    jacocoVersion = "0.8.5"
+    jacocoVersion = PublicVersions.jacoco
     excludes = excludes.orEmpty().toMutableList().apply {
         add("**/siarhei/luskanau/iot/doorbell/common/test/*")
         add("**/siarhei/luskanau/iot/doorbell/common/test/ui/*")

@@ -11,8 +11,6 @@ plugins {
 android.testOptions.junitPlatform.jacocoOptions.taskGenerationEnabled = false
 
 dependencies {
-    coreLibraryDesugaring(Libraries.desugarJdkLibs)
-
     implementation(project(":common:common"))
     implementation(project(":ui:ui_common"))
 
@@ -20,9 +18,9 @@ dependencies {
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 
-    implementation(Libraries.material)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
+    implementation(Libraries.uiTooling)
+    implementation(Libraries.composeMaterial)
+    implementation(Libraries.composeUi)
     implementation(Libraries.navigationUiKtx)
 
     // unit test
