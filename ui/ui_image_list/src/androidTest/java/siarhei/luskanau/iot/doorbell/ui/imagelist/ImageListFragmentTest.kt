@@ -13,6 +13,7 @@ import org.junit.Rule
 import org.junit.Test
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
+import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 class ImageListFragmentTest {
 
@@ -21,7 +22,7 @@ class ImageListFragmentTest {
 
     private fun createFragment(state: ImageListState) = ImageListFragment {
         object : StubImageListPresenter() {
-            override val imageListStateFlow: Flow<ImageListState> = flowOf(state)
+            override val viewStateFlow: Flow<ImageListState> = flowOf(state)
         }
     }
 
@@ -29,9 +30,9 @@ class ImageListFragmentTest {
     fun testNormalStateAndIsAndroidThings() {
         launchFragmentInContainer(themeResId = R.style.AppTheme) {
             createFragment(
-                state = NormalImageListState(
+                state = ImageListState(
+                    pagingData = PagingData.from(listOf(ImageData(imageId = "imageId"))),
                     cameraList = listOf(CameraData("NormalCameraId")),
-                    pagingData = PagingData.empty(),
                     isAndroidThings = true
                 )
             )
@@ -62,9 +63,9 @@ class ImageListFragmentTest {
     fun testNormalStateAndNotAndroidThings() {
         launchFragmentInContainer(themeResId = R.style.AppTheme) {
             createFragment(
-                state = NormalImageListState(
+                state = ImageListState(
+                    pagingData = PagingData.from(listOf(ImageData(imageId = "imageId"))),
                     cameraList = listOf(CameraData("NormalCameraId")),
-                    pagingData = PagingData.empty(),
                     isAndroidThings = false
                 )
             )
@@ -95,7 +96,8 @@ class ImageListFragmentTest {
     fun testEmptyState() {
         launchFragmentInContainer(themeResId = R.style.AppTheme) {
             createFragment(
-                state = EmptyImageListState(
+                state = ImageListState(
+                    pagingData = PagingData.empty(),
                     cameraList = listOf(CameraData("EmptyCameraId")),
                     isAndroidThings = false
                 )
@@ -120,38 +122,6 @@ class ImageListFragmentTest {
         Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
             .check(ViewAssertions.doesNotExist())
         Espresso.onView(ViewMatchers.withId(R.id.error_message))
-            .check(ViewAssertions.doesNotExist())
-    }
-
-    @Test
-    fun testErrorState() {
-        val expectedErrorMessage = "Test Exception"
-        launchFragmentInContainer(themeResId = R.style.AppTheme) {
-            createFragment(
-                state = ErrorImageListState(error = RuntimeException(expectedErrorMessage))
-            )
-        }.apply {
-            moveToState(Lifecycle.State.RESUMED)
-        }
-
-        // error view is displayed
-        Espresso.onView(ViewMatchers.withId(R.id.error_message))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(expectedErrorMessage))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        // reboot button should be gone
-        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
-            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
-        Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
-            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
-        Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
-            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
-
-        // other views does not exist
-        Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
-            .check(ViewAssertions.doesNotExist())
-        Espresso.onView(ViewMatchers.withId(R.id.empty_message))
             .check(ViewAssertions.doesNotExist())
     }
 }

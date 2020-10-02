@@ -40,5 +40,5 @@ abstract class BaseRecyclerClickablePagingAdapter<T : Any, B : ViewBinding>(
         viewType: Int
     ): BindingViewHolder<B>
 
-    fun getItem1(position: Int) = super.getItem(position)
+    fun getItemAtPosition(position: Int) = super.getItem(position)
 }

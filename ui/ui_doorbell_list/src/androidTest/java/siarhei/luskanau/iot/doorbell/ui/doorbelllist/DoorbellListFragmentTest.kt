@@ -11,22 +11,24 @@ import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
+import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 
 class DoorbellListFragmentTest {
 
     @get:Rule
     val screenshotRule = TakeScreenshotAfterTestRule()
 
-    private fun createFragment(state: DoorbellListState) = DoorbellListFragment {
+    private fun createFragment(list: List<DoorbellData>) = DoorbellListFragment {
         object : StubDoorbellListPresenter() {
-            override val doorbellListFlow: Flow<DoorbellListState> = flowOf(state)
+            override val doorbellListFlow: Flow<PagingData<DoorbellData>> =
+                flowOf(PagingData.from(list))
         }
     }
 
     @Test
     fun testNormalState() {
         launchFragmentInContainer(themeResId = R.style.AppTheme) {
-            createFragment(state = NormalDoorbellListState(pagingData = PagingData.empty()))
+            createFragment(list = listOf(DoorbellData(doorbellId = "doorbellId")))
         }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
@@ -45,7 +47,7 @@ class DoorbellListFragmentTest {
     @Test
     fun testEmptyState() {
         launchFragmentInContainer(themeResId = R.style.AppTheme) {
-            createFragment(state = EmptyDoorbellListState)
+            createFragment(list = emptyList())
         }.apply {
             moveToState(Lifecycle.State.RESUMED)
         }
@@ -58,30 +60,6 @@ class DoorbellListFragmentTest {
         Espresso.onView(ViewMatchers.withId(R.id.doorbellsRecyclerView))
             .check(ViewAssertions.doesNotExist())
         Espresso.onView(ViewMatchers.withId(R.id.error_message))
-            .check(ViewAssertions.doesNotExist())
-    }
-
-    @Test
-    fun testErrorState() {
-        val expectedErrorMessage = "Test Exception"
-        launchFragmentInContainer(themeResId = R.style.AppTheme) {
-            createFragment(
-                state = ErrorDoorbellListState(error = RuntimeException(expectedErrorMessage))
-            )
-        }.apply {
-            moveToState(Lifecycle.State.RESUMED)
-        }
-
-        // error view is displayed
-        Espresso.onView(ViewMatchers.withId(R.id.error_message))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withText(expectedErrorMessage))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        // other views does not exist
-        Espresso.onView(ViewMatchers.withId(R.id.doorbellsRecyclerView))
-            .check(ViewAssertions.doesNotExist())
-        Espresso.onView(ViewMatchers.withId(R.id.empty_message))
             .check(ViewAssertions.doesNotExist())
     }
 }

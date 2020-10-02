@@ -3,6 +3,7 @@ package siarhei.luskanau.iot.doorbell.ui.permissions
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -15,21 +16,25 @@ class PermissionsFragment(
 
     private val presenter: PermissionsPresenter by lazy { presenterProvider(this) }
 
+    private var activityResultLauncher: ActivityResultLauncher<Array<String>>? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = javaClass.simpleName
 
+        activityResultLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { result: Map<String, Boolean> ->
+            val allGranted = result.values.reduce { acc, b -> acc && b }
+            if (allGranted) {
+                presenter.onPermissionsGranted()
+            } else {
+                presenter.onPermissionsNotGranted()
+            }
+        }
+
         if (hasPermissions().not()) {
-            registerForActivityResult(
-                ActivityResultContracts.RequestMultiplePermissions()
-            ) { result: Map<String, Boolean> ->
-                val allGranted = result.values.reduce { acc, b -> acc && b }
-                if (allGranted) {
-                    presenter.onPermissionsGranted()
-                } else {
-                    presenter.onPermissionsNotGranted()
-                }
-            }.launch(PERMISSIONS)
+            activityResultLauncher?.launch(PERMISSIONS)
         } else {
             // If permissions have already been granted, proceed
             presenter.onPermissionsGranted()

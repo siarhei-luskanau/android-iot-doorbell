@@ -8,13 +8,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
+import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
+import siarhei.luskanau.iot.doorbell.ui.common.adapter.AppLoadStateAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericEmptyBinding
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericErrorBinding
 import siarhei.luskanau.iot.doorbell.ui.imagelist.databinding.FragmentImageListBinding
 import siarhei.luskanau.iot.doorbell.ui.imagelist.databinding.LayoutImageListNormalBinding
-import timber.log.Timber
 
 class ImageListFragment(
     presenterProvider: (fragment: Fragment) -> ImageListPresenter
@@ -66,62 +70,64 @@ class ImageListFragment(
 
         fragmentBinding.camerasRecyclerView.adapter = camerasAdapter
         fragmentBinding.rebootButton.setOnClickListener { presenter.rebootDevice() }
-        fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.refreshData() }
         normalStateBinding.imagesRecyclerView.adapter = imageAdapter
 
         camerasAdapter.onItemClickListener = { _, _, position ->
             presenter.onCameraClicked(camerasAdapter.getItem(position))
         }
         imageAdapter.onItemClickListener = { _, _, position ->
-            imageAdapter.getItem1(position)?.let { presenter.onImageClicked(it) }
+            imageAdapter.getItemAtPosition(position)?.let { presenter.onImageClicked(it) }
         }
+        imageAdapter.withLoadStateHeaderAndFooter(
+            header = AppLoadStateAdapter { imageAdapter.retry() },
+            footer = AppLoadStateAdapter { imageAdapter.retry() }
+        )
     }
 
     override fun observeDataSources() {
         super.observeDataSources()
-        lifecycleScope.launchWhenStarted {
-            presenter.imageListStateFlow.collect {
-                changeState(it)
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            presenter.viewStateFlow.collect {
+                changeViewState(it)
             }
         }
-        presenter.loadingData.observe(viewLifecycleOwner) {
-            fragmentBinding.pullToRefresh.isRefreshing = it
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            imageAdapter.loadStateFlow.collect { changeLoadState(it) }
         }
     }
 
-    private suspend fun changeState(state: ImageListState) {
-        val stateBinding = when (state) {
-            is NormalImageListState -> normalStateBinding
-            is EmptyImageListState -> emptyStateBinding
-            is ErrorImageListState -> errorStateBinding
-        }
+    private suspend fun changeViewState(state: ImageListState) {
+        camerasAdapter.submitList(state.cameraList)
+        imageAdapter.submitData(state.pagingData)
+        fragmentBinding.uptimeCardView.isVisible = state.isAndroidThings
+        fragmentBinding.rebootButton.isVisible = state.isAndroidThings
+    }
 
-        if (fragmentBinding.containerContent.getChildAt(0) != stateBinding.root) {
+    private fun changeLoadState(combinedLoadStates: CombinedLoadStates) {
+        fragmentBinding.pullToRefresh.isRefreshing =
+            combinedLoadStates.source.refresh is LoadState.Loading
+
+        (combinedLoadStates.source.refresh as? LoadState.Error)?.let {
+            fragmentBinding.camerasRecyclerView.isVisible = false
+            errorStateBinding.errorMessage.text = it.error.localizedMessage
+            changeState(errorStateBinding)
+        } ?: run {
+            fragmentBinding.camerasRecyclerView.isVisible = true
+            if (combinedLoadStates.source.append.endOfPaginationReached &&
+                imageAdapter.itemCount == 0
+            ) {
+                changeState(emptyStateBinding)
+            } else {
+                changeState(normalStateBinding)
+            }
+        }
+    }
+
+    private fun changeState(binding: ViewBinding) {
+        if (fragmentBinding.containerContent.getChildAt(0) != binding.root) {
             fragmentBinding.containerContent.removeAllViews()
-            fragmentBinding.containerContent.addView(stateBinding.root)
-        }
-
-        fragmentBinding.camerasRecyclerView.isVisible = (state is ErrorImageListState).not()
-        when (state) {
-            is EmptyImageListState -> {
-                camerasAdapter.submitList(state.cameraList)
-                fragmentBinding.uptimeCardView.isVisible = state.isAndroidThings
-                fragmentBinding.rebootButton.isVisible = state.isAndroidThings
-            }
-
-            is NormalImageListState -> {
-                camerasAdapter.submitList(state.cameraList)
-                imageAdapter.submitData(state.pagingData)
-                fragmentBinding.uptimeCardView.isVisible = state.isAndroidThings
-                fragmentBinding.rebootButton.isVisible = state.isAndroidThings
-            }
-
-            is ErrorImageListState -> {
-                Timber.e(state.error)
-                errorStateBinding.errorMessage.text = state.error.message
-                fragmentBinding.uptimeCardView.isVisible = false
-                fragmentBinding.rebootButton.isVisible = false
-            }
+            fragmentBinding.containerContent.addView(binding.root)
         }
     }
 }

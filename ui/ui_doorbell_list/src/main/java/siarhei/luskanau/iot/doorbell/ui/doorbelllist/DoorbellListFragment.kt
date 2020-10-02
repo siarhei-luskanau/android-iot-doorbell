@@ -7,13 +7,18 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
+import siarhei.luskanau.iot.doorbell.ui.common.adapter.AppLoadStateAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericEmptyBinding
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericErrorBinding
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.databinding.FragmentDoorbellListBinding
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.databinding.LayoutDoorbellListNormalBinding
-import timber.log.Timber
 
 class DoorbellListFragment(
     presenterProvider: (fragment: Fragment) -> DoorbellListPresenter
@@ -55,6 +60,7 @@ class DoorbellListFragment(
             false
         )
 
+        fragmentBinding.containerContent.addView(normalStateBinding.root)
         return fragmentBinding.root
     }
 
@@ -62,10 +68,18 @@ class DoorbellListFragment(
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = javaClass.simpleName
 
-        fragmentBinding.pullToRefresh.setOnRefreshListener { presenter.refreshData() }
-        normalStateBinding.doorbellsRecyclerView.adapter = doorbellsAdapter
+        val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        normalStateBinding.doorbellsRecyclerView.addItemDecoration(decoration)
+
+        fragmentBinding.pullToRefresh.setOnRefreshListener { doorbellsAdapter.refresh() }
+        normalStateBinding.doorbellsRecyclerView.adapter =
+            doorbellsAdapter.withLoadStateHeaderAndFooter(
+                header = AppLoadStateAdapter { doorbellsAdapter.retry() },
+                footer = AppLoadStateAdapter { doorbellsAdapter.retry() }
+            )
+
         doorbellsAdapter.onItemClickListener = { _, _, position ->
-            doorbellsAdapter.getItem1(position)?.let { presenter.onDoorbellClicked(it) }
+            doorbellsAdapter.getItemAtPosition(position)?.let { presenter.onDoorbellClicked(it) }
         }
 
         presenter.checkPermissions()
@@ -73,40 +87,40 @@ class DoorbellListFragment(
 
     override fun observeDataSources() {
         super.observeDataSources()
-        lifecycleScope.launchWhenStarted {
+
+        viewLifecycleOwner.lifecycleScope.launch {
             presenter.doorbellListFlow.collect {
-                changeState(it)
+                doorbellsAdapter.submitData(it)
             }
         }
-        presenter.loadingData.observe(viewLifecycleOwner) {
-            fragmentBinding.pullToRefresh.isRefreshing = it
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            doorbellsAdapter.loadStateFlow.collect { changeLoadState(it) }
         }
     }
 
-    private suspend fun changeState(state: DoorbellListState) {
-        val stateBinding = when (state) {
-            is NormalDoorbellListState -> normalStateBinding
-            is EmptyDoorbellListState -> emptyStateBinding
-            is ErrorDoorbellListState -> errorStateBinding
-        }
+    private fun changeLoadState(combinedLoadStates: CombinedLoadStates) {
+        fragmentBinding.pullToRefresh.isRefreshing =
+            combinedLoadStates.source.refresh is LoadState.Loading
 
-        if (fragmentBinding.containerContent.getChildAt(0) != stateBinding.root) {
+        (combinedLoadStates.source.refresh as? LoadState.Error)?.let {
+            errorStateBinding.errorMessage.text = it.error.localizedMessage
+            changeState(errorStateBinding)
+        } ?: run {
+            if (combinedLoadStates.source.append.endOfPaginationReached &&
+                doorbellsAdapter.itemCount == 0
+            ) {
+                changeState(emptyStateBinding)
+            } else {
+                changeState(normalStateBinding)
+            }
+        }
+    }
+
+    private fun changeState(binding: ViewBinding) {
+        if (fragmentBinding.containerContent.getChildAt(0) != binding.root) {
             fragmentBinding.containerContent.removeAllViews()
-            fragmentBinding.containerContent.addView(stateBinding.root)
-        }
-
-        when (state) {
-            is EmptyDoorbellListState -> {
-            }
-
-            is NormalDoorbellListState -> {
-                doorbellsAdapter.submitData(state.pagingData)
-            }
-
-            is ErrorDoorbellListState -> {
-                Timber.e(state.error)
-                errorStateBinding.errorMessage.text = state.error.message
-            }
+            fragmentBinding.containerContent.addView(binding.root)
         }
     }
 }
