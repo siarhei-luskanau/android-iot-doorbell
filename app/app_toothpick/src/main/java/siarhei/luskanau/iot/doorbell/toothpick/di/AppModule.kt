@@ -2,6 +2,7 @@ package siarhei.luskanau.iot.doorbell.toothpick.di
 
 import android.app.Application
 import android.content.Context
+import androidx.startup.AppInitializer
 import androidx.work.WorkManager
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
@@ -27,6 +28,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
+import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
 import toothpick.config.Module
 
 class AppModule(application: Application) : Module() {
@@ -101,7 +103,10 @@ class AppModule(application: Application) : Module() {
         }
         bind(DoorbellsDataSource::class.java).toProviderInstance { doorbellsDataSource }
 
-        val workManager: WorkManager by lazy { WorkManager.getInstance(context) }
+        val workManager: WorkManager by lazy {
+            AppInitializer.getInstance(context)
+                .initializeComponent(WorkManagerInitializer::class.java)
+        }
         bind(WorkManager::class.java).toProviderInstance { workManager }
 
         val scheduleWorkManagerService: ScheduleWorkManagerService by lazy {

@@ -12,4 +12,5 @@ dependencies {
     implementation(Libraries.timber)
 
     implementation(Libraries.workRuntimeKtx)
+    implementation(Libraries.androidxStartup)
 }

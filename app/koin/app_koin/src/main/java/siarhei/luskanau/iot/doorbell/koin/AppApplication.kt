@@ -2,8 +2,7 @@ package siarhei.luskanau.iot.doorbell.koin
 
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
-import androidx.work.Configuration
-import androidx.work.WorkManager
+import androidx.work.WorkerFactory
 import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
@@ -21,9 +20,10 @@ import siarhei.luskanau.iot.doorbell.koin.permissions.di.permissionsModule
 import siarhei.luskanau.iot.doorbell.koin.splash.di.splashModule
 import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallbacks
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
+import siarhei.luskanau.iot.doorbell.workmanager.WorkerFactoryProvider
 import timber.log.Timber
 
-class AppApplication : Application() {
+class AppApplication : Application(), WorkerFactoryProvider {
 
     override fun onCreate() {
         super.onCreate()
@@ -45,15 +45,6 @@ class AppApplication : Application() {
             )
         }
 
-        val workerFactory = DefaultWorkerFactory(
-            thisDeviceRepository = { get() },
-            doorbellRepository = { get() },
-            cameraRepository = { get() },
-            uptimeRepository = { get() }
-        )
-        val config = Configuration.Builder().setWorkerFactory(workerFactory).build()
-        WorkManager.initialize(this, config)
-
         get<ScheduleWorkManagerService>().startUptimeNotifications()
         get<AppBackgroundServices>().startServices()
 
@@ -66,4 +57,12 @@ class AppApplication : Application() {
             }
         )
     }
+
+    override fun provideWorkerFactory(): WorkerFactory =
+        DefaultWorkerFactory(
+            thisDeviceRepository = { get() },
+            doorbellRepository = { get() },
+            cameraRepository = { get() },
+            uptimeRepository = { get() }
+        )
 }

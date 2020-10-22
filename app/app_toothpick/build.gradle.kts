@@ -53,6 +53,7 @@ dependencies {
     implementation(Libraries.fragmentKtx)
     implementation(Libraries.navigationFragmentKtx)
 
+    implementation(Libraries.androidxStartup)
     implementation(Libraries.workRuntimeKtx)
 
     // toothpick

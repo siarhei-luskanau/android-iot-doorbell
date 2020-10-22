@@ -8,7 +8,6 @@ import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CameraMetadata
 import android.hardware.camera2.params.StreamConfigurationMap
 import android.util.Size
-import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraX
 import androidx.camera.core.impl.CameraInfoInternal
@@ -125,14 +124,11 @@ abstract class BaseCameraRepository(
             runCatching {
                 val cameraSelector = CameraSelector.Builder()
                     .addCameraFilter { cameras ->
-                        LinkedHashSet<Camera>().apply {
-                            addAll(
-                                cameras.filter { camera ->
-                                    val cameraInfo = camera.cameraInfo as CameraInfoInternal
-                                    cameraInfo.cameraId == cameraId
-                                }
-                            )
+                        val filteredCameras = cameras.filter { camera ->
+                            val cameraInfo = camera.cameraInfo as CameraInfoInternal
+                            cameraInfo.cameraId == cameraId
                         }
+                        LinkedHashSet(filteredCameras)
                     }
                     .build()
                 CameraX.getCameraWithCameraSelector(cameraSelector).let { cameraInternal ->

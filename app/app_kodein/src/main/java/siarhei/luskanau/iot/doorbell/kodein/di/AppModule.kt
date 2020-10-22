@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import androidx.work.WorkManager
+import androidx.startup.AppInitializer
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.factory
@@ -53,9 +53,13 @@ import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsPresenter
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
+import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
 
 val appModule = DI.Module(name = "appModule") {
-    bind() from singleton { WorkManager.getInstance(instance()) }
+    bind() from singleton {
+        AppInitializer.getInstance(instance())
+            .initializeComponent(WorkManagerInitializer::class.java)
+    }
     bind<ImageRepository>() with singleton { InternalStorageImageRepository(context = instance()) }
     bind<DoorbellRepository>() with singleton {
         FirebaseDoorbellRepository(imageRepository = instance())

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
-import androidx.work.WorkManager
+import androidx.startup.AppInitializer
 import org.koin.android.ext.android.get
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
@@ -37,6 +37,7 @@ import siarhei.luskanau.iot.doorbell.koin.common.di.KoinViewModelFactory
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
+import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
 
 val appModule = module {
 
@@ -58,7 +59,9 @@ val appModule = module {
         )
     }
 
-    single { WorkManager.getInstance(get()) }
+    single {
+        AppInitializer.getInstance(get()).initializeComponent(WorkManagerInitializer::class.java)
+    }
 
     single<ImageRepository> { InternalStorageImageRepository(context = get()) }
 

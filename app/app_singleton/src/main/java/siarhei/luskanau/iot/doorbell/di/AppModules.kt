@@ -2,6 +2,7 @@ package siarhei.luskanau.iot.doorbell.di
 
 import android.app.Application
 import android.content.Context
+import androidx.startup.AppInitializer
 import androidx.work.WorkManager
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
@@ -27,6 +28,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
+import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
 
 class AppModules(application: Application) {
 
@@ -76,7 +78,9 @@ class AppModules(application: Application) {
             doorbellRepository = doorbellRepository
         )
     }
-    val workManager: WorkManager by lazy { WorkManager.getInstance(context) }
+    val workManager: WorkManager by lazy {
+        AppInitializer.getInstance(context).initializeComponent(WorkManagerInitializer::class.java)
+    }
     val scheduleWorkManagerService: ScheduleWorkManagerService by lazy {
         DefaultScheduleWorkManagerService(workManager = { workManager })
     }

@@ -1,21 +1,28 @@
 package siarhei.luskanau.iot.doorbell.navigation
 
-import android.app.Activity
 import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
+import timber.log.Timber
 
-class DefaultAppNavigation(private val activity: Activity) : AppNavigation {
+class DefaultAppNavigation(private val activity: FragmentActivity) : AppNavigation {
 
     private fun getNavController(): NavController =
-        Navigation.findNavController(activity, R.id.navHostFragment)
+        (activity.supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
+            .navController
 
+    @Suppress("TooGenericExceptionCaught")
     private fun navigateTo(direction: NavDirections) =
-        getNavController().navigate(direction)
+        try {
+            getNavController().navigate(direction)
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
 
     override fun goBack(): Boolean =
         getNavController().popBackStack()

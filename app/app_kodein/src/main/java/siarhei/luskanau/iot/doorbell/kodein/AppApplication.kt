@@ -2,8 +2,7 @@ package siarhei.luskanau.iot.doorbell.kodein
 
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
-import androidx.work.Configuration
-import androidx.work.WorkManager
+import androidx.work.WorkerFactory
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.android.x.androidXModule
@@ -20,9 +19,10 @@ import siarhei.luskanau.iot.doorbell.kodein.di.appModule
 import siarhei.luskanau.iot.doorbell.kodein.di.viewModelModule
 import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallbacks
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
+import siarhei.luskanau.iot.doorbell.workmanager.WorkerFactoryProvider
 import timber.log.Timber
 
-class AppApplication : Application(), DIAware {
+class AppApplication : Application(), WorkerFactoryProvider, DIAware {
 
     private val thisDeviceRepository: ThisDeviceRepository by instance()
     private val doorbellRepository: DoorbellRepository by instance()
@@ -42,15 +42,6 @@ class AppApplication : Application(), DIAware {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
 
-        val workerFactory = DefaultWorkerFactory(
-            thisDeviceRepository = { thisDeviceRepository },
-            doorbellRepository = { doorbellRepository },
-            cameraRepository = { cameraRepository },
-            uptimeRepository = { uptimeRepository }
-        )
-        val config = Configuration.Builder().setWorkerFactory(workerFactory).build()
-        WorkManager.initialize(this, config)
-
         scheduleWorkManagerService.startUptimeNotifications()
         appBackgroundServices.startServices()
 
@@ -63,4 +54,12 @@ class AppApplication : Application(), DIAware {
             }
         )
     }
+
+    override fun provideWorkerFactory(): WorkerFactory =
+        DefaultWorkerFactory(
+            thisDeviceRepository = { thisDeviceRepository },
+            doorbellRepository = { doorbellRepository },
+            cameraRepository = { cameraRepository },
+            uptimeRepository = { uptimeRepository }
+        )
 }

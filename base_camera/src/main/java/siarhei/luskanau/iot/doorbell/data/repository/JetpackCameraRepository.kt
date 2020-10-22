@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Size
-import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
@@ -37,14 +36,11 @@ class JetpackCameraRepository(
                     runCatching {
                         val cameraSelector = CameraSelector.Builder()
                             .addCameraFilter { cameras ->
-                                LinkedHashSet<Camera>().apply {
-                                    addAll(
-                                        cameras.filter { camera ->
-                                            val cameraInfo = camera.cameraInfo as CameraInfoInternal
-                                            cameraInfo.cameraId == cameraId
-                                        }
-                                    )
+                                val filteredCameras = cameras.filter { camera ->
+                                    val cameraInfo = camera.cameraInfo as CameraInfoInternal
+                                    cameraInfo.cameraId == cameraId
                                 }
+                                LinkedHashSet(filteredCameras)
                             }
                             .build()
 
@@ -56,7 +52,8 @@ class JetpackCameraRepository(
                         val processCameraProvider = ProcessCameraProvider.getInstance(context).get()
                         processCameraProvider.bindToLifecycle(
                             ProcessLifecycleOwner.get(),
-                            cameraSelector
+                            cameraSelector,
+                            imageCapture
                         )
 
                         // TODO use ImageAnalysis to check if camera is ready

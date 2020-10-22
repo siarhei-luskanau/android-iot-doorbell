@@ -2,8 +2,7 @@ package siarhei.luskanau.iot.doorbell.dagger
 
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
-import androidx.work.Configuration
-import androidx.work.WorkManager
+import androidx.work.WorkerFactory
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerCommonComponent
@@ -15,9 +14,10 @@ import siarhei.luskanau.iot.doorbell.dagger.splash.DaggerSplashComponent
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallbacks
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
+import siarhei.luskanau.iot.doorbell.workmanager.WorkerFactoryProvider
 import timber.log.Timber
 
-class AppApplication : Application() {
+class AppApplication : Application(), WorkerFactoryProvider {
 
     private val commonComponent: CommonComponent by lazy {
         DaggerCommonComponent.factory().create(this)
@@ -26,15 +26,6 @@ class AppApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-
-        val workerFactory = DefaultWorkerFactory(
-            thisDeviceRepository = { commonComponent.provideThisDeviceRepository() },
-            doorbellRepository = { commonComponent.provideDoorbellRepository() },
-            cameraRepository = { commonComponent.provideCameraRepository() },
-            uptimeRepository = { commonComponent.provideUptimeRepository() }
-        )
-        val config = Configuration.Builder().setWorkerFactory(workerFactory).build()
-        WorkManager.initialize(this, config)
 
         commonComponent.provideScheduleWorkManagerService().startUptimeNotifications()
         commonComponent.provideAppBackgroundServices().startServices()
@@ -85,4 +76,12 @@ class AppApplication : Application() {
             }
         )
     }
+
+    override fun provideWorkerFactory(): WorkerFactory =
+        DefaultWorkerFactory(
+            thisDeviceRepository = { commonComponent.provideThisDeviceRepository() },
+            doorbellRepository = { commonComponent.provideDoorbellRepository() },
+            cameraRepository = { commonComponent.provideCameraRepository() },
+            uptimeRepository = { commonComponent.provideUptimeRepository() }
+        )
 }

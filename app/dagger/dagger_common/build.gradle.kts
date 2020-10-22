@@ -23,6 +23,7 @@ dependencies {
     implementation(Libraries.fragmentKtx)
     implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
+    implementation(Libraries.androidxStartup)
     implementation(Libraries.workRuntimeKtx)
 
     // dagger

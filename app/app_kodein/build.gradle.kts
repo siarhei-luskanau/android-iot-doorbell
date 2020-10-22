@@ -56,6 +56,7 @@ dependencies {
     implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
 
+    implementation(Libraries.androidxStartup)
     implementation(Libraries.workRuntimeKtx)
 
     // kodein

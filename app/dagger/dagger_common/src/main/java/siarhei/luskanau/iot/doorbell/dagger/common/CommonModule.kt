@@ -2,6 +2,7 @@ package siarhei.luskanau.iot.doorbell.dagger.common
 
 import android.app.Application
 import android.content.Context
+import androidx.startup.AppInitializer
 import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
@@ -31,6 +32,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
+import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
 
 @Suppress("TooManyFunctions")
 @Module
@@ -44,7 +46,8 @@ class CommonModule {
     @Provides
     @Singleton
     fun provideWorkManager(context: Provider<Context>): WorkManager =
-        WorkManager.getInstance(context.get())
+        AppInitializer.getInstance(context.get())
+            .initializeComponent(WorkManagerInitializer::class.java)
 
     @Provides
     @Singleton
