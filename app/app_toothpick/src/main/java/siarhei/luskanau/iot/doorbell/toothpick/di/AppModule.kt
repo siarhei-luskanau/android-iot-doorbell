@@ -17,12 +17,13 @@ import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
-import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
 import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.JetpackCameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
+import siarhei.luskanau.iot.doorbell.data.repository.StubDoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.StubUptimeRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
@@ -46,12 +47,15 @@ class AppModule(application: Application) : Module() {
         bind(ImageRepository::class.java).toProviderInstance { imageRepository }
 
         val doorbellRepository: DoorbellRepository by lazy {
-            FirebaseDoorbellRepository(imageRepository = imageRepository)
-            DoorbellRepositoryFake()
+            FirebaseDoorbellRepository()
+            StubDoorbellRepository()
         }
         bind(DoorbellRepository::class.java).toProviderInstance { doorbellRepository }
 
-        val uptimeRepository: UptimeRepository by lazy { UptimeFirebaseRepository() }
+        val uptimeRepository: UptimeRepository by lazy {
+            UptimeFirebaseRepository()
+            StubUptimeRepository()
+        }
         bind(UptimeRepository::class.java).toProviderInstance { uptimeRepository }
 
         val deviceInfoProvider: DeviceInfoProvider by lazy {

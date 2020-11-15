@@ -26,8 +26,8 @@
         app:destination="@id/nav_image_list_xml">
 
         <argument
-            android:name="doorbellData"
-            app:argType="siarhei.luskanau.iot.doorbell.data.model.DoorbellData" />
+            android:name="doorbellId"
+            app:argType="string" />
 
     </action>
 
@@ -40,12 +40,12 @@
         app:destination="@id/nav_image_details_xml">
 
         <argument
-            android:name="doorbellData"
-            app:argType="siarhei.luskanau.iot.doorbell.data.model.DoorbellData" />
+            android:name="doorbellId"
+            app:argType="string" />
 
         <argument
-            android:name="imageData"
-            app:argType="siarhei.luskanau.iot.doorbell.data.model.ImageData" />
+            android:name="imageId"
+            app:argType="string" />
 
     </action>
 

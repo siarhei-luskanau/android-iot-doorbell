@@ -5,14 +5,14 @@ import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
 class ImagesDataSourceImpl(
     private val doorbellRepository: DoorbellRepository,
-    private val deviceId: String
+    private val doorbellId: String
 ) : ImagesDataSource() {
 
     @Suppress("TooGenericExceptionCaught")
     override suspend fun load(params: LoadParams<String>): LoadResult<String, ImageData> =
         try {
             val data = doorbellRepository.getImagesList(
-                deviceId = deviceId,
+                doorbellId = doorbellId,
                 size = params.loadSize,
                 imageIdAt = params.key,
                 orderAsc = true

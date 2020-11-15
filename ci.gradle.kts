@@ -9,6 +9,7 @@ tasks.register("ciBuildApp") {
             "ktlint",
             "detekt",
             "assembleDebug",
+            ":data:dataDoorbellApiStub:test",
             "jacocoTestReportDebug",
             "jacocoTestReportMerged"
         )

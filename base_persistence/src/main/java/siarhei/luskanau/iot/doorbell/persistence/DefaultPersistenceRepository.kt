@@ -21,17 +21,17 @@ class DefaultPersistenceRepository(
     private val mapper = ImageEntityMapper()
 
     override fun getImages(
-        deviceId: String,
+        doorbellId: String,
         afterImageId: String?,
         limit: Int
     ): Flow<List<ImageData>> =
         if (afterImageId != null) {
-            appDatabase.imageDao().getImages(deviceId, afterImageId, limit)
+            appDatabase.imageDao().getImages(doorbellId, afterImageId, limit)
         } else {
-            appDatabase.imageDao().getImages(deviceId, limit)
+            appDatabase.imageDao().getImages(doorbellId, limit)
         }
             .map { mapper.fromEntityList(it) }
 
-    override suspend fun insertImages(deviceId: String, images: List<ImageData>) =
-        appDatabase.imageDao().insertImages(mapper.toEntityList(deviceId, images))
+    override suspend fun insertImages(doorbellId: String, images: List<ImageData>) =
+        appDatabase.imageDao().insertImages(mapper.toEntityList(doorbellId, images))
 }

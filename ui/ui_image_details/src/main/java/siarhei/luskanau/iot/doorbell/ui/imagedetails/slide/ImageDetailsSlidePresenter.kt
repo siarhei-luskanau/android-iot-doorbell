@@ -1,7 +1,7 @@
 package siarhei.luskanau.iot.doorbell.ui.imagedetails.slide
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 
 interface ImageDetailsSlidePresenter {
-    fun getImageDetailsSlideStateData(): LiveData<ImageDetailsSlideState>
+    fun getImageDetailsSlideStateFlow(): Flow<ImageDetailsSlideState>
 }

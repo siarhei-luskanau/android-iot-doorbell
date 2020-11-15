@@ -13,7 +13,6 @@ import org.junit.Rule
 import org.junit.Test
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.common.test.ui.retryFlaky
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.navigation.NavRootDirections
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 
@@ -30,7 +29,7 @@ class AppSingletonImageListTest {
             .setDestination(R.id.nav_image_list_xml)
             .setArguments(
                 NavRootDirections.actionDoorbellListToImageList(
-                    doorbellData = DoorbellData(doorbellId = "doorbellId")
+                    doorbellId = "doorbellId"
                 ).arguments
             )
             .createTaskStackBuilder()

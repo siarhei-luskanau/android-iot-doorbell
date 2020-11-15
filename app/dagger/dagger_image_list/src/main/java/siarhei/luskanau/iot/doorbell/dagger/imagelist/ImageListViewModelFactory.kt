@@ -19,7 +19,7 @@ class ImageListViewModelFactory constructor(
         when {
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
-                doorbellData = args?.let { ImageListFragmentArgs.fromBundle(it).doorbellData },
+                doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId,
                 appNavigation = appNavigation,
                 doorbellRepository = commonComponent.provideDoorbellRepository(),
                 imagesDataSourceFactory = commonComponent.provideImagesDataSourceFactory(),

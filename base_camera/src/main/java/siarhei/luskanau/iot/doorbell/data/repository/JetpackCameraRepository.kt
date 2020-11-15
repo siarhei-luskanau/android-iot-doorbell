@@ -26,7 +26,7 @@ class JetpackCameraRepository(
 
     @SuppressLint("RestrictedApi", "UnsafeExperimentalUsageError")
     override suspend fun makeImage(
-        deviceId: String,
+        doorbellId: String,
         cameraId: String
     ): ImageFile =
         suspendCoroutine { continuation: Continuation<ImageFile> ->
@@ -72,10 +72,7 @@ class JetpackCameraRepository(
                                         runCatching {
                                             processCameraProvider.unbind(imageCapture)
                                             continuation.resume(
-                                                imageRepository.saveImage(
-                                                    imageUri = outputFileResults.savedUri,
-                                                    file = photoFile
-                                                )
+                                                imageRepository.saveImage(file = photoFile)
                                             )
                                         }.onFailure {
                                             continuation.resumeWithException(it)

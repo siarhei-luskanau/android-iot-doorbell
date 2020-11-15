@@ -1,11 +1,10 @@
 package siarhei.luskanau.iot.doorbell.koin.imagedetails.di
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.koin.common.di.fragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
@@ -19,42 +18,37 @@ val imageDetailsModule = module {
 
     fragment { appNavigation: AppNavigation ->
         ImageDetailsFragment { fragment: Fragment ->
-            val doorbellData = fragment.arguments?.let { args ->
-                ImageDetailsFragmentArgs.fromBundle(args).doorbellData
-            }
-            val imageData = fragment.arguments?.let { args ->
-                ImageDetailsFragmentArgs.fromBundle(args).imageData
-            }
-            get { parametersOf(appNavigation, fragment, doorbellData, imageData) }
+            get { parametersOf(appNavigation, fragment, fragment.arguments) }
         }
     }
 
     factory<ImageDetailsPresenter> { (
         appNavigation: AppNavigation,
         fragment: Fragment,
-        doorbellData: DoorbellData,
-        imageData: ImageData
+        args: Bundle?
     ) ->
+        val doorbellId = ImageDetailsFragmentArgs.fromBundle(requireNotNull(args)).doorbellId
+        val imageId = ImageDetailsFragmentArgs.fromBundle(args).imageId
         ImageDetailsPresenterImpl(
             appNavigation = appNavigation,
             fragment = fragment,
-            doorbellData = doorbellData,
-            imageData = imageData
+            doorbellId = doorbellId,
+            imageId = imageId
         )
     }
 
     factory { (_: AppNavigation) ->
         ImageDetailsSlideFragment { fragment: Fragment ->
-            val imageData = fragment.arguments?.let { args ->
-                ImageDetailsFragmentArgs.fromBundle(args).imageData
-            }
-            get { parametersOf(imageData) }
+            get { parametersOf(fragment.arguments) }
         }
     }
-    factory<ImageDetailsSlidePresenter> { (imageData: ImageData) ->
-        val imageDetailsSlidePresenterImpl = ImageDetailsSlidePresenterImpl(
-            imageData = imageData
+    factory<ImageDetailsSlidePresenter> { (args: Bundle?) ->
+        val doorbellId = ImageDetailsFragmentArgs.fromBundle(requireNotNull(args)).doorbellId
+        val imageId = ImageDetailsFragmentArgs.fromBundle(args).imageId
+        ImageDetailsSlidePresenterImpl(
+            doorbellId = doorbellId,
+            imageId = imageId,
+            doorbellRepository = get()
         )
-        imageDetailsSlidePresenterImpl
     }
 }

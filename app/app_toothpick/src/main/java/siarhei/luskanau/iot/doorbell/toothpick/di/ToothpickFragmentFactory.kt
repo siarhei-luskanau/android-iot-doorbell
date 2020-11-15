@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
+import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
@@ -76,28 +77,33 @@ class ToothpickFragmentFactory(
 
             ImageDetailsFragment::class.java.name -> {
                 ImageDetailsFragment { fragment: Fragment ->
-                    val doorbellData = fragment.arguments?.let { args ->
-                        ImageDetailsFragmentArgs.fromBundle(args).doorbellData
-                    }
-                    val imageData = fragment.arguments?.let { args ->
-                        ImageDetailsFragmentArgs.fromBundle(args).imageData
-                    }
+                    val doorbellId = ImageDetailsFragmentArgs.fromBundle(
+                        requireNotNull(fragment.arguments)
+                    ).doorbellId
+                    val imageId = ImageDetailsFragmentArgs.fromBundle(
+                        requireNotNull(fragment.arguments)
+                    ).imageId
                     ImageDetailsPresenterImpl(
                         appNavigation = appNavigation,
                         fragment = fragment,
-                        doorbellData = doorbellData,
-                        imageData = imageData
+                        doorbellId = doorbellId,
+                        imageId = imageId,
                     )
                 }
             }
 
             ImageDetailsSlideFragment::class.java.name -> {
                 ImageDetailsSlideFragment { fragment: Fragment ->
-                    val imageData = fragment.arguments?.let { args ->
-                        ImageDetailsFragmentArgs.fromBundle(args).imageData
-                    }
+                    val doorbellId = ImageDetailsFragmentArgs.fromBundle(
+                        requireNotNull(fragment.arguments)
+                    ).doorbellId
+                    val imageId = ImageDetailsFragmentArgs.fromBundle(
+                        requireNotNull(fragment.arguments)
+                    ).imageId
                     ImageDetailsSlidePresenterImpl(
-                        imageData = imageData
+                        doorbellId = doorbellId,
+                        imageId = imageId,
+                        doorbellRepository = scope.getInstance(DoorbellRepository::class.java)
                     )
                 }
             }

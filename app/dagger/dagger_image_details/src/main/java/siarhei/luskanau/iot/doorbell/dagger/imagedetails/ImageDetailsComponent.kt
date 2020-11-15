@@ -5,6 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Provider
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
+import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
 
 @Component(
     modules = [
@@ -19,6 +20,9 @@ interface ImageDetailsComponent {
     @Component.Factory
     interface Factory {
 
-        fun create(@BindsInstance appNavigation: AppNavigation): ImageDetailsComponent
+        fun create(
+            @BindsInstance appNavigation: AppNavigation,
+            @BindsInstance commonComponent: CommonComponent,
+        ): ImageDetailsComponent
     }
 }

@@ -21,13 +21,13 @@ class AndroidDeviceInfoProvider(
     private val paperwork: Paperwork = Paperwork(context)
 
     @SuppressLint("HardwareIds")
-    override fun buildDeviceId(): String {
-        val deviceId: String = Settings.Secure.getString(
+    override fun buildDoorbellId(): String {
+        val doorbellId: String = Settings.Secure.getString(
             context.contentResolver,
             Settings.Secure.ANDROID_ID
         ) ?: UUID.randomUUID().toString()
 
-        return "${deviceId}_${Build.MODEL}"
+        return "${doorbellId}_${Build.MODEL}"
     }
 
     override fun buildDeviceName(): String = Build.MODEL

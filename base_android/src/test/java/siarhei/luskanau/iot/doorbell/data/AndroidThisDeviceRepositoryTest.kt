@@ -18,16 +18,16 @@ import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 
 object AndroidThisDeviceRepositoryTest : Spek({
 
-    val deviceId = "deviceId"
+    val doorbellId = "doorbellId"
     val deviceName = "deviceName"
     val deviceInfo = emptyMap<String, Serializable>()
-    val doorbellData = DoorbellData(deviceId, deviceName, false, deviceInfo)
+    val doorbellData = DoorbellData(doorbellId, deviceName, false, deviceInfo)
     val camerasList = listOf(CameraData("cameraId"))
     val ipAddressList = mapOf("InterfaceName" to "IpAddress")
     val context by memoized { mock<Context>() }
     val deviceInfoProvider by memoized {
         mock<DeviceInfoProvider> {
-            on { buildDeviceId() }.doReturn(deviceId)
+            on { buildDoorbellId() }.doReturn(doorbellId)
             on { buildDeviceName() }.doReturn(deviceName)
             on { isAndroidThings() }.doReturn(false)
             on { buildDeviceInfo() }.doReturn(deviceInfo)
@@ -56,9 +56,9 @@ object AndroidThisDeviceRepositoryTest : Spek({
     describe("a AndroidThisDeviceRepository") {
 
         context("check doorbellId") {
-            it("should be the same deviceId") {
+            it("should be the same doorbellId") {
                 runBlocking {
-                    assertEquals(deviceId, androidThisDeviceRepository.doorbellId())
+                    assertEquals(doorbellId, androidThisDeviceRepository.doorbellId())
                 }
             }
         }
@@ -70,8 +70,8 @@ object AndroidThisDeviceRepositoryTest : Spek({
                     resultDoorbellData = androidThisDeviceRepository.doorbellData()
                 }
             }
-            it("should invoke buildDeviceId") {
-                verify(deviceInfoProvider, times(1)).buildDeviceId()
+            it("should invoke buildDoorbellId") {
+                verify(deviceInfoProvider, times(1)).buildDoorbellId()
             }
             it("should invoke buildDeviceName") {
                 verify(deviceInfoProvider, times(1)).buildDeviceName()

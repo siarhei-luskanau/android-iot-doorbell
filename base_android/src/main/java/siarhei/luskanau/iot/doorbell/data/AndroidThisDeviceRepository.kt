@@ -19,14 +19,14 @@ class AndroidThisDeviceRepository(
 ) : ThisDeviceRepository {
 
     private val doorbellData = DoorbellData(
-        deviceInfoProvider.buildDeviceId(),
+        deviceInfoProvider.buildDoorbellId(),
         deviceInfoProvider.buildDeviceName(),
         deviceInfoProvider.isAndroidThings(),
         deviceInfoProvider.buildDeviceInfo()
     )
 
     override suspend fun doorbellId() =
-        deviceInfoProvider.buildDeviceId()
+        deviceInfoProvider.buildDoorbellId()
 
     override suspend fun doorbellData() =
         doorbellData

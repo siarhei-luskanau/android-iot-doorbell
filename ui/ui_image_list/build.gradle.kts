@@ -11,6 +11,7 @@ plugins {
 android.testOptions.junitPlatform.jacocoOptions.taskGenerationEnabled = false
 
 dependencies {
+    implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
     implementation(project(":ui:ui_common"))
 

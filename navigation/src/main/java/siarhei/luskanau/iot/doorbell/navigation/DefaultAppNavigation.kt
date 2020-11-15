@@ -6,8 +6,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import timber.log.Timber
 
 class DefaultAppNavigation(private val activity: FragmentActivity) : AppNavigation {
@@ -33,12 +31,24 @@ class DefaultAppNavigation(private val activity: FragmentActivity) : AppNavigati
     override fun goDoorbellListToPermissions() =
         navigateTo(NavRootDirections.actionDoorbellListToPermissions())
 
-    override fun navigateToImageList(doorbellData: DoorbellData) =
-        navigateTo(NavRootDirections.actionDoorbellListToImageList(doorbellData))
+    override fun navigateToImageList(doorbellId: String) =
+        navigateTo(
+            NavRootDirections.actionDoorbellListToImageList(
+                doorbellId = doorbellId
+            )
+        )
 
-    override fun navigateToImageDetails(doorbellData: DoorbellData, imageData: ImageData) =
-        navigateTo(NavRootDirections.actionImageListToImageDetails(doorbellData, imageData))
+    override fun navigateToImageDetails(doorbellId: String, imageId: String) =
+        navigateTo(
+            NavRootDirections.actionImageListToImageDetails(
+                doorbellId = doorbellId,
+                imageId = imageId
+            )
+        )
 
-    override fun buildImageDetailsArgs(doorbellData: DoorbellData, imageData: ImageData): Bundle =
-        NavRootDirections.actionImageListToImageDetails(doorbellData, imageData).arguments
+    override fun buildImageDetailsArgs(doorbellId: String, imageId: String): Bundle =
+        NavRootDirections.actionImageListToImageDetails(
+            doorbellId = doorbellId,
+            imageId = imageId
+        ).arguments
 }

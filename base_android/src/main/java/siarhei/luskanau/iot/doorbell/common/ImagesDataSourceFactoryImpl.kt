@@ -8,14 +8,13 @@ class ImagesDataSourceFactoryImpl(
     private val doorbellRepository: DoorbellRepository
 ) : ImagesDataSourceFactory {
 
-    override fun createPager(deviceId: String) =
-
+    override fun createPager(doorbellId: String) =
         Pager(
             config = PagingConfig(pageSize = PAGE_SIZE),
             pagingSourceFactory = {
                 ImagesDataSourceImpl(
                     doorbellRepository = doorbellRepository,
-                    deviceId = deviceId
+                    doorbellId = doorbellId
                 )
             }
         )

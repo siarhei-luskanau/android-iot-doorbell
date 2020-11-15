@@ -24,9 +24,9 @@ val imageListModule = module {
     }
 
     viewModel { appNavigation: AppNavigation, args: Bundle? ->
-        val doorbellData = args?.let { ImageListFragmentArgs.fromBundle(it).doorbellData }
+        val doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId
         ImageListViewModel(
-            doorbellData = doorbellData,
+            doorbellId = doorbellId,
             appNavigation = appNavigation,
             doorbellRepository = get(),
             imagesDataSourceFactory = get(),

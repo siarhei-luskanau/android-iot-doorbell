@@ -24,15 +24,15 @@ import siarhei.luskanau.iot.doorbell.data.AndroidIpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.AndroidThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
-import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
 import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.JetpackCameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
+import siarhei.luskanau.iot.doorbell.data.repository.StubDoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.StubUptimeRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
@@ -62,8 +62,8 @@ val appModule = DI.Module(name = "appModule") {
     }
     bind<ImageRepository>() with singleton { InternalStorageImageRepository(context = instance()) }
     bind<DoorbellRepository>() with singleton {
-        FirebaseDoorbellRepository(imageRepository = instance())
-        DoorbellRepositoryFake()
+        FirebaseDoorbellRepository()
+        StubDoorbellRepository()
     }
     bind<PersistenceRepository>() with singleton {
         DefaultPersistenceRepository(
@@ -79,7 +79,10 @@ val appModule = DI.Module(name = "appModule") {
             imageRepository = instance()
         )
     }
-    bind<UptimeRepository>() with singleton { UptimeFirebaseRepository() }
+    bind<UptimeRepository>() with singleton {
+        UptimeFirebaseRepository()
+        StubUptimeRepository()
+    }
     bind<DoorbellsDataSource>() with singleton {
         DefaultDoorbellsDataSource(
             doorbellRepository = instance()
@@ -124,6 +127,7 @@ val activityModule = DI.Module(name = "activityModule") {
         KodeinViewModelFactory(
             injector = directDI,
             appNavigation = viewModelFactoryArgs.appNavigation,
+            fragment = viewModelFactoryArgs.fragment,
             args = viewModelFactoryArgs.args
         )
     }
@@ -137,6 +141,7 @@ val activityModule = DI.Module(name = "activityModule") {
                 instance(
                     arg = ViewModelFactoryArgs(
                         appNavigation = appNavigation,
+                        fragment = fragment,
                         args = fragment.arguments
                     )
                 )
@@ -166,6 +171,7 @@ val activityModule = DI.Module(name = "activityModule") {
                 instance(
                     arg = ViewModelFactoryArgs(
                         appNavigation = appNavigation,
+                        fragment = fragment,
                         args = fragment.arguments
                     )
                 )
@@ -183,6 +189,7 @@ val activityModule = DI.Module(name = "activityModule") {
                 instance(
                     arg = ViewModelFactoryArgs(
                         appNavigation = appNavigation,
+                        fragment = fragment,
                         args = fragment.arguments
                     )
                 )
@@ -196,45 +203,55 @@ val activityModule = DI.Module(name = "activityModule") {
         tag = ImageDetailsFragment::class.simpleName
     ) with factory { appNavigation: AppNavigation ->
         ImageDetailsFragment { fragment: Fragment ->
-            val doorbellData = fragment.arguments?.let { args ->
-                ImageDetailsFragmentArgs.fromBundle(args).doorbellData
-            }
-            val imageData = fragment.arguments?.let { args ->
-                ImageDetailsFragmentArgs.fromBundle(args).imageData
-            }
             instance(
-                arg = ImageDetailsPresenterArgs(
+                arg = ViewModelFactoryArgs(
                     appNavigation = appNavigation,
                     fragment = fragment,
-                    doorbellData = doorbellData,
-                    imageData = imageData
+                    args = fragment.arguments,
                 )
             )
         }
     }
-    bind() from factory { imageDetailsPresenterArgs: ImageDetailsPresenterArgs ->
+    bind() from factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
+        val doorbellId = ImageDetailsFragmentArgs.fromBundle(
+            requireNotNull(viewModelFactoryArgs.args)
+        ).doorbellId
+        val imageId = ImageDetailsFragmentArgs.fromBundle(
+            requireNotNull(viewModelFactoryArgs.args)
+        ).imageId
         ImageDetailsPresenterImpl(
-            appNavigation = imageDetailsPresenterArgs.appNavigation,
-            fragment = imageDetailsPresenterArgs.fragment,
-            doorbellData = imageDetailsPresenterArgs.doorbellData,
-            imageData = imageDetailsPresenterArgs.imageData
+            appNavigation = viewModelFactoryArgs.appNavigation,
+            fragment = viewModelFactoryArgs.fragment,
+            doorbellId = doorbellId,
+            imageId = imageId
         )
     }
 
     // ImageDetailsSlide
     bind<Fragment>(
         tag = ImageDetailsSlideFragment::class.simpleName
-    ) with factory { _: AppNavigation ->
+    ) with factory { appNavigation: AppNavigation ->
         ImageDetailsSlideFragment { fragment: Fragment ->
-            val imageData = fragment.arguments?.let { args ->
-                ImageDetailsFragmentArgs.fromBundle(args).imageData
-            }
-            instance(arg = imageData as ImageData)
+            instance(
+                arg = ViewModelFactoryArgs(
+                    appNavigation = appNavigation,
+                    fragment = fragment,
+                    args = fragment.arguments,
+                )
+            )
         }
     }
-    bind() from factory { imageData: ImageData ->
+    bind() from factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
+        val doorbellId = ImageDetailsFragmentArgs.fromBundle(
+            requireNotNull(viewModelFactoryArgs.args)
+        ).doorbellId
+        val imageId = ImageDetailsFragmentArgs.fromBundle(
+            requireNotNull(viewModelFactoryArgs.args)
+        ).imageId
         ImageDetailsSlidePresenterImpl(
-            imageData = imageData
+            doorbellId = doorbellId,
+            imageId = imageId,
+            doorbellRepository = instance(),
         )
     }
 }
@@ -259,11 +276,11 @@ val viewModelModule = DI.Module(name = "viewModelModule") {
     bind<ViewModel>(
         tag = ImageListViewModel::class.simpleName
     ) with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
-        val doorbellData = viewModelFactoryArgs.args?.let {
-            ImageListFragmentArgs.fromBundle(it).doorbellData
-        }
+        val doorbellId = ImageListFragmentArgs.fromBundle(
+            requireNotNull(viewModelFactoryArgs.args)
+        ).doorbellId
         ImageListViewModel(
-            doorbellData = doorbellData,
+            doorbellId = doorbellId,
             appNavigation = viewModelFactoryArgs.appNavigation,
             doorbellRepository = instance(),
             imagesDataSourceFactory = instance(),

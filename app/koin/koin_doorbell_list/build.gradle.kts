@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     implementation(project(":app:koin:koin_common"))
+    implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
     implementation(project(":ui:ui_common"))
     implementation(project(":ui:ui_doorbell_list"))

@@ -1,3 +1,9 @@
+rootProject.name = "Doorbell"
+
+include(":data:dataDoorbellApi")
+include(":data:dataDoorbellApiFirebase")
+include(":data:dataDoorbellApiStub")
+
 include(":common:common")
 include(":common:common_test")
 include(":common:common_test_ui")
@@ -5,7 +11,6 @@ include(":common:common_test_ui")
 include(":base_android")
 include(":base_camera")
 include(":base_file")
-include(":base_firebase")
 include(":base_persistence")
 include(":base_work_manager")
 include(":base_cache")

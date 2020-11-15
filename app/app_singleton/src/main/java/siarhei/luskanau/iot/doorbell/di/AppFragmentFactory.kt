@@ -71,28 +71,33 @@ class AppFragmentFactory(
 
             ImageDetailsFragment::class.java.name -> {
                 ImageDetailsFragment { fragment: Fragment ->
-                    val doorbellData = fragment.arguments?.let { args ->
-                        ImageDetailsFragmentArgs.fromBundle(args).doorbellData
-                    }
-                    val imageData = fragment.arguments?.let { args ->
-                        ImageDetailsFragmentArgs.fromBundle(args).imageData
-                    }
+                    val doorbellId = ImageDetailsFragmentArgs.fromBundle(
+                        requireNotNull(fragment.arguments)
+                    ).doorbellId
+                    val imageId = ImageDetailsFragmentArgs.fromBundle(
+                        requireNotNull(fragment.arguments)
+                    ).imageId
                     ImageDetailsPresenterImpl(
                         appNavigation = appNavigation,
                         fragment = fragment,
-                        doorbellData = doorbellData,
-                        imageData = imageData
+                        doorbellId = doorbellId,
+                        imageId = imageId
                     )
                 }
             }
 
             ImageDetailsSlideFragment::class.java.name -> {
                 ImageDetailsSlideFragment { fragment: Fragment ->
-                    val imageData = fragment.arguments?.let { args ->
-                        ImageDetailsFragmentArgs.fromBundle(args).imageData
-                    }
+                    val doorbellId = ImageDetailsFragmentArgs.fromBundle(
+                        requireNotNull(fragment.arguments)
+                    ).doorbellId
+                    val imageId = ImageDetailsFragmentArgs.fromBundle(
+                        requireNotNull(fragment.arguments)
+                    ).imageId
                     ImageDetailsSlidePresenterImpl(
-                        imageData = imageData
+                        doorbellId = doorbellId,
+                        imageId = imageId,
+                        doorbellRepository = appModules.doorbellRepository
                     )
                 }
             }

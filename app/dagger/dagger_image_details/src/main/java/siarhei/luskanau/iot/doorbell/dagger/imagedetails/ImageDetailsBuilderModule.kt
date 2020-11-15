@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
+import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerFragmentFactory
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
@@ -27,28 +28,35 @@ class ImageDetailsBuilderModule {
     fun provideImageDetailsFragment(
         appNavigation: AppNavigation
     ) = ImageDetailsFragment { fragment: Fragment ->
-        val doorbellData = fragment.arguments?.let { args ->
-            ImageDetailsFragmentArgs.fromBundle(args).doorbellData
-        }
-        val imageData = fragment.arguments?.let { args ->
-            ImageDetailsFragmentArgs.fromBundle(args).imageData
-        }
+        val doorbellId = ImageDetailsFragmentArgs.fromBundle(
+            requireNotNull(fragment.arguments)
+        ).doorbellId
+        val imageId = ImageDetailsFragmentArgs.fromBundle(
+            requireNotNull(fragment.arguments)
+        ).imageId
         ImageDetailsPresenterImpl(
             appNavigation = appNavigation,
             fragment = fragment,
-            doorbellData = doorbellData,
-            imageData = imageData
+            doorbellId = doorbellId,
+            imageId = imageId
         )
     }
 
     @Provides
-    fun provideImageDetailsSlideFragment() =
+    fun provideImageDetailsSlideFragment(
+        commonComponent: CommonComponent,
+    ) =
         ImageDetailsSlideFragment { fragment: Fragment ->
-            val imageData = fragment.arguments?.let { args ->
-                ImageDetailsFragmentArgs.fromBundle(args).imageData
-            }
+            val doorbellId = ImageDetailsFragmentArgs.fromBundle(
+                requireNotNull(fragment.arguments)
+            ).doorbellId
+            val imageId = ImageDetailsFragmentArgs.fromBundle(
+                requireNotNull(fragment.arguments)
+            ).imageId
             ImageDetailsSlidePresenterImpl(
-                imageData = imageData
+                doorbellId = doorbellId,
+                imageId = imageId,
+                doorbellRepository = commonComponent.provideDoorbellRepository(),
             )
         }
 }

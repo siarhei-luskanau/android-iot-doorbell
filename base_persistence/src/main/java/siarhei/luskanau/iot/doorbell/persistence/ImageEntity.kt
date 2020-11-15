@@ -14,7 +14,7 @@ data class ImageEntity(
     @ColumnInfo(name = "image_id")
     val imageId: String,
 
-    @ColumnInfo(name = "device_id")
-    val deviceId: String
+    @ColumnInfo(name = "doorbell_id")
+    val doorbellId: String
 
 )

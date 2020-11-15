@@ -10,13 +10,12 @@ import siarhei.luskanau.iot.doorbell.common.AppConstants
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 
 class ImageListViewModel(
-    private val doorbellData: DoorbellData?,
+    private val doorbellId: String,
     private val appNavigation: AppNavigation,
     private val doorbellRepository: DoorbellRepository,
     imagesDataSourceFactory: ImagesDataSourceFactory,
@@ -24,13 +23,12 @@ class ImageListViewModel(
 ) : ViewModel(), ImageListPresenter {
 
     override val viewStateFlow: Flow<ImageListState> =
-        imagesDataSourceFactory.createPager(doorbellData?.doorbellId.orEmpty())
+        imagesDataSourceFactory.createPager(doorbellId)
             .flow
             .cachedIn(viewModelScope)
             .map { pagingData ->
-                val deviceId = requireNotNull(doorbellData?.doorbellId)
-                val cameraList = doorbellRepository.getCamerasList(deviceId)
-                val doorbellData = doorbellRepository.getDoorbell(deviceId)
+                val cameraList = doorbellRepository.getCamerasList(doorbellId)
+                val doorbellData = doorbellRepository.getDoorbell(doorbellId)
 
                 ImageListState(
                     cameraList = cameraList,
@@ -41,32 +39,31 @@ class ImageListViewModel(
 
     override fun onCameraClicked(cameraData: CameraData) {
         viewModelScope.launch {
-            doorbellData?.let {
-                doorbellRepository.sendCameraImageRequest(
-                    deviceId = it.doorbellId,
-                    cameraId = cameraData.cameraId,
-                    isRequested = true
-                )
-            }
+            doorbellRepository.sendCameraImageRequest(
+                doorbellId = doorbellId,
+                cameraId = cameraData.cameraId,
+                isRequested = true
+            )
         }
     }
 
     override fun onImageClicked(imageData: ImageData) {
         viewModelScope.launch {
-            doorbellData?.let { appNavigation.navigateToImageDetails(it, imageData) }
+            appNavigation.navigateToImageDetails(
+                doorbellId = doorbellId,
+                imageId = imageData.imageId
+            )
         }
     }
 
     override fun rebootDevice() {
         viewModelScope.launch {
-            doorbellData?.let {
-                val currentTime = System.currentTimeMillis()
-                uptimeRepository.uptimeRebootRequest(
-                    doorbellId = it.doorbellId,
-                    rebootRequestTimeMillis = currentTime,
-                    rebootRequestTimeString = AppConstants.DATE_FORMAT.format(currentTime)
-                )
-            }
+            val currentTime = System.currentTimeMillis()
+            uptimeRepository.uptimeRebootRequest(
+                doorbellId = doorbellId,
+                rebootRequestTimeMillis = currentTime,
+                rebootRequestTimeString = AppConstants.DATE_FORMAT.format(currentTime)
+            )
         }
     }
 }

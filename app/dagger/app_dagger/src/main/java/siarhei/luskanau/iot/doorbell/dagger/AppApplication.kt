@@ -52,19 +52,28 @@ class AppApplication : Application(), WorkerFactoryProvider {
                                 },
                                 {
                                     DaggerDoorbellListComponent.factory()
-                                        .create(appNavigation, commonComponent)
+                                        .create(
+                                            appNavigation = appNavigation,
+                                            commonComponent = commonComponent,
+                                        )
                                         .provideFragmentFactory()
                                         .get()
                                 },
                                 {
                                     DaggerImageListComponent.factory()
-                                        .create(appNavigation, commonComponent)
+                                        .create(
+                                            appNavigation = appNavigation,
+                                            commonComponent = commonComponent,
+                                        )
                                         .provideFragmentFactory()
                                         .get()
                                 },
                                 {
                                     DaggerImageDetailsComponent.factory()
-                                        .create(appNavigation)
+                                        .create(
+                                            appNavigation = appNavigation,
+                                            commonComponent = commonComponent,
+                                        )
                                         .provideFragmentFactory()
                                         .get()
                                 }
@@ -82,6 +91,7 @@ class AppApplication : Application(), WorkerFactoryProvider {
             thisDeviceRepository = { commonComponent.provideThisDeviceRepository() },
             doorbellRepository = { commonComponent.provideDoorbellRepository() },
             cameraRepository = { commonComponent.provideCameraRepository() },
-            uptimeRepository = { commonComponent.provideUptimeRepository() }
+            uptimeRepository = { commonComponent.provideUptimeRepository() },
+            imageRepository = { commonComponent.provideImageRepository() },
         )
 }

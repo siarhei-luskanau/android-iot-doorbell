@@ -5,6 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import timber.log.Timber
 
@@ -13,7 +14,8 @@ class CameraWorker(
     workerParams: WorkerParameters,
     private val thisDeviceRepository: ThisDeviceRepository,
     private val doorbellRepository: DoorbellRepository,
-    private val cameraRepository: CameraRepository
+    private val cameraRepository: CameraRepository,
+    private val imageRepository: ImageRepository,
 ) : CoroutineWorker(
     context,
     workerParams
@@ -27,21 +29,23 @@ class CameraWorker(
                 .filterValues { value -> value }
                 .onEach { (cameraId, _) ->
                     doorbellRepository.sendCameraImageRequest(
-                        deviceId = thisDeviceRepository.doorbellId(),
+                        doorbellId = thisDeviceRepository.doorbellId(),
                         cameraId = cameraId,
                         isRequested = false
                     )
 
                     cameraRepository
                         .makeImage(
-                            deviceId = thisDeviceRepository.doorbellId(),
+                            doorbellId = thisDeviceRepository.doorbellId(),
                             cameraId = cameraId
                         )
                         .also { imageFile ->
                             doorbellRepository.sendImage(
-                                deviceId = thisDeviceRepository.doorbellId(),
+                                doorbellId = thisDeviceRepository.doorbellId(),
                                 cameraId = cameraId,
-                                imageFile = imageFile
+                                imageInputStream = imageRepository.openInputStream(
+                                    imageFile.path.orEmpty()
+                                )
                             )
                         }
                 }

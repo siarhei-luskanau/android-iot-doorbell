@@ -27,7 +27,7 @@ class AppViewModelFactory(
             )
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
-                doorbellData = args?.let { ImageListFragmentArgs.fromBundle(it).doorbellData },
+                doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId,
                 appNavigation = appNavigation,
                 doorbellRepository = appModules.doorbellRepository,
                 imagesDataSourceFactory = appModules.imagesDataSourceFactory,

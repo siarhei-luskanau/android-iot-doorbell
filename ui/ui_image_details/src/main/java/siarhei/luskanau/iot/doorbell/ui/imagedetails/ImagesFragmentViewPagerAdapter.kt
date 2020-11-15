@@ -3,15 +3,13 @@ package siarhei.luskanau.iot.doorbell.ui.imagedetails
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
 
 class ImagesFragmentViewPagerAdapter(
     private val appNavigation: AppNavigation,
     private val fragment: Fragment,
-    private val doorbellData: DoorbellData,
-    private val imageData: ImageData
+    private val doorbellId: String,
+    private val imageId: String
 ) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 1
@@ -23,7 +21,10 @@ class ImagesFragmentViewPagerAdapter(
                     ?: ClassLoader.getSystemClassLoader(),
                 ImageDetailsSlideFragment::class.java.name
             ).apply {
-                arguments = appNavigation.buildImageDetailsArgs(doorbellData, imageData)
+                arguments = appNavigation.buildImageDetailsArgs(
+                    doorbellId = doorbellId,
+                    imageId = imageId
+                )
             }
         }
 }

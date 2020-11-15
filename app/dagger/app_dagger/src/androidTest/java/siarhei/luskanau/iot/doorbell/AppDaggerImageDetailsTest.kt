@@ -8,8 +8,6 @@ import androidx.test.filters.LargeTest
 import org.junit.Rule
 import org.junit.Test
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.navigation.NavRootDirections
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 
@@ -26,8 +24,8 @@ class AppDaggerImageDetailsTest {
             .setDestination(R.id.nav_image_details_xml)
             .setArguments(
                 NavRootDirections.actionImageListToImageDetails(
-                    doorbellData = DoorbellData(doorbellId = "doorbellId"),
-                    imageData = ImageData(imageId = "imageId")
+                    doorbellId = "doorbellId",
+                    imageId = "imageId"
                 ).arguments
             )
             .createTaskStackBuilder()

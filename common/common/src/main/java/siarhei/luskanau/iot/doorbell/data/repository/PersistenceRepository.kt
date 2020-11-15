@@ -5,7 +5,7 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 interface PersistenceRepository {
 
-    fun getImages(deviceId: String, afterImageId: String?, limit: Int): Flow<List<ImageData>>
+    fun getImages(doorbellId: String, afterImageId: String?, limit: Int): Flow<List<ImageData>>
 
-    suspend fun insertImages(deviceId: String, images: List<ImageData>)
+    suspend fun insertImages(doorbellId: String, images: List<ImageData>)
 }

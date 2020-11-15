@@ -5,5 +5,5 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 interface ImagesDataSourceFactory {
 
-    fun createPager(deviceId: String): Pager<String, ImageData>
+    fun createPager(doorbellId: String): Pager<String, ImageData>
 }

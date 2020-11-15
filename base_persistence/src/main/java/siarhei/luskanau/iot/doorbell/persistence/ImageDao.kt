@@ -10,24 +10,24 @@ interface ImageDao {
 
     @Query(
         "SELECT * FROM images " +
-            "WHERE device_id = :deviceId " +
+            "WHERE doorbell_id = :doorbellId " +
             "ORDER BY image_id DESC " +
             "LIMIT :limit"
     )
     fun getImages(
-        deviceId: String,
+        doorbellId: String,
         limit: Int
     ): Flow<List<ImageEntity>>
 
     @Query(
         "SELECT * FROM images " +
-            "WHERE device_id = :deviceId " +
+            "WHERE doorbell_id = :doorbellId " +
             "AND image_id > :afterImageId " +
             "ORDER BY image_id DESC " +
             "LIMIT :limit"
     )
     fun getImages(
-        deviceId: String,
+        doorbellId: String,
         afterImageId: String,
         limit: Int
     ): Flow<List<ImageEntity>>

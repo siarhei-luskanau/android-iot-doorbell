@@ -6,7 +6,7 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 interface CameraRepository {
 
     suspend fun makeImage(
-        deviceId: String,
+        doorbellId: String,
         cameraId: String
     ): ImageFile
 

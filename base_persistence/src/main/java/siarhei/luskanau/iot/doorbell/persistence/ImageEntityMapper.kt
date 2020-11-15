@@ -4,11 +4,11 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 class ImageEntityMapper {
 
-    fun toEntityList(deviceId: String, images: List<ImageData>): List<ImageEntity> =
+    fun toEntityList(doorbellId: String, images: List<ImageData>): List<ImageEntity> =
         images.map {
             ImageEntity(
                 imageId = it.imageId,
-                deviceId = deviceId
+                doorbellId = doorbellId
             )
         }
 

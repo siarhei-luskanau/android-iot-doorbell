@@ -27,10 +27,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":data:dataDoorbellApi"))
+    implementation(project(":data:dataDoorbellApiFirebase"))
     implementation(project(":common:common"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
-    implementation(project(":base_firebase"))
     implementation(project(":base_persistence"))
     implementation(project(":base_cache"))
     implementation(project(":base_work_manager"))

@@ -12,7 +12,7 @@ class DefaultCachedRepository(
 ) : CachedRepository {
 
     override fun loadAfterImages(
-        deviceId: String,
+        doorbellId: String,
         limit: Int,
         afterImageId: String?,
         onResult: (List<ImageData>) -> Unit,
@@ -21,7 +21,7 @@ class DefaultCachedRepository(
         runBlocking {
             onResult.invoke(
                 doorbellRepository.getImagesList(
-                    deviceId = deviceId,
+                    doorbellId = doorbellId,
                     size = limit,
                     imageIdAt = afterImageId,
                     orderAsc = true
@@ -30,7 +30,7 @@ class DefaultCachedRepository(
         }
 
     override fun loadBeforeImages(
-        deviceId: String,
+        doorbellId: String,
         limit: Int,
         beforeImageId: String?,
         onResult: (List<ImageData>) -> Unit,
@@ -39,7 +39,7 @@ class DefaultCachedRepository(
         runBlocking {
             onResult.invoke(
                 doorbellRepository.getImagesList(
-                    deviceId = deviceId,
+                    doorbellId = doorbellId,
                     size = limit,
                     imageIdAt = beforeImageId,
                     orderAsc = false

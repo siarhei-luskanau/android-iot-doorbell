@@ -52,6 +52,7 @@ class AppApplication : Application(), WorkerFactoryProvider {
             thisDeviceRepository = { scope.getInstance() },
             doorbellRepository = { scope.getInstance() },
             cameraRepository = { scope.getInstance() },
-            uptimeRepository = { scope.getInstance() }
+            uptimeRepository = { scope.getInstance() },
+            imageRepository = { scope.getInstance() },
         )
 }

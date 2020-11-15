@@ -23,7 +23,7 @@ abstract class BaseRecyclerClickableListAdapter<T, B : ViewBinding>(
     @Suppress("UNCHECKED_CAST")
     private val innerClickListener = View.OnClickListener { view ->
         val holder = view.tag as BindingViewHolder<B>
-        onItemClickListener(holder.itemView.context, holder, holder.adapterPosition)
+        onItemClickListener(holder.itemView.context, holder, holder.bindingAdapterPosition)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder<B> {

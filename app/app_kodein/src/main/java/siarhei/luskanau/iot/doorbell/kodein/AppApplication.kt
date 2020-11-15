@@ -12,6 +12,7 @@ import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.kodein.di.activityModule
@@ -28,6 +29,7 @@ class AppApplication : Application(), WorkerFactoryProvider, DIAware {
     private val doorbellRepository: DoorbellRepository by instance()
     private val cameraRepository: CameraRepository by instance()
     private val uptimeRepository: UptimeRepository by instance()
+    private val imageRepository: ImageRepository by instance()
     private val scheduleWorkManagerService: ScheduleWorkManagerService by instance()
     private val appBackgroundServices: AppBackgroundServices by instance()
 
@@ -60,6 +62,7 @@ class AppApplication : Application(), WorkerFactoryProvider, DIAware {
             thisDeviceRepository = { thisDeviceRepository },
             doorbellRepository = { doorbellRepository },
             cameraRepository = { cameraRepository },
-            uptimeRepository = { uptimeRepository }
+            uptimeRepository = { uptimeRepository },
+            imageRepository = { imageRepository },
         )
 }

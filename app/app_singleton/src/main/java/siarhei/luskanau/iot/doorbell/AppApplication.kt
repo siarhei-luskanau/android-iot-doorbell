@@ -42,6 +42,7 @@ class AppApplication : Application(), WorkerFactoryProvider {
             thisDeviceRepository = { appModules.thisDeviceRepository },
             doorbellRepository = { appModules.doorbellRepository },
             cameraRepository = { appModules.cameraRepository },
-            uptimeRepository = { appModules.uptimeRepository }
+            uptimeRepository = { appModules.uptimeRepository },
+            imageRepository = { appModules.imageRepository },
         )
 }

@@ -29,7 +29,9 @@ class DoorbellListViewModel(
 
     override fun onDoorbellClicked(doorbellData: DoorbellData) {
         viewModelScope.launch {
-            appNavigation.navigateToImageList(doorbellData)
+            appNavigation.navigateToImageList(
+                doorbellId = doorbellData.doorbellId
+            )
         }
     }
 

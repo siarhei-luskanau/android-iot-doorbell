@@ -63,6 +63,7 @@ class AppApplication : Application(), WorkerFactoryProvider {
             thisDeviceRepository = { get() },
             doorbellRepository = { get() },
             cameraRepository = { get() },
-            uptimeRepository = { get() }
+            uptimeRepository = { get() },
+            imageRepository = { get() },
         )
 }

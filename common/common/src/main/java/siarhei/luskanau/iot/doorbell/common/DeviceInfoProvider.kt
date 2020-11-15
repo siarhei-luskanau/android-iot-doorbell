@@ -4,7 +4,7 @@ import java.io.Serializable
 
 interface DeviceInfoProvider {
 
-    fun buildDeviceId(): String
+    fun buildDoorbellId(): String
 
     fun buildDeviceName(): String
 

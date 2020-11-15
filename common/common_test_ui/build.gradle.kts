@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":common:common"))
+    implementation(project(":data:dataDoorbellApi"))
 
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)

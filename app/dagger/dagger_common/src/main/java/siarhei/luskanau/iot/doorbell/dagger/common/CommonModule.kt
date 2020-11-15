@@ -21,12 +21,13 @@ import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
 import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
-import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepositoryFake
 import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.JetpackCameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
+import siarhei.luskanau.iot.doorbell.data.repository.StubDoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.StubUptimeRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
@@ -56,9 +57,9 @@ class CommonModule {
 
     @Provides
     @Singleton
-    fun provideDoorbellRepository(imageRepository: Provider<ImageRepository>): DoorbellRepository {
-        FirebaseDoorbellRepository(imageRepository = imageRepository.get())
-        return DoorbellRepositoryFake()
+    fun provideDoorbellRepository(): DoorbellRepository {
+        FirebaseDoorbellRepository()
+        return StubDoorbellRepository()
     }
 
     @Provides
@@ -86,8 +87,10 @@ class CommonModule {
 
     @Provides
     @Singleton
-    fun provideUptimeRepository(): UptimeRepository =
+    fun provideUptimeRepository(): UptimeRepository {
         UptimeFirebaseRepository()
+        return StubUptimeRepository()
+    }
 
     @Provides
     @Singleton
