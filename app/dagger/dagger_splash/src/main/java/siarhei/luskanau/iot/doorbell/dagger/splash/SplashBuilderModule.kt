@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import javax.inject.Provider
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerFragmentFactory
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 
 @Module
@@ -23,9 +23,9 @@ class SplashBuilderModule {
 
     @Provides
     fun provideSplashViewModel(
-        appNavigation: AppNavigation
+        splashNavigation: SplashNavigation
     ) = SplashViewModel(
-        appNavigation = appNavigation
+        splashNavigation = splashNavigation
     )
 
     @Provides

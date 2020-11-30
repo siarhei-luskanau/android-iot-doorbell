@@ -2,8 +2,8 @@ import de.mannodermaus.gradle.plugins.junit5.junitPlatform
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    kotlin("android")
+    kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
     id("com.google.gms.google-services")
@@ -35,6 +35,11 @@ dependencies {
     implementation(project(":base_persistence"))
     implementation(project(":base_cache"))
     implementation(project(":base_work_manager"))
+    implementation(project(":ui:ui_splash"))
+    implementation(project(":ui:ui_permissions"))
+    implementation(project(":ui:ui_doorbell_list"))
+    implementation(project(":ui:ui_image_list"))
+    implementation(project(":ui:ui_image_details"))
     implementation(project(":navigation"))
     implementation(project(":app:dagger:dagger_common"))
     implementation(project(":app:dagger:dagger_splash"))

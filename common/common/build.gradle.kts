@@ -1,14 +1,7 @@
 plugins {
     id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
-    id("kotlin-android-extensions")
-}
-
-android {
-    androidExtensions {
-        features = setOf("parcelize")
-    }
+    kotlin("android")
+    kotlin("kapt")
 }
 
 dependencies {

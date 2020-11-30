@@ -4,16 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 
 class SplashViewModel(
-    private val appNavigation: AppNavigation
+    private val splashNavigation: SplashNavigation
 ) : ViewModel(), SplashPresenter {
 
     override fun onResume() {
         viewModelScope.launch {
             delay(DELAY_SPLASH)
-            appNavigation.goSplashToDoorbellList()
+            splashNavigation.onSplashComplete()
         }
     }
 

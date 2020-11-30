@@ -2,9 +2,8 @@ import de.mannodermaus.gradle.plugins.junit5.junitPlatform
 
 plugins {
     id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
-    id("kotlin-android-extensions")
+    kotlin("android")
+    kotlin("kapt")
     id("de.mannodermaus.android-junit5")
     id("hu.supercluster.paperwork")
 }
@@ -19,12 +18,6 @@ paperwork {
             "buildDate" to buildTime("yyyy-MM-dd HH:mm:ss", "GMT")
         )
     }.getOrNull()
-}
-
-android {
-    androidExtensions {
-        features = setOf("parcelize")
-    }
 }
 
 dependencies {

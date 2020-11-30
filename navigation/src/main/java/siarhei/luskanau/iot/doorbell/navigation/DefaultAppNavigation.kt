@@ -6,9 +6,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 import timber.log.Timber
 
-class DefaultAppNavigation(private val activity: FragmentActivity) : AppNavigation {
+class DefaultAppNavigation(
+    private val activity: FragmentActivity
+) : AppNavigation,
+    SplashNavigation {
 
     private fun getNavController(): NavController =
         (activity.supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
@@ -24,9 +28,6 @@ class DefaultAppNavigation(private val activity: FragmentActivity) : AppNavigati
 
     override fun goBack(): Boolean =
         getNavController().popBackStack()
-
-    override fun goSplashToDoorbellList() =
-        navigateTo(NavRootDirections.actionSplashToDoorbellList())
 
     override fun goDoorbellListToPermissions() =
         navigateTo(NavRootDirections.actionDoorbellListToPermissions())
@@ -51,4 +52,7 @@ class DefaultAppNavigation(private val activity: FragmentActivity) : AppNavigati
             doorbellId = doorbellId,
             imageId = imageId
         ).arguments
+
+    override fun onSplashComplete() =
+        navigateTo(NavRootDirections.actionSplashToDoorbellList())
 }

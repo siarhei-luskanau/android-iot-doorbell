@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
@@ -27,7 +26,7 @@ class AppFragmentFactory(
     private val appModules: AppModules
 ) : FragmentFactory() {
 
-    private val appNavigation: AppNavigation by lazy { DefaultAppNavigation(fragmentActivity) }
+    private val appNavigation by lazy { DefaultAppNavigation(fragmentActivity) }
 
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         Timber.d("AppFragmentFactory:instantiate:$className")
@@ -35,7 +34,7 @@ class AppFragmentFactory(
 
             SplashFragment::class.java.name -> {
                 SplashFragment {
-                    SplashViewModel(appNavigation)
+                    SplashViewModel(splashNavigation = appNavigation)
                 }
             }
 

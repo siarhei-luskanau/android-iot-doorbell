@@ -2,6 +2,7 @@ package siarhei.luskanau.iot.doorbell.koin.imagedetails.di
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
@@ -16,21 +17,21 @@ import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePres
 
 val imageDetailsModule = module {
 
-    fragment { appNavigation: AppNavigation ->
+    fragment { activity: FragmentActivity ->
         ImageDetailsFragment { fragment: Fragment ->
-            get { parametersOf(appNavigation, fragment, fragment.arguments) }
+            get { parametersOf(activity, fragment, fragment.arguments) }
         }
     }
 
     factory<ImageDetailsPresenter> { (
-        appNavigation: AppNavigation,
+        activity: FragmentActivity,
         fragment: Fragment,
         args: Bundle?
     ) ->
         val doorbellId = ImageDetailsFragmentArgs.fromBundle(requireNotNull(args)).doorbellId
         val imageId = ImageDetailsFragmentArgs.fromBundle(args).imageId
         ImageDetailsPresenterImpl(
-            appNavigation = appNavigation,
+            appNavigation = get { parametersOf(activity) },
             fragment = fragment,
             doorbellId = doorbellId,
             imageId = imageId

@@ -2,8 +2,8 @@ import de.mannodermaus.gradle.plugins.junit5.junitPlatform
 
 plugins {
     id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    kotlin("android")
+    kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
 }
@@ -11,8 +11,6 @@ plugins {
 android.testOptions.junitPlatform.jacocoOptions.taskGenerationEnabled = false
 
 dependencies {
-    implementation(project(":data:dataDoorbellApi"))
-    implementation(project(":common:common"))
     implementation(project(":ui:ui_common"))
 
     implementation(Libraries.kotlinStdlibJdk8)

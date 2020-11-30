@@ -1,18 +1,18 @@
 package siarhei.luskanau.iot.doorbell.koin.common.di
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import org.koin.core.Koin
 import org.koin.core.definition.BeanDefinition
 import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import timber.log.Timber
 
 class KoinFragmentFactory(
     private val koin: Koin,
-    private val appNavigation: AppNavigation
+    private val activity: FragmentActivity
 ) : FragmentFactory() {
 
     @Suppress("TooGenericExceptionCaught")
@@ -23,7 +23,7 @@ class KoinFragmentFactory(
             koin.get(
                 clazz = clazz.kotlin,
                 qualifier = null,
-                parameters = { parametersOf(appNavigation) }
+                parameters = { parametersOf(activity) }
             )
         } catch (koinThrowable: Throwable) {
             try {
@@ -37,8 +37,8 @@ class KoinFragmentFactory(
 inline fun <reified T : Fragment> Module.fragment(
     noinline definition: FragmentDefinition<T>
 ): BeanDefinition<T> =
-    factory { (appNavigation: AppNavigation) ->
-        definition(appNavigation)
+    factory { (activity: FragmentActivity) ->
+        definition(activity)
     }
 
-typealias FragmentDefinition<T> = Scope.(AppNavigation) -> T
+typealias FragmentDefinition<T> = Scope.(FragmentActivity) -> T

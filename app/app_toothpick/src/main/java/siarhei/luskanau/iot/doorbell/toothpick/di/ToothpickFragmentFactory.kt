@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
@@ -29,7 +28,7 @@ class ToothpickFragmentFactory(
     private val scope: Scope
 ) : FragmentFactory() {
 
-    private val appNavigation: AppNavigation by lazy { DefaultAppNavigation(fragmentActivity) }
+    private val appNavigation by lazy { DefaultAppNavigation(fragmentActivity) }
 
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         Timber.d("AppFragmentFactory:instantiate:$className")

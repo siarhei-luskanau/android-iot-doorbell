@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.dagger
 import android.app.Application
 import androidx.fragment.app.FragmentActivity
 import androidx.work.WorkerFactory
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerCommonComponent
 import siarhei.luskanau.iot.doorbell.dagger.doorbelllist.DaggerDoorbellListComponent
@@ -33,7 +32,7 @@ class AppApplication : Application(), WorkerFactoryProvider {
         registerActivityLifecycleCallbacks(
             OnActivityCreatedLifecycleCallbacks {
                 (it as? FragmentActivity?)?.let { fragmentActivity ->
-                    val appNavigation: AppNavigation = DefaultAppNavigation(fragmentActivity)
+                    val appNavigation = DefaultAppNavigation(fragmentActivity)
 
                     val fragmentFactory =
                         DelegateFragmentFactory(

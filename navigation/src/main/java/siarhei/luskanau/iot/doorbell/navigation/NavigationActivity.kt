@@ -1,7 +1,6 @@
 package siarhei.luskanau.iot.doorbell.navigation
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -23,8 +22,8 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
     private val appBarConfiguration: AppBarConfiguration
         get() = AppBarConfiguration(navController.graph)
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         setSupportActionBar(binding.toolbar)
         setupActionBarWithNavController(navController, appBarConfiguration)

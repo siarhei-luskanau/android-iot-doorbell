@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -66,7 +65,6 @@ class ImageListFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = javaClass.simpleName
 
         fragmentBinding.camerasRecyclerView.adapter = camerasAdapter
         fragmentBinding.rebootButton.setOnClickListener { presenter.rebootDevice() }
@@ -77,6 +75,10 @@ class ImageListFragment(
         }
         imageAdapter.onItemClickListener = { _, _, position ->
             imageAdapter.getItemAtPosition(position)?.let { presenter.onImageClicked(it) }
+        }
+        fragmentBinding.pullToRefresh.setOnRefreshListener {
+            imageAdapter.refresh()
+            collectLoadStateFlow()
         }
         imageAdapter.withLoadStateHeaderAndFooter(
             header = AppLoadStateAdapter { imageAdapter.retry() },
@@ -92,6 +94,10 @@ class ImageListFragment(
             }
         }
 
+        collectLoadStateFlow()
+    }
+
+    private fun collectLoadStateFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             imageAdapter.loadStateFlow.collect { changeLoadState(it) }
         }

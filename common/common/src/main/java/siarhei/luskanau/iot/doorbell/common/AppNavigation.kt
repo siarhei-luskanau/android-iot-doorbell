@@ -4,7 +4,6 @@ import android.os.Bundle
 
 interface AppNavigation {
     fun goBack(): Boolean
-    fun goSplashToDoorbellList()
     fun goDoorbellListToPermissions()
     fun navigateToImageList(doorbellId: String)
     fun navigateToImageDetails(doorbellId: String, imageId: String)

@@ -3,12 +3,12 @@ package siarhei.luskanau.iot.doorbell.toothpick.di
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
+import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
@@ -18,7 +18,7 @@ import toothpick.Scope
 
 class ToothpickViewModelFactory(
     private val scope: Scope,
-    private val appNavigation: AppNavigation,
+    private val appNavigation: DefaultAppNavigation,
     private val args: Bundle?
 ) : ViewModelProvider.Factory {
 
@@ -28,7 +28,7 @@ class ToothpickViewModelFactory(
         return when {
 
             SplashViewModel::class.java.isAssignableFrom(modelClass) -> SplashViewModel(
-                appNavigation = appNavigation
+                splashNavigation = appNavigation
             )
 
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(

@@ -51,6 +51,7 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsPresenter
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
@@ -117,16 +118,19 @@ val appModule = DI.Module(name = "appModule") {
 }
 
 val activityModule = DI.Module(name = "activityModule") {
-    bind<AppNavigation>() with factory { activity: FragmentActivity ->
+    bind<DefaultAppNavigation>() with factory { activity: FragmentActivity ->
+        DefaultAppNavigation(activity)
+    }
+    bind<SplashNavigation>() with factory { activity: FragmentActivity ->
         DefaultAppNavigation(activity)
     }
     bind<FragmentFactory>() with factory { activity: FragmentActivity ->
-        KodeinFragmentFactory(instance(arg = activity), directDI)
+        KodeinFragmentFactory(activity, directDI)
     }
     bind<ViewModelProvider.Factory>() with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
         KodeinViewModelFactory(
             injector = directDI,
-            appNavigation = viewModelFactoryArgs.appNavigation,
+            activity = viewModelFactoryArgs.activity,
             fragment = viewModelFactoryArgs.fragment,
             args = viewModelFactoryArgs.args
         )
@@ -135,12 +139,12 @@ val activityModule = DI.Module(name = "activityModule") {
     // Splash
     bind<Fragment>(
         tag = SplashFragment::class.simpleName
-    ) with factory { appNavigation: AppNavigation ->
+    ) with factory { activity: FragmentActivity ->
         SplashFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
                 instance(
                     arg = ViewModelFactoryArgs(
-                        appNavigation = appNavigation,
+                        activity = activity,
                         fragment = fragment,
                         args = fragment.arguments
                     )
@@ -153,24 +157,25 @@ val activityModule = DI.Module(name = "activityModule") {
     // Permissions
     bind<Fragment>(
         tag = PermissionsFragment::class.simpleName
-    ) with factory { appNavigation: AppNavigation ->
+    ) with factory { activity: FragmentActivity ->
         PermissionsFragment {
-            instance(arg = appNavigation)
+            instance(arg = activity)
         }
     }
-    bind() from factory { appNavigation: AppNavigation ->
+    bind() from factory { activity: FragmentActivity ->
+        val appNavigation: AppNavigation = instance(arg = activity)
         PermissionsPresenter(appNavigation)
     }
 
     // DoorbellList
     bind<Fragment>(
         tag = DoorbellListFragment::class.simpleName
-    ) with factory { appNavigation: AppNavigation ->
+    ) with factory { activity: FragmentActivity ->
         DoorbellListFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
                 instance(
                     arg = ViewModelFactoryArgs(
-                        appNavigation = appNavigation,
+                        activity = activity,
                         fragment = fragment,
                         args = fragment.arguments
                     )
@@ -183,12 +188,12 @@ val activityModule = DI.Module(name = "activityModule") {
     // ImageList
     bind<Fragment>(
         tag = ImageListFragment::class.simpleName
-    ) with factory { appNavigation: AppNavigation ->
+    ) with factory { activity: FragmentActivity ->
         ImageListFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
                 instance(
                     arg = ViewModelFactoryArgs(
-                        appNavigation = appNavigation,
+                        activity = activity,
                         fragment = fragment,
                         args = fragment.arguments
                     )
@@ -201,11 +206,11 @@ val activityModule = DI.Module(name = "activityModule") {
     // ImageDetails
     bind<Fragment>(
         tag = ImageDetailsFragment::class.simpleName
-    ) with factory { appNavigation: AppNavigation ->
+    ) with factory { activity: FragmentActivity ->
         ImageDetailsFragment { fragment: Fragment ->
             instance(
                 arg = ViewModelFactoryArgs(
-                    appNavigation = appNavigation,
+                    activity = activity,
                     fragment = fragment,
                     args = fragment.arguments,
                 )
@@ -220,7 +225,7 @@ val activityModule = DI.Module(name = "activityModule") {
             requireNotNull(viewModelFactoryArgs.args)
         ).imageId
         ImageDetailsPresenterImpl(
-            appNavigation = viewModelFactoryArgs.appNavigation,
+            appNavigation = instance(arg = viewModelFactoryArgs.activity),
             fragment = viewModelFactoryArgs.fragment,
             doorbellId = doorbellId,
             imageId = imageId
@@ -230,11 +235,11 @@ val activityModule = DI.Module(name = "activityModule") {
     // ImageDetailsSlide
     bind<Fragment>(
         tag = ImageDetailsSlideFragment::class.simpleName
-    ) with factory { appNavigation: AppNavigation ->
+    ) with factory { activity: FragmentActivity ->
         ImageDetailsSlideFragment { fragment: Fragment ->
             instance(
                 arg = ViewModelFactoryArgs(
-                    appNavigation = appNavigation,
+                    activity = activity,
                     fragment = fragment,
                     args = fragment.arguments,
                 )
@@ -260,14 +265,14 @@ val viewModelModule = DI.Module(name = "viewModelModule") {
     bind<ViewModel>(
         tag = SplashViewModel::class.simpleName
     ) with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
-        SplashViewModel(appNavigation = viewModelFactoryArgs.appNavigation)
+        SplashViewModel(splashNavigation = instance(arg = viewModelFactoryArgs.activity))
     }
 
     bind<ViewModel>(
         tag = DoorbellListViewModel::class.simpleName
     ) with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
         DoorbellListViewModel(
-            appNavigation = viewModelFactoryArgs.appNavigation,
+            appNavigation = instance(arg = viewModelFactoryArgs.activity),
             thisDeviceRepository = instance(),
             doorbellsDataSource = instance()
         )
@@ -281,7 +286,7 @@ val viewModelModule = DI.Module(name = "viewModelModule") {
         ).doorbellId
         ImageListViewModel(
             doorbellId = doorbellId,
-            appNavigation = viewModelFactoryArgs.appNavigation,
+            appNavigation = instance(arg = viewModelFactoryArgs.activity),
             doorbellRepository = instance(),
             imagesDataSourceFactory = instance(),
             uptimeRepository = instance()

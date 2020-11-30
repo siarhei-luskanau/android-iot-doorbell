@@ -1,18 +1,20 @@
 package siarhei.luskanau.iot.doorbell.koin.common.di
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.koin.core.definition.BeanDefinition
 import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import timber.log.Timber
 
 class KoinViewModelFactory(
     private val scope: Scope,
-    private val appNavigation: AppNavigation,
+    private val activity: FragmentActivity,
+    private val fragment: Fragment,
     private val args: Bundle?
 ) : ViewModelProvider.Factory {
 
@@ -23,7 +25,7 @@ class KoinViewModelFactory(
             scope.get(
                 clazz = modelClass.kotlin,
                 qualifier = null,
-                parameters = { parametersOf(appNavigation, args) }
+                parameters = { parametersOf(activity, fragment, args) }
             )
         } catch (koinThrowable: Throwable) {
             try {
@@ -37,8 +39,8 @@ class KoinViewModelFactory(
 inline fun <reified T : ViewModel> Module.viewModel(
     noinline definition: ViewModelDefinition<T>
 ): BeanDefinition<T> =
-    factory { (appNavigation: AppNavigation, args: Bundle?) ->
-        definition(appNavigation, args)
+    factory { (activity: FragmentActivity, fragment: Fragment, args: Bundle?) ->
+        definition(activity, fragment, args)
     }
 
-typealias ViewModelDefinition<T> = Scope.(AppNavigation, Bundle?) -> T
+typealias ViewModelDefinition<T> = Scope.(FragmentActivity, Fragment, Bundle?) -> T

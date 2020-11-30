@@ -2,16 +2,16 @@ package siarhei.luskanau.iot.doorbell.kodein.di
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.kodein.di.DirectDI
 import org.kodein.di.instance
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import timber.log.Timber
 
 class KodeinViewModelFactory(
     private val injector: DirectDI,
-    private val appNavigation: AppNavigation,
+    private val activity: FragmentActivity,
     private val fragment: Fragment,
     private val args: Bundle?
 ) : ViewModelProvider.Factory {
@@ -23,7 +23,7 @@ class KodeinViewModelFactory(
             val viewModel: ViewModel = injector.instance(
                 tag = modelClass.simpleName,
                 arg = ViewModelFactoryArgs(
-                    appNavigation = appNavigation,
+                    activity = activity,
                     fragment = fragment,
                     args = args,
                 )

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
@@ -66,12 +65,14 @@ class DoorbellListFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = javaClass.simpleName
 
         val decoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         normalStateBinding.doorbellsRecyclerView.addItemDecoration(decoration)
 
-        fragmentBinding.pullToRefresh.setOnRefreshListener { doorbellsAdapter.refresh() }
+        fragmentBinding.pullToRefresh.setOnRefreshListener {
+            doorbellsAdapter.refresh()
+            collectLoadStateFlow()
+        }
         normalStateBinding.doorbellsRecyclerView.adapter =
             doorbellsAdapter.withLoadStateHeaderAndFooter(
                 header = AppLoadStateAdapter { doorbellsAdapter.retry() },
@@ -94,6 +95,10 @@ class DoorbellListFragment(
             }
         }
 
+        collectLoadStateFlow()
+    }
+
+    private fun collectLoadStateFlow() {
         viewLifecycleOwner.lifecycleScope.launch {
             doorbellsAdapter.loadStateFlow.collect { changeLoadState(it) }
         }

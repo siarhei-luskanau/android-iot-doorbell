@@ -30,7 +30,7 @@ private object Versions {
     const val firebaseStorage = "19.2.0"
 
     // DI
-    const val dagger = "2.29.1"
+    const val dagger = "2.30"
     const val kodein = "7.1.0"
     const val koin = "2.2.1"
     const val toothpick = "3.1.0"

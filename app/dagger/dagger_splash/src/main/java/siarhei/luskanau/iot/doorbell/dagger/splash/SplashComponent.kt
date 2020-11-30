@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentFactory
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Provider
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 
 @Component(
     modules = [
@@ -19,6 +19,6 @@ interface SplashComponent {
     @Component.Factory
     interface Factory {
 
-        fun create(@BindsInstance appNavigation: AppNavigation): SplashComponent
+        fun create(@BindsInstance splashNavigation: SplashNavigation): SplashComponent
     }
 }

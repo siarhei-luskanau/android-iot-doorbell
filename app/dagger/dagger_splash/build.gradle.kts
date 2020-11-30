@@ -1,12 +1,10 @@
 plugins {
     id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    kotlin("android")
+    kotlin("kapt")
 }
 
 dependencies {
-    implementation(project(":data:dataDoorbellApi"))
-    implementation(project(":common:common"))
     implementation(project(":ui:ui_common"))
     implementation(project(":ui:ui_splash"))
     implementation(project(":app:dagger:dagger_common"))

@@ -2,6 +2,7 @@ package siarhei.luskanau.iot.doorbell.koin.di
 
 import android.content.ComponentCallbacks
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
@@ -37,25 +38,31 @@ import siarhei.luskanau.iot.doorbell.koin.common.di.KoinFragmentFactory
 import siarhei.luskanau.iot.doorbell.koin.common.di.KoinViewModelFactory
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
 
 val appModule = module {
 
     factory<AppNavigation> { (activity: FragmentActivity) -> DefaultAppNavigation(activity) }
+    factory<SplashNavigation> { (activity: FragmentActivity) -> DefaultAppNavigation(activity) }
 
-    factory<FragmentFactory> { (fragmentActivity: FragmentActivity) ->
-        val appNavigation: AppNavigation = get { parametersOf(fragmentActivity) }
+    factory<FragmentFactory> { (activity: FragmentActivity) ->
         KoinFragmentFactory(
             koin = getKoin(),
-            appNavigation = appNavigation
+            activity = activity
         )
     }
 
-    factory<ViewModelProvider.Factory> { (appNavigation: AppNavigation, args: Bundle?) ->
+    factory<ViewModelProvider.Factory> { (
+        activity: FragmentActivity,
+        fragment: Fragment,
+        args: Bundle?
+    ) ->
         KoinViewModelFactory(
             scope = this,
-            appNavigation = appNavigation,
+            activity = activity,
+            fragment = fragment,
             args = args
         )
     }
