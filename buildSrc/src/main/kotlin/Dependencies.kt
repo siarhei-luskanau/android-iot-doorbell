@@ -1,9 +1,10 @@
 private object Versions {
     // Libraries
     const val androidToolsBuildGradle = "4.2.0-alpha16"
+    const val desugar = "1.1.1"
     const val kotlin = "1.4.10"
     const val kotlinxCoroutines = "1.4.1"
-    const val desugar = "1.1.1"
+    const val kotlinxDatetime = "0.1.1"
     const val navigation = "2.3.1"
     const val timber = "4.7.1"
     const val androidxCamera = "1.0.0-beta12"
@@ -74,6 +75,7 @@ object Libraries {
     const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
     const val kotlinxCoroutinesCore =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}"
+    const val kotlinxDatetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDatetime}"
     const val navigationFragmentKtx =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"

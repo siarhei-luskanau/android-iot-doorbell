@@ -9,6 +9,7 @@ dependencies {
 
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
+    implementation(Libraries.kotlinxDatetime)
 
     // android test, but implementation
     implementation(TestLibraries.kotlinTest)

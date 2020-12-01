@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Environment
-import androidx.annotation.RequiresApi
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.File
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class ExternalFilesScreenCaptureProcessor(
     private val destPath: String = SCREENSHOTS_PATH,
@@ -36,15 +36,15 @@ class ExternalFilesScreenCaptureProcessor(
         return filename
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun getFilename(prefix: String?): String =
-        prefix + mFileNameDelimiter + FORMATTER.format(LocalDateTime.now())
+    override fun getFilename(prefix: String?): String {
+        val instant = Clock.System.now()
+        val localDateTime = instant.toLocalDateTime(TimeZone.UTC)
+        val formatted = localDateTime.toString()
+        return prefix + mFileNameDelimiter + formatted
+    }
 
     companion object {
         @SuppressLint("SdCardPath")
         private val SCREENSHOTS_PATH = "/sdcard/Pictures/screenshots/"
-
-        @RequiresApi(Build.VERSION_CODES.O)
-        private val FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd-HH.mm.ss.S")
     }
 }
