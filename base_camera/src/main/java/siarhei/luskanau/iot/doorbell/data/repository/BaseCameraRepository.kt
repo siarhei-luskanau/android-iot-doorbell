@@ -13,7 +13,6 @@ import androidx.camera.core.CameraX
 import androidx.camera.core.impl.CameraInfoInternal
 import androidx.core.content.getSystemService
 import java.io.Serializable
-import java.util.LinkedHashSet
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.SizeData
 import timber.log.Timber
@@ -124,11 +123,10 @@ abstract class BaseCameraRepository(
             runCatching {
                 val cameraSelector = CameraSelector.Builder()
                     .addCameraFilter { cameras ->
-                        val filteredCameras = cameras.filter { camera ->
-                            val cameraInfo = camera.cameraInfo as CameraInfoInternal
-                            cameraInfo.cameraId == cameraId
+                        cameras.filter { cameraInfo ->
+                            val cameraInfoInternal = cameraInfo as CameraInfoInternal
+                            cameraInfoInternal.cameraId == cameraId
                         }
-                        LinkedHashSet(filteredCameras)
                     }
                     .build()
                 CameraX.getCameraWithCameraSelector(cameraSelector).let { cameraInternal ->

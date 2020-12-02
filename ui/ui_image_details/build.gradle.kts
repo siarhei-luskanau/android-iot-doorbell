@@ -3,7 +3,6 @@ import de.mannodermaus.gradle.plugins.junit5.junitPlatform
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
 }
@@ -38,5 +37,4 @@ dependencies {
     androidTestImplementation(TestLibraries.testEspressoCore)
     androidTestImplementation(TestLibraries.androidTestCoreKtx)
     androidTestImplementation(TestLibraries.fragmentTesting)
-    kaptAndroidTest(TestLibraries.databindingCompiler)
 }

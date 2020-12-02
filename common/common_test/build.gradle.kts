@@ -1,17 +1,18 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
 }
 
 android {
-    packagingOptions {
-        exclude("META-INF/AL2.0")
-        exclude("META-INF/LGPL2.1")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/MANIFEST.MF")
-        exclude("META-INF/proguard/coroutines.pro")
-    }
+    packagingOptions.setExcludes(
+        setOf(
+            "META-INF/AL2.0",
+            "META-INF/LGPL2.1",
+            "META-INF/LICENSE",
+            "META-INF/MANIFEST.MF",
+            "META-INF/proguard/coroutines.pro"
+        )
+    )
 }
 
 dependencies {

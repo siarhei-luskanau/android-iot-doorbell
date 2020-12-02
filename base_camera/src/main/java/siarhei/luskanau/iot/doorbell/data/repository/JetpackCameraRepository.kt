@@ -36,11 +36,10 @@ class JetpackCameraRepository(
                     runCatching {
                         val cameraSelector = CameraSelector.Builder()
                             .addCameraFilter { cameras ->
-                                val filteredCameras = cameras.filter { camera ->
-                                    val cameraInfo = camera.cameraInfo as CameraInfoInternal
-                                    cameraInfo.cameraId == cameraId
+                                cameras.filter { cameraInfo ->
+                                    val cameraInfoInternal = cameraInfo as CameraInfoInternal
+                                    cameraInfoInternal.cameraId == cameraId
                                 }
-                                LinkedHashSet(filteredCameras)
                             }
                             .build()
 

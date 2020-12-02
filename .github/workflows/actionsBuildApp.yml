@@ -3,21 +3,20 @@ name: actionsBuildApp
 on: [push]
 
 jobs:
-  build:
 
-    runs-on: macos-latest
-
+  jobBuildApp:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.0.0
-
-      - name: ciBuildApp
-        run: bash ./gradlew ciBuildApp --stacktrace
-
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - run: bash ./gradlew :setupAndroidCmdlineTools --stacktrace
+      - run: bash ./gradlew ciBuildApp --stacktrace
       - uses: actions/upload-artifact@v1
         with:
           name: apk
           path: build/apk/
-
       - uses: actions/upload-artifact@v1
         with:
           name: jacoco

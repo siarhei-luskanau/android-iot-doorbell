@@ -8,6 +8,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.File
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
@@ -38,8 +39,16 @@ class ExternalFilesScreenCaptureProcessor(
 
     override fun getFilename(prefix: String?): String {
         val instant = Clock.System.now()
-        val localDateTime = instant.toLocalDateTime(TimeZone.UTC)
-        val formatted = localDateTime.toString()
+        val localDateTime: LocalDateTime = instant.toLocalDateTime(TimeZone.UTC)
+        val formatted = StringBuilder()
+            .append(localDateTime.year).append(".")
+            .append(localDateTime.monthNumber).append(".")
+            .append(localDateTime.dayOfMonth).append("-")
+            .append(localDateTime.hour).append(".")
+            .append(localDateTime.minute).append(".")
+            .append(localDateTime.second).append(".")
+            .append(localDateTime.nanosecond.toString().take(3))
+            .toString()
         return prefix + mFileNameDelimiter + formatted
     }
 

@@ -67,12 +67,27 @@ fun runOnEmulator(emulatorName: String) {
     gradlew("waitAndroidEmulator")
 
     runCatching {
-        gradlew("connectedAndroidTest")
+        gradlew("ciConnectedAndroidTest")
         gradlew("moveScreenshotsFromDevices")
         gradlew("killAndroidEmulator")
     }.onFailure {
         gradlew("moveScreenshotsFromDevices")
         throw it
+    }
+}
+
+tasks.register("ciConnectedAndroidTest") {
+    group = CI_GRADLE
+    doLast {
+        gradlew(
+            ":app:app_kodein:connectedAndroidTest",
+            ":app:app_singleton:connectedAndroidTest",
+            ":app:app_toothpick:connectedAndroidTest",
+            ":app:dagger:app_dagger:connectedAndroidTest",
+            ":ui:ui_doorbell_list:connectedAndroidTest",
+            ":ui:ui_image_details:connectedAndroidTest",
+            ":ui:ui_image_list:connectedAndroidTest"
+        )
     }
 }
 

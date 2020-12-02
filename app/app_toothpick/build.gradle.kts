@@ -49,7 +49,6 @@ dependencies {
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 
-    kapt(Libraries.lifecycleCommonJava8)
     implementation(Libraries.material)
     implementation(Libraries.activityKtx)
     implementation(Libraries.fragmentKtx)

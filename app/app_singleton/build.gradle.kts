@@ -3,7 +3,6 @@ import de.mannodermaus.gradle.plugins.junit5.junitPlatform
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
     id("com.google.gms.google-services")
@@ -50,7 +49,6 @@ dependencies {
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 
-    kapt(Libraries.lifecycleCommonJava8)
     implementation(Libraries.material)
     implementation(Libraries.activityKtx)
     implementation(Libraries.fragmentKtx)

@@ -2,16 +2,16 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import java.io.ByteArrayOutputStream
 import java.util.Properties
 
-// sudo apt-get install curl unzip openjdk-8-jdk
+// sudo apt-get install curl unzip openjdk-11-jdk
 // export ANDROID_HOME=$HOME/Android/Sdk
-// export PATH=$PATH:$ANDROID_HOME/tools/bin
+// export PATH=$PATH:$ANDROID_HOME/cmdline-tools/bin
 // ls ${ANDROID_HOME}/
 // rm -r ${ANDROID_HOME}/
 // mkdir -p ${ANDROID_HOME}/
-// curl https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip -o ${ANDROID_HOME}/commandlinetools-linux.zip
+// curl https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -o ${ANDROID_HOME}/commandlinetools-linux.zip
 // unzip ${ANDROID_HOME}/commandlinetools-linux.zip -d ${ANDROID_HOME}/
 // rm ${ANDROID_HOME}/commandlinetools-linux.zip
-// yes | ${ANDROID_HOME}/tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses 
+// yes | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} --licenses
 // ./gradlew :setupAndroidSDK :setupAndroidEmulator
 
 val YES_INPUT: String = mutableListOf<String>()
@@ -19,21 +19,100 @@ val YES_INPUT: String = mutableListOf<String>()
     .joinToString()
 
 val EMULATOR_GRADLE = "EMULATOR_GRADLE"
+val COMMANDLINETOOLS_VERSION = "6858069"
+val COMMANDLINETOOLS_LINUX =
+    "https://dl.google.com/android/repository/commandlinetools-linux-" +
+            "${COMMANDLINETOOLS_VERSION}_latest.zip"
+val COMMANDLINETOOLS_MAC =
+    "https://dl.google.com/android/repository/commandlinetools-mac-" +
+            "${COMMANDLINETOOLS_VERSION}_latest.zip"
+val COMMANDLINETOOLS_WIN =
+    "https://dl.google.com/android/repository/commandlinetools-win-" +
+            "${COMMANDLINETOOLS_VERSION}_latest.zip"
+
+tasks.register("setupAndroidCmdlineTools") {
+    group = EMULATOR_GRADLE
+    doLast {
+        val config = AndroidSdkConfig()
+            .apply { printSdkPath() }
+
+        val commandlinetoolsUrl = if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            COMMANDLINETOOLS_WIN
+        } else {
+            COMMANDLINETOOLS_LINUX
+        }
+
+        exec {
+            commandLine = listOf(
+                "curl",
+                commandlinetoolsUrl,
+                "-o",
+                "${config.androidHome}/commandlinetools-linux.zip"
+            )
+            standardInput = "yes\n".byteInputStream()
+            standardOutput = ByteArrayOutputStream()
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+
+        exec {
+            commandLine = listOf(
+                "rm",
+                "-rf",
+                "${config.androidHome}/cmdline-tools/"
+            )
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+
+        exec {
+            commandLine = listOf(
+                "unzip",
+                "${config.androidHome}/commandlinetools-linux.zip",
+                "-d",
+                "${config.androidHome}/"
+            )
+            standardInput = "yes\n".byteInputStream()
+            standardOutput = ByteArrayOutputStream()
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+
+        exec {
+            commandLine = listOf(
+                "rm",
+                "${config.androidHome}/commandlinetools-linux.zip"
+            )
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+
+        exec {
+            commandLine = listOf(
+                "${config.sdkmanager}",
+                "--sdk_root=${config.androidHome}",
+                "--licenses"
+            )
+            standardInput = "yes\n".byteInputStream()
+            standardOutput = ByteArrayOutputStream()
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+
+        exec {
+            commandLine = listOf(
+                config.sdkmanager.absolutePath,
+                "--sdk_root=${config.androidHome}",
+                "cmdline-tools;${BuildVersions.cmdlineToolsVersion}"
+            )
+            standardInput = YES_INPUT.byteInputStream()
+            standardOutput = ByteArrayOutputStream()
+            println("commandLine: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
+    }
+}
 
 tasks.register("setupAndroidSDK") {
     group = EMULATOR_GRADLE
 
     doLast {
         val config = AndroidSdkConfig()
-            .apply { this.printSdkPath() }
-
-        exec {
-            commandLine =
-                listOf(config.sdkmanager.absolutePath, "--sdk_root=${config.androidHome}", "tools")
-            standardInput = YES_INPUT.byteInputStream()
-            standardOutput = ByteArrayOutputStream()
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+            .apply { printSdkPath() }
 
         exec {
             commandLine = listOf(
@@ -61,7 +140,6 @@ tasks.register("setupAndroidSDK") {
             commandLine = mutableListOf(
                 config.sdkmanager.absolutePath,
                 "--sdk_root=${config.androidHome}",
-                "tools",
                 "platform-tools",
                 "build-tools;${BuildVersions.buildToolsVersion}",
                 "platforms;android-${BuildVersions.platformVersion}"
@@ -91,7 +169,7 @@ tasks.register("setupAndroidEmulator") {
 
     doLast {
         val config = AndroidSdkConfig()
-            .apply { this.printSdkPath() }
+            .apply { printSdkPath() }
 
         val avdName = System.getenv(ENV_EMULATOR_AVD_NAME).orEmpty()
 
@@ -316,8 +394,17 @@ tasks.register("killAndroidEmulator") {
 
 private class AndroidSdkConfig {
     val androidHome = readAndroidSdkLocation()
-    val sdkmanager = sdkFile("tools", "bin", platformExecutable(name = "sdkmanager", ext = "bat"))
-    val avdmanager = sdkFile("tools", "bin", platformExecutable(name = "avdmanager", ext = "bat"))
+    val sdkmanager = sdkFile(
+        "cmdline-tools",
+        "bin",
+        platformExecutable(name = "sdkmanager", ext = "bat")
+    )
+    val avdmanager = sdkFile(
+        "cmdline-tools",
+        BuildVersions.cmdlineToolsVersion,
+        "bin",
+        platformExecutable(name = "avdmanager", ext = "bat")
+    )
     val emulator = sdkFile("emulator", platformExecutable(name = "emulator"))
     val adb = sdkFile("platform-tools", platformExecutable(name = "adb"))
 
@@ -341,6 +428,7 @@ private class AndroidSdkConfig {
         }
 
     fun printSdkPath() {
+        println("sdk: ${sdkFile().exists()}: ${sdkFile()}")
         println("sdkmanager: ${sdkmanager.exists()}: $sdkmanager")
         println("avdmanager: ${avdmanager.exists()}: $avdmanager")
         println("emulator: ${emulator.exists()}: $emulator")

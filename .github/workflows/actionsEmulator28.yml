@@ -3,16 +3,16 @@ name: actionsEmulator28
 on: [push]
 
 jobs:
-  build:
 
+  jobEmulator28:
     runs-on: macos-latest
-
     steps:
       - uses: actions/checkout@v2.0.0
-
-      - name: ciBuildApp
-        run: bash ./gradlew ciEmulator28 --stacktrace
-
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - run: bash ./gradlew :setupAndroidCmdlineTools --stacktrace
+      - run: bash ./gradlew ciEmulator28 --stacktrace
       - uses: actions/upload-artifact@v1
         if: always()
         with:

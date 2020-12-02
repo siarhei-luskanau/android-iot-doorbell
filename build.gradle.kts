@@ -15,6 +15,7 @@ buildscript {
         classpath(GradlePlugin.googleServicePlugin)
         classpath(GradlePlugin.paperworkPlugin)
         classpath(GradlePlugin.koinGradlePlugin)
+        classpath(GradlePlugin.hiltGradlePlugin)
     }
 }
 
@@ -86,7 +87,10 @@ allprojects {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions { jvmTarget = JavaVersion.VERSION_1_8.toString() }
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+            freeCompilerArgs += listOf("-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check")
+        }
     }
 }
 

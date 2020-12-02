@@ -3,7 +3,6 @@ import de.mannodermaus.gradle.plugins.junit5.junitPlatform
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
     id("de.mannodermaus.android-junit5")
     id("hu.supercluster.paperwork")
 }

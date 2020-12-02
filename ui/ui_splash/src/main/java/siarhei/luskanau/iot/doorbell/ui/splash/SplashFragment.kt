@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
-import androidx.ui.tooling.preview.Preview
 
 class SplashFragment(
     presenterProvider: (fragment: Fragment) -> SplashPresenter
@@ -39,7 +39,7 @@ class SplashFragment(
     private fun SplashPreview() =
         MaterialTheme {
             Image(
-                asset = vectorResource(id = R.drawable.ic_android),
+                imageVector = vectorResource(id = R.drawable.ic_android),
                 contentScale = ContentScale.Fit
             )
         }
