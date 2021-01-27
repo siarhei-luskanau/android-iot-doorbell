@@ -29,14 +29,12 @@ class AppSingletonSplashTest {
 
     @Test
     fun appTest() {
-        activityScenarioRule.scenario.let { activityScenario ->
-            activityScenario.moveToState(Lifecycle.State.RESUMED)
-            activityScenario.onActivity {
-                screenshotRule.captureScreenshot(
-                    name = javaClass.simpleName + ".screenshot",
-                    activity = it
-                )
-            }
+        activityScenarioRule.scenario.moveToState(Lifecycle.State.RESUMED)
+        activityScenarioRule.scenario.onActivity {
+            screenshotRule.captureScreenshot(
+                name = javaClass.simpleName + ".screenshot",
+                activity = it
+            )
         }
     }
 }

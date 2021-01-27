@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.common
 
+import androidx.paging.PagingState
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
@@ -25,4 +26,6 @@ class ImagesDataSourceImpl(
         } catch (exception: Exception) {
             LoadResult.Error(exception)
         }
+
+    override fun getRefreshKey(state: PagingState<String, ImageData>): String? = null
 }

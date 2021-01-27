@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.common
 
+import androidx.paging.PagingState
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
@@ -19,4 +20,6 @@ class DefaultDoorbellsDataSource(
         } catch (exception: Exception) {
             LoadResult.Error(exception)
         }
+
+    override fun getRefreshKey(state: PagingState<String, DoorbellData>): String? = null
 }

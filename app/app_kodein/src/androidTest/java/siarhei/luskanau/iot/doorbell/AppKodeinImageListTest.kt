@@ -4,9 +4,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavDeepLinkBuilder
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.filters.LargeTest
 import org.junit.Rule
@@ -39,20 +39,18 @@ class AppKodeinImageListTest {
 
     @Test
     fun appTest() {
-        activityScenarioRule.scenario.let { activityScenario ->
-            activityScenario.moveToState(Lifecycle.State.RESUMED)
+        activityScenarioRule.scenario.moveToState(Lifecycle.State.RESUMED)
 
-            retryFlaky {
-                Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
-                    .perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0))
-            }
+        retryFlaky {
+            onView(withId(R.id.imagesRecyclerView))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
+        }
 
-            activityScenario.onActivity {
-                screenshotRule.captureScreenshot(
-                    name = javaClass.simpleName + ".screenshot",
-                    activity = it
-                )
-            }
+        activityScenarioRule.scenario.onActivity {
+            screenshotRule.captureScreenshot(
+                name = javaClass.simpleName + ".screenshot",
+                activity = it
+            )
         }
     }
 }

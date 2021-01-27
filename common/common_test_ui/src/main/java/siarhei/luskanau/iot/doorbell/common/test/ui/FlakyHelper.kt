@@ -8,7 +8,7 @@ fun <R> retryFlaky(tryCount: Int = FLAKY_TEST_DEFAULT_RETRY_COUNT, block: () -> 
         try {
             return block()
         } catch (e: Throwable) {
-            val isLastTry = tryCounter == tryCount
+            val isLastTry = tryCounter >= tryCount
             if (isLastTry) {
                 throw e
             }

@@ -18,4 +18,7 @@ dependencies {
     implementation(TestLibraries.androidTestCoreKtx)
     implementation(TestLibraries.androidTestExtTruth)
     implementation(TestLibraries.testExtJunitKtx)
+
+    // android test
+    androidTestImplementation(TestLibraries.uiautomator)
 }

@@ -16,7 +16,7 @@ val ANDROID_EMULATORS = listOf(
         sdkId = "system-images;android-23;google_apis;x86_64",
         deviceType = "Nexus One",
         port = "5562",
-        partitionSize = "500"
+        partitionSize = "550"
     )
     ,
     EmulatorConfig(

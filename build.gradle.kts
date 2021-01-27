@@ -61,7 +61,6 @@ allprojects {
             }
 
             composeOptions {
-                kotlinCompilerVersion = PublicVersions.kotlin
                 kotlinCompilerExtensionVersion = PublicVersions.compose
             }
 
