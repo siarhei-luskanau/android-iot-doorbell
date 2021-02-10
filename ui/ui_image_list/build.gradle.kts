@@ -39,6 +39,7 @@ dependencies {
     // android test
     androidTestImplementation(project(":common:common_test_ui"))
     androidTestImplementation(TestLibraries.kotlinTest)
+    androidTestImplementation(TestLibraries.mockitoAndroid)
     androidTestImplementation(TestLibraries.testEspressoCore)
     androidTestImplementation(TestLibraries.androidTestCoreKtx)
     androidTestImplementation(TestLibraries.fragmentTesting)

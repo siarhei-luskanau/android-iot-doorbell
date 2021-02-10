@@ -12,6 +12,8 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 
 class ImageDetailsFragmentTest {
@@ -26,8 +28,8 @@ class ImageDetailsFragmentTest {
     private fun createNormalFragmentFactory() = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
             ImageDetailsFragment { fragment: Fragment ->
-                object : ImageDetailsPresenter {
-                    override fun getImageDetailsStateData(): LiveData<ImageDetailsState> =
+                mock(ImageDetailsPresenter::class.java).apply {
+                    `when`(getImageDetailsStateData()).thenReturn(
                         MutableLiveData<ImageDetailsState>().apply {
                             value = NormalImageDetailsState(
                                 adapter = object : FragmentStateAdapter(fragment) {
@@ -37,6 +39,7 @@ class ImageDetailsFragmentTest {
                                 }
                             )
                         }
+                    )
                 }
             }
     }

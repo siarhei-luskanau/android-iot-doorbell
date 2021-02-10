@@ -6,11 +6,12 @@ import androidx.paging.PagingData
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
@@ -21,8 +22,8 @@ class ImageListFragmentTest {
     val screenshotRule = TakeScreenshotAfterTestRule()
 
     private fun createFragment(state: ImageListState) = ImageListFragment {
-        object : StubImageListPresenter() {
-            override val viewStateFlow: Flow<ImageListState> = flowOf(state)
+        mock(ImageListPresenter::class.java).apply {
+            `when`(viewStateFlow).thenReturn(flowOf(state))
         }
     }
 

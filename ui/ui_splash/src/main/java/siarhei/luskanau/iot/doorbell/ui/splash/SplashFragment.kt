@@ -40,7 +40,8 @@ class SplashFragment(
         MaterialTheme {
             Image(
                 imageVector = vectorResource(id = R.drawable.ic_android),
-                contentScale = ContentScale.Fit
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
             )
         }
 }

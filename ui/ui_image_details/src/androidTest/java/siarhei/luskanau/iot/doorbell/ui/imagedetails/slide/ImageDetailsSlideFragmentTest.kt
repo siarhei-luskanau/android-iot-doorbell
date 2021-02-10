@@ -8,6 +8,8 @@ import androidx.test.espresso.matcher.ViewMatchers
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
@@ -18,8 +20,8 @@ class ImageDetailsSlideFragmentTest {
     val screenshotRule = TakeScreenshotAfterTestRule()
 
     private fun createFragment(state: ImageDetailsSlideState) = ImageDetailsSlideFragment {
-        object : ImageDetailsSlidePresenter {
-            override fun getImageDetailsSlideStateFlow() = flowOf(state)
+        mock(ImageDetailsSlidePresenter::class.java).apply {
+            `when`(getImageDetailsSlideStateFlow()).thenReturn(flowOf(state))
         }
     }
 
