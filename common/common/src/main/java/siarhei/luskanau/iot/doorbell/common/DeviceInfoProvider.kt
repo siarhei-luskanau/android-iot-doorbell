@@ -8,7 +8,5 @@ interface DeviceInfoProvider {
 
     fun buildDeviceName(): String
 
-    fun isAndroidThings(): Boolean
-
     fun buildDeviceInfo(): Map<String, Serializable>
 }

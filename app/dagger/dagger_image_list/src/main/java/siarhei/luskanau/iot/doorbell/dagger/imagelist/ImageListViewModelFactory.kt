@@ -23,7 +23,6 @@ class ImageListViewModelFactory constructor(
                 appNavigation = appNavigation,
                 doorbellRepository = commonComponent.provideDoorbellRepository(),
                 imagesDataSourceFactory = commonComponent.provideImagesDataSourceFactory(),
-                uptimeRepository = commonComponent.provideUptimeRepository()
             )
 
             else -> modelClass.getConstructor().newInstance()

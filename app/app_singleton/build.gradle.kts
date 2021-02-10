@@ -60,9 +60,6 @@ dependencies {
     // Development
     debugImplementation(Libraries.leakCanary)
 
-    // Android Things
-    compileOnly(Libraries.androidthings)
-
     // unit test
     testRuntimeOnly(TestLibraries.spekRunnerJunit5)
     testImplementation(TestLibraries.spekDslJvm)

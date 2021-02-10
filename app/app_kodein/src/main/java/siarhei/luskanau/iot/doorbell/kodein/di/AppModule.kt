@@ -289,7 +289,6 @@ val viewModelModule = DI.Module(name = "viewModelModule") {
             appNavigation = instance(arg = viewModelFactoryArgs.activity),
             doorbellRepository = instance(),
             imagesDataSourceFactory = instance(),
-            uptimeRepository = instance()
         )
     }
 }

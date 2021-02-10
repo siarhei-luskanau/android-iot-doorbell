@@ -7,7 +7,6 @@ import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
-import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
@@ -42,7 +41,6 @@ class ToothpickViewModelFactory(
                 appNavigation = appNavigation,
                 doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
                 imagesDataSourceFactory = scope.getInstance(ImagesDataSourceFactory::class.java),
-                uptimeRepository = scope.getInstance(UptimeRepository::class.java)
             )
 
             else -> modelClass.getConstructor().newInstance()

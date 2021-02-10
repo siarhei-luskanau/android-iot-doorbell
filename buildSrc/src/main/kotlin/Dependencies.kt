@@ -2,56 +2,54 @@ private object Versions {
     // Libraries
     const val androidToolsBuildGradle = "7.0.0-alpha05"
     const val desugar = "1.1.1"
-    const val kotlin = "1.4.21-2"
+    const val kotlin = "1.4.30"
     const val kotlinxCoroutines = "1.4.2"
     const val kotlinxDatetime = "0.1.1"
+    const val kotlinxSerialization = "1.0.1"
     const val navigation = "2.3.3"
-    const val timber = "4.7.1"
     const val androidxCamera = "1.0.0-rc02"
     const val androidxCameraExt = "1.0.0-alpha21"
     const val androidxStartup = "1.0.0"
-    const val compose = "1.0.0-alpha11"
+    const val compose = "1.0.0-alpha12"
     const val material = "1.3.0"
-    const val activity = "1.2.0-rc01"
-    const val fragment = "1.3.0-rc02"
+    const val activity = "1.2.0"
+    const val fragment = "1.3.0"
     const val swiperefreshlayout = "1.2.0-alpha01"
-    const val androidxCore = "1.5.0-alpha05"
-    const val lifecycle = "2.3.0-rc01"
-    const val paging = "3.0.0-alpha13"
-    const val room = "2.3.0-alpha04"
+    const val androidxCore = "1.5.0-beta01"
+    const val lifecycle = "2.3.0"
+    const val paging = "3.0.0-beta01"
+    const val room = "2.3.0-beta01"
     const val workManager = "2.5.0"
+    const val timber = "4.7.1"
     const val moshi = "1.11.0"
-    const val coil = "1.1.0"
+    const val coil = "1.1.1"
     const val paperwork = "1.2.7"
-    const val androidJunit5 = "1.6.2.0"
+    const val androidJunit5 = "1.7.0.0"
     const val googleServices = "4.3.4"
 
     // GMS versions
-    const val firebaseDatabase = "19.5.1"
-    const val firebaseStorage = "19.2.0"
+    const val firebaseDatabase = "19.6.0"
+    const val firebaseStorage = "19.2.1"
 
     // DI
     const val dagger = "2.32"
     const val hilt = "$dagger-alpha"
-    const val kodein = "7.1.0"
-    const val koin = "2.2.1"
+    const val kodein = "7.3.1"
+    const val koin = "2.2.2"
     const val toothpick = "3.1.0"
 
     // Development
     const val leakCanary = "2.6"
 
-    // Android Things
-    const val androidthings = "1.0"
-
     // Testing
     const val mockito = "3.7.7"
     const val mockitoKotlin = "2.2.0"
-    const val spek = "2.0.14"
+    const val spek = "2.0.15"
 
     // test instrumentation
     const val androidTestCore = "1.3.1-alpha03"
-    const val espresso = "3.4.0-alpha03"
-    const val testExtJunit = "1.1.3-alpha03"
+    const val espresso = "3.4.0-alpha04"
+    const val testExtJunit = "1.1.3-alpha04"
     const val uiautomator = "2.2.0"
 }
 
@@ -80,6 +78,8 @@ object Libraries {
     const val kotlinxCoroutinesCore =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}"
     const val kotlinxDatetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDatetime}"
+    const val kotlinxSerializationJson =
+        "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
     const val navigationFragmentKtx =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
@@ -143,9 +143,6 @@ object Libraries {
 
     // Development
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"
-
-    // Android Things
-    const val androidthings = "com.google.android.things:androidthings:${Versions.androidthings}"
 }
 
 object TestLibraries {

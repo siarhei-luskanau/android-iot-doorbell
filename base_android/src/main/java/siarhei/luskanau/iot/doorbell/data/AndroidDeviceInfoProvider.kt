@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
-import com.google.android.things.pio.PeripheralManager
 import hu.supercluster.paperwork.Paperwork
 import java.io.Serializable
 import java.util.UUID
@@ -31,12 +30,6 @@ class AndroidDeviceInfoProvider(
     }
 
     override fun buildDeviceName(): String = Build.MODEL
-
-    override fun isAndroidThings(): Boolean =
-        runCatching {
-            PeripheralManager.getInstance()
-            true
-        }.getOrElse { false }
 
     override fun buildDeviceInfo() = mapOf<String, Serializable>(
         "DEVICE" to Build.DEVICE,

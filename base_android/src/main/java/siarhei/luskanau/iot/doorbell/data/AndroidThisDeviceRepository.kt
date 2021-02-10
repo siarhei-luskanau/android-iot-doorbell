@@ -21,7 +21,6 @@ class AndroidThisDeviceRepository(
     private val doorbellData = DoorbellData(
         deviceInfoProvider.buildDoorbellId(),
         deviceInfoProvider.buildDeviceName(),
-        deviceInfoProvider.isAndroidThings(),
         deviceInfoProvider.buildDeviceInfo()
     )
 

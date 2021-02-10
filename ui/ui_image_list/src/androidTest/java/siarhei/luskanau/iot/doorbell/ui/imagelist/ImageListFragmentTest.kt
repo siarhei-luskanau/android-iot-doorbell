@@ -7,7 +7,6 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import kotlinx.coroutines.flow.flowOf
-import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.`when`
@@ -28,13 +27,12 @@ class ImageListFragmentTest {
     }
 
     @Test
-    fun testNormalStateAndIsAndroidThings() {
+    fun testNormalState() {
         launchFragmentInContainer(themeResId = R.style.AppTheme) {
             createFragment(
                 state = ImageListState(
                     pagingData = PagingData.from(listOf(ImageData(imageId = "imageId"))),
                     cameraList = listOf(CameraData("NormalCameraId")),
-                    isAndroidThings = true
                 )
             )
         }.apply {
@@ -46,45 +44,6 @@ class ImageListFragmentTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        // reboot button should be visible
-        Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        // other views does not exist
-        Espresso.onView(ViewMatchers.withId(R.id.empty_message))
-            .check(ViewAssertions.doesNotExist())
-        Espresso.onView(ViewMatchers.withId(R.id.error_message))
-            .check(ViewAssertions.doesNotExist())
-    }
-
-    @Test
-    fun testNormalStateAndNotAndroidThings() {
-        launchFragmentInContainer(themeResId = R.style.AppTheme) {
-            createFragment(
-                state = ImageListState(
-                    pagingData = PagingData.from(listOf(ImageData(imageId = "imageId"))),
-                    cameraList = listOf(CameraData("NormalCameraId")),
-                    isAndroidThings = false
-                )
-            )
-        }.apply {
-            moveToState(Lifecycle.State.RESUMED)
-        }
-
-        // normal view is displayed
-        Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        // reboot button should be gone
-        Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
-            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
-        Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
-            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
 
         // other views does not exist
         Espresso.onView(ViewMatchers.withId(R.id.empty_message))
@@ -100,7 +59,6 @@ class ImageListFragmentTest {
                 state = ImageListState(
                     pagingData = PagingData.empty(),
                     cameraList = listOf(CameraData("EmptyCameraId")),
-                    isAndroidThings = false
                 )
             )
         }.apply {
@@ -112,12 +70,6 @@ class ImageListFragmentTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.empty_message))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-
-        // reboot button should be gone
-        Espresso.onView(ViewMatchers.withId(R.id.uptimeCardView))
-            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
-        Espresso.onView(ViewMatchers.withId(R.id.rebootButton))
-            .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())))
 
         // other views does not exist
         Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))

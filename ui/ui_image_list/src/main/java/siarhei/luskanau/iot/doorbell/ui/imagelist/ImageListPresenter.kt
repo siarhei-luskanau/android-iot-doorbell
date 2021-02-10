@@ -8,5 +8,4 @@ interface ImageListPresenter {
     val viewStateFlow: Flow<ImageListState>
     fun onCameraClicked(cameraData: CameraData)
     fun onImageClicked(imageData: ImageData)
-    fun rebootDevice()
 }

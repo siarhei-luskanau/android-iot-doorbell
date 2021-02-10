@@ -36,7 +36,6 @@ class StubDoorbellRepository : DoorbellRepository {
                     DoorbellData(
                         doorbellId = "$i",
                         name = "doorbell_$i",
-                        isAndroidThings = i % 2 == 0
                     )
                 )
             }
@@ -49,7 +48,6 @@ class StubDoorbellRepository : DoorbellRepository {
         return DoorbellData(
             doorbellId = doorbellId,
             name = "doorbell_$doorbellId",
-            isAndroidThings = false
         )
     }
 

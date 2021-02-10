@@ -49,7 +49,6 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                 DoorbellData(
                     doorbellId = it.doorbellId,
                     name = it.name,
-                    isAndroidThings = it.isAndroidThings,
                     info = it.info?.mapValues { entry -> entry.value.toString() }
                 )
             }
@@ -63,7 +62,6 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
             DoorbellData(
                 doorbellId = it.doorbellId,
                 name = it.name,
-                isAndroidThings = it.isAndroidThings,
                 info = it.info?.mapValues { entry -> entry.value.toString() }
             )
         }
@@ -95,7 +93,6 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                 DoorbellDto(
                     doorbellId = doorbellData.doorbellId,
                     name = doorbellData.name,
-                    isAndroidThings = doorbellData.isAndroidThings,
                     info = doorbellData.info
                 )
             )

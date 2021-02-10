@@ -31,7 +31,6 @@ class AppViewModelFactory(
                 appNavigation = appNavigation,
                 doorbellRepository = appModules.doorbellRepository,
                 imagesDataSourceFactory = appModules.imagesDataSourceFactory,
-                uptimeRepository = appModules.uptimeRepository
             )
 
             else -> modelClass.getConstructor().newInstance()

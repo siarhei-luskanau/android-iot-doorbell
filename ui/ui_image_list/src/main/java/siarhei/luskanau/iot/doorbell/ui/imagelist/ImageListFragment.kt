@@ -35,7 +35,7 @@ class ImageListFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         fragmentBinding = FragmentImageListBinding.inflate(
             inflater,
             container,
@@ -67,7 +67,6 @@ class ImageListFragment(
         super.onViewCreated(view, savedInstanceState)
 
         fragmentBinding.camerasRecyclerView.adapter = camerasAdapter
-        fragmentBinding.rebootButton.setOnClickListener { presenter.rebootDevice() }
         normalStateBinding.imagesRecyclerView.adapter = imageAdapter
 
         camerasAdapter.onItemClickListener = { _, _, position ->
@@ -106,8 +105,6 @@ class ImageListFragment(
     private suspend fun changeViewState(state: ImageListState) {
         camerasAdapter.submitList(state.cameraList)
         imageAdapter.submitData(state.pagingData)
-        fragmentBinding.uptimeCardView.isVisible = state.isAndroidThings
-        fragmentBinding.rebootButton.isVisible = state.isAndroidThings
     }
 
     private fun changeLoadState(combinedLoadStates: CombinedLoadStates) {
