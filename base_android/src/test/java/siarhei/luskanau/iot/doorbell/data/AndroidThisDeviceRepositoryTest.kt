@@ -1,13 +1,13 @@
 package siarhei.luskanau.iot.doorbell.data
 
 import android.content.Context
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import java.io.Serializable
 import kotlin.test.assertEquals
 import kotlinx.coroutines.runBlocking
+import org.mockito.BDDMockito.given
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
@@ -24,22 +24,22 @@ object AndroidThisDeviceRepositoryTest : Spek({
     val doorbellData = DoorbellData(doorbellId, deviceName, deviceInfo)
     val camerasList = listOf(CameraData("cameraId"))
     val ipAddressList = mapOf("InterfaceName" to "IpAddress")
-    val context by memoized { mock<Context>() }
+    val context by memoized { mock(Context::class.java) }
     val deviceInfoProvider by memoized {
-        mock<DeviceInfoProvider> {
-            on { buildDoorbellId() }.doReturn(doorbellId)
-            on { buildDeviceName() }.doReturn(deviceName)
-            on { buildDeviceInfo() }.doReturn(deviceInfo)
+        mock(DeviceInfoProvider::class.java).apply {
+            given(buildDoorbellId()).willReturn(doorbellId)
+            given(buildDeviceName()).willReturn(deviceName)
+            given(buildDeviceInfo()).willReturn(deviceInfo)
         }
     }
     val cameraRepository by memoized {
-        mock<CameraRepository> {
-            on { runBlocking { getCamerasList() } }.doReturn(camerasList)
+        mock(CameraRepository::class.java).apply {
+            given(runBlocking { getCamerasList() }).willReturn(camerasList)
         }
     }
     val ipAddressProvider by memoized {
-        mock<IpAddressProvider> {
-            on { runBlocking { getIpAddressList() } }.doReturn(ipAddressList)
+        mock(IpAddressProvider::class.java).apply {
+            given(runBlocking { getIpAddressList() }).willReturn(ipAddressList)
         }
     }
 

@@ -9,7 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.`when`
+import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
@@ -21,7 +21,7 @@ class DoorbellListFragmentTest {
 
     private fun createFragment(list: List<DoorbellData>) = DoorbellListFragment {
         mock(DoorbellListPresenter::class.java).apply {
-            `when`(doorbellListFlow).thenReturn(flowOf(PagingData.from(list)))
+            given(doorbellListFlow).willReturn(flowOf(PagingData.from(list)))
         }
     }
 

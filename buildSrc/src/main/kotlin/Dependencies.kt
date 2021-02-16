@@ -1,13 +1,13 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "7.0.0-alpha05"
+    const val androidToolsBuildGradle = "7.0.0-alpha06"
     const val desugar = "1.1.1"
     const val kotlin = "1.4.30"
     const val kotlinxCoroutines = "1.4.2"
     const val kotlinxDatetime = "0.1.1"
     const val kotlinxSerialization = "1.0.1"
     const val navigation = "2.3.3"
-    const val androidxCamera = "1.0.0-rc02"
+    const val androidxCamera = "1.1.0-alpha01"
     const val androidxCameraExt = "1.0.0-alpha21"
     const val androidxStartup = "1.0.0"
     const val compose = "1.0.0-alpha12"
@@ -43,7 +43,6 @@ private object Versions {
 
     // Testing
     const val mockito = "3.7.7"
-    const val mockitoKotlin = "2.2.0"
     const val spek = "2.0.15"
 
     // test instrumentation
@@ -151,8 +150,8 @@ object TestLibraries {
     const val kotlinxCoroutinesTest =
         "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinxCoroutines}"
     const val kotlinTest = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
+    const val mockitoCore = "org.mockito:mockito-core:${Versions.mockito}"
     const val mockitoAndroid = "org.mockito:mockito-android:${Versions.mockito}"
-    const val mockitoKotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}"
     const val androidTestCoreKtx = "androidx.test:core-ktx:${Versions.androidTestCore}"
     const val androidTestExtTruth = "androidx.test.ext:truth:${Versions.androidTestCore}"
     const val testEspressoCore = "androidx.test.espresso:espresso-core:${Versions.espresso}"

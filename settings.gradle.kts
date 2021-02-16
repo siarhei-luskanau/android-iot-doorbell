@@ -1,46 +1,48 @@
 rootProject.name = "Doorbell"
 
-include(":app:app_kodein")
-include(":app:app_singleton")
-include(":app:app_toothpick")
+include(
+        ":app:app_kodein",
+        ":app:app_singleton",
+        ":app:app_toothpick",
 
-include(":app:dagger:app_dagger")
-include(":app:dagger:dagger_common")
-include(":app:dagger:dagger_doorbell_list")
-include(":app:dagger:dagger_image_details")
-include(":app:dagger:dagger_image_list")
-include(":app:dagger:dagger_permissions")
-include(":app:dagger:dagger_splash")
+        ":app:dagger:app_dagger",
+        ":app:dagger:dagger_common",
+        ":app:dagger:dagger_doorbell_list",
+        ":app:dagger:dagger_image_details",
+        ":app:dagger:dagger_image_list",
+        ":app:dagger:dagger_permissions",
+        ":app:dagger:dagger_splash",
 
-//include(":app:hilt:app_hilt")
+//        ":app:hilt:app_hilt",
 
-include(":app:koin:app_koin")
-include(":app:koin:koin_common")
-include(":app:koin:koin_doorbell_list")
-include(":app:koin:koin_image_details")
-include(":app:koin:koin_image_list")
-include(":app:koin:koin_permissions")
-include(":app:koin:koin_splash")
+        ":app:koin:app_koin",
+        ":app:koin:koin_common",
+        ":app:koin:koin_doorbell_list",
+        ":app:koin:koin_image_details",
+        ":app:koin:koin_image_list",
+        ":app:koin:koin_permissions",
+        ":app:koin:koin_splash",
 
-include(":data:dataDoorbellApi")
-include(":data:dataDoorbellApiFirebase")
-include(":data:dataDoorbellApiStub")
+        ":data:dataDoorbellApi",
+        ":data:dataDoorbellApiFirebase",
+        ":data:dataDoorbellApiStub",
 
-include(":common:common")
-include(":common:common_test")
-include(":common:common_test_ui")
+        ":common:common",
+        ":common:common_test",
+        ":common:common_test_ui",
 
-include(":base_android")
-include(":base_camera")
-include(":base_file")
-include(":base_persistence")
-include(":base_work_manager")
-include(":base_cache")
+        ":base_android",
+        ":base_camera",
+        ":base_file",
+        ":base_persistence",
+        ":base_work_manager",
+        ":base_cache",
 
-include(":ui:ui_common")
-include(":ui:ui_splash")
-include(":ui:ui_permissions")
-include(":ui:ui_doorbell_list")
-include(":ui:ui_image_list")
-include(":ui:ui_image_details")
-include(":navigation")
+        ":ui:ui_common",
+        ":ui:ui_splash",
+        ":ui:ui_permissions",
+        ":ui:ui_doorbell_list",
+        ":ui:ui_image_list",
+        ":ui:ui_image_details",
+        ":navigation"
+)

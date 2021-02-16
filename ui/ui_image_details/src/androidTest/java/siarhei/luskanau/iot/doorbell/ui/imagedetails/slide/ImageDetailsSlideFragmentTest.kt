@@ -8,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.`when`
+import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
@@ -21,7 +21,7 @@ class ImageDetailsSlideFragmentTest {
 
     private fun createFragment(state: ImageDetailsSlideState) = ImageDetailsSlideFragment {
         mock(ImageDetailsSlidePresenter::class.java).apply {
-            `when`(getImageDetailsSlideStateFlow()).thenReturn(flowOf(state))
+            given(getImageDetailsSlideStateFlow()).willReturn(flowOf(state))
         }
     }
 

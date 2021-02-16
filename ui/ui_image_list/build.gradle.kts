@@ -33,7 +33,7 @@ dependencies {
     testRuntimeOnly(TestLibraries.spekRunnerJunit5)
     testImplementation(TestLibraries.spekDslJvm)
     testImplementation(TestLibraries.kotlinTest)
-    testImplementation(TestLibraries.mockitoKotlin)
+    testImplementation(TestLibraries.mockitoCore)
     testImplementation(TestLibraries.kotlinxCoroutinesTest)
 
     // android test
