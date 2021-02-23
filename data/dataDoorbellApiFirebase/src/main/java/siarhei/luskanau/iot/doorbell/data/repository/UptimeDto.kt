@@ -1,18 +1,18 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class UptimeDto(
-    @Json(name = STARTUP_TIME_MILLIS_KEY) val startupTimeMillis: Long?,
-    @Json(name = STARTUP_TIME_STRING_KEY) val startupTimeString: String?,
-    @Json(name = PING_TIME_MILLIS_KEY) val pingTimeMillis: Long?,
-    @Json(name = PING_TIME_STRING_KEY) val pingTimeString: String?,
-    @Json(name = REBOOT_REQUEST_TIME_MILLIS_KEY) val rebootRequestTimeMillis: Long?,
-    @Json(name = REBOOT_REQUEST_TIME_STRING_KEY) val rebootRequestTimeString: String?,
-    @Json(name = REBOOTING_TIME_MILLIS_KEY) val rebootingTimeMillis: Long?,
-    @Json(name = REBOOTING_TIME_STRING_KEY) val rebootingTimeString: String?
+    @SerialName(STARTUP_TIME_MILLIS_KEY) val startupTimeMillis: Long?,
+    @SerialName(STARTUP_TIME_STRING_KEY) val startupTimeString: String?,
+    @SerialName(PING_TIME_MILLIS_KEY) val pingTimeMillis: Long?,
+    @SerialName(PING_TIME_STRING_KEY) val pingTimeString: String?,
+    @SerialName(REBOOT_REQUEST_TIME_MILLIS_KEY) val rebootRequestTimeMillis: Long?,
+    @SerialName(REBOOT_REQUEST_TIME_STRING_KEY) val rebootRequestTimeString: String?,
+    @SerialName(REBOOTING_TIME_MILLIS_KEY) val rebootingTimeMillis: Long?,
+    @SerialName(REBOOTING_TIME_STRING_KEY) val rebootingTimeString: String?
 ) {
 
     companion object {

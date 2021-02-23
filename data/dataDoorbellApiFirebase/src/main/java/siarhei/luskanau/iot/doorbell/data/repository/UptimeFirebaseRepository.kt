@@ -1,5 +1,7 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import siarhei.luskanau.iot.doorbell.data.model.Uptime
 
 class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
@@ -78,9 +80,8 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
     }
 
     override suspend fun getUptime(doorbellId: String): Uptime? =
-        dataSnapshotObject(
+        dataSnapshotObject<UptimeDto>(
             getValueFromDatabase(getAppDatabase().child(UPTIME_KEY).child(doorbellId)),
-            UptimeDto::class.java
         )?.let { uptimeDto ->
             Uptime(
                 startupTimeMillis = uptimeDto.startupTimeMillis,
@@ -91,7 +92,6 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
                 rebootRequestTimeString = uptimeDto.rebootRequestTimeString,
                 rebootingTimeMillis = uptimeDto.rebootingTimeMillis,
                 rebootingTimeString = uptimeDto.rebootingTimeString
-
             )
         }
 
@@ -101,6 +101,6 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
     ) =
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId).child(IP_ADDRESS_KEY),
-            serializeByMoshi(ipAddressMap)
+            Json.encodeToString(ipAddressMap)
         )
 }

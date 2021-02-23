@@ -1,11 +1,12 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "7.0.0-alpha06"
+    const val androidToolsBuildGradle = "7.0.0-alpha08"
     const val desugar = "1.1.1"
     const val kotlin = "1.4.30"
     const val kotlinxCoroutines = "1.4.2"
     const val kotlinxDatetime = "0.1.1"
-    const val kotlinxSerialization = "1.0.1"
+    const val kotlinxSerialization = "1.1.0"
+    const val gson = "2.8.6"
     const val navigation = "2.3.3"
     const val androidxCamera = "1.1.0-alpha01"
     const val androidxCameraExt = "1.0.0-alpha21"
@@ -18,10 +19,9 @@ private object Versions {
     const val androidxCore = "1.5.0-beta01"
     const val lifecycle = "2.3.0"
     const val paging = "3.0.0-beta01"
-    const val room = "2.3.0-beta01"
-    const val workManager = "2.5.0"
+    const val room = "2.3.0-beta02"
+    const val workManager = "2.7.0-alpha01"
     const val timber = "4.7.1"
-    const val moshi = "1.11.0"
     const val coil = "1.1.1"
     const val paperwork = "1.2.7"
     const val androidJunit5 = "1.7.0.0"
@@ -65,7 +65,7 @@ object BuildVersions {
     const val platformVersion = 30
     const val compileSdkVersion = platformVersion
     const val targetSdkVersion = 30
-    const val buildToolsVersion = "30.0.3"
+    const val buildToolsVersion = "31.0.0-rc1"
     const val cmdlineToolsVersion = "3.0"
     const val minSdkVersion = 23
 }
@@ -79,6 +79,7 @@ object Libraries {
     const val kotlinxDatetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDatetime}"
     const val kotlinxSerializationJson =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
+    const val gson = "com.google.code.gson:gson:${Versions.gson}"
     const val navigationFragmentKtx =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
@@ -109,8 +110,6 @@ object Libraries {
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
     const val workRuntimeKtx = "androidx.work:work-runtime-ktx:${Versions.workManager}"
-    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
-    const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshi}"
     const val coil = "io.coil-kt:coil:${Versions.coil}"
     const val paperwork = "hu.supercluster:paperwork:${Versions.paperwork}"
 

@@ -1,7 +1,6 @@
 package siarhei.luskanau.iot.doorbell.data
 
 import android.content.Context
-import java.io.Serializable
 import kotlin.test.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.mockito.BDDMockito.given
@@ -20,7 +19,7 @@ object AndroidThisDeviceRepositoryTest : Spek({
 
     val doorbellId = "doorbellId"
     val deviceName = "deviceName"
-    val deviceInfo = emptyMap<String, Serializable>()
+    val deviceInfo = emptyMap<String, String>()
     val doorbellData = DoorbellData(doorbellId, deviceName, deviceInfo)
     val camerasList = listOf(CameraData("cameraId"))
     val ipAddressList = mapOf("InterfaceName" to "IpAddress")

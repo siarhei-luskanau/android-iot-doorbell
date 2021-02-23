@@ -1,11 +1,11 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class DoorbellDto(
-    @Json(name = "doorbell_id") val doorbellId: String,
-    @Json(name = "name") val name: String?,
-    @Json(name = "info") val info: Map<String, Any>?
+    @SerialName("doorbell_id") val doorbellId: String,
+    @SerialName("name") val name: String?,
+    @SerialName("info") val info: Map<String, String>?
 )

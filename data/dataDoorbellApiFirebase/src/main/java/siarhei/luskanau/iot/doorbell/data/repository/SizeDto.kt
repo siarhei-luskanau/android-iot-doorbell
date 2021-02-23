@@ -1,10 +1,10 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class SizeDto(
-    @Json(name = "width") val width: Int,
-    @Json(name = "height") val height: Int
+    @SerialName("width") val width: Int,
+    @SerialName("height") val height: Int
 )

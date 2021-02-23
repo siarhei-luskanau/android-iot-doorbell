@@ -10,25 +10,41 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import com.squareup.moshi.Moshi
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import java.io.InputStream
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
-open class BaseFirebaseRepository(
-    private val moshi: Moshi = Moshi.Builder().build()
-) {
+@Suppress("TooManyFunctions")
+open class BaseFirebaseRepository {
+
+    protected val json by lazy {
+        Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+        }
+    }
+
+    protected val gson: Gson by lazy {
+        GsonBuilder()
+            .serializeNulls()
+            .create()
+    }
 
     companion object {
         protected const val DOORBELL_APP_KEY = "doorbell_app"
     }
-
-    protected fun serializeByMoshi(src: Any?): Any? =
-        moshi.adapter(Any::class.java).fromJsonValue(
-            moshi.adapter<Any>(Object::class.java).toJsonValue(src)
-        )
 
     protected fun getAppDatabase(): DatabaseReference =
         Firebase.database.getReference(DOORBELL_APP_KEY)
@@ -36,36 +52,33 @@ open class BaseFirebaseRepository(
     protected fun getAppStorage(): StorageReference =
         Firebase.storage.getReference(DOORBELL_APP_KEY)
 
-    protected fun <T : Any> dataSnapshotObject(dataSnapshot: DataSnapshot, type: Class<T>): T? =
-        moshi.adapter<Any>(Object::class.java).toJson(dataSnapshot.value)?.let { json ->
-            moshi.adapter(type).fromJson(json)
-        }
-
-    protected fun <T : Any> dataSnapshotToList(
-        dataSnapshot: DataSnapshot,
-        type: Class<T>
-    ): List<T> =
-        dataSnapshot.children.mapNotNull {
-            moshi.adapter<Any>(Object::class.java).toJson(it.value)?.let { json ->
-                moshi.adapter(type).fromJson(json)
+    protected inline fun <reified T> dataSnapshotObject(dataSnapshot: DataSnapshot): T? =
+        (dataSnapshot.value as? Map<*, *>)?.toJsonObject().let { jsonObject ->
+            json.encodeToString(jsonObject).let { jsonString ->
+                json.decodeFromString(jsonString)
             }
         }
 
-    protected fun <T : Any> dataSnapshotToMap(
-        dataSnapshot: DataSnapshot,
-        type: Class<T>
-    ): Map<String, T> =
-        // if (dataSnapshot.exists())
+    protected inline fun <reified T> dataSnapshotToList(dataSnapshot: DataSnapshot): List<T> =
+        dataSnapshot.children.mapNotNull { child ->
+            (child.value as? Map<*, *>)?.toJsonObject().let { jsonObject ->
+                json.encodeToString(jsonObject).let { jsonString ->
+                    json.decodeFromString(jsonString)
+                }
+            }
+        }
+
+    protected inline fun <reified T> dataSnapshotToMap(dataSnapshot: DataSnapshot): Map<String, T> =
         dataSnapshot.children.associateBy(
             { it.key.orEmpty() },
             {
-                moshi.adapter<Any>(Object::class.java).toJson(it.value)?.let { json ->
-                    moshi.adapter(type).fromJson(json)
-                }
+                val jsonObject = (it.value as? Map<*, *>)?.toJsonObject()
+                val jsonString = json.encodeToString(jsonObject)
+                json.decodeFromString<T>(jsonString)
             }
         )
             .filterValues { it != null }
-            .mapValues { entry -> entry.value as T }
+            .mapValues { entry -> entry.value }
 
     protected suspend fun putStreamToStorage(
         storageRef: StorageReference,
@@ -84,15 +97,18 @@ open class BaseFirebaseRepository(
                 }
         }
 
-    protected suspend fun setValueToDatabase(ref: DatabaseReference, value: Any?) =
-        suspendCoroutine { continuation: Continuation<Unit> ->
-            ref.setValue(value)
-                .addOnSuccessListener {
-                    continuation.resume(Unit)
-                }
-                .addOnFailureListener {
-                    continuation.resumeWithException(it)
-                }
+    protected suspend inline fun <reified T> setValueToDatabase(ref: DatabaseReference, value: T?) =
+        json.encodeToString(value).let { jsonString ->
+            val map = gson.fromJson(jsonString, Map::class.java)
+            suspendCoroutine { continuation: Continuation<Unit> ->
+                ref.setValue(map)
+                    .addOnSuccessListener {
+                        continuation.resume(Unit)
+                    }
+                    .addOnFailureListener {
+                        continuation.resumeWithException(it)
+                    }
+            }
         }
 
     protected suspend fun getValueFromDatabase(query: Query): DataSnapshot =
@@ -107,4 +123,39 @@ open class BaseFirebaseRepository(
                 }
             })
         }
+
+    protected fun Map<*, *>.toJsonObject(): JsonObject {
+        val map = mutableMapOf<String, JsonElement>()
+        this.forEach {
+            if (it.key is String) {
+                map[it.key as String] = it.value.toJsonElement()
+            }
+        }
+        return JsonObject(map)
+    }
+
+    private fun Any?.toJsonElement(): JsonElement {
+        return when (this) {
+            is Number -> JsonPrimitive(this)
+            is Boolean -> JsonPrimitive(this)
+            is String -> JsonPrimitive(this)
+            is Array<*> -> this.toJsonArray()
+            is List<*> -> this.toJsonArray()
+            is Map<*, *> -> this.toJsonObject()
+            is JsonElement -> this
+            else -> JsonNull
+        }
+    }
+
+    private fun Array<*>.toJsonArray(): JsonArray {
+        val array = mutableListOf<JsonElement>()
+        this.forEach { array.add(it.toJsonElement()) }
+        return JsonArray(array)
+    }
+
+    private fun List<*>.toJsonArray(): JsonArray {
+        val array = mutableListOf<JsonElement>()
+        this.forEach { array.add(it.toJsonElement()) }
+        return JsonArray(array)
+    }
 }

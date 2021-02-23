@@ -51,6 +51,12 @@ tasks.register("ciEmulator30") {
         runOnEmulator("TestEmulator30")
     }
 }
+tasks.register("ciEmulator31") {
+    group = CI_GRADLE
+    doLast {
+        runOnEmulator("TestEmulator31")
+    }
+}
 
 fun runOnEmulator(emulatorName: String) {
     gradlew(

@@ -6,7 +6,10 @@ import com.google.firebase.database.ServerValue
 import java.io.InputStream
 import java.text.DateFormat
 import java.util.Calendar
+import kotlinx.serialization.encodeToString
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
+import siarhei.luskanau.iot.doorbell.data.model.CameraInfoData
+import siarhei.luskanau.iot.doorbell.data.model.CameraxInfoData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.model.SizeData
@@ -38,9 +41,8 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
             query = query.startAt(it, startAt)
         }
 
-        val map = dataSnapshotToMap(
-            getValueFromDatabase(query),
-            DoorbellDto::class.java
+        val map = dataSnapshotToMap<DoorbellDto>(
+            getValueFromDatabase(query)
         )
 
         return map.values.toList()
@@ -49,27 +51,25 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                 DoorbellData(
                     doorbellId = it.doorbellId,
                     name = it.name,
-                    info = it.info?.mapValues { entry -> entry.value.toString() }
+                    info = it.info,
                 )
             }
     }
 
     override suspend fun getDoorbell(doorbellId: String): DoorbellData? =
-        dataSnapshotObject(
-            getValueFromDatabase(getAppDatabase().child(DOORBELLS_KEY).child(doorbellId)),
-            DoorbellDto::class.java
+        dataSnapshotObject<DoorbellDto>(
+            getValueFromDatabase(getAppDatabase().child(DOORBELLS_KEY).child(doorbellId))
         )?.let {
             DoorbellData(
                 doorbellId = it.doorbellId,
                 name = it.name,
-                info = it.info?.mapValues { entry -> entry.value.toString() }
+                info = it.info?.mapValues { entry -> entry.value }
             )
         }
 
     override suspend fun getCamerasList(doorbellId: String): List<CameraData> =
-        dataSnapshotToList(
+        dataSnapshotToList<CameraDto>(
             getValueFromDatabase(getAppDatabase().child(CAMERAS_KEY).child(doorbellId)),
-            CameraDto::class.java
         )
             .map {
                 CameraData(
@@ -81,42 +81,66 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                             entry.value.height
                         )
                     },
-                    info = it.info?.mapValues { entry -> entry.value.toString() },
-                    cameraxInfo = it.cameraxInfo?.mapValues { entry -> entry.value.toString() }
+                    info = it.info?.let { info ->
+                        CameraInfoData(
+                            lensFacing = info.lensFacing,
+                            infoSupportedHardwareLevel = info.infoSupportedHardwareLevel,
+                            scalerStreamConfigurationMap = info.scalerStreamConfigurationMap,
+                            controlAvailableEffects = info.controlAvailableEffects,
+                            error = info.error,
+                        )
+                    },
+                    cameraxInfo = it.cameraxInfo?.let { cameraxInfo ->
+                        CameraxInfoData(
+                            error = cameraxInfo.error,
+                        )
+                    },
                 )
             }
 
     override suspend fun sendDoorbellData(doorbellData: DoorbellData) =
         setValueToDatabase(
             getAppDatabase().child(DOORBELLS_KEY).child(doorbellData.doorbellId),
-            serializeByMoshi(
-                DoorbellDto(
-                    doorbellId = doorbellData.doorbellId,
-                    name = doorbellData.name,
-                    info = doorbellData.info
-                )
+            DoorbellDto(
+                doorbellId = doorbellData.doorbellId,
+                name = doorbellData.name,
+                info = doorbellData.info,
             )
         )
 
     override suspend fun sendCamerasList(doorbellId: String, list: List<CameraData>) =
         setValueToDatabase(
             getAppDatabase().child(CAMERAS_KEY).child(doorbellId),
-            serializeByMoshi(
-                list.map {
-                    CameraDto(
-                        cameraId = it.cameraId,
-                        name = it.name,
-                        sizes = it.sizes?.mapValues { entry ->
-                            SizeDto(
-                                width = entry.value.width,
-                                height = entry.value.height
-                            )
-                        },
-                        info = it.info,
-                        cameraxInfo = it.cameraxInfo
-                    )
-                }
-            )
+            list.map { data ->
+                CameraDto(
+                    cameraId = data.cameraId,
+                    name = data.name,
+                    sizes = data.sizes?.mapValues { entry ->
+                        SizeDto(
+                            width = entry.value.width,
+                            height = entry.value.height
+                        )
+                    },
+                    info = data.info?.let { info ->
+                        CameraInfoDto(
+                            lensFacing = info.lensFacing,
+                            infoSupportedHardwareLevel = info.infoSupportedHardwareLevel,
+                            scalerStreamConfigurationMap = info.scalerStreamConfigurationMap,
+                            controlAvailableEffects = info.controlAvailableEffects,
+                            error = info.error,
+                        )
+                    },
+                    cameraxInfo = data.cameraxInfo?.let { cameraxInfo ->
+                        CameraxInfoDto(
+                            error = cameraxInfo.error,
+                        )
+                    },
+                )
+            }
+                .associateBy(
+                    { data -> data.cameraId },
+                    { data -> data }
+                )
         )
 
     override suspend fun sendCameraImageRequest(
@@ -132,7 +156,6 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
     override suspend fun getCameraImageRequest(doorbellId: String): Map<String, Boolean> =
         dataSnapshotToMap(
             getValueFromDatabase(getAppDatabase().child(IMAGE_REQUEST_KEY).child(doorbellId)),
-            Boolean::class.java
         )
 
     override suspend fun sendImage(
@@ -150,7 +173,7 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
 
         setValueToDatabase(
             getAppDatabase().child(IMAGES_KEY).child(doorbellId).child(imageId),
-            serializeByMoshi(
+            json.encodeToString(
                 ImageDto(
                     imageId = imageId,
                     imageStoragePath = uri.toString(),
@@ -191,9 +214,8 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
             }
         }
 
-        val map = dataSnapshotToMap(
+        val map = dataSnapshotToMap<ImageDto>(
             getValueFromDatabase(query),
-            ImageDto::class.java
         )
 
         return map.values.toList()
@@ -216,11 +238,10 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
         doorbellId: String,
         imageId: String,
     ): ImageData? =
-        dataSnapshotObject(
+        dataSnapshotObject<ImageDto>(
             getValueFromDatabase(
                 query = getAppDatabase().child(IMAGES_KEY).child(doorbellId).child(imageId)
             ),
-            ImageDto::class.java
         )?.let { imageDto ->
             val calendar = Calendar.getInstance()
             calendar.timeInMillis = imageDto.timestamp

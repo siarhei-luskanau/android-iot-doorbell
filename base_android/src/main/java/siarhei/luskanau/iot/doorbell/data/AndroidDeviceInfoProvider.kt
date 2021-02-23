@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import hu.supercluster.paperwork.Paperwork
-import java.io.Serializable
 import java.util.UUID
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 
@@ -31,10 +30,10 @@ class AndroidDeviceInfoProvider(
 
     override fun buildDeviceName(): String = Build.MODEL
 
-    override fun buildDeviceInfo() = mapOf<String, Serializable>(
+    override fun buildDeviceInfo() = mapOf<String, String>(
         "DEVICE" to Build.DEVICE,
         "MODEL" to Build.MODEL,
-        "SDK_INT" to Build.VERSION.SDK_INT,
+        "SDK_INT" to Build.VERSION.SDK_INT.toString(),
         "RELEASE" to Build.VERSION.RELEASE,
         GIT_SHA to paperwork[GIT_SHA],
         GIT_BRANCH to paperwork[GIT_BRANCH],

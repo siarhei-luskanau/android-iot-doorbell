@@ -12,8 +12,9 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraX
 import androidx.camera.core.impl.CameraInfoInternal
 import androidx.core.content.getSystemService
-import java.io.Serializable
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
+import siarhei.luskanau.iot.doorbell.data.model.CameraInfoData
+import siarhei.luskanau.iot.doorbell.data.model.CameraxInfoData
 import siarhei.luskanau.iot.doorbell.data.model.SizeData
 import timber.log.Timber
 
@@ -34,7 +35,6 @@ abstract class BaseCameraRepository(
                                 ?.let { maxSize: Size? -> maxSize?.let { "$cameraId:$it" } }
                             val info = getInfo(cameraManager, cameraId)
                             val cameraxInfo = getCameraxInfo(cameraId)
-
                             list.add(
                                 CameraData(
                                     cameraId = cameraId,
@@ -75,22 +75,20 @@ abstract class BaseCameraRepository(
             }
         }
 
-    private fun getInfo(cameraManager: CameraManager, cameraId: String): Map<String, Serializable> =
-        mutableMapOf<String, Serializable>().also { info ->
-            runCatching {
-                val characteristics = cameraManager.getCameraCharacteristics(cameraId)
-
-                info["LENS_FACING"] = getLensFacingName(
+    private fun getInfo(cameraManager: CameraManager, cameraId: String): CameraInfoData =
+        runCatching {
+            val characteristics = cameraManager.getCameraCharacteristics(cameraId)
+            CameraInfoData(
+                lensFacing = getLensFacingName(
                     characteristics.get(CameraCharacteristics.LENS_FACING)
-                )
-
-                info["INFO_SUPPORTED_HARDWARE_LEVEL"] = getHardwareLevelName(
+                ),
+                infoSupportedHardwareLevel = getHardwareLevelName(
                     characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL)
-                )
-
-                characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                ),
+                scalerStreamConfigurationMap = characteristics
+                    .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
                     ?.let { configs: StreamConfigurationMap ->
-                        info["SCALER_STREAM_CONFIGURATION_MAP"] = configs.outputFormats
+                        configs.outputFormats
                             .associateBy(
                                 { outputFormat: Int ->
                                     outputFormatName[outputFormat] ?: "$outputFormat:$outputFormat"
@@ -102,48 +100,45 @@ abstract class BaseCameraRepository(
                                             { it.toString() }
                                         )
                                 }
-                            ) as Serializable
-                    }
-
-                info["CONTROL_AVAILABLE_EFFECTS"] =
-                    characteristics.get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS)
+                            )
+                    },
+                controlAvailableEffects = characteristics
+                    .get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS)
                     ?.associateBy(
                         { effect: Int -> getEffectName(effect) },
-                        { effect: Int -> effect }
-                    ) as Serializable
-            }.onFailure {
-                info["error"] = it.message as Serializable
-                Timber.d("Cam access exception getting characteristics.")
-            }
+                        { effect: Int -> effect.toString() }
+                    ),
+            )
+        }.getOrElse {
+            Timber.d("Cam access exception getting characteristics.")
+            CameraInfoData(error = it.toString())
         }
 
     @SuppressLint("RestrictedApi", "UnsafeExperimentalUsageError")
-    private fun getCameraxInfo(cameraId: String): Map<String, Serializable> =
-        mutableMapOf<String, Serializable>().also { cameraxInfo ->
-            runCatching {
-                val cameraSelector = CameraSelector.Builder()
-                    .addCameraFilter { cameras ->
-                        cameras.filter { cameraInfo ->
-                            val cameraInfoInternal = cameraInfo as CameraInfoInternal
-                            cameraInfoInternal.cameraId == cameraId
-                        }
+    private fun getCameraxInfo(cameraId: String): CameraxInfoData =
+        runCatching {
+            val cameraSelector = CameraSelector.Builder()
+                .addCameraFilter { cameras ->
+                    cameras.filter { cameraInfo ->
+                        val cameraInfoInternal = cameraInfo as CameraInfoInternal
+                        cameraInfoInternal.cameraId == cameraId
                     }
-                    .build()
-                CameraX.getCameraWithCameraSelector(cameraSelector).let { cameraInternal ->
-                    cameraxInfo["CameraInfo:implementationType"] =
-                        cameraInternal.cameraInfo.implementationType
-                    cameraxInfo["CameraInfo:sensorRotationDegrees"] =
-                        cameraInternal.cameraInfo.sensorRotationDegrees
-                    cameraxInfo["CameraInfo:hasFlashUnit"] =
-                        cameraInternal.cameraInfo.hasFlashUnit()
                 }
-            }.onFailure {
-                cameraxInfo["error"] = it.message as Serializable
-                Timber.d("Cam access exception getting characteristics.")
+                .build()
+            CameraX.getCameraWithCameraSelector(cameraSelector).let { cameraInternal ->
+                cameraInternal.cameraInfo.implementationType
+                cameraInternal.cameraInfo.sensorRotationDegrees.toString()
+                cameraInternal.cameraInfo.hasFlashUnit().toString()
             }
+            CameraxInfoData()
+        }.getOrElse {
+            Timber.d("Cam access exception getting characteristics.")
+            CameraxInfoData(
+                error = it.toString()
+            )
         }
 
-    private fun getLensFacingName(lensFacing: Int?): Serializable =
+    private fun getLensFacingName(lensFacing: Int?): String =
         when (lensFacing) {
             CameraMetadata.LENS_FACING_FRONT -> "LENS_FACING_FRONT"
             CameraMetadata.LENS_FACING_BACK -> "LENS_FACING_BACK"
@@ -151,7 +146,7 @@ abstract class BaseCameraRepository(
             else -> lensFacing.toString()
         } + ":$lensFacing"
 
-    private fun getHardwareLevelName(hardwareLevel: Int?): Serializable =
+    private fun getHardwareLevelName(hardwareLevel: Int?): String =
         when (hardwareLevel) {
             CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_3 ->
                 "INFO_SUPPORTED_HARDWARE_LEVEL_3"

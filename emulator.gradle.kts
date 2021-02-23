@@ -186,35 +186,11 @@ tasks.register("setupAndroidEmulator") {
                     commandLine = listOf(
                         config.avdmanager.absolutePath,
                         "-v",
-                        "delete",
-                        "avd",
-                        "-n",
-                        emulatorConfig.avdName
-                    )
-                    isIgnoreExitValue = true
-                    println("commandLine: ${this.commandLine}")
-                }.apply { println("ExecResult: $this") }
-            }
-
-        ANDROID_EMULATORS
-            .filter {
-                if (avdName.isNotEmpty()) {
-                    it.avdName == avdName
-                } else {
-                    true
-                }
-            }
-            .forEach { emulatorConfig ->
-                exec {
-                    commandLine = listOf(
-                        config.avdmanager.absolutePath,
-                        "-v",
                         "create",
                         "avd",
+                        "--force",
                         "-n",
                         emulatorConfig.avdName,
-                        "--sdcard",
-                        "100M",
                         "--device",
                         emulatorConfig.deviceType,
                         "-k",
@@ -257,11 +233,13 @@ tasks.register("runAndroidEmulator") {
                     emulatorConfig.avdName,
                     "-port",
                     emulatorConfig.port,
-                    "-partition-size",
-                    emulatorConfig.partitionSize ?: "1024",
-                    "-no-boot-anim",
+                    // "-partition-size",
+                    // emulatorConfig.partitionSize ?: "1024",
+                    // "-no-window",
+                    "-gpu",
+                    "swiftshader_indirect",
                     "-no-audio",
-                    "-no-snapshot"
+                    "-no-boot-anim"
                 )
                 .apply { println("ProcessBuilder: ${this.command()}") }
                 .start()

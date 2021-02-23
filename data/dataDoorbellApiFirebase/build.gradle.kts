@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
+    kotlin("plugin.serialization") version PublicVersions.kotlin
 }
 
 dependencies {
@@ -13,6 +13,6 @@ dependencies {
     implementation(Libraries.firebaseDatabaseKtx)
     implementation(Libraries.firebaseStorageKtx)
 
-    implementation(Libraries.moshiKotlin)
-    kapt(Libraries.moshiCodegen)
+    implementation(Libraries.kotlinxSerializationJson)
+    implementation(Libraries.gson)
 }
