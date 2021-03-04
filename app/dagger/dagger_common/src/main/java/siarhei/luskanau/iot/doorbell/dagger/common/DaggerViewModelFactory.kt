@@ -25,6 +25,6 @@ class DaggerViewModelFactory @Inject constructor(
                 "No ViewModel provider is bound for class $modelClass"
             }
         } catch (cce: ClassCastException) {
-            error("Wrong provider type registered for ViewModel type $modelClass")
+            error("Wrong provider type registered for ViewModel type $modelClass , $cce")
         }
 }

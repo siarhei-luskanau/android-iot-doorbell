@@ -14,7 +14,6 @@ buildscript {
         classpath(GradlePlugin.androidJunit5Plugin)
         classpath(GradlePlugin.googleServicePlugin)
         classpath(GradlePlugin.paperworkPlugin)
-        classpath(GradlePlugin.koinGradlePlugin)
         classpath(GradlePlugin.hiltGradlePlugin)
     }
 }
@@ -31,7 +30,7 @@ allprojects {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven(url = "https://kotlin.bintray.com/kotlinx/")
     }
 

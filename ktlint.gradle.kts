@@ -4,18 +4,35 @@ dependencies {
     ktlint("com.pinterest:ktlint:${PublicVersions.ktlint}")
 }
 
-tasks.register<JavaExec>("ktlint") {
-    group = "verification"
+val outputDir = "${project.buildDir}/reports/ktlint/"
+val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
+
+val ktlintCheck by tasks.creating(JavaExec::class) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+
     description = "Check Kotlin code style."
     classpath = ktlint
     main = "com.pinterest.ktlint.Main"
-    args("--android", "src/**/*.kt")
+    args = listOf("--android", "src/**/*.kt")
 }
 
-tasks.register<JavaExec>("ktlintFormat") {
-    group = "formatting"
+val ktlintFormat by tasks.creating(JavaExec::class) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+
     description = "Fix Kotlin code style deviations."
     classpath = ktlint
     main = "com.pinterest.ktlint.Main"
-    args("--android", "-F", "src/**/*.kt")
+    args = listOf("--android", "-F", "src/**/*.kt")
+}
+
+val applyToIDEAProject by tasks.creating(JavaExec::class) {
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+
+    description = "Change the code style config files to be compliant with Android Kotlin Style Guide."
+    classpath = ktlint
+    main = "com.pinterest.ktlint.Main"
+    args = listOf("applyToIDEAProject", "-y")
 }

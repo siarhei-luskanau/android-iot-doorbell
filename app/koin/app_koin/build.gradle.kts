@@ -1,15 +1,10 @@
-import de.mannodermaus.gradle.plugins.junit5.junitPlatform
-
 plugins {
     id("com.android.application")
     kotlin("android")
     id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
     id("com.google.gms.google-services")
-    id("koin")
 }
-
-android.testOptions.junitPlatform.jacocoOptions.taskGenerationEnabled = false
 
 android {
     defaultConfig {

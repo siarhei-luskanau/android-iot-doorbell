@@ -1,54 +1,54 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "7.0.0-alpha08"
-    const val desugar = "1.1.1"
-    const val kotlin = "1.4.30"
-    const val kotlinxCoroutines = "1.4.2"
+    const val androidToolsBuildGradle = "7.0.0-alpha14"
+    const val desugar = "1.1.5"
+    const val kotlin = "1.4.32"
+    const val kotlinxCoroutines = "1.4.3"
     const val kotlinxDatetime = "0.1.1"
     const val kotlinxSerialization = "1.1.0"
     const val gson = "2.8.6"
-    const val navigation = "2.3.3"
-    const val androidxCamera = "1.1.0-alpha01"
-    const val androidxCameraExt = "1.0.0-alpha21"
+    const val navigation = "2.3.5"
+    const val androidxCamera = "1.1.0-alpha03"
+    const val androidxCameraExt = "1.0.0-alpha23"
     const val androidxStartup = "1.0.0"
-    const val compose = "1.0.0-alpha12"
+    const val compose = "1.0.0-beta04"
     const val material = "1.3.0"
-    const val activity = "1.2.0"
-    const val fragment = "1.3.0"
+    const val activity = "1.2.2"
+    const val fragment = "1.3.2"
     const val swiperefreshlayout = "1.2.0-alpha01"
-    const val androidxCore = "1.5.0-beta01"
-    const val lifecycle = "2.3.0"
-    const val paging = "3.0.0-beta01"
-    const val room = "2.3.0-beta02"
-    const val workManager = "2.7.0-alpha01"
+    const val androidxCore = "1.5.0-rc01"
+    const val lifecycle = "2.3.1"
+    const val paging = "3.0.0-beta03"
+    const val room = "2.3.0-rc01"
+    const val workManager = "2.7.0-alpha02"
     const val timber = "4.7.1"
-    const val coil = "1.1.1"
+    const val coil = "1.2.0"
     const val paperwork = "1.2.7"
-    const val androidJunit5 = "1.7.0.0"
-    const val googleServices = "4.3.4"
+    const val androidJunit5 = "1.7.1.1"
+    const val googleServices = "4.3.5"
 
     // GMS versions
-    const val firebaseDatabase = "19.6.0"
-    const val firebaseStorage = "19.2.1"
+    const val firebaseDatabase = "19.7.0"
+    const val firebaseStorage = "19.2.2"
 
     // DI
-    const val dagger = "2.32"
-    const val hilt = "$dagger-alpha"
-    const val kodein = "7.3.1"
-    const val koin = "2.2.2"
+    const val dagger = "2.34.1"
+    const val hilt = "$dagger-beta"
+    const val kodein = "7.4.0"
+    const val koin = "3.0.1"
     const val toothpick = "3.1.0"
 
     // Development
-    const val leakCanary = "2.6"
+    const val leakCanary = "2.7"
 
     // Testing
-    const val mockito = "3.7.7"
+    const val mockito = "3.9.0"
     const val spek = "2.0.15"
 
     // test instrumentation
-    const val androidTestCore = "1.3.1-alpha03"
-    const val espresso = "3.4.0-alpha04"
-    const val testExtJunit = "1.1.3-alpha04"
+    const val androidTestCore = "1.4.0-alpha05"
+    const val espresso = "3.4.0-alpha05"
+    const val testExtJunit = "1.1.3-alpha05"
     const val uiautomator = "2.2.0"
 }
 
@@ -56,16 +56,16 @@ object PublicVersions {
     const val kotlin = Versions.kotlin
     const val compose = Versions.compose
     const val ktlint = "0.40.0"
-    const val detekt = "1.15.0"
+    const val detekt = "1.16.0"
     const val jacoco = "0.8.6"
     const val androidJunitJacoco = "0.16.0"
 }
 
 object BuildVersions {
-    const val platformVersion = 30
-    const val compileSdkVersion = platformVersion
-    const val targetSdkVersion = 30
-    const val buildToolsVersion = "31.0.0-rc1"
+    const val platformVersion = "S"
+    const val compileSdkVersion = "android-$platformVersion"
+    const val targetSdkVersion = 31
+    const val buildToolsVersion = "31.0.0-rc2"
     const val cmdlineToolsVersion = "3.0"
     const val minSdkVersion = 23
 }
@@ -132,7 +132,7 @@ object Libraries {
         "org.kodein.di:kodein-di-framework-android-x:${Versions.kodein}"
 
     // koin
-    const val koinAndroid = "org.koin:koin-android:${Versions.koin}"
+    const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"
 
     // toothpick
     const val toothpickKtp = "com.github.stephanenicolas.toothpick:ktp:${Versions.toothpick}"
@@ -171,6 +171,5 @@ object GradlePlugin {
         "de.mannodermaus.gradle.plugins:android-junit5:${Versions.androidJunit5}"
     const val googleServicePlugin = "com.google.gms:google-services:${Versions.googleServices}"
     const val paperworkPlugin = "hu.supercluster:paperwork-plugin:${Versions.paperwork}"
-    const val koinGradlePlugin = "org.koin:koin-gradle-plugin:${Versions.koin}"
     const val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
 }

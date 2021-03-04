@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import java.lang.Exception
 
-@Suppress("TooGenericExceptionCaught")
+@Suppress("TooGenericExceptionCaught", "SwallowedException")
 class DelegateFragmentFactory(
     private val providers: List<() -> FragmentFactory>
 ) : FragmentFactory() {

@@ -4,11 +4,9 @@ import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.repository.CachedRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
-import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 
 class DefaultCachedRepository(
-    private val doorbellRepository: DoorbellRepository,
-    private val persistenceRepository: PersistenceRepository
+    private val doorbellRepository: DoorbellRepository
 ) : CachedRepository {
 
     override fun loadAfterImages(

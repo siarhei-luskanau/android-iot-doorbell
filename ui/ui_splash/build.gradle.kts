@@ -1,13 +1,9 @@
-import de.mannodermaus.gradle.plugins.junit5.junitPlatform
-
 plugins {
     id("com.android.library")
     kotlin("android")
     id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
 }
-
-android.testOptions.junitPlatform.jacocoOptions.taskGenerationEnabled = false
 
 dependencies {
     implementation(project(":ui:ui_common"))

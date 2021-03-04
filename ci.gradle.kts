@@ -6,7 +6,7 @@ tasks.register("ciBuildApp") {
         gradlew("setupAndroidSDK")
         gradlew(
             "clean",
-            "ktlint",
+            "ktlintCheck",
             "detekt",
             "assembleDebug",
             ":data:dataDoorbellApiStub:test",
