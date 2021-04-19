@@ -34,7 +34,7 @@ private object Versions {
     // DI
     const val dagger = "2.34.1"
     const val hilt = "$dagger-beta"
-    const val kodein = "7.4.0"
+    const val kodein = "7.5.0"
     const val koin = "3.0.1"
     const val toothpick = "3.1.0"
 
