@@ -12,9 +12,9 @@ dependencies {
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 
-    implementation(Libraries.composeUiTooling)
-    implementation(Libraries.composeMaterial)
-    implementation(Libraries.composeUi)
+    // implementation(Libraries.composeUiTooling)
+    // implementation(Libraries.composeMaterial)
+    // implementation(Libraries.composeUi)
     implementation(Libraries.navigationUiKtx)
 
     // unit test

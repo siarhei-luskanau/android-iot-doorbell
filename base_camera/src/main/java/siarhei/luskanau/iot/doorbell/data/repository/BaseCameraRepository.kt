@@ -114,7 +114,7 @@ abstract class BaseCameraRepository(
             CameraInfoData(error = it.toString())
         }
 
-    @SuppressLint("RestrictedApi", "UnsafeExperimentalUsageError")
+    @SuppressLint("RestrictedApi", "UnsafeOptInUsageError")
     private fun getCameraxInfo(cameraId: String): CameraxInfoData =
         runCatching {
             val cameraSelector = CameraSelector.Builder()
@@ -192,7 +192,6 @@ abstract class BaseCameraRepository(
             ImageFormat.PRIVATE to "PRIVATE",
             ImageFormat.RAW10 to "RAW10",
             ImageFormat.RAW12 to "RAW12",
-            ImageFormat.RAW_PRIVATE to "RAW_PRIVATE",
             ImageFormat.RAW_SENSOR to "RAW_SENSOR",
             ImageFormat.RGB_565 to "RGB_565",
             ImageFormat.YUV_420_888 to "YUV_420_888",

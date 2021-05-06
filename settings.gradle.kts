@@ -44,5 +44,5 @@ include(
         ":ui:ui_doorbell_list",
         ":ui:ui_image_list",
         ":ui:ui_image_details",
-        ":navigation"
+        ":navigation",
 )

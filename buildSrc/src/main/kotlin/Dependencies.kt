@@ -1,26 +1,26 @@
 private object Versions {
     // Libraries
-    const val androidToolsBuildGradle = "7.0.0-alpha14"
+    const val androidToolsBuildGradle = "7.0.0-alpha15"
+    const val compose = "1.0.0-beta06"
     const val desugar = "1.1.5"
-    const val kotlin = "1.4.32"
-    const val kotlinxCoroutines = "1.4.3"
-    const val kotlinxDatetime = "0.1.1"
-    const val kotlinxSerialization = "1.1.0"
+    const val kotlin = "1.5.0"
+    const val kotlinxCoroutines = "1.5.0-RC-native-mt"
+    const val kotlinxDatetime = "0.2.0"
+    const val kotlinxSerialization = "1.2.0"
     const val gson = "2.8.6"
     const val navigation = "2.3.5"
-    const val androidxCamera = "1.1.0-alpha03"
-    const val androidxCameraExt = "1.0.0-alpha23"
+    const val androidxCamera = "1.1.0-alpha04"
+    const val androidxCameraExt = "1.0.0-alpha24"
     const val androidxStartup = "1.0.0"
-    const val compose = "1.0.0-beta04"
     const val material = "1.3.0"
-    const val activity = "1.2.2"
-    const val fragment = "1.3.2"
+    const val activity = "1.2.3"
+    const val fragment = "1.3.3"
     const val swiperefreshlayout = "1.2.0-alpha01"
-    const val androidxCore = "1.5.0-rc01"
+    const val androidxCore = "1.3.2"
     const val lifecycle = "2.3.1"
-    const val paging = "3.0.0-beta03"
-    const val room = "2.3.0-rc01"
-    const val workManager = "2.7.0-alpha02"
+    const val paging = "3.0.0"
+    const val room = "2.3.0"
+    const val workManager = "2.7.0-alpha03"
     const val timber = "4.7.1"
     const val coil = "1.2.0"
     const val paperwork = "1.2.7"
@@ -32,8 +32,7 @@ private object Versions {
     const val firebaseStorage = "19.2.2"
 
     // DI
-    const val dagger = "2.34.1"
-    const val hilt = "$dagger-beta"
+    const val dagger = "2.35.1"
     const val kodein = "7.5.0"
     const val koin = "3.0.1"
     const val toothpick = "3.1.0"
@@ -46,9 +45,9 @@ private object Versions {
     const val spek = "2.0.15"
 
     // test instrumentation
-    const val androidTestCore = "1.4.0-alpha05"
-    const val espresso = "3.4.0-alpha05"
-    const val testExtJunit = "1.1.3-alpha05"
+    const val androidTestCore = "1.4.0-alpha06"
+    const val espresso = "3.4.0-alpha06"
+    const val testExtJunit = "1.1.3-alpha06"
     const val uiautomator = "2.2.0"
 }
 
@@ -57,7 +56,7 @@ object PublicVersions {
     const val compose = Versions.compose
     const val ktlint = "0.40.0"
     const val detekt = "1.16.0"
-    const val jacoco = "0.8.6"
+    const val jacoco = "0.8.7"
     const val androidJunitJacoco = "0.16.0"
 }
 
@@ -65,7 +64,7 @@ object BuildVersions {
     const val platformVersion = "S"
     const val compileSdkVersion = "android-$platformVersion"
     const val targetSdkVersion = 31
-    const val buildToolsVersion = "31.0.0-rc2"
+    const val buildToolsVersion = "31.0.0-rc3"
     const val cmdlineToolsVersion = "3.0"
     const val minSdkVersion = 23
 }
@@ -120,8 +119,8 @@ object Libraries {
         "com.google.firebase:firebase-storage-ktx:${Versions.firebaseStorage}"
 
     // hilt
-    const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
-    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+    const val hilt = "com.google.dagger:hilt-android:${Versions.dagger}"
+    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.dagger}"
 
     // dagger
     const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
@@ -171,5 +170,5 @@ object GradlePlugin {
         "de.mannodermaus.gradle.plugins:android-junit5:${Versions.androidJunit5}"
     const val googleServicePlugin = "com.google.gms:google-services:${Versions.googleServices}"
     const val paperworkPlugin = "hu.supercluster:paperwork-plugin:${Versions.paperwork}"
-    const val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
+    const val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Versions.dagger}"
 }

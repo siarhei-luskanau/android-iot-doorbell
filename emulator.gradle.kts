@@ -47,7 +47,7 @@ tasks.register("setupAndroidCmdlineTools") {
                 "curl",
                 commandlinetoolsUrl,
                 "-o",
-                "${config.androidHome}/commandlinetools-linux.zip"
+                "${config.androidHome}/commandlinetools-linux.zip",
             )
             standardInput = "yes\n".byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -58,7 +58,7 @@ tasks.register("setupAndroidCmdlineTools") {
             commandLine = listOf(
                 "rm",
                 "-rf",
-                "${config.androidHome}/cmdline-tools/"
+                "${config.androidHome}/cmdline-tools/",
             )
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
@@ -68,7 +68,7 @@ tasks.register("setupAndroidCmdlineTools") {
                 "unzip",
                 "${config.androidHome}/commandlinetools-linux.zip",
                 "-d",
-                "${config.androidHome}/"
+                "${config.androidHome}/",
             )
             standardInput = "yes\n".byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -78,7 +78,7 @@ tasks.register("setupAndroidCmdlineTools") {
         exec {
             commandLine = listOf(
                 "rm",
-                "${config.androidHome}/commandlinetools-linux.zip"
+                "${config.androidHome}/commandlinetools-linux.zip",
             )
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
@@ -87,7 +87,7 @@ tasks.register("setupAndroidCmdlineTools") {
             commandLine = listOf(
                 "${config.sdkmanager}",
                 "--sdk_root=${config.androidHome}",
-                "--licenses"
+                "--licenses",
             )
             standardInput = "yes\n".byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -98,7 +98,7 @@ tasks.register("setupAndroidCmdlineTools") {
             commandLine = listOf(
                 config.sdkmanager.absolutePath,
                 "--sdk_root=${config.androidHome}",
-                "cmdline-tools;${BuildVersions.cmdlineToolsVersion}"
+                "cmdline-tools;${BuildVersions.cmdlineToolsVersion}",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -118,7 +118,7 @@ tasks.register("setupAndroidSDK") {
             commandLine = listOf(
                 config.sdkmanager.absolutePath,
                 "--sdk_root=${config.androidHome}",
-                "--update"
+                "--update",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -129,7 +129,7 @@ tasks.register("setupAndroidSDK") {
             commandLine = listOf(
                 config.sdkmanager.absolutePath,
                 "--sdk_root=${config.androidHome}",
-                "--licenses"
+                "--licenses",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -142,7 +142,7 @@ tasks.register("setupAndroidSDK") {
                 "--sdk_root=${config.androidHome}",
                 "platform-tools",
                 "build-tools;${BuildVersions.buildToolsVersion}",
-                "platforms;android-${BuildVersions.platformVersion}"
+                "platforms;android-${BuildVersions.platformVersion}",
             ).apply {
                 val avdName = System.getenv(ENV_EMULATOR_AVD_NAME).orEmpty()
                 val emulatorConfig = ANDROID_EMULATORS.find { it.avdName == avdName }
@@ -194,7 +194,7 @@ tasks.register("setupAndroidEmulator") {
                         "--device",
                         emulatorConfig.deviceType,
                         "-k",
-                        emulatorConfig.sdkId
+                        emulatorConfig.sdkId,
                     )
                     standardOutput = ByteArrayOutputStream()
                     println("commandLine: ${this.commandLine}")
@@ -239,7 +239,7 @@ tasks.register("runAndroidEmulator") {
                     "-gpu",
                     "swiftshader_indirect",
                     "-no-audio",
-                    "-no-boot-anim"
+                    "-no-boot-anim",
                 )
                 .apply { println("ProcessBuilder: ${this.command()}") }
                 .start()
@@ -291,7 +291,7 @@ tasks.register("waitAndroidEmulator") {
                         emulatorAttributes.first(),
                         "wait-for-device",
                         "shell",
-                        "while $(exit $(getprop sys.boot_completed)) ; do sleep 1; done;"
+                        "while $(exit $(getprop sys.boot_completed)) ; do sleep 1; done;",
                     )
                     isIgnoreExitValue = true
                     println("commandLine: ${this.commandLine}")
@@ -340,7 +340,7 @@ tasks.register("moveScreenshotsFromDevices") {
                     "shell",
                     "rm",
                     "-rf",
-                    "/sdcard/Pictures/screenshots/"
+                    "/sdcard/Pictures/screenshots/",
                 )
                 isIgnoreExitValue = true
                 println("commandLine: ${this.commandLine}")
@@ -362,7 +362,7 @@ tasks.register("killAndroidEmulator") {
                     "-s",
                     emulatorAttributes.first(),
                     "emu",
-                    "kill"
+                    "kill",
                 )
                 println("commandLine: ${this.commandLine}")
             }.apply { println("ExecResult: $this") }

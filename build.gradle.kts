@@ -44,14 +44,14 @@ allprojects {
             buildToolsVersion = BuildVersions.buildToolsVersion
 
             defaultConfig {
-                minSdkVersion(BuildVersions.minSdkVersion)
-                targetSdkVersion(BuildVersions.targetSdkVersion)
+                minSdk = BuildVersions.minSdkVersion
+                targetSdk = BuildVersions.targetSdkVersion
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             }
 
             buildFeatures.viewBinding = true
             buildFeatures.buildConfig = false
-            buildFeatures.compose = true
+            // buildFeatures.compose = true
 
             compileOptions {
                 isCoreLibraryDesugaringEnabled = true
@@ -59,9 +59,9 @@ allprojects {
                 targetCompatibility = JavaVersion.VERSION_1_8
             }
 
-            composeOptions {
-                kotlinCompilerExtensionVersion = PublicVersions.compose
-            }
+            // composeOptions {
+            //     kotlinCompilerExtensionVersion = PublicVersions.compose
+            // }
 
             testOptions {
                 animationsDisabled = true
@@ -79,15 +79,8 @@ allprojects {
 
             dependencies {
                 "coreLibraryDesugaring"(Libraries.desugarJdkLibs)
-                "implementation"(Libraries.composeRuntime)
+                // "implementation"(Libraries.composeRuntime)
             }
-        }
-    }
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
-            freeCompilerArgs += listOf("-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check")
         }
     }
 }

@@ -8,6 +8,7 @@ tasks.register("ciBuildApp") {
             "clean",
             "ktlintCheck",
             "detekt",
+            "lintDebug",
             "assembleDebug",
             ":data:dataDoorbellApiStub:test",
             "jacocoTestReportDebug",
@@ -85,7 +86,7 @@ fun runOnEmulator(emulatorName: String) {
 tasks.register("ciConnectedAndroidTest") {
     group = CI_GRADLE
     doLast {
-        gradlew( ":common:common_test_ui:connectedAndroidTest")
+        gradlew(":common:common_test_ui:connectedAndroidTest")
         gradlew(
             ":app:app_kodein:connectedAndroidTest",
             ":app:app_singleton:connectedAndroidTest",
@@ -94,7 +95,7 @@ tasks.register("ciConnectedAndroidTest") {
             ":app:koin:app_koin:connectedAndroidTest",
             ":ui:ui_doorbell_list:connectedAndroidTest",
             ":ui:ui_image_details:connectedAndroidTest",
-            ":ui:ui_image_list:connectedAndroidTest"
+            ":ui:ui_image_list:connectedAndroidTest",
         )
     }
 }

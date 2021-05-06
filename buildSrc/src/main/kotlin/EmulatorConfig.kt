@@ -7,7 +7,7 @@ data class EmulatorConfig(
     val sdkId: String,
     val deviceType: String,
     val port: String,
-    val partitionSize: String? = null
+    val partitionSize: String? = null,
 )
 
 val ANDROID_EMULATORS = listOf(
@@ -17,37 +17,33 @@ val ANDROID_EMULATORS = listOf(
         deviceType = "Nexus One",
         port = "5562",
         partitionSize = "550"
-    )
-    ,
+    ),
     EmulatorConfig(
         avdName = "TestEmulator28",
         sdkId = "system-images;android-28;google_apis;x86_64",
         deviceType = "Galaxy Nexus",
         port = "5564"
-    )
-    ,
+    ),
     EmulatorConfig(
         avdName = "TestEmulator29",
         sdkId = "system-images;android-29;google_apis;x86_64",
         deviceType = "Nexus 5X",
         port = "5566"
-    )
-    ,
+    ),
     EmulatorConfig(
         avdName = "TestEmulator30",
         sdkId = "system-images;android-30;google_apis;x86_64",
         deviceType = "Nexus 6",
         port = "5568",
         partitionSize = "2048"
-    )
-    ,
+    ),
     EmulatorConfig(
         avdName = "TestEmulator31",
         sdkId = "system-images;android-S;google_apis;x86_64",
         deviceType = "Nexus 6",
         port = "5570",
         partitionSize = "2048"
-    )
+    ),
 )
 
 fun platformExecutable(name: String, ext: String = "exe"): String =

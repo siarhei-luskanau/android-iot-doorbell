@@ -24,7 +24,7 @@ class JetpackCameraRepository(
     private val imageRepository: ImageRepository
 ) : BaseCameraRepository(context) {
 
-    @SuppressLint("RestrictedApi", "UnsafeExperimentalUsageError")
+    @SuppressLint("RestrictedApi", "UnsafeOptInUsageError")
     override suspend fun makeImage(
         doorbellId: String,
         cameraId: String
