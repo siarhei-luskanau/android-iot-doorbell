@@ -22,13 +22,13 @@ val EMULATOR_GRADLE = "EMULATOR_GRADLE"
 val COMMANDLINETOOLS_VERSION = "6858069"
 val COMMANDLINETOOLS_LINUX =
     "https://dl.google.com/android/repository/commandlinetools-linux-" +
-            "${COMMANDLINETOOLS_VERSION}_latest.zip"
+        "${COMMANDLINETOOLS_VERSION}_latest.zip"
 val COMMANDLINETOOLS_MAC =
     "https://dl.google.com/android/repository/commandlinetools-mac-" +
-            "${COMMANDLINETOOLS_VERSION}_latest.zip"
+        "${COMMANDLINETOOLS_VERSION}_latest.zip"
 val COMMANDLINETOOLS_WIN =
     "https://dl.google.com/android/repository/commandlinetools-win-" +
-            "${COMMANDLINETOOLS_VERSION}_latest.zip"
+        "${COMMANDLINETOOLS_VERSION}_latest.zip"
 
 tasks.register("setupAndroidCmdlineTools") {
     group = EMULATOR_GRADLE
@@ -284,18 +284,31 @@ tasks.register("waitAndroidEmulator") {
             }
             .forEach { emulatorAttributes ->
                 println("WaitAndroidEmulator: $emulatorAttributes")
-                exec {
-                    commandLine = listOf(
-                        config.adb.absolutePath,
-                        "-s",
-                        emulatorAttributes.first(),
-                        "wait-for-device",
-                        "shell",
-                        "while $(exit $(getprop sys.boot_completed)) ; do sleep 1; done;",
-                    )
-                    isIgnoreExitValue = true
-                    println("commandLine: ${this.commandLine}")
-                }.apply { println("ExecResult: $this") }
+                val currentTimeMillis = System.currentTimeMillis()
+                while (System.currentTimeMillis() - currentTimeMillis <= 5 * 60 * 1000) {
+                    val resultOutputStream = ByteArrayOutputStream()
+                    exec {
+                        commandLine = listOf(
+                            config.adb.absolutePath,
+                            "-s",
+                            emulatorAttributes.first(),
+                            "wait-for-device",
+                            "shell",
+                            "getprop sys.boot_completed",
+                        )
+                        standardOutput = resultOutputStream
+                        isIgnoreExitValue = true
+                        println("commandLine: ${this.commandLine}")
+                    }.apply { println("ExecResult: $this") }
+                    val result = String(resultOutputStream.toByteArray()).trim()
+                    println("sys.boot_completed = $result")
+                    if (result == "1") {
+                        println("Emulator booted")
+                        break
+                    } else {
+                        Thread.sleep(1_000)
+                    }
+                }
             }
     }
 }

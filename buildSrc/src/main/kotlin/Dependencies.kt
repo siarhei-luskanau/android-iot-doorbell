@@ -1,10 +1,18 @@
+import java.util.Properties
+
 private object Versions {
+    private val versionsProperties = Properties().apply {
+        Versions::class.java.classLoader.getResourceAsStream("build_src_versions.properties")
+            .use { load(it) }
+    }
+
     // Libraries
-    const val androidToolsBuildGradle = "7.0.0-alpha15"
+    val androidToolsBuildGradle: String =
+        versionsProperties["version.androidToolsBuildGradle"].toString()
+    val kotlin: String = versionsProperties["version.kotlin"].toString()
+    val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
     const val compose = "1.0.0-beta06"
     const val desugar = "1.1.5"
-    const val kotlin = "1.5.0"
-    const val kotlinxCoroutines = "1.5.0-RC-native-mt"
     const val kotlinxDatetime = "0.2.0"
     const val kotlinxSerialization = "1.2.0"
     const val gson = "2.8.6"
@@ -52,7 +60,7 @@ private object Versions {
 }
 
 object PublicVersions {
-    const val kotlin = Versions.kotlin
+    val kotlin = Versions.kotlin
     const val compose = Versions.compose
     const val ktlint = "0.40.0"
     const val detekt = "1.16.0"
@@ -70,14 +78,14 @@ object BuildVersions {
 }
 
 object Libraries {
-    const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:${Versions.desugar}"
-    const val kotlinStdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
-    const val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
-    const val kotlinxCoroutinesCore =
+    val kotlinStdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+    val kotlinReflect = "org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlin}"
+    val kotlinxCoroutinesCore =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}"
     const val kotlinxDatetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDatetime}"
     const val kotlinxSerializationJson =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
+    const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:${Versions.desugar}"
     const val gson = "com.google.code.gson:gson:${Versions.gson}"
     const val navigationFragmentKtx =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
@@ -145,9 +153,9 @@ object Libraries {
 object TestLibraries {
     const val spekRunnerJunit5 = "org.spekframework.spek2:spek-runner-junit5:${Versions.spek}"
     const val spekDslJvm = "org.spekframework.spek2:spek-dsl-jvm:${Versions.spek}"
-    const val kotlinxCoroutinesTest =
+    val kotlinxCoroutinesTest =
         "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinxCoroutines}"
-    const val kotlinTest = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
+    val kotlinTest = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
     const val mockitoCore = "org.mockito:mockito-core:${Versions.mockito}"
     const val mockitoAndroid = "org.mockito:mockito-android:${Versions.mockito}"
     const val androidTestCoreKtx = "androidx.test:core-ktx:${Versions.androidTestCore}"
@@ -161,9 +169,9 @@ object TestLibraries {
 }
 
 object GradlePlugin {
-    const val androidToolsBuildGradle =
+    val androidToolsBuildGradle =
         "com.android.tools.build:gradle:${Versions.androidToolsBuildGradle}"
-    const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val navigationSafeArgsGradlePlugin =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
     const val androidJunit5Plugin =
