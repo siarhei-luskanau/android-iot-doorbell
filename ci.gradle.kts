@@ -1,6 +1,6 @@
 val CI_GRADLE = "CI_GRADLE"
 
-tasks.register("ciBuildApp") {
+tasks.register("ciLint") {
     group = CI_GRADLE
     doLast {
         gradlew("setupAndroidSDK")
@@ -9,10 +9,38 @@ tasks.register("ciBuildApp") {
             "ktlintCheck",
             "detekt",
             "lintDebug",
-            "assembleDebug",
+        )
+        copy {
+            from(rootProject.subprojects.map { it.buildDir })
+            include("**/*.apk")
+            exclude("**/apk/androidTest/**")
+            eachFile { path = name }
+            includeEmptyDirs = false
+            into("$buildDir/apk/")
+        }
+    }
+}
+
+tasks.register("ciUnitTest") {
+    group = CI_GRADLE
+    doLast {
+        gradlew("setupAndroidSDK")
+        gradlew(
+            "clean",
             ":data:dataDoorbellApiStub:test",
             "jacocoTestReportDebug",
-            "jacocoTestReportMerged"
+            "jacocoTestReportMerged",
+        )
+    }
+}
+
+tasks.register("ciBuildApp") {
+    group = CI_GRADLE
+    doLast {
+        gradlew("setupAndroidSDK")
+        gradlew(
+            "clean",
+            "assembleDebug",
         )
         copy {
             from(rootProject.subprojects.map { it.buildDir })
@@ -52,6 +80,7 @@ tasks.register("ciEmulator30") {
         runOnEmulator("TestEmulator30")
     }
 }
+
 tasks.register("ciEmulator31") {
     group = CI_GRADLE
     doLast {

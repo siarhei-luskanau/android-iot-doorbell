@@ -12,7 +12,7 @@ private object Versions {
     const val androidxCamera = "1.1.0-alpha04"
     const val androidxCameraExt = "1.0.0-alpha24"
     const val androidxStartup = "1.0.0"
-    const val material = "1.3.0"
+    const val material = "1.4.0-beta01"
     const val activity = "1.2.3"
     const val fragment = "1.3.3"
     const val swiperefreshlayout = "1.2.0-alpha01"
@@ -28,8 +28,8 @@ private object Versions {
     const val googleServices = "4.3.5"
 
     // GMS versions
-    const val firebaseDatabase = "19.7.0"
-    const val firebaseStorage = "19.2.2"
+    const val firebaseDatabase = "20.0.0"
+    const val firebaseStorage = "20.0.0"
 
     // DI
     const val dagger = "2.35.1"
@@ -41,7 +41,7 @@ private object Versions {
     const val leakCanary = "2.7"
 
     // Testing
-    const val mockito = "3.9.0"
+    const val mockito = "3.10.0"
     const val spek = "2.0.15"
 
     // test instrumentation

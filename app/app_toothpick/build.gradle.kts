@@ -4,7 +4,6 @@ plugins {
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -76,3 +75,5 @@ dependencies {
     androidTestImplementation(TestLibraries.androidTestExtTruth)
     androidTestImplementation(TestLibraries.testExtJunitKtx)
 }
+
+apply(plugin = "com.google.gms.google-services")
