@@ -1,6 +1,8 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import java.io.ByteArrayOutputStream
 import java.util.Properties
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 // sudo apt-get install curl unzip openjdk-11-jdk
 // export ANDROID_HOME=$HOME/Android/Sdk
@@ -19,7 +21,7 @@ val YES_INPUT: String = mutableListOf<String>()
     .joinToString()
 
 val EMULATOR_GRADLE = "EMULATOR_GRADLE"
-val COMMANDLINETOOLS_VERSION = "6858069"
+val COMMANDLINETOOLS_VERSION = "7302050"
 val COMMANDLINETOOLS_LINUX =
     "https://dl.google.com/android/repository/commandlinetools-linux-" +
         "${COMMANDLINETOOLS_VERSION}_latest.zip"
@@ -213,34 +215,38 @@ tasks.register("runAndroidEmulator") {
     group = EMULATOR_GRADLE
 
     doLast {
-        exec {
-            commandLine = listOf(config.adb.absolutePath, "start-server")
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
-
         val avdName = System.getenv(ENV_EMULATOR_AVD_NAME).orEmpty()
             .also { println("System.getenv(${ENV_EMULATOR_AVD_NAME}): $it") }
         val emulatorConfig = requireNotNull(ANDROID_EMULATORS.find { it.avdName == avdName })
             .also { println("EmulatorConfig: $it") }
 
-        Thread {
+        GlobalScope.launch {
             println("Start emulator: ${emulatorConfig.avdName}")
-            val process = ProcessBuilder()
-                .directory(projectDir)
-                .command(
-                    config.emulator.absolutePath,
-                    "-avd",
-                    emulatorConfig.avdName,
-                    "-port",
-                    emulatorConfig.port,
-                    // "-partition-size",
-                    // emulatorConfig.partitionSize ?: "1024",
-                    // "-no-window",
+            val commandArgs = mutableListOf(
+                config.emulator.absolutePath,
+                "-avd",
+                emulatorConfig.avdName,
+                "-port",
+                emulatorConfig.port,
+            )
+            emulatorConfig.memory?.let { memory ->
+                commandArgs.addAll(listOf("-memory", memory))
+            }
+            emulatorConfig.partitionSize?.let { partitionSize ->
+                commandArgs.addAll(listOf("-partition-size", partitionSize))
+            }
+            commandArgs.addAll(
+                listOf(
                     "-gpu",
                     "swiftshader_indirect",
                     "-no-audio",
                     "-no-boot-anim",
+                    // "-no-window",
                 )
+            )
+            val process = ProcessBuilder()
+                .directory(projectDir)
+                .command(commandArgs)
                 .apply { println("ProcessBuilder: ${this.command()}") }
                 .start()
 
@@ -258,7 +264,7 @@ tasks.register("runAndroidEmulator") {
             } else {
                 println("Emulator is started.")
             }
-        }.start()
+        }
     }
 }
 

@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.koin.core.definition.BeanDefinition
+import org.koin.core.instance.InstanceFactory
 import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
@@ -38,7 +38,7 @@ class KoinViewModelFactory(
 
 inline fun <reified T : ViewModel> Module.viewModel(
     noinline definition: ViewModelDefinition<T>
-): BeanDefinition<T> =
+): Pair<Module, InstanceFactory<T>> =
     factory { (activity: FragmentActivity, fragment: Fragment, args: Bundle?) ->
         definition(activity, fragment, args)
     }

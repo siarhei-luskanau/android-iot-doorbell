@@ -11,51 +11,51 @@ private object Versions {
         versionsProperties["version.androidToolsBuildGradle"].toString()
     val kotlin: String = versionsProperties["version.kotlin"].toString()
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
-    const val compose = "1.0.0-beta06"
+    const val compose = "1.0.0-beta09"
     const val desugar = "1.1.5"
-    const val kotlinxDatetime = "0.2.0"
-    const val kotlinxSerialization = "1.2.0"
+    const val kotlinxDatetime = "0.2.1"
+    const val kotlinxSerialization = "1.2.1"
     const val gson = "2.8.6"
     const val navigation = "2.3.5"
-    const val androidxCamera = "1.1.0-alpha04"
-    const val androidxCameraExt = "1.0.0-alpha24"
+    const val androidxCamera = "1.1.0-alpha05"
+    const val androidxCameraExt = "1.0.0-alpha25"
     const val androidxStartup = "1.0.0"
-    const val material = "1.4.0-beta01"
-    const val activity = "1.2.3"
-    const val fragment = "1.3.3"
+    const val material = "1.4.0-rc01"
+    const val activity = "1.3.0-beta02"
+    const val fragment = "1.4.0-alpha03"
     const val swiperefreshlayout = "1.2.0-alpha01"
-    const val androidxCore = "1.3.2"
+    const val androidxCore = "1.5.0"
     const val lifecycle = "2.3.1"
     const val paging = "3.0.0"
     const val room = "2.3.0"
-    const val workManager = "2.7.0-alpha03"
+    const val workManager = "2.7.0-alpha04"
     const val timber = "4.7.1"
-    const val coil = "1.2.0"
+    const val coil = "1.2.2"
     const val paperwork = "1.2.7"
     const val androidJunit5 = "1.7.1.1"
-    const val googleServices = "4.3.5"
+    const val googleServices = "4.3.8"
 
     // GMS versions
     const val firebaseDatabase = "20.0.0"
     const val firebaseStorage = "20.0.0"
 
     // DI
-    const val dagger = "2.35.1"
-    const val kodein = "7.5.0"
-    const val koin = "3.0.1"
+    const val dagger = "2.37"
+    const val kodein = "7.6.0"
+    const val koin = "3.1.0"
     const val toothpick = "3.1.0"
 
     // Development
     const val leakCanary = "2.7"
 
     // Testing
-    const val mockito = "3.10.0"
+    const val mockito = "3.11.1"
     const val spek = "2.0.15"
 
     // test instrumentation
-    const val androidTestCore = "1.4.0-alpha06"
-    const val espresso = "3.4.0-alpha06"
-    const val testExtJunit = "1.1.3-alpha06"
+    const val androidTestCore = "1.4.0-beta02"
+    const val espresso = "3.4.0-beta02"
+    const val testExtJunit = "1.1.3-beta02"
     const val uiautomator = "2.2.0"
 }
 
@@ -63,7 +63,7 @@ object PublicVersions {
     val kotlin = Versions.kotlin
     const val compose = Versions.compose
     const val ktlint = "0.40.0"
-    const val detekt = "1.16.0"
+    const val detekt = "1.17.0"
     const val jacoco = "0.8.7"
     const val androidJunitJacoco = "0.16.0"
 }
@@ -72,8 +72,8 @@ object BuildVersions {
     const val platformVersion = "S"
     const val compileSdkVersion = "android-$platformVersion"
     const val targetSdkVersion = 31
-    const val buildToolsVersion = "31.0.0-rc3"
-    const val cmdlineToolsVersion = "3.0"
+    const val buildToolsVersion = "31.0.0-rc5"
+    const val cmdlineToolsVersion = "4.0"
     const val minSdkVersion = 23
 }
 
@@ -135,8 +135,8 @@ object Libraries {
     const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
 
     // kodein
-    const val kodeinDiFrameworkAndroidX =
-        "org.kodein.di:kodein-di-framework-android-x:${Versions.kodein}"
+    const val kodeinDiFrameworkAndroidCore =
+        "org.kodein.di:kodein-di-framework-android-core:${Versions.kodein}"
 
     // koin
     const val koinAndroid = "io.insert-koin:koin-android:${Versions.koin}"

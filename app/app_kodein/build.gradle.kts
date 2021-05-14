@@ -55,7 +55,7 @@ dependencies {
     implementation(Libraries.workRuntimeKtx)
 
     // kodein
-    implementation(Libraries.kodeinDiFrameworkAndroidX)
+    implementation(Libraries.kodeinDiFrameworkAndroidCore)
 
     // Development
     debugImplementation(Libraries.leakCanary)

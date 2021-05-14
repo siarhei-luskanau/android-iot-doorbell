@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.work.WorkerFactory
 import org.kodein.di.DI
 import org.kodein.di.DIAware
-import org.kodein.di.android.x.androidXModule
+import org.kodein.di.android.androidCoreModule
 import org.kodein.di.direct
 import org.kodein.di.instance
 import siarhei.luskanau.iot.doorbell.data.AppBackgroundServices
@@ -34,7 +34,7 @@ class AppApplication : Application(), WorkerFactoryProvider, DIAware {
     private val appBackgroundServices: AppBackgroundServices by instance()
 
     override val di by DI.lazy {
-        import(androidXModule(this@AppApplication))
+        import(androidCoreModule(this@AppApplication))
         import(appModule)
         import(activityModule)
         import(viewModelModule)

@@ -1,5 +1,6 @@
 package androidx.test.runner.screenshot
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
@@ -15,24 +16,29 @@ import kotlinx.datetime.toLocalDateTime
 class ExternalFilesScreenCaptureProcessor(
     private val destPath: String = SCREENSHOTS_PATH,
     defaultScreenshotPath: File = File(
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            ApplicationProvider.getApplicationContext<Context>().cacheDir
-        } else {
-            ApplicationProvider.getApplicationContext<Context>()
-                .getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        },
+        ApplicationProvider.getApplicationContext<Context>()
+            .getExternalFilesDir(Environment.DIRECTORY_PICTURES),
         "screenshots"
     )
 ) : BasicScreenCaptureProcessor(defaultScreenshotPath) {
 
     override fun process(capture: ScreenCapture?): String {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val uiAutomation = instrumentation.uiAutomation
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val packageName = instrumentation.context.packageName
+            val targetPackageName = instrumentation.targetContext.packageName
+            STORAGE_PERMISSIONS.forEach { permission ->
+                uiAutomation.executeShellCommand("pm grant $packageName $permission")
+                uiAutomation.executeShellCommand("pm grant $targetPackageName $permission")
+            }
+        }
+
         val filename = super.process(capture)
         val imageFile = File(mDefaultScreenshotPath, filename)
 
-        InstrumentationRegistry.getInstrumentation().uiAutomation?.let {
-            it.executeShellCommand("mkdir -p $destPath")
-            it.executeShellCommand("cp ${imageFile.absolutePath} $destPath")
-        }
+        uiAutomation.executeShellCommand("mkdir -p $destPath")
+        uiAutomation.executeShellCommand("cp ${imageFile.absolutePath} $destPath")
 
         return filename
     }
@@ -55,5 +61,9 @@ class ExternalFilesScreenCaptureProcessor(
     companion object {
         @SuppressLint("SdCardPath")
         private val SCREENSHOTS_PATH = "/sdcard/Pictures/screenshots/"
+        private val STORAGE_PERMISSIONS = listOf(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+        )
     }
 }

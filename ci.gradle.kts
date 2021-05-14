@@ -124,6 +124,23 @@ fun runOnEmulator(emulatorName: String) {
 
 fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null) {
     exec {
+        commandLine(listOf("df", "-h"))
+        println(commandLine)
+    }
+    runCatching {
+        exec {
+            commandLine(listOf("free", "-m"))
+            println(commandLine)
+        }
+    }
+    runCatching {
+        exec {
+            commandLine(listOf("vm_stat"))
+            println(commandLine)
+        }
+    }
+
+    exec {
         val gradlePath = File(
             project.rootDir,
             platformExecutable(name = "gradlew", ext = "bat")
@@ -138,4 +155,21 @@ fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null)
         }
         println("commandLine: ${this.commandLine}")
     }.apply { println("ExecResult: $this") }
+
+    exec {
+        commandLine(listOf("df", "-h"))
+        println(commandLine)
+    }
+    runCatching {
+        exec {
+            commandLine(listOf("free", "-m"))
+            println(commandLine)
+        }
+    }
+    runCatching {
+        exec {
+            commandLine(listOf("vm_stat"))
+            println(commandLine)
+        }
+    }
 }
