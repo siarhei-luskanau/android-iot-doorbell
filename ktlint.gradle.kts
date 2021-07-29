@@ -1,7 +1,11 @@
 val ktlint by configurations.creating
 
 dependencies {
-    ktlint("com.pinterest:ktlint:${PublicVersions.ktlint}")
+    ktlint("com.pinterest:ktlint:${PublicVersions.ktlint}") {
+        attributes {
+            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+        }
+    }
 }
 
 val outputDir = "${project.buildDir}/reports/ktlint/"
@@ -31,7 +35,8 @@ val applyToIDEAProject by tasks.creating(JavaExec::class) {
     inputs.files(inputFiles)
     outputs.dir(outputDir)
 
-    description = "Change the code style config files to be compliant with Android Kotlin Style Guide."
+    description =
+        "Change the code style config files to be compliant with Android Kotlin Style Guide."
     classpath = ktlint
     main = "com.pinterest.ktlint.Main"
     args = listOf("applyToIDEAProject", "-y")

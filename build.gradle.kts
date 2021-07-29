@@ -59,10 +59,6 @@ allprojects {
                 targetCompatibility = JavaVersion.VERSION_1_8
             }
 
-            // composeOptions {
-            //     kotlinCompilerExtensionVersion = PublicVersions.compose
-            // }
-
             testOptions {
                 animationsDisabled = true
                 unitTests(delegateClosureOf<com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions> {

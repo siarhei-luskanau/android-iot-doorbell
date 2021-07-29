@@ -41,7 +41,14 @@ val ANDROID_EMULATORS = listOf(
     ),
     EmulatorConfig(
         avdName = "TestEmulator31",
-        sdkId = "system-images;android-S;google_apis;x86_64",
+        sdkId = "system-images;android-31;google_apis;x86_64",
+        deviceType = "Nexus 6",
+        port = "5576",
+        memory = "1500",
+    ),
+    EmulatorConfig(
+        avdName = "Nexus_6_API_28",
+        sdkId = "system-images;android-28;default;x86",
         deviceType = "Nexus 6",
         port = "5576",
         memory = "1500",

@@ -87,6 +87,12 @@ tasks.register("ciEmulator31") {
         runOnEmulator("TestEmulator31")
     }
 }
+tasks.register("ciEmulatorMaas") {
+    group = CI_GRADLE
+    doLast {
+        runOnEmulator("Nexus_6_API_28")
+    }
+}
 
 fun runOnEmulator(emulatorName: String) {
     gradlew(

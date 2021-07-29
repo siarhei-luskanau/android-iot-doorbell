@@ -21,7 +21,7 @@ val YES_INPUT: String = mutableListOf<String>()
     .joinToString()
 
 val EMULATOR_GRADLE = "EMULATOR_GRADLE"
-val COMMANDLINETOOLS_VERSION = "7302050"
+val COMMANDLINETOOLS_VERSION = "7583922"
 val COMMANDLINETOOLS_LINUX =
     "https://dl.google.com/android/repository/commandlinetools-linux-" +
         "${COMMANDLINETOOLS_VERSION}_latest.zip"
