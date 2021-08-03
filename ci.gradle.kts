@@ -105,11 +105,12 @@ fun runOnEmulator(emulatorName: String) {
         "runAndroidEmulator",
         addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
     )
-    gradlew("assembleAndroidTest")
+    gradlew(":common:common_test_ui:assembleAndroidTest")
     gradlew("waitAndroidEmulator")
+    gradlew("waitAndroidEmulator")
+    gradlew(":common:common_test_ui:connectedAndroidTest")
 
     runCatching {
-        gradlew(":common:common_test_ui:connectedAndroidTest")
         gradlew(
             ":app:app_kodein:connectedAndroidTest",
             ":app:app_singleton:connectedAndroidTest",
@@ -129,9 +130,11 @@ fun runOnEmulator(emulatorName: String) {
 }
 
 fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null) {
-    exec {
-        commandLine(listOf("df", "-h"))
-        println(commandLine)
+    runCatching {
+        exec {
+            commandLine(listOf("df", "-h"))
+            println(commandLine)
+        }
     }
     runCatching {
         exec {
@@ -141,10 +144,19 @@ fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null)
     }
     runCatching {
         exec {
-            commandLine(listOf("vm_stat"))
+            commandLine(
+                listOf(
+                    "vm_stat",
+                    "|",
+                    "perl",
+                    "-ne",
+                    "'/page size of (\\d+)/ and \$size=\$1; /Pages\\s+([^:]+)[^\\d]+(\\d+)/ and printf(\"%-16s % 16.2f Mi\\n\", \"\$1:\", \$2 * \$size / 1048576);'",
+                )
+            )
             println(commandLine)
         }
     }
+
 
     exec {
         val gradlePath = File(
@@ -162,9 +174,11 @@ fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null)
         println("commandLine: ${this.commandLine}")
     }.apply { println("ExecResult: $this") }
 
-    exec {
-        commandLine(listOf("df", "-h"))
-        println(commandLine)
+    runCatching {
+        exec {
+            commandLine(listOf("df", "-h"))
+            println(commandLine)
+        }
     }
     runCatching {
         exec {
@@ -174,7 +188,15 @@ fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null)
     }
     runCatching {
         exec {
-            commandLine(listOf("vm_stat"))
+            commandLine(
+                listOf(
+                    "vm_stat",
+                    "|",
+                    "perl",
+                    "-ne",
+                    "'/page size of (\\d+)/ and \$size=\$1; /Pages\\s+([^:]+)[^\\d]+(\\d+)/ and printf(\"%-16s % 16.2f Mi\\n\", \"\$1:\", \$2 * \$size / 1048576);'",
+                )
+            )
             println(commandLine)
         }
     }

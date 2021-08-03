@@ -49,7 +49,7 @@ private object Versions {
     const val leakCanary = "2.7"
 
     // Testing
-    const val mockito = "3.11.2"
+    const val mockito = "3.11.1"
     const val spek = "2.0.15"
 
     // test instrumentation

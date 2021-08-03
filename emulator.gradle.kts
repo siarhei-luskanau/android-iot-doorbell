@@ -222,6 +222,7 @@ tasks.register("runAndroidEmulator") {
 
         GlobalScope.launch {
             println("Start emulator: ${emulatorConfig.avdName}")
+            // https://developer.android.com/studio/run/emulator-commandline#startup-options
             val commandArgs = mutableListOf(
                 config.emulator.absolutePath,
                 "-avd",
@@ -237,8 +238,10 @@ tasks.register("runAndroidEmulator") {
             }
             commandArgs.addAll(
                 listOf(
+                    "-accel",
+                    "auto",
                     "-gpu",
-                    "swiftshader_indirect",
+                    "auto",
                     "-no-audio",
                     "-no-boot-anim",
                     // "-no-window",
@@ -273,49 +276,46 @@ tasks.register("waitAndroidEmulator") {
     group = EMULATOR_GRADLE
 
     doLast {
-        for (i in 1..(6 * 5)) {
-            if (config.getDevicesList().isEmpty()) {
-                println("WaitAndroidEmulator: No emulators found! Wait $i...")
-                Thread.sleep(10_000)
-            } else {
+        var i = 0
+        while (true) {
+            Thread.sleep(1_000)
+            i++
+            var result: String? = null
+            config.getDevicesList()
+                .also {
+                    if (it.isEmpty()) {
+                        println("WaitAndroidEmulator: Wait $i: No emulators found!")
+                    }
+                }
+                .forEach { emulatorAttributes ->
+                    println("WaitAndroidEmulator:  Wait $i: $emulatorAttributes")
+                    if (emulatorAttributes.contains("offline")) {
+                        println("WaitAndroidEmulator: offline")
+                    } else {
+                        val currentTimeMillis = System.currentTimeMillis()
+                        val resultOutputStream = ByteArrayOutputStream()
+                        exec {
+                            commandLine = listOf(
+                                config.adb.absolutePath,
+                                "-s",
+                                emulatorAttributes.first(),
+                                "wait-for-device",
+                                "shell",
+                                "getprop sys.boot_completed",
+                            )
+                            standardOutput = resultOutputStream
+                            isIgnoreExitValue = true
+                            println("commandLine: ${this.commandLine}")
+                        }.apply { println("ExecResult: $this") }
+                        result = String(resultOutputStream.toByteArray()).trim()
+                    }
+                }
+            println("sys.boot_completed = $result")
+            if (result == "1") {
+                println("Emulator booted")
                 break
             }
         }
-
-        config.getDevicesList()
-            .also {
-                if (it.isEmpty()) {
-                    throw IllegalStateException("No emulators found!")
-                }
-            }
-            .forEach { emulatorAttributes ->
-                println("WaitAndroidEmulator: $emulatorAttributes")
-                val currentTimeMillis = System.currentTimeMillis()
-                while (System.currentTimeMillis() - currentTimeMillis <= 5 * 60 * 1000) {
-                    val resultOutputStream = ByteArrayOutputStream()
-                    exec {
-                        commandLine = listOf(
-                            config.adb.absolutePath,
-                            "-s",
-                            emulatorAttributes.first(),
-                            "wait-for-device",
-                            "shell",
-                            "getprop sys.boot_completed",
-                        )
-                        standardOutput = resultOutputStream
-                        isIgnoreExitValue = true
-                        println("commandLine: ${this.commandLine}")
-                    }.apply { println("ExecResult: $this") }
-                    val result = String(resultOutputStream.toByteArray()).trim()
-                    println("sys.boot_completed = $result")
-                    if (result == "1") {
-                        println("Emulator booted")
-                        break
-                    } else {
-                        Thread.sleep(1_000)
-                    }
-                }
-            }
     }
 }
 
@@ -410,6 +410,7 @@ private class AndroidSdkConfig {
             exec {
                 commandLine = listOf(adb.absolutePath, "devices", "-l")
                 standardOutput = devicesOutput
+                isIgnoreExitValue = true
                 println("getDevicesList: ${this.commandLine}")
             }.apply { println("ExecResult: $this") }
         }.let { devicesOutput ->
