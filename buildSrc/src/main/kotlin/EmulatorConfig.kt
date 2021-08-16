@@ -17,7 +17,7 @@ val ANDROID_EMULATORS = listOf(
         sdkId = "system-images;android-23;google_apis;x86_64",
         deviceType = "Nexus One",
         port = "5560",
-        partitionSize = "800",
+        partitionSize = "1500",
     ),
     EmulatorConfig(
         avdName = "TestEmulator28",
@@ -51,7 +51,6 @@ val ANDROID_EMULATORS = listOf(
         sdkId = "system-images;android-28;default;x86",
         deviceType = "Nexus 6",
         port = "5576",
-        memory = "1500",
     ),
 )
 

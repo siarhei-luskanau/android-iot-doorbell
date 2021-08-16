@@ -1,6 +1,5 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
+    id("android-library-convention")
     kotlin("plugin.serialization") version PublicVersions.kotlin
 }
 

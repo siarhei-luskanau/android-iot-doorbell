@@ -1,6 +1,5 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
+    id("android-library-convention")
     id("de.mannodermaus.android-junit5")
     id("hu.supercluster.paperwork")
 }

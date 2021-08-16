@@ -1,23 +1,7 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    id("android-application-convention")
     id("androidx.navigation.safeargs.kotlin")
     id("de.mannodermaus.android-junit5")
-}
-
-android {
-    defaultConfig {
-        applicationId = "siarhei.luskanau.iot.doorbell"
-        versionCode = 1
-        versionName = "1.0"
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-        }
-    }
 }
 
 dependencies {

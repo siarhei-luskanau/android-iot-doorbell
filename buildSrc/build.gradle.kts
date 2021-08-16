@@ -5,11 +5,13 @@ plugins {
 }
 
 repositories {
+    google()
     mavenCentral()
 }
 
 val versions = loadProperties("$projectDir/src/main/resources/build_src_versions.properties")
 
-dependencies {
-    implementation( "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions["version.kotlinxCoroutines"]}")
+dependencies{
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${versions["version.kotlin"]}")
+    implementation("com.android.tools.build:gradle:${versions["version.androidToolsBuildGradle"]}")
 }
