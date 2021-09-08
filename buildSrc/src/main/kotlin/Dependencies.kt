@@ -11,24 +11,24 @@ private object Versions {
         versionsProperties["version.androidToolsBuildGradle"].toString()
     val kotlin: String = versionsProperties["version.kotlin"].toString()
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
-    const val compose = "1.0.1"
+    const val compose = "1.0.2"
     const val desugar = "1.1.5"
     const val kotlinxDatetime = "0.2.1"
-    const val kotlinxSerialization = "1.2.2"
+    const val kotlinxSerialization = "1.3.0-RC"
     const val gson = "2.8.7"
     const val navigation = "2.3.5"
-    const val androidxCamera = "1.1.0-alpha07"
-    const val androidxCameraExt = "1.0.0-alpha27"
+    const val androidxCamera = "1.1.0-alpha08"
+    const val androidxCameraExt = "1.0.0-alpha28"
     const val androidxStartup = "1.1.0"
-    const val material = "1.4.0"
-    const val activity = "1.3.1"
-    const val fragment = "1.4.0-alpha06"
+    const val material = "1.5.0-alpha03"
+    const val activity = "1.4.0-alpha01"
+    const val fragment = "1.4.0-alpha08"
     const val swiperefreshlayout = "1.2.0-alpha01"
     const val androidxCore = "1.6.0"
     const val lifecycle = "2.3.1"
     const val paging = "3.0.1"
     const val room = "2.3.0"
-    const val workManager = "2.7.0-alpha05"
+    const val workManager = "2.7.0-beta01"
     const val timber = "5.0.1"
     const val coil = "1.3.2"
     const val paperwork = "1.2.7"
@@ -63,7 +63,7 @@ object PublicVersions {
     val kotlin = Versions.kotlin
     const val compose = Versions.compose
     const val ktlint = "0.42.1"
-    const val detekt = "1.18.0"
+    const val detekt = "1.18.1"
     const val jacoco = "0.8.7"
     const val androidJunitJacoco = "0.16.0"
 }
