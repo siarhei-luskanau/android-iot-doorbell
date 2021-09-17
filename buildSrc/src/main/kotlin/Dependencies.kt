@@ -15,14 +15,14 @@ private object Versions {
     const val desugar = "1.1.5"
     const val kotlinxDatetime = "0.2.1"
     const val kotlinxSerialization = "1.3.0-RC"
-    const val gson = "2.8.7"
+    const val gson = "2.8.8"
     const val navigation = "2.3.5"
     const val androidxCamera = "1.1.0-alpha08"
     const val androidxCameraExt = "1.0.0-alpha28"
     const val androidxStartup = "1.1.0"
     const val material = "1.5.0-alpha03"
-    const val activity = "1.4.0-alpha01"
-    const val fragment = "1.4.0-alpha08"
+    const val activity = "1.4.0-alpha02"
+    const val fragment = "1.4.0-alpha09"
     const val swiperefreshlayout = "1.2.0-alpha01"
     const val androidxCore = "1.6.0"
     const val lifecycle = "2.3.1"
@@ -36,12 +36,12 @@ private object Versions {
     const val googleServices = "4.3.10"
 
     // GMS versions
-    const val firebaseDatabase = "20.0.1"
+    const val firebaseDatabase = "20.0.2"
     const val firebaseStorage = "20.0.0"
 
     // DI
     const val dagger = "2.38.1"
-    const val kodein = "7.7.0"
+    const val kodein = "7.8.0"
     const val koin = "3.1.2"
     const val toothpick = "3.1.0"
 

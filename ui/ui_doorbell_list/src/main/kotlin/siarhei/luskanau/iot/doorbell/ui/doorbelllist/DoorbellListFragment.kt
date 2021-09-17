@@ -34,7 +34,7 @@ class DoorbellListFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         fragmentBinding = FragmentDoorbellListBinding.inflate(
             inflater,
             container,

@@ -14,6 +14,7 @@ import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
+import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 
 class ImageListFragmentTest {
 
@@ -28,7 +29,7 @@ class ImageListFragmentTest {
 
     @Test
     fun testNormalState() {
-        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+        launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(
                 state = ImageListState(
                     pagingData = PagingData.from(listOf(ImageData(imageId = "imageId"))),
@@ -46,15 +47,15 @@ class ImageListFragmentTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
         // other views does not exist
-        Espresso.onView(ViewMatchers.withId(R.id.empty_message))
+        Espresso.onView(ViewMatchers.withId(CommonR.id.empty_message))
             .check(ViewAssertions.doesNotExist())
-        Espresso.onView(ViewMatchers.withId(R.id.error_message))
+        Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
             .check(ViewAssertions.doesNotExist())
     }
 
     @Test
     fun testEmptyState() {
-        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+        launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(
                 state = ImageListState(
                     pagingData = PagingData.empty(),
@@ -68,13 +69,13 @@ class ImageListFragmentTest {
         // empty view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.camerasRecyclerView))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        Espresso.onView(ViewMatchers.withId(R.id.empty_message))
+        Espresso.onView(ViewMatchers.withId(CommonR.id.empty_message))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
         // other views does not exist
         Espresso.onView(ViewMatchers.withId(R.id.imagesRecyclerView))
             .check(ViewAssertions.doesNotExist())
-        Espresso.onView(ViewMatchers.withId(R.id.error_message))
+        Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
             .check(ViewAssertions.doesNotExist())
     }
 }

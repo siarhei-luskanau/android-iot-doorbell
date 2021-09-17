@@ -15,6 +15,7 @@ import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
+import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 
 class ImageDetailsFragmentTest {
 
@@ -35,7 +36,7 @@ class ImageDetailsFragmentTest {
                                 adapter = object : FragmentStateAdapter(fragment) {
                                     override fun getItemCount(): Int = 1
                                     override fun createFragment(position: Int): Fragment =
-                                        Fragment(R.layout.layout_generic_empty)
+                                        Fragment(CommonR.layout.layout_generic_empty)
                                 }
                             )
                         }
@@ -64,7 +65,7 @@ class ImageDetailsFragmentTest {
         val fragmentFactory = createNormalFragmentFactory()
         launchFragmentInContainer<ImageDetailsFragment>(
             factory = fragmentFactory,
-            themeResId = R.style.AppTheme
+            themeResId = CommonR.style.AppTheme
         ).apply {
             moveToState(Lifecycle.State.RESUMED)
         }
@@ -74,7 +75,7 @@ class ImageDetailsFragmentTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
         // error view does not exist
-        Espresso.onView(ViewMatchers.withId(R.id.error_message))
+        Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
             .check(ViewAssertions.doesNotExist())
     }
 
@@ -83,13 +84,13 @@ class ImageDetailsFragmentTest {
         val fragmentFactory = createErrorFragmentFactory()
         launchFragmentInContainer<ImageDetailsFragment>(
             factory = fragmentFactory,
-            themeResId = R.style.AppTheme
+            themeResId = CommonR.style.AppTheme
         ).apply {
             moveToState(Lifecycle.State.RESUMED)
         }
 
         // error view is displayed
-        Espresso.onView(ViewMatchers.withId(R.id.error_message))
+        Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(EXPECTED_ERROR_MESSAGE))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

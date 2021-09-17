@@ -20,7 +20,7 @@ class AndroidIpAddressProvider : IpAddressProvider {
                         !inetAddress.isLoopbackAddress && inetAddress is Inet4Address
                     }
                     .map { inetAddress: InetAddress ->
-                        inetAddress.hostAddress + " " +
+                        inetAddress.hostAddress.orEmpty() + " " +
                             AppConstants.DATE_FORMAT.format(System.currentTimeMillis())
                     }
                     .forEach { hostAddress: String ->

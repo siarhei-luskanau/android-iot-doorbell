@@ -12,6 +12,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
+import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
 
 class ImageDetailsSlideFragmentTest {
@@ -32,7 +33,7 @@ class ImageDetailsSlideFragmentTest {
             imageUri = "expectedImageUri",
             timestampString = "timestampString"
         )
-        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+        launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(state = NormalImageDetailsSlideState(imageData = expectedImageData))
         }.apply {
             moveToState(Lifecycle.State.RESUMED)
@@ -43,14 +44,14 @@ class ImageDetailsSlideFragmentTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
         // error view does not exist
-        Espresso.onView(ViewMatchers.withId(R.id.error_message))
+        Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
             .check(ViewAssertions.doesNotExist())
     }
 
     @Test
     fun testErrorState() {
         val expectedErrorMessage = "Test Exception"
-        launchFragmentInContainer(themeResId = R.style.AppTheme) {
+        launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(
                 state = ErrorImageDetailsSlideState(error = RuntimeException(expectedErrorMessage))
             )
@@ -59,7 +60,7 @@ class ImageDetailsSlideFragmentTest {
         }
 
         // error view is displayed
-        Espresso.onView(ViewMatchers.withId(R.id.error_message))
+        Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withText(expectedErrorMessage))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

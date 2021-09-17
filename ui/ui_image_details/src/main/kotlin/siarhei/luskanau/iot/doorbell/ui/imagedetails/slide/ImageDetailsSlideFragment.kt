@@ -10,8 +10,8 @@ import coil.load
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
+import siarhei.luskanau.iot.doorbell.ui.common.R
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.LayoutGenericErrorBinding
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.databinding.FragmentImageDetailsBinding
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.databinding.LayoutImageDetailsSlideNormalBinding
 import timber.log.Timber
@@ -28,7 +28,7 @@ class ImageDetailsSlideFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         fragmentBinding = FragmentImageDetailsBinding.inflate(
             inflater,
             container,

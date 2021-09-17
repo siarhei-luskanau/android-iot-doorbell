@@ -15,6 +15,8 @@ import org.junit.Test
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.common.test.ui.retryFlaky
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
+import siarhei.luskanau.iot.doorbell.navigation.R as NavigationR
+import siarhei.luskanau.iot.doorbell.ui.doorbelllist.R as DoorbellListR
 
 @LargeTest
 class AppKoinDoorbellListTest {
@@ -29,8 +31,8 @@ class AppKoinDoorbellListTest {
     @get:Rule
     val activityScenarioRule = activityScenarioRule<NavigationActivity>(
         intent = NavDeepLinkBuilder(ApplicationProvider.getApplicationContext())
-            .setGraph(R.navigation.nav_app)
-            .setDestination(R.id.nav_doorbell_list_xml)
+            .setGraph(NavigationR.navigation.nav_app)
+            .setDestination(DoorbellListR.id.nav_doorbell_list_xml)
             .setArguments(null)
             .createTaskStackBuilder()
             .intents
@@ -42,7 +44,7 @@ class AppKoinDoorbellListTest {
         activityScenarioRule.scenario.moveToState(Lifecycle.State.RESUMED)
 
         retryFlaky {
-            onView(withId(R.id.doorbellsRecyclerView))
+            onView(withId(DoorbellListR.id.doorbellsRecyclerView))
                 .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
         }
 

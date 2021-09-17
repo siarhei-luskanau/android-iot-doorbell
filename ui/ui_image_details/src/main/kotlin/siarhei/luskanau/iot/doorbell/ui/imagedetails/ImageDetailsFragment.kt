@@ -23,7 +23,7 @@ class ImageDetailsFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         fragmentBinding = FragmentImageDetailsBinding.inflate(
             inflater,
             container,

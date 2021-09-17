@@ -31,7 +31,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven(url = "https://kotlin.bintray.com/kotlinx/")
     }
 
     apply(from = "$rootDir/ktlint.gradle.kts")
