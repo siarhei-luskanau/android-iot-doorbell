@@ -11,24 +11,24 @@ private object Versions {
         versionsProperties["version.androidToolsBuildGradle"].toString()
     val kotlin: String = versionsProperties["version.kotlin"].toString()
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
-    const val compose = "1.0.2"
+    const val compose = "1.0.4"
     const val desugar = "1.1.5"
-    const val kotlinxDatetime = "0.2.1"
-    const val kotlinxSerialization = "1.3.0-RC"
+    const val kotlinxDatetime = "0.3.0"
+    const val kotlinxSerialization = "1.3.0"
     const val gson = "2.8.8"
     const val navigation = "2.3.5"
     const val androidxCamera = "1.1.0-alpha08"
     const val androidxCameraExt = "1.0.0-alpha28"
     const val androidxStartup = "1.1.0"
-    const val material = "1.5.0-alpha03"
-    const val activity = "1.4.0-alpha02"
-    const val fragment = "1.4.0-alpha09"
+    const val material = "1.5.0-alpha05"
+    const val activity = "1.4.0-rc01"
+    const val fragment = "1.4.0-alpha10"
     const val swiperefreshlayout = "1.2.0-alpha01"
     const val androidxCore = "1.6.0"
     const val lifecycle = "2.3.1"
     const val paging = "3.0.1"
     const val room = "2.3.0"
-    const val workManager = "2.7.0-beta01"
+    const val workManager = "2.7.0"
     const val timber = "5.0.1"
     const val coil = "1.3.2"
     const val paperwork = "1.2.7"
@@ -42,7 +42,7 @@ private object Versions {
     // DI
     const val dagger = "2.38.1"
     const val kodein = "7.8.0"
-    const val koin = "3.1.2"
+    const val koin = "3.1.3"
     const val toothpick = "3.1.0"
 
     // Development

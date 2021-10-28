@@ -97,14 +97,19 @@ tasks.register("ciEmulatorMaas") {
 fun runOnEmulator(emulatorName: String) {
     gradlew(
         "setupAndroidSDK",
+        "killAndroidEmulator",
         addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
     )
-    gradlew("killAndroidEmulator")
     gradlew(
         "setupAndroidEmulator",
-        "runAndroidEmulator",
         addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
     )
+    Thread{
+        gradlew(
+            "runAndroidEmulator",
+            addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
+        )
+    }.start()
     gradlew(":common:common_test_ui:assembleAndroidTest")
     gradlew("waitAndroidEmulator")
     gradlew("waitAndroidEmulator")

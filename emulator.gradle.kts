@@ -24,13 +24,13 @@ val EMULATOR_GRADLE = "EMULATOR_GRADLE"
 val COMMANDLINETOOLS_VERSION = "7583922"
 val COMMANDLINETOOLS_LINUX =
     "https://dl.google.com/android/repository/commandlinetools-linux-" +
-        "${COMMANDLINETOOLS_VERSION}_latest.zip"
+            "${COMMANDLINETOOLS_VERSION}_latest.zip"
 val COMMANDLINETOOLS_MAC =
     "https://dl.google.com/android/repository/commandlinetools-mac-" +
-        "${COMMANDLINETOOLS_VERSION}_latest.zip"
+            "${COMMANDLINETOOLS_VERSION}_latest.zip"
 val COMMANDLINETOOLS_WIN =
     "https://dl.google.com/android/repository/commandlinetools-win-" +
-        "${COMMANDLINETOOLS_VERSION}_latest.zip"
+            "${COMMANDLINETOOLS_VERSION}_latest.zip"
 
 tasks.register("setupAndroidCmdlineTools") {
     group = EMULATOR_GRADLE
@@ -220,54 +220,35 @@ tasks.register("runAndroidEmulator") {
         val emulatorConfig = requireNotNull(ANDROID_EMULATORS.find { it.avdName == avdName })
             .also { println("EmulatorConfig: $it") }
 
-        GlobalScope.launch {
-            println("Start emulator: ${emulatorConfig.avdName}")
-            // https://developer.android.com/studio/run/emulator-commandline#startup-options
-            val commandArgs = mutableListOf(
-                config.emulator.absolutePath,
-                "-avd",
-                emulatorConfig.avdName,
-                "-port",
-                emulatorConfig.port,
-            )
-            emulatorConfig.memory?.let { memory ->
-                commandArgs.addAll(listOf("-memory", memory))
-            }
-            emulatorConfig.partitionSize?.let { partitionSize ->
-                commandArgs.addAll(listOf("-partition-size", partitionSize))
-            }
-            commandArgs.addAll(
-                listOf(
-                    "-accel",
-                    "auto",
-                    "-gpu",
-                    "auto",
-                    "-no-audio",
-                    "-no-boot-anim",
-                    // "-no-window",
-                )
-            )
-            val process = ProcessBuilder()
-                .directory(projectDir)
-                .command(commandArgs)
-                .apply { println("ProcessBuilder: ${this.command()}") }
-                .start()
-
-            for (i in 1..30) {
-                if (process.isAlive.not()) {
-                    Thread.sleep(1_000)
-                } else {
-                    break
-                }
-            }
-            if (process.isAlive.not() && process.exitValue() != 0) {
-                println(process.errorStream.bufferedReader().use { it.readText() })
-                println(process.inputStream.bufferedReader().use { it.readText() })
-                throw Error("Failed to start process")
-            } else {
-                println("Emulator is started.")
-            }
+        // https://developer.android.com/studio/run/emulator-commandline#startup-options
+        val commandArgs = mutableListOf(
+            config.emulator.absolutePath,
+            "-avd",
+            emulatorConfig.avdName,
+            "-port",
+            emulatorConfig.port,
+        )
+        emulatorConfig.memory?.let { memory ->
+            commandArgs.addAll(listOf("-memory", memory))
         }
+        emulatorConfig.partitionSize?.let { partitionSize ->
+            commandArgs.addAll(listOf("-partition-size", partitionSize))
+        }
+        commandArgs.addAll(
+            listOf(
+                "-accel",
+                "auto",
+                "-gpu",
+                "auto",
+                "-no-audio",
+                "-no-boot-anim",
+                // "-no-window",
+            )
+        )
+        exec {
+            commandLine = commandArgs
+            println("Start emulator: ${this.commandLine}")
+        }.apply { println("ExecResult: $this") }
     }
 }
 
