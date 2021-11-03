@@ -34,7 +34,7 @@ val ANDROID_EMULATORS = listOf(
     ),
     EmulatorConfig(
         avdName = "TestEmulator30",
-        sdkId = "system-images;android-30;google_apis;x86_64",
+        sdkId = "system-images;android-30;aosp_atd;x86",
         deviceType = "Nexus 5X",
         port = "5572",
         memory = "1024",

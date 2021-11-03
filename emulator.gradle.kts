@@ -88,8 +88,9 @@ tasks.register("setupAndroidCmdlineTools") {
         exec {
             commandLine = listOf(
                 "${config.sdkmanager}",
-                "--sdk_root=${config.androidHome}",
                 "--licenses",
+                "--sdk_root=${config.androidHome}",
+                "--channel=3",
             )
             standardInput = "yes\n".byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -99,8 +100,9 @@ tasks.register("setupAndroidCmdlineTools") {
         exec {
             commandLine = listOf(
                 config.sdkmanager.absolutePath,
-                "--sdk_root=${config.androidHome}",
                 "cmdline-tools;${BuildVersions.cmdlineToolsVersion}",
+                "--sdk_root=${config.androidHome}",
+                "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -119,8 +121,9 @@ tasks.register("setupAndroidSDK") {
         exec {
             commandLine = listOf(
                 config.sdkmanager.absolutePath,
-                "--sdk_root=${config.androidHome}",
                 "--update",
+                "--sdk_root=${config.androidHome}",
+                "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -130,8 +133,9 @@ tasks.register("setupAndroidSDK") {
         exec {
             commandLine = listOf(
                 config.sdkmanager.absolutePath,
-                "--sdk_root=${config.androidHome}",
                 "--licenses",
+                "--sdk_root=${config.androidHome}",
+                "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -141,7 +145,6 @@ tasks.register("setupAndroidSDK") {
         exec {
             commandLine = mutableListOf(
                 config.sdkmanager.absolutePath,
-                "--sdk_root=${config.androidHome}",
                 "platform-tools",
                 "build-tools;${BuildVersions.buildToolsVersion}",
                 "platforms;android-${BuildVersions.platformVersion}",
@@ -152,6 +155,13 @@ tasks.register("setupAndroidSDK") {
                     add("emulator")
                     add(emulatorConfig.sdkId)
                 }
+            }.apply {
+                addAll(
+                    listOf(
+                        "--sdk_root=${config.androidHome}",
+                        "--channel=3",
+                    )
+                )
             }
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -160,7 +170,12 @@ tasks.register("setupAndroidSDK") {
 
         exec {
             commandLine =
-                listOf(config.sdkmanager.absolutePath, "--sdk_root=${config.androidHome}", "--list")
+                listOf(
+                    config.sdkmanager.absolutePath,
+                    "--list",
+                    "--sdk_root=${config.androidHome}",
+                    "--channel=3",
+                )
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
     }
