@@ -1,5 +1,6 @@
 package siarhei.luskanau.iot.doorbell.common.test.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Bitmap
 import android.view.View
@@ -7,6 +8,7 @@ import androidx.test.runner.screenshot.Screenshot
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
+@SuppressLint("UnsafeOptInUsageError")
 class TakeScreenshotAfterTestRule(
     private val onSucceeded: Boolean = true
 ) : TestWatcher() {

@@ -8,9 +8,8 @@ import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CameraMetadata
 import android.hardware.camera2.params.StreamConfigurationMap
 import android.util.Size
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.CameraX
-import androidx.camera.core.impl.CameraInfoInternal
+import androidx.camera.camera2.internal.Camera2CameraInfoImpl
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.getSystemService
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.CameraInfoData
@@ -114,23 +113,21 @@ abstract class BaseCameraRepository(
             CameraInfoData(error = it.toString())
         }
 
-    @SuppressLint("RestrictedApi", "UnsafeOptInUsageError")
-    private fun getCameraxInfo(cameraId: String): CameraxInfoData =
+    @SuppressLint("RestrictedApi")
+    private fun getCameraxInfo(cameraId: String): CameraxInfoData? =
         runCatching {
-            val cameraSelector = CameraSelector.Builder()
-                .addCameraFilter { cameras ->
-                    cameras.filter { cameraInfo ->
-                        val cameraInfoInternal = cameraInfo as CameraInfoInternal
-                        cameraInfoInternal.cameraId == cameraId
-                    }
+            ProcessCameraProvider.getInstance(context).get().availableCameraInfos
+                .map { it as Camera2CameraInfoImpl }
+                .firstOrNull {
+                    it.cameraId == cameraId
+                }?.let { cameraInfo: Camera2CameraInfoImpl ->
+                    CameraxInfoData(
+                        implementationType = cameraInfo.implementationType,
+                        sensorRotationDegrees = cameraInfo.sensorRotationDegrees.toString(),
+                        hasFlashUnit = cameraInfo.hasFlashUnit().toString(),
+                        toString = cameraInfo.toString(),
+                    )
                 }
-                .build()
-            CameraX.getCameraWithCameraSelector(cameraSelector).let { cameraInternal ->
-                cameraInternal.cameraInfo.implementationType
-                cameraInternal.cameraInfo.sensorRotationDegrees.toString()
-                cameraInternal.cameraInfo.hasFlashUnit().toString()
-            }
-            CameraxInfoData()
         }.getOrElse {
             Timber.d("Cam access exception getting characteristics.")
             CameraxInfoData(

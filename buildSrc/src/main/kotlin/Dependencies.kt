@@ -11,14 +11,14 @@ private object Versions {
         versionsProperties["version.androidToolsBuildGradle"].toString()
     val kotlin: String = versionsProperties["version.kotlin"].toString()
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
-    const val compose = "1.0.4"
+    const val compose = "1.0.5"
     const val desugar = "1.1.5"
-    const val kotlinxDatetime = "0.3.0"
+    const val kotlinxDatetime = "0.3.1"
     const val kotlinxSerialization = "1.3.0"
-    const val gson = "2.8.8"
+    const val gson = "2.8.9"
     const val navigation = "2.3.5"
-    const val androidxCamera = "1.1.0-alpha08"
-    const val androidxCameraExt = "1.0.0-alpha28"
+    const val androidxCamera = "1.1.0-alpha10"
+    const val androidxCameraExt = "1.0.0-alpha30"
     const val androidxStartup = "1.1.0"
     const val material = "1.5.0-alpha05"
     const val activity = "1.4.0-rc01"
@@ -30,9 +30,9 @@ private object Versions {
     const val room = "2.3.0"
     const val workManager = "2.7.0"
     const val timber = "5.0.1"
-    const val coil = "1.3.2"
+    const val coil = "1.4.0"
     const val paperwork = "1.2.7"
-    const val androidJunit5 = "1.7.1.1"
+    const val androidJunit5 = "1.8.0.0"
     const val googleServices = "4.3.10"
 
     // GMS versions
@@ -40,8 +40,8 @@ private object Versions {
     const val firebaseStorage = "20.0.0"
 
     // DI
-    const val dagger = "2.38.1"
-    const val kodein = "7.8.0"
+    const val dagger = "2.40"
+    const val kodein = "7.9.0"
     const val koin = "3.1.3"
     const val toothpick = "3.1.0"
 
@@ -49,20 +49,21 @@ private object Versions {
     const val leakCanary = "2.7"
 
     // Testing
-    const val mockito = "3.11.1"
+    const val mockito = "4.0.0"
     const val spek = "2.0.15"
 
     // test instrumentation
-    const val androidTestCore = "1.4.0"
-    const val espresso = "3.4.0"
-    const val testExtJunit = "1.1.3"
+    const val androidTestCore = "1.4.1-alpha03"
+    const val androidTestTruth = "1.5.0-alpha03"
+    const val espresso = "3.5.0-alpha03"
+    const val testExtJunit = "1.1.4-alpha03"
     const val uiautomator = "2.2.0"
 }
 
 object PublicVersions {
     val kotlin = Versions.kotlin
     const val compose = Versions.compose
-    const val ktlint = "0.42.1"
+    const val ktlint = "0.43.0"
     const val detekt = "1.18.1"
     const val jacoco = "0.8.7"
     const val androidJunitJacoco = "0.16.0"
@@ -91,6 +92,8 @@ object Libraries {
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timber}"
+    const val androidxCameraCamerae2 =
+        "androidx.camera:camera-camera2:${Versions.androidxCamera}"
     const val androidxCameraLifecycle =
         "androidx.camera:camera-lifecycle:${Versions.androidxCamera}"
     const val androidxCameraView = "androidx.camera:camera-view:${Versions.androidxCameraExt}"
@@ -159,7 +162,7 @@ object TestLibraries {
     const val mockitoCore = "org.mockito:mockito-core:${Versions.mockito}"
     const val mockitoAndroid = "org.mockito:mockito-android:${Versions.mockito}"
     const val androidTestCoreKtx = "androidx.test:core-ktx:${Versions.androidTestCore}"
-    const val androidTestExtTruth = "androidx.test.ext:truth:${Versions.androidTestCore}"
+    const val androidTestExtTruth = "androidx.test.ext:truth:${Versions.androidTestTruth}"
     const val testEspressoCore = "androidx.test.espresso:espresso-core:${Versions.espresso}"
     const val testEspressoIntents = "androidx.test.espresso:espresso-intents:${Versions.espresso}"
     const val testEspressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso}"

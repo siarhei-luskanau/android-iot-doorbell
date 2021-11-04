@@ -17,5 +17,9 @@ data class CameraInfoData(
 )
 
 data class CameraxInfoData(
+    val implementationType: String? = null,
+    val sensorRotationDegrees: String? = null,
+    val hasFlashUnit: String? = null,
+    val toString: String? = null,
     val error: String? = null,
 )

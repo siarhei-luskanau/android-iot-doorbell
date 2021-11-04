@@ -13,6 +13,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
+@SuppressLint("UnsafeOptInUsageError")
 class ExternalFilesScreenCaptureProcessor(
     private val destPath: String = SCREENSHOTS_PATH,
     defaultScreenshotPath: File = File(

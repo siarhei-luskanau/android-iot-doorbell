@@ -10,6 +10,7 @@ dependencies {
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 
+    implementation(Libraries.androidxCameraCamerae2)
     implementation(Libraries.androidxCameraLifecycle)
     implementation(Libraries.androidxCameraView)
     implementation(Libraries.androidxCameraExtensions)
