@@ -4,8 +4,8 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
+import kotlin.test.Test
 import org.junit.Rule
-import org.junit.Test
 
 @LargeTest
 class CloseSystemDialogTest {

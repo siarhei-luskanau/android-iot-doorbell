@@ -32,7 +32,6 @@ private object Versions {
     const val timber = "5.0.1"
     const val coil = "1.4.0"
     const val paperwork = "1.2.7"
-    const val androidJunit5 = "1.8.0.0"
     const val googleServices = "4.3.10"
 
     // GMS versions
@@ -50,7 +49,6 @@ private object Versions {
 
     // Testing
     const val mockito = "4.0.0"
-    const val spek = "2.0.15"
 
     // test instrumentation
     const val androidTestCore = "1.4.1-alpha03"
@@ -154,8 +152,6 @@ object Libraries {
 }
 
 object TestLibraries {
-    const val spekRunnerJunit5 = "org.spekframework.spek2:spek-runner-junit5:${Versions.spek}"
-    const val spekDslJvm = "org.spekframework.spek2:spek-dsl-jvm:${Versions.spek}"
     val kotlinxCoroutinesTest =
         "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinxCoroutines}"
     val kotlinTest = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
@@ -177,8 +173,6 @@ object GradlePlugin {
     val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val navigationSafeArgsGradlePlugin =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
-    const val androidJunit5Plugin =
-        "de.mannodermaus.gradle.plugins:android-junit5:${Versions.androidJunit5}"
     const val googleServicePlugin = "com.google.gms:google-services:${Versions.googleServices}"
     const val paperworkPlugin = "hu.supercluster:paperwork-plugin:${Versions.paperwork}"
     const val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Versions.dagger}"

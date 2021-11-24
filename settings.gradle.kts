@@ -28,7 +28,6 @@ include(
         ":data:dataDoorbellApiStub",
 
         ":common:common",
-        ":common:common_test",
         ":common:common_test_ui",
 
         ":base_android",

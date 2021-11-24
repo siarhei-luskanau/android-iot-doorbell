@@ -1,7 +1,6 @@
 plugins {
     id("android-application-convention")
     id("androidx.navigation.safeargs.kotlin")
-    id("de.mannodermaus.android-junit5")
 }
 
 dependencies {
@@ -44,8 +43,6 @@ dependencies {
     debugImplementation(Libraries.leakCanary)
 
     // unit test
-    testRuntimeOnly(TestLibraries.spekRunnerJunit5)
-    testImplementation(TestLibraries.spekDslJvm)
     testImplementation(TestLibraries.kotlinTest)
     testImplementation(TestLibraries.mockitoCore)
 

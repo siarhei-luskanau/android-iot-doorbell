@@ -6,9 +6,9 @@ import androidx.paging.PagingData
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import kotlin.test.Test
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
-import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule

@@ -13,8 +13,6 @@ dependencies {
     implementation(Libraries.kotlinxCoroutinesCore)
 
     // unit test
-    testRuntimeOnly(TestLibraries.spekRunnerJunit5)
-    testImplementation(TestLibraries.spekDslJvm)
     testImplementation(TestLibraries.kotlinTest)
     testImplementation(TestLibraries.mockitoCore)
     testImplementation(TestLibraries.kotlinxCoroutinesTest)

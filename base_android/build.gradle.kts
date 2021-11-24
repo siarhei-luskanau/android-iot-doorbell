@@ -1,6 +1,5 @@
 plugins {
     id("android-library-convention")
-    id("de.mannodermaus.android-junit5")
     id("hu.supercluster.paperwork")
 }
 
@@ -28,8 +27,6 @@ dependencies {
     implementation(Libraries.paperwork)
 
     // unit test
-    testRuntimeOnly(TestLibraries.spekRunnerJunit5)
-    testImplementation(TestLibraries.spekDslJvm)
     testImplementation(TestLibraries.kotlinTest)
     testImplementation(TestLibraries.mockitoCore)
     testImplementation(TestLibraries.kotlinxCoroutinesTest)

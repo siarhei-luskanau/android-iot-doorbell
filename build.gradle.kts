@@ -11,7 +11,6 @@ buildscript {
         classpath(GradlePlugin.androidToolsBuildGradle)
         classpath(GradlePlugin.kotlinGradlePlugin)
         classpath(GradlePlugin.navigationSafeArgsGradlePlugin)
-        classpath(GradlePlugin.androidJunit5Plugin)
         classpath(GradlePlugin.googleServicePlugin)
         classpath(GradlePlugin.paperworkPlugin)
         classpath(GradlePlugin.hiltGradlePlugin)

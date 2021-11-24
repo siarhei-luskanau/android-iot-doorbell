@@ -19,5 +19,6 @@ dependencies {
     implementation(TestLibraries.testExtJunitKtx)
 
     // android test
+    androidTestImplementation(TestLibraries.kotlinTest)
     androidTestImplementation(TestLibraries.uiautomator)
 }

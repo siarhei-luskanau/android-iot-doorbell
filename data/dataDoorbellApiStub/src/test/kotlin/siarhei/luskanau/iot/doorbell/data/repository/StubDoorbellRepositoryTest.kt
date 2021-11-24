@@ -1,19 +1,19 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import kotlin.test.Test
 import kotlin.test.assertEquals
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 
 private const val MIN_COUNT = 0
 private const val MAX_COUNT = 100
 private const val SIZE = 20
 
-object StubDoorbellRepositoryTest : Spek({
+class StubDoorbellRepositoryTest {
 
-    val stubDoorbellRepository by memoized { StubDoorbellRepository() }
+    private val stubDoorbellRepository = StubDoorbellRepository()
 
-    describe("check getFromToRange()") {
-
+    @Test
+    @Suppress("LongMethod")
+    fun `test getFromToRange()`() {
         listOf(
             FromToRangeData(
                 startAt = null,
@@ -71,30 +71,21 @@ object StubDoorbellRepositoryTest : Spek({
                 expected = null
             )
         ).forEach { data ->
-            context("$data") {
-                var actual: Pair<Int, Int>? = null
-
-                beforeEachTest {
-                    actual = stubDoorbellRepository.getFromToRange(
-                        startAt = data.startAt?.toInt(),
-                        orderAsc = data.orderAsc,
-                        minCount = MIN_COUNT,
-                        maxCount = MAX_COUNT,
-                        size = SIZE
-                    )
-                }
-
-                it("check the $data") {
-                    assertEquals(
-                        expected = data.expected,
-                        actual = actual,
-                        message = "actual=$actual expected=$data"
-                    )
-                }
-            }
+            val actual = stubDoorbellRepository.getFromToRange(
+                startAt = data.startAt?.toInt(),
+                orderAsc = data.orderAsc,
+                minCount = MIN_COUNT,
+                maxCount = MAX_COUNT,
+                size = SIZE
+            )
+            assertEquals(
+                expected = data.expected,
+                actual = actual,
+                message = "actual=$actual expected=$data"
+            )
         }
     }
-})
+}
 
 private data class FromToRangeData(
     val startAt: String?,

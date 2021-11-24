@@ -276,6 +276,9 @@ tasks.register("waitAndroidEmulator") {
         while (true) {
             Thread.sleep(1_000)
             i++
+            if (i > 1000) {
+                break
+            }
             var result: String? = null
             config.getDevicesList()
                 .also {

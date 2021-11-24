@@ -1,7 +1,6 @@
 plugins {
     id("android-library-convention")
     id("androidx.navigation.safeargs.kotlin")
-    id("de.mannodermaus.android-junit5")
 }
 
 dependencies {
@@ -21,8 +20,6 @@ dependencies {
     implementation(Libraries.coil)
 
     // unit test
-    testRuntimeOnly(TestLibraries.spekRunnerJunit5)
-    testImplementation(TestLibraries.spekDslJvm)
     testImplementation(TestLibraries.kotlinTest)
     testImplementation(TestLibraries.mockitoCore)
 

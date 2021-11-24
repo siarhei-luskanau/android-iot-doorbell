@@ -10,8 +10,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.filters.LargeTest
 import androidx.test.rule.GrantPermissionRule
+import kotlin.test.Test
 import org.junit.Rule
-import org.junit.Test
 import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.common.test.ui.retryFlaky
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity

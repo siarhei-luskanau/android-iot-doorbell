@@ -3,7 +3,6 @@ val CI_GRADLE = "CI_GRADLE"
 tasks.register("ciLint") {
     group = CI_GRADLE
     doLast {
-        gradlew("setupAndroidSDK")
         gradlew(
             "clean",
             "ktlintCheck",
@@ -24,7 +23,6 @@ tasks.register("ciLint") {
 tasks.register("ciUnitTest") {
     group = CI_GRADLE
     doLast {
-        gradlew("setupAndroidSDK")
         gradlew(
             "clean",
             ":data:dataDoorbellApiStub:test",
@@ -37,7 +35,6 @@ tasks.register("ciUnitTest") {
 tasks.register("ciBuildApp") {
     group = CI_GRADLE
     doLast {
-        gradlew("setupAndroidSDK")
         gradlew(
             "clean",
             "assembleDebug",
