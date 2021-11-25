@@ -9,14 +9,6 @@ tasks.register("ciLint") {
             "detekt",
             "lintDebug",
         )
-        copy {
-            from(rootProject.subprojects.map { it.buildDir })
-            include("**/*.apk")
-            exclude("**/apk/androidTest/**")
-            eachFile { path = name }
-            includeEmptyDirs = false
-            into("$buildDir/apk/")
-        }
     }
 }
 
@@ -25,9 +17,9 @@ tasks.register("ciUnitTest") {
     doLast {
         gradlew(
             "clean",
-            ":data:dataDoorbellApiStub:test",
-            "jacocoTestReportDebug",
-            "jacocoTestReportMerged",
+            "koverVerify",
+            "koverReport",
+            "koverCollectReports",
         )
     }
 }

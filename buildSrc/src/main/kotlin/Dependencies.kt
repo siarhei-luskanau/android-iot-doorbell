@@ -14,21 +14,21 @@ private object Versions {
     const val compose = "1.0.5"
     const val desugar = "1.1.5"
     const val kotlinxDatetime = "0.3.1"
-    const val kotlinxSerialization = "1.3.0"
+    const val kotlinxSerialization = "1.3.1"
     const val gson = "2.8.9"
     const val navigation = "2.3.5"
-    const val androidxCamera = "1.1.0-alpha10"
-    const val androidxCameraExt = "1.0.0-alpha30"
+    const val androidxCamera = "1.1.0-alpha11"
+    const val androidxCameraExt = "1.0.0-alpha31"
     const val androidxStartup = "1.1.0"
-    const val material = "1.5.0-alpha05"
-    const val activity = "1.4.0-rc01"
-    const val fragment = "1.4.0-alpha10"
+    const val material = "1.5.0-beta01"
+    const val activity = "1.4.0"
+    const val fragment = "1.4.0"
     const val swiperefreshlayout = "1.2.0-alpha01"
-    const val androidxCore = "1.6.0"
-    const val lifecycle = "2.3.1"
+    const val androidxCore = "1.7.0"
+    const val lifecycle = "2.4.0"
     const val paging = "3.0.1"
-    const val room = "2.3.0"
-    const val workManager = "2.7.0"
+    const val room = "2.4.0-beta02"
+    const val workManager = "2.7.1"
     const val timber = "5.0.1"
     const val coil = "1.4.0"
     const val paperwork = "1.2.7"
@@ -39,7 +39,7 @@ private object Versions {
     const val firebaseStorage = "20.0.0"
 
     // DI
-    const val dagger = "2.40"
+    const val dagger = "2.40.2"
     const val kodein = "7.9.0"
     const val koin = "3.1.3"
     const val toothpick = "3.1.0"
@@ -48,7 +48,7 @@ private object Versions {
     const val leakCanary = "2.7"
 
     // Testing
-    const val mockito = "4.0.0"
+    const val mockito = "4.1.0"
 
     // test instrumentation
     const val androidTestCore = "1.4.1-alpha03"
@@ -63,8 +63,7 @@ object PublicVersions {
     const val compose = Versions.compose
     const val ktlint = "0.43.0"
     const val detekt = "1.18.1"
-    const val jacoco = "0.8.7"
-    const val androidJunitJacoco = "0.16.0"
+    const val kotlinxKover = "0.4.2"
 }
 
 object BuildVersions {
