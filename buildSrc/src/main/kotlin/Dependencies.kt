@@ -11,23 +11,23 @@ private object Versions {
         versionsProperties["version.androidToolsBuildGradle"].toString()
     val kotlin: String = versionsProperties["version.kotlin"].toString()
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
-    const val compose = "1.0.5"
+    const val compose = "1.1.0-rc01"
     const val desugar = "1.1.5"
     const val kotlinxDatetime = "0.3.1"
     const val kotlinxSerialization = "1.3.1"
     const val gson = "2.8.9"
     const val navigation = "2.3.5"
-    const val androidxCamera = "1.1.0-alpha11"
-    const val androidxCameraExt = "1.0.0-alpha31"
+    const val androidxCamera = "1.1.0-alpha12"
+    const val androidxCameraExt = "1.0.0-alpha32"
     const val androidxStartup = "1.1.0"
-    const val material = "1.5.0-beta01"
+    const val material = "1.4.0"
     const val activity = "1.4.0"
     const val fragment = "1.4.0"
-    const val swiperefreshlayout = "1.2.0-alpha01"
+    const val swiperefreshlayout = "1.1.0"
     const val androidxCore = "1.7.0"
     const val lifecycle = "2.4.0"
     const val paging = "3.0.1"
-    const val room = "2.4.0-beta02"
+    const val room = "2.4.0"
     const val workManager = "2.7.1"
     const val timber = "5.0.1"
     const val coil = "1.4.0"
@@ -35,20 +35,20 @@ private object Versions {
     const val googleServices = "4.3.10"
 
     // GMS versions
-    const val firebaseDatabase = "20.0.2"
+    const val firebaseDatabase = "20.0.3"
     const val firebaseStorage = "20.0.0"
 
     // DI
-    const val dagger = "2.40.2"
+    const val dagger = "2.40.5"
     const val kodein = "7.9.0"
-    const val koin = "3.1.3"
+    const val koin = "3.1.4"
     const val toothpick = "3.1.0"
 
     // Development
     const val leakCanary = "2.7"
 
     // Testing
-    const val mockito = "4.1.0"
+    const val mockito = "4.2.0"
 
     // test instrumentation
     const val androidTestCore = "1.4.1-alpha03"
@@ -61,16 +61,16 @@ private object Versions {
 object PublicVersions {
     val kotlin = Versions.kotlin
     const val compose = Versions.compose
-    const val ktlint = "0.43.0"
-    const val detekt = "1.18.1"
-    const val kotlinxKover = "0.4.2"
+    const val ktlint = "0.43.2"
+    const val detekt = "1.19.0"
+    const val kotlinxKover = "0.4.4"
 }
 
 object BuildVersions {
-    const val platformVersion = 31
+    const val platformVersion = 32
     const val compileSdkVersion = platformVersion
-    const val targetSdkVersion = 31
-    const val buildToolsVersion = "31.0.0"
+    const val targetSdkVersion = 32
+    const val buildToolsVersion = "32.0.0"
     const val cmdlineToolsVersion = "5.0"
     const val minSdkVersion = 23
 }

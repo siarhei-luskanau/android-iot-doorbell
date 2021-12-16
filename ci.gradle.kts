@@ -49,6 +49,13 @@ tasks.register("ciEmulator23") {
     }
 }
 
+tasks.register("ciEmulator26") {
+    group = CI_GRADLE
+    doLast {
+        runOnEmulator("TestEmulator26")
+    }
+}
+
 tasks.register("ciEmulator28") {
     group = CI_GRADLE
     doLast {
@@ -76,10 +83,11 @@ tasks.register("ciEmulator31") {
         runOnEmulator("TestEmulator31")
     }
 }
-tasks.register("ciEmulatorMaas") {
+
+tasks.register("ciEmulator32") {
     group = CI_GRADLE
     doLast {
-        runOnEmulator("Nexus_6_API_28")
+        runOnEmulator("TestEmulator32")
     }
 }
 
