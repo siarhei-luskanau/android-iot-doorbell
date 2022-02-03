@@ -10,7 +10,6 @@ import android.hardware.camera2.params.StreamConfigurationMap
 import android.util.Size
 import androidx.camera.camera2.internal.Camera2CameraInfoImpl
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.content.getSystemService
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.CameraInfoData
 import siarhei.luskanau.iot.doorbell.data.model.CameraxInfoData
@@ -24,31 +23,30 @@ abstract class BaseCameraRepository(
     override suspend fun getCamerasList(): List<CameraData> =
         mutableListOf<CameraData>().also { list ->
             runCatching {
-                context.getSystemService<CameraManager>()?.let { cameraManager ->
-                    cameraManager.cameraIdList
-                        .map { cameraId: String ->
-                            val sizes = getSizes(cameraManager, cameraId)
-                            val name: String? = sizes.values
-                                .sortedWith(compareBy { size -> size.height * size.width })
-                                .lastOrNull()
-                                ?.let { maxSize: Size? -> maxSize?.let { "$cameraId:$it" } }
-                            val info = getInfo(cameraManager, cameraId)
-                            val cameraxInfo = getCameraxInfo(cameraId)
-                            list.add(
-                                CameraData(
-                                    cameraId = cameraId,
-                                    name = name.orEmpty(),
-                                    sizes = sizes.mapValues { entry ->
-                                        SizeData(
-                                            entry.value.width,
-                                            entry.value.height
-                                        )
-                                    },
-                                    info = info,
-                                    cameraxInfo = cameraxInfo
+                val cameraManager =
+                    context.getSystemService(Context.CAMERA_SERVICE) as? CameraManager
+                cameraManager?.cameraIdList?.map { cameraId: String ->
+                    val sizes = getSizes(cameraManager, cameraId)
+                    val name: String? = sizes.values
+                        .sortedWith(compareBy { size -> size.height * size.width })
+                        .lastOrNull()
+                        ?.let { maxSize: Size? -> maxSize?.let { "$cameraId:$it" } }
+                    val info = getInfo(cameraManager, cameraId)
+                    val cameraxInfo = getCameraxInfo(cameraId)
+                    list.add(
+                        CameraData(
+                            cameraId = cameraId,
+                            name = name.orEmpty(),
+                            sizes = sizes.mapValues { entry ->
+                                SizeData(
+                                    entry.value.width,
+                                    entry.value.height
                                 )
-                            )
-                        }
+                            },
+                            info = info,
+                            cameraxInfo = cameraxInfo
+                        )
+                    )
                 }
             }.onFailure {
                 Timber.e(it)

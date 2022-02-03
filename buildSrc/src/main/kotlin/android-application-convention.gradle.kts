@@ -26,6 +26,7 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = false
+        compose = true
     }
 
     compileOptions {
@@ -36,19 +37,30 @@ android {
 
     testOptions {
         animationsDisabled = true
-        unitTests {
-            all { test: Test ->
-                test.testLogging.events = setOf(
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-                    org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-                )
-            }
+        unitTests.all {
+            it.testLogging.events = setOf(
+                org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+            )
         }
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = PublicVersions.compose
     }
 
     dependencies {
         "coreLibraryDesugaring"(Libraries.desugarJdkLibs)
-        // "implementation"(Libraries.composeRuntime)
+        // Integration with activities
+        "implementation"(Libraries.activityCompose)
+        // Compose Material Design
+        "implementation"(Libraries.composeMaterial)
+        // Animations
+        "implementation"(Libraries.composeAnimation)
+        // Tooling support (Previews, etc.)
+        "implementation"(Libraries.composeUiTooling)
+        // When using a MDC theme
+        "implementation"(Libraries.composeMaterialTheme)
     }
 }

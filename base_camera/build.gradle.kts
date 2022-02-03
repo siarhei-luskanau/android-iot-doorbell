@@ -14,6 +14,5 @@ dependencies {
     implementation(Libraries.androidxCameraLifecycle)
     implementation(Libraries.androidxCameraView)
     implementation(Libraries.androidxCameraExtensions)
-    implementation(Libraries.androidxCoreKtx)
     implementation(Libraries.lifecycleProcess)
 }

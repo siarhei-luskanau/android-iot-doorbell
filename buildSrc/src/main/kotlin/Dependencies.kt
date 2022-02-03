@@ -11,23 +11,21 @@ private object Versions {
         versionsProperties["version.androidToolsBuildGradle"].toString()
     val kotlin: String = versionsProperties["version.kotlin"].toString()
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
-    const val compose = "1.1.0-rc01"
+    const val compose = "1.1.0"
     const val desugar = "1.1.5"
-    const val kotlinxDatetime = "0.3.1"
-    const val kotlinxSerialization = "1.3.1"
-    const val gson = "2.8.9"
-    const val navigation = "2.3.5"
-    const val androidxCamera = "1.1.0-alpha12"
-    const val androidxCameraExt = "1.0.0-alpha32"
-    const val androidxStartup = "1.1.0"
-    const val material = "1.4.0"
+    const val kotlinxDatetime = "0.3.2"
+    const val kotlinxSerialization = "1.3.2"
+    const val gson = "2.9.0"
+    const val navigation = "2.4.1"
+    const val androidxCamera = "1.1.0-beta01"
+    const val androidxStartup = "1.1.1"
+    const val material = "1.5.0"
     const val activity = "1.4.0"
-    const val fragment = "1.4.0"
+    const val fragment = "1.4.1"
     const val swiperefreshlayout = "1.1.0"
-    const val androidxCore = "1.7.0"
-    const val lifecycle = "2.4.0"
-    const val paging = "3.0.1"
-    const val room = "2.4.0"
+    const val lifecycle = "2.4.1"
+    const val paging = "3.1.0"
+    const val room = "2.4.1"
     const val workManager = "2.7.1"
     const val timber = "5.0.1"
     const val coil = "1.4.0"
@@ -40,21 +38,21 @@ private object Versions {
 
     // DI
     const val dagger = "2.40.5"
-    const val kodein = "7.9.0"
-    const val koin = "3.1.4"
+    const val kodein = "7.10.0"
+    const val koin = "3.1.5"
     const val toothpick = "3.1.0"
 
     // Development
-    const val leakCanary = "2.7"
+    const val leakCanary = "2.8.1"
 
     // Testing
-    const val mockito = "4.2.0"
+    const val mockito = "4.3.1"
 
     // test instrumentation
-    const val androidTestCore = "1.4.1-alpha03"
-    const val androidTestTruth = "1.5.0-alpha03"
-    const val espresso = "3.5.0-alpha03"
-    const val testExtJunit = "1.1.4-alpha03"
+    const val androidTestCore = "1.4.0"
+    const val androidTestTruth = "1.4.0"
+    const val espresso = "3.4.0"
+    const val testExtJunit = "1.1.3"
     const val uiautomator = "2.2.0"
 }
 
@@ -63,7 +61,7 @@ object PublicVersions {
     const val compose = Versions.compose
     const val ktlint = "0.43.2"
     const val detekt = "1.19.0"
-    const val kotlinxKover = "0.4.4"
+    const val kotlinxKover = "0.5.0"
 }
 
 object BuildVersions {
@@ -71,7 +69,7 @@ object BuildVersions {
     const val compileSdkVersion = platformVersion
     const val targetSdkVersion = 32
     const val buildToolsVersion = "32.0.0"
-    const val cmdlineToolsVersion = "5.0"
+    const val cmdlineToolsVersion = "6.0"
     const val minSdkVersion = 23
 }
 
@@ -93,20 +91,20 @@ object Libraries {
         "androidx.camera:camera-camera2:${Versions.androidxCamera}"
     const val androidxCameraLifecycle =
         "androidx.camera:camera-lifecycle:${Versions.androidxCamera}"
-    const val androidxCameraView = "androidx.camera:camera-view:${Versions.androidxCameraExt}"
+    const val androidxCameraView = "androidx.camera:camera-view:${Versions.androidxCamera}"
     const val androidxCameraExtensions =
-        "androidx.camera:camera-extensions:${Versions.androidxCameraExt}"
+        "androidx.camera:camera-extensions:${Versions.androidxCamera}"
     const val androidxStartup = "androidx.startup:startup-runtime:${Versions.androidxStartup}"
-    const val composeRuntime = "androidx.compose.runtime:runtime:${Versions.compose}"
-    const val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
     const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
-    const val composeUi = "androidx.compose.ui:ui:${Versions.compose}"
+    const val composeAnimation = "androidx.compose.animation:animation:${Versions.compose}"
+    const val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+    const val composeMaterialTheme = "com.google.android.material:compose-theme-adapter:${Versions.compose}"
     const val material = "com.google.android.material:material:${Versions.material}"
     const val swiperefreshlayout =
         "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"
     const val activityKtx = "androidx.activity:activity-ktx:${Versions.activity}"
+    const val activityCompose = "androidx.activity:activity-compose:${Versions.activity}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragment}"
-    const val androidxCoreKtx = "androidx.core:core-ktx:${Versions.androidxCore}"
     const val lifecycleLivedataKtx =
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     const val lifecycleViewmodelKtx =
