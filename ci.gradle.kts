@@ -42,13 +42,6 @@ tasks.register("ciBuildApp") {
     }
 }
 
-tasks.register("ciEmulator23") {
-    group = CI_GRADLE
-    doLast {
-        runOnEmulator("TestEmulator23")
-    }
-}
-
 tasks.register("ciEmulator26") {
     group = CI_GRADLE
     doLast {
@@ -113,16 +106,7 @@ fun runOnEmulator(emulatorName: String) {
     gradlew(":common:common_test_ui:connectedAndroidTest")
 
     runCatching {
-        gradlew(
-            ":app:app_kodein:connectedAndroidTest",
-            ":app:app_singleton:connectedAndroidTest",
-            ":app:app_toothpick:connectedAndroidTest",
-            ":app:dagger:app_dagger:connectedAndroidTest",
-            ":app:koin:app_koin:connectedAndroidTest",
-            ":ui:ui_doorbell_list:connectedAndroidTest",
-            ":ui:ui_image_details:connectedAndroidTest",
-            ":ui:ui_image_list:connectedAndroidTest",
-        )
+        gradlew("connectedAndroidTest")
         gradlew("moveScreenshotsFromDevices")
         gradlew("killAndroidEmulator")
     }.onFailure {

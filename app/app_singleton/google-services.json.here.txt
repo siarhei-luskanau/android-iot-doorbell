@@ -1,2 +1,0 @@
-google-services.json file should be here
-git update-index --assume-unchanged app/app_singleton/google-services.json

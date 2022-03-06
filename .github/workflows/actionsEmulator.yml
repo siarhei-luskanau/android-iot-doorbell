@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ macos-latest ]
-        emulator-varsion: [ 23, 28, 29, 30, 31, 32 ]
+        emulator-varsion: [ 26, 28, 29, 30, 31, 32 ]
     steps:
       - uses: actions/checkout@v2.0.0
       - uses: actions/setup-java@v2
@@ -19,7 +19,7 @@ jobs:
           java-version: '15'
       - run: bash ./gradlew :setupAndroidCmdlineTools --stacktrace
       - run: bash ./gradlew ciEmulator${{ matrix.emulator-varsion }} --stacktrace
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         if: always()
         with:
           name: screenshots
