@@ -14,4 +14,5 @@ val versions = loadProperties("$projectDir/src/main/resources/build_src_versions
 dependencies{
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${versions["version.kotlin"]}")
     implementation("com.android.tools.build:gradle:${versions["version.androidToolsBuildGradle"]}")
+    implementation("com.karumi:shot:${versions["version.karumiShot"]}")
 }

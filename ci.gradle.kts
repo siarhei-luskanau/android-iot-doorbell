@@ -45,21 +45,14 @@ tasks.register("ciBuildApp") {
 tasks.register("ciEmulator26") {
     group = CI_GRADLE
     doLast {
-        runOnEmulator("TestEmulator26")
+        runOnEmulator(emulatorName = "TestEmulator26")
     }
 }
 
 tasks.register("ciEmulator28") {
     group = CI_GRADLE
     doLast {
-        runOnEmulator("TestEmulator28")
-    }
-}
-
-tasks.register("ciEmulator29") {
-    group = CI_GRADLE
-    doLast {
-        runOnEmulator("TestEmulator29")
+        runOnEmulator(emulatorName = "TestEmulator28")
     }
 }
 
@@ -73,18 +66,22 @@ tasks.register("ciEmulator30") {
 tasks.register("ciEmulator31") {
     group = CI_GRADLE
     doLast {
-        runOnEmulator("TestEmulator31")
+        runOnEmulator(emulatorName = "TestEmulator31")
     }
 }
 
 tasks.register("ciEmulator32") {
     group = CI_GRADLE
     doLast {
-        runOnEmulator("TestEmulator32")
+        runOnEmulator(emulatorName = "TestEmulator32")
     }
 }
 
-fun runOnEmulator(emulatorName: String) {
+fun runOnEmulator(
+    emulatorName: String,
+    directorySuffix: String = emulatorName,
+    isRecording: Boolean = System.getenv("CI").isNullOrEmpty(),
+) {
     gradlew(
         "setupAndroidSDK",
         "killAndroidEmulator",
@@ -94,56 +91,25 @@ fun runOnEmulator(emulatorName: String) {
         "setupAndroidEmulator",
         addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
     )
-    Thread{
+    Thread {
         gradlew(
             "runAndroidEmulator",
             addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
         )
     }.start()
-    gradlew(":common:common_test_ui:assembleAndroidTest")
     gradlew("waitAndroidEmulator")
-    gradlew("waitAndroidEmulator")
-    gradlew(":common:common_test_ui:connectedAndroidTest")
-
-    runCatching {
-        gradlew("connectedAndroidTest")
-        gradlew("moveScreenshotsFromDevices")
-        gradlew("killAndroidEmulator")
-    }.onFailure {
-        gradlew("moveScreenshotsFromDevices")
-        throw it
+    mutableListOf(
+        "executeScreenshotTests",
+        "-PdirectorySuffix=$directorySuffix",
+    ).also {
+        if (isRecording) it.add("-Precord")
+    }.also{
+        gradlew(*it.toTypedArray())
     }
+    gradlew("killAndroidEmulator")
 }
 
 fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null) {
-    runCatching {
-        exec {
-            commandLine(listOf("df", "-h"))
-            println(commandLine)
-        }
-    }
-    runCatching {
-        exec {
-            commandLine(listOf("free", "-m"))
-            println(commandLine)
-        }
-    }
-    runCatching {
-        exec {
-            commandLine(
-                listOf(
-                    "vm_stat",
-                    "|",
-                    "perl",
-                    "-ne",
-                    "'/page size of (\\d+)/ and \$size=\$1; /Pages\\s+([^:]+)[^\\d]+(\\d+)/ and printf(\"%-16s % 16.2f Mi\\n\", \"\$1:\", \$2 * \$size / 1048576);'",
-                )
-            )
-            println(commandLine)
-        }
-    }
-
-
     exec {
         val gradlePath = File(
             project.rootDir,
@@ -159,31 +125,4 @@ fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null)
         }
         println("commandLine: ${this.commandLine}")
     }.apply { println("ExecResult: $this") }
-
-    runCatching {
-        exec {
-            commandLine(listOf("df", "-h"))
-            println(commandLine)
-        }
-    }
-    runCatching {
-        exec {
-            commandLine(listOf("free", "-m"))
-            println(commandLine)
-        }
-    }
-    runCatching {
-        exec {
-            commandLine(
-                listOf(
-                    "vm_stat",
-                    "|",
-                    "perl",
-                    "-ne",
-                    "'/page size of (\\d+)/ and \$size=\$1; /Pages\\s+([^:]+)[^\\d]+(\\d+)/ and printf(\"%-16s % 16.2f Mi\\n\", \"\$1:\", \$2 * \$size / 1048576);'",
-                )
-            )
-            println(commandLine)
-        }
-    }
 }

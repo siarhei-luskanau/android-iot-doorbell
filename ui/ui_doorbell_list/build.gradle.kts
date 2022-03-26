@@ -21,7 +21,6 @@ dependencies {
     implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
     implementation(Libraries.navigationUiKtx)
-    implementation(Libraries.coil)
 
     // unit test
     testImplementation(TestLibraries.kotlinTest)

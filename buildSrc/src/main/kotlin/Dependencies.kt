@@ -11,6 +11,7 @@ private object Versions {
         versionsProperties["version.androidToolsBuildGradle"].toString()
     val kotlin: String = versionsProperties["version.kotlin"].toString()
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
+    val karumiShot: String = versionsProperties["version.karumiShot"].toString()
     const val compose = "1.1.1"
     const val desugar = "1.1.5"
     const val kotlinxDatetime = "0.3.2"
@@ -24,7 +25,7 @@ private object Versions {
     const val fragment = "1.4.1"
     const val swiperefreshlayout = "1.1.0"
     const val lifecycle = "2.4.1"
-    const val paging = "3.1.0"
+    const val paging = "3.1.1"
     const val room = "2.4.2"
     const val workManager = "2.7.1"
     const val timber = "5.0.1"
@@ -33,8 +34,8 @@ private object Versions {
     const val googleServices = "4.3.10"
 
     // GMS versions
-    const val firebaseDatabase = "20.0.3"
-    const val firebaseStorage = "20.0.0"
+    const val firebaseDatabase = "20.0.4"
+    const val firebaseStorage = "20.0.1"
 
     // DI
     const val dagger = "2.41"
@@ -46,20 +47,19 @@ private object Versions {
     const val leakCanary = "2.8.1"
 
     // Testing
-    const val mockito = "4.3.1"
+    const val mockito = "4.4.0"
 
     // test instrumentation
-    const val androidTestCore = "1.4.0"
-    const val androidTestTruth = "1.4.0"
-    const val espresso = "3.4.0"
-    const val testExtJunit = "1.1.3"
-    const val uiautomator = "2.2.0"
+    const val androidTestCore = "1.4.1-alpha05"
+    const val androidTestTruth = "1.5.0-alpha05"
+    const val espresso = "3.5.0-alpha05"
+    const val testExtJunit = "1.1.4-alpha05"
 }
 
 object PublicVersions {
     val kotlin = Versions.kotlin
     const val compose = Versions.compose
-    const val ktlint = "0.44.0"
+    const val ktlint = "0.45.1"
     const val detekt = "1.19.0"
     const val kotlinxKover = "0.5.0"
 }
@@ -67,7 +67,7 @@ object PublicVersions {
 object BuildVersions {
     const val platformVersion = 32
     const val compileSdkVersion = platformVersion
-    const val targetSdkVersion = 32
+    const val targetSdkVersion = 30
     const val buildToolsVersion = "32.0.0"
     const val cmdlineToolsVersion = "6.0"
     const val minSdkVersion = 26
@@ -98,7 +98,8 @@ object Libraries {
     const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
     const val composeAnimation = "androidx.compose.animation:animation:${Versions.compose}"
     const val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
-    const val composeMaterialTheme = "com.google.android.material:compose-theme-adapter:${Versions.compose}"
+    const val composeMaterialTheme =
+        "com.google.android.material:compose-theme-adapter:${Versions.compose}"
     const val material = "com.google.android.material:material:${Versions.material}"
     const val swiperefreshlayout =
         "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"
@@ -116,6 +117,7 @@ object Libraries {
     const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
     const val workRuntimeKtx = "androidx.work:work-runtime-ktx:${Versions.workManager}"
     const val coil = "io.coil-kt:coil:${Versions.coil}"
+    const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil}"
     const val paperwork = "hu.supercluster:paperwork:${Versions.paperwork}"
 
     // firebase
@@ -161,13 +163,15 @@ object TestLibraries {
     const val testEspressoContrib = "androidx.test.espresso:espresso-contrib:${Versions.espresso}"
     const val testExtJunitKtx = "androidx.test.ext:junit-ktx:${Versions.testExtJunit}"
     const val fragmentTesting = "androidx.fragment:fragment-testing:${Versions.fragment}"
-    const val uiautomator = "androidx.test.uiautomator:uiautomator:${Versions.uiautomator}"
+    const val composeUiTestJunit4 = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
+    const val composeUiTestManifest = "androidx.compose.ui:ui-test-manifest:${Versions.compose}"
 }
 
 object GradlePlugin {
     val androidToolsBuildGradle =
         "com.android.tools.build:gradle:${Versions.androidToolsBuildGradle}"
     val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    val karumiShotPlugin = "com.karumi:shot:${Versions.karumiShot}"
     const val navigationSafeArgsGradlePlugin =
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
     const val googleServicePlugin = "com.google.gms:google-services:${Versions.googleServices}"

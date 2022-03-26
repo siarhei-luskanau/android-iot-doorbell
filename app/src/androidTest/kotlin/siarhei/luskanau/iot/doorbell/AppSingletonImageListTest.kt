@@ -11,7 +11,6 @@ import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.filters.LargeTest
 import kotlin.test.Test
 import org.junit.Rule
-import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.common.test.ui.retryFlaky
 import siarhei.luskanau.iot.doorbell.navigation.NavRootDirections
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
@@ -20,9 +19,6 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.R as ImageListR
 
 @LargeTest
 class AppSingletonImageListTest {
-
-    @get:Rule
-    val screenshotRule = TakeScreenshotAfterTestRule(onSucceeded = false)
 
     @get:Rule
     val activityScenarioRule = activityScenarioRule<NavigationActivity>(
@@ -46,13 +42,6 @@ class AppSingletonImageListTest {
         retryFlaky {
             onView(withId(ImageListR.id.imagesRecyclerView))
                 .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-        }
-
-        activityScenarioRule.scenario.onActivity {
-            screenshotRule.captureScreenshot(
-                name = javaClass.simpleName + ".screenshot",
-                activity = it
-            )
         }
     }
 }

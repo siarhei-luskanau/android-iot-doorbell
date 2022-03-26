@@ -12,5 +12,4 @@ dependencies {
     implementation(Libraries.fragmentKtx)
     implementation(Libraries.pagingCommonKtx)
     implementation(Libraries.pagingRuntimeKtx)
-    implementation(Libraries.coil)
 }

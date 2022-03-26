@@ -10,17 +10,13 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.karumi.shot.ScreenshotTest
 import kotlin.test.Test
-import org.junit.Rule
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
-import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 
-class ImageDetailsFragmentTest {
-
-    @get:Rule
-    val screenshotRule = TakeScreenshotAfterTestRule()
+class ImageDetailsFragmentTest : ScreenshotTest {
 
     companion object {
         const val EXPECTED_ERROR_MESSAGE = "Test Exception"
@@ -63,12 +59,11 @@ class ImageDetailsFragmentTest {
     @Test
     fun testNormalState() {
         val fragmentFactory = createNormalFragmentFactory()
-        launchFragmentInContainer<ImageDetailsFragment>(
+        val scenario = launchFragmentInContainer<ImageDetailsFragment>(
             factory = fragmentFactory,
             themeResId = CommonR.style.AppTheme
-        ).apply {
-            moveToState(Lifecycle.State.RESUMED)
-        }
+        )
+        scenario.moveToState(Lifecycle.State.RESUMED)
 
         // normal view is displayed
         Espresso.onView(ViewMatchers.withId(R.id.viewPager2))
@@ -77,17 +72,23 @@ class ImageDetailsFragmentTest {
         // error view does not exist
         Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
             .check(ViewAssertions.doesNotExist())
+
+        scenario.onFragment {
+            compareScreenshot(
+                fragment = it,
+                name = javaClass.simpleName + ".normal",
+            )
+        }
     }
 
     @Test
     fun testErrorState() {
         val fragmentFactory = createErrorFragmentFactory()
-        launchFragmentInContainer<ImageDetailsFragment>(
+        val scenario = launchFragmentInContainer<ImageDetailsFragment>(
             factory = fragmentFactory,
             themeResId = CommonR.style.AppTheme
-        ).apply {
-            moveToState(Lifecycle.State.RESUMED)
-        }
+        )
+        scenario.moveToState(Lifecycle.State.RESUMED)
 
         // error view is displayed
         Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
@@ -98,5 +99,12 @@ class ImageDetailsFragmentTest {
         // normal view does not exist
         Espresso.onView(ViewMatchers.withId(R.id.viewPager2))
             .check(ViewAssertions.doesNotExist())
+
+        scenario.onFragment {
+            compareScreenshot(
+                fragment = it,
+                name = javaClass.simpleName + ".empty",
+            )
+        }
     }
 }

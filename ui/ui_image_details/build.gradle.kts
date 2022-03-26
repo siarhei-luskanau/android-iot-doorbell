@@ -17,7 +17,6 @@ dependencies {
     implementation(Libraries.fragmentKtx)
     implementation(Libraries.lifecycleLivedataKtx)
     implementation(Libraries.navigationUiKtx)
-    implementation(Libraries.coil)
 
     // unit test
     testImplementation(TestLibraries.kotlinTest)

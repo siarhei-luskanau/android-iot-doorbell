@@ -318,55 +318,6 @@ tasks.register("waitAndroidEmulator") {
     }
 }
 
-tasks.register("moveScreenshotsFromDevices") {
-    val config = AndroidSdkConfig()
-    group = EMULATOR_GRADLE
-
-    doLast {
-        val buildScreenshotsDirectory = File(project.buildDir, "screenshots")
-            .apply { mkdirs() }
-
-        config.getDevicesList().forEach { emulatorAttributes ->
-            println("MoveScreenshotsFromDevices: $emulatorAttributes")
-            exec {
-                val emulatorName = emulatorAttributes.first().let { emulatorAttribute ->
-                    ANDROID_EMULATORS
-                        .filter { emulatorConfig -> emulatorAttribute.contains(emulatorConfig.port) }
-                        .map { it.avdName }
-                        .firstOrNull()
-                        ?: emulatorAttribute
-                }
-                commandLine = listOf(
-                    config.adb.absolutePath,
-                    "-s",
-                    emulatorAttributes.first(),
-                    "pull",
-                    "/sdcard/Pictures/screenshots/",
-                    File(buildScreenshotsDirectory, emulatorName)
-                        .apply { mkdirs() }
-                        .absolutePath
-                )
-                isIgnoreExitValue = true
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
-
-            exec {
-                commandLine = listOf(
-                    config.adb.absolutePath,
-                    "-s",
-                    emulatorAttributes.first(),
-                    "shell",
-                    "rm",
-                    "-rf",
-                    "/sdcard/Pictures/screenshots/",
-                )
-                isIgnoreExitValue = true
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
-        }
-    }
-}
-
 tasks.register("killAndroidEmulator") {
     val config = AndroidSdkConfig()
     group = EMULATOR_GRADLE

@@ -3,8 +3,7 @@ package siarhei.luskanau.iot.doorbell.data
 import android.content.Context
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
@@ -30,10 +29,10 @@ class AndroidThisDeviceRepositoryTest {
         given(buildDeviceInfo()).willReturn(deviceInfo)
     }
     private val cameraRepository = mock(CameraRepository::class.java).apply {
-        given(runBlocking { getCamerasList() }).willReturn(camerasList)
+        runTest { given(getCamerasList()).willReturn(camerasList) }
     }
     private val ipAddressProvider = mock(IpAddressProvider::class.java).apply {
-        given(runBlocking { getIpAddressList() }).willReturn(ipAddressList)
+        runTest { given(getIpAddressList()).willReturn(ipAddressList) }
     }
 
     private val androidThisDeviceRepository = AndroidThisDeviceRepository(
@@ -45,7 +44,7 @@ class AndroidThisDeviceRepositoryTest {
 
     @Test
     fun `test check doorbellId`() {
-        runBlocking {
+        runTest {
             assertEquals(
                 expected = doorbellId,
                 actual = androidThisDeviceRepository.doorbellId(),
@@ -56,7 +55,7 @@ class AndroidThisDeviceRepositoryTest {
 
     @Test
     fun `test check doorbellData`() {
-        runBlockingTest {
+        runTest {
             val resultDoorbellData: DoorbellData = androidThisDeviceRepository.doorbellData()
             verify(deviceInfoProvider, times(1)).buildDoorbellId()
             verify(deviceInfoProvider, times(1)).buildDeviceName()
@@ -71,7 +70,7 @@ class AndroidThisDeviceRepositoryTest {
 
     @Test
     fun `test check getCamerasList`() {
-        runBlockingTest {
+        runTest {
             val resultCamerasList = androidThisDeviceRepository.getCamerasList()
             verify(cameraRepository, times(1)).getCamerasList()
             assertEquals(
@@ -84,7 +83,7 @@ class AndroidThisDeviceRepositoryTest {
 
     @Test
     fun `test check getIpAddressList`() {
-        runBlockingTest {
+        runTest {
             val resultIpAddressList = androidThisDeviceRepository.getIpAddressList()
             verify(ipAddressProvider, times(1)).getIpAddressList()
             assertEquals(

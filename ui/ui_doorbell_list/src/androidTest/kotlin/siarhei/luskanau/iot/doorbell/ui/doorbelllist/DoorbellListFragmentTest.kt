@@ -6,20 +6,16 @@ import androidx.paging.PagingData
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import com.karumi.shot.ScreenshotTest
 import kotlin.test.Test
 import kotlinx.coroutines.flow.flowOf
-import org.junit.Rule
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
-import siarhei.luskanau.iot.doorbell.common.test.ui.TakeScreenshotAfterTestRule
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.R as DoorbellListR
 
-class DoorbellListFragmentTest {
-
-    @get:Rule
-    val screenshotRule = TakeScreenshotAfterTestRule()
+class DoorbellListFragmentTest : ScreenshotTest {
 
     private fun createFragment(list: List<DoorbellData>) = DoorbellListFragment {
         mock(DoorbellListPresenter::class.java).apply {
@@ -29,11 +25,10 @@ class DoorbellListFragmentTest {
 
     @Test
     fun testNormalState() {
-        launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
+        val scenario = launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(list = listOf(DoorbellData(doorbellId = "doorbellId")))
-        }.apply {
-            moveToState(Lifecycle.State.RESUMED)
         }
+        scenario.moveToState(Lifecycle.State.RESUMED)
 
         // normal view is displayed
         Espresso.onView(ViewMatchers.withId(DoorbellListR.id.doorbellsRecyclerView))
@@ -44,15 +39,21 @@ class DoorbellListFragmentTest {
             .check(ViewAssertions.doesNotExist())
         Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
             .check(ViewAssertions.doesNotExist())
+
+        scenario.onFragment {
+            compareScreenshot(
+                fragment = it,
+                name = javaClass.simpleName + ".normal",
+            )
+        }
     }
 
     @Test
     fun testEmptyState() {
-        launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
+        val scenario = launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(list = emptyList())
-        }.apply {
-            moveToState(Lifecycle.State.RESUMED)
         }
+        scenario.moveToState(Lifecycle.State.RESUMED)
 
         // empty view is displayed
         Espresso.onView(ViewMatchers.withId(CommonR.id.empty_message))
@@ -63,5 +64,12 @@ class DoorbellListFragmentTest {
             .check(ViewAssertions.doesNotExist())
         Espresso.onView(ViewMatchers.withId(CommonR.id.error_message))
             .check(ViewAssertions.doesNotExist())
+
+        scenario.onFragment {
+            compareScreenshot(
+                fragment = it,
+                name = javaClass.simpleName + ".empty",
+            )
+        }
     }
 }

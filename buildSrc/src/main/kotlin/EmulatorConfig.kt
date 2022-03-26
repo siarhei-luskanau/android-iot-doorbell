@@ -13,13 +13,6 @@ data class EmulatorConfig(
 
 val ANDROID_EMULATORS = listOf(
     EmulatorConfig(
-        avdName = "TestEmulator23",
-        sdkId = "system-images;android-23;google_apis;x86_64",
-        deviceType = "Nexus One",
-        port = "5560",
-        partitionSize = "1500",
-    ),
-    EmulatorConfig(
         avdName = "TestEmulator26",
         sdkId = "system-images;android-26;google_apis;x86_64",
         deviceType = "Nexus 4",
@@ -30,13 +23,6 @@ val ANDROID_EMULATORS = listOf(
         sdkId = "system-images;android-28;google_apis;x86_64",
         deviceType = "Galaxy Nexus",
         port = "5564",
-    ),
-    EmulatorConfig(
-        avdName = "TestEmulator29",
-        sdkId = "system-images;android-29;google_apis;x86_64",
-        deviceType = "Nexus 5X",
-        port = "5568",
-        memory = "1024",
     ),
     EmulatorConfig(
         avdName = "TestEmulator30",
