@@ -1,8 +1,8 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.util.Properties
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import java.util.zip.ZipFile
 
 // sudo apt-get install curl unzip openjdk-11-jdk
 // export ANDROID_HOME=$HOME/Android/Sdk
@@ -38,10 +38,10 @@ tasks.register("setupAndroidCmdlineTools") {
         val config = AndroidSdkConfig()
             .apply { printSdkPath() }
 
-        val commandlinetoolsUrl = if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            COMMANDLINETOOLS_WIN
-        } else {
-            COMMANDLINETOOLS_LINUX
+        val commandlinetoolsUrl = when {
+            Os.isFamily(Os.FAMILY_WINDOWS) -> COMMANDLINETOOLS_WIN
+            Os.isFamily(Os.FAMILY_MAC) -> COMMANDLINETOOLS_MAC
+            else -> COMMANDLINETOOLS_LINUX
         }
 
         exec {
@@ -56,34 +56,33 @@ tasks.register("setupAndroidCmdlineTools") {
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
 
-        exec {
-            commandLine = listOf(
-                "rm",
-                "-rf",
-                "${config.androidHome}/cmdline-tools/",
-            )
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        "${config.androidHome}/cmdline-tools/".also {
+            println("deleting: $it")
+            File(it).deleteRecursively()
+            println("deleted: $it")
+        }
 
-        exec {
-            commandLine = listOf(
-                "unzip",
-                "${config.androidHome}/commandlinetools-linux.zip",
-                "-d",
-                "${config.androidHome}/",
-            )
-            standardInput = "yes\n".byteInputStream()
-            standardOutput = ByteArrayOutputStream()
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        "${config.androidHome}/commandlinetools-linux.zip".also {
+            println("unzupping: $it")
+            val destDirectory = File(it).parentFile
+            ZipFile(it).use { zip ->
+                zip.entries().asSequence().forEach { entry ->
+                    zip.getInputStream(entry).use { input ->
+                        val outputFile = File(destDirectory, entry.name)
+                        outputFile.parentFile.mkdirs()
+                        outputFile.outputStream().use { input.copyTo(it) }
+                        outputFile.setExecutable(true)
+                    }
+                }
+            }
+            println("unzupped: $it")
+        }
 
-        exec {
-            commandLine = listOf(
-                "rm",
-                "${config.androidHome}/commandlinetools-linux.zip",
-            )
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        "${config.androidHome}/commandlinetools-linux.zip".also {
+            println("deleting: $it")
+            File(it).deleteRecursively()
+            println("deleted: $it")
+        }
 
         exec {
             commandLine = listOf(
@@ -169,13 +168,12 @@ tasks.register("setupAndroidSDK") {
         }.apply { println("ExecResult: $this") }
 
         exec {
-            commandLine =
-                listOf(
-                    config.sdkmanager.absolutePath,
-                    "--list",
-                    "--sdk_root=${config.androidHome}",
-                    "--channel=3",
-                )
+            commandLine = listOf(
+                config.sdkmanager.absolutePath,
+                "--list",
+                "--sdk_root=${config.androidHome}",
+                "--channel=3",
+            )
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
     }

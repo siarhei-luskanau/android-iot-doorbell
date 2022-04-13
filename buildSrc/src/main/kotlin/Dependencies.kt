@@ -67,7 +67,7 @@ object PublicVersions {
 object BuildVersions {
     const val platformVersion = 32
     const val compileSdkVersion = platformVersion
-    const val targetSdkVersion = 30
+    const val targetSdkVersion = 32
     const val buildToolsVersion = "32.0.0"
     const val cmdlineToolsVersion = "6.0"
     const val minSdkVersion = 26

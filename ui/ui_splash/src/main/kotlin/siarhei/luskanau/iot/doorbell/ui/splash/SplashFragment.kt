@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import com.google.android.material.composethemeadapter.MdcTheme
 
@@ -40,6 +41,7 @@ class SplashFragment(
 }
 
 @Composable
+@Preview
 @Suppress("FunctionNaming")
 @VisibleForTesting
 fun SplashPreview() =

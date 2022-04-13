@@ -11,9 +11,6 @@ dependencies {
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 
-    implementation(Libraries.material)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
     implementation(Libraries.navigationUiKtx)
 
     // unit test
