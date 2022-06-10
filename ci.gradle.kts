@@ -77,6 +77,30 @@ tasks.register("ciEmulator32") {
     }
 }
 
+tasks.register("ciEmulator33") {
+    group = CI_GRADLE
+    doLast {
+        runOnEmulator(emulatorName = "TestEmulator33")
+    }
+}
+
+tasks.register("ciAll") {
+    group = CI_GRADLE
+    doLast {
+        gradlew(
+            "ktlintFormat",
+            "ciLint",
+            "ciBuildApp",
+            "ciUnitTest",
+            "ciEmulator26",
+            "ciEmulator28",
+            "ciEmulator30",
+            "ciEmulator31",
+            "ciEmulator33",
+        )
+    }
+}
+
 fun runOnEmulator(
     emulatorName: String,
     directorySuffix: String = emulatorName,
@@ -103,7 +127,7 @@ fun runOnEmulator(
         "-PdirectorySuffix=$directorySuffix",
     ).also {
         if (isRecording) it.add("-Precord")
-    }.also{
+    }.also {
         gradlew(*it.toTypedArray())
     }
     gradlew("killAndroidEmulator")

@@ -13,14 +13,15 @@ private object Versions {
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
     val karumiShot: String = versionsProperties["version.karumiShot"].toString()
     const val compose = "1.1.1"
+    const val composeMaterial = "1.1.11"
     const val desugar = "1.1.5"
-    const val kotlinxDatetime = "0.3.2"
-    const val kotlinxSerialization = "1.3.2"
+    const val kotlinxDatetime = "0.3.3"
+    const val kotlinxSerialization = "1.3.3"
     const val gson = "2.9.0"
-    const val navigation = "2.4.1"
-    const val androidxCamera = "1.1.0-beta02"
+    const val navigation = "2.4.2"
+    const val androidxCamera = "1.1.0-rc01"
     const val androidxStartup = "1.1.1"
-    const val material = "1.5.0"
+    const val material = "1.7.0-alpha02"
     const val activity = "1.4.0"
     const val fragment = "1.4.1"
     const val swiperefreshlayout = "1.1.0"
@@ -29,47 +30,47 @@ private object Versions {
     const val room = "2.4.2"
     const val workManager = "2.7.1"
     const val timber = "5.0.1"
-    const val coil = "1.4.0"
+    const val coil = "2.1.0"
     const val paperwork = "1.2.7"
     const val googleServices = "4.3.10"
 
     // GMS versions
-    const val firebaseDatabase = "20.0.4"
+    const val firebaseDatabase = "20.0.5"
     const val firebaseStorage = "20.0.1"
 
     // DI
-    const val dagger = "2.41"
-    const val kodein = "7.11.0"
-    const val koin = "3.1.5"
+    const val dagger = "2.42"
+    const val kodein = "7.12.0"
+    const val koin = "3.2.0"
     const val toothpick = "3.1.0"
 
     // Development
     const val leakCanary = "2.8.1"
 
     // Testing
-    const val mockito = "4.4.0"
+    const val mockito = "4.6.1"
 
     // test instrumentation
-    const val androidTestCore = "1.4.1-alpha05"
-    const val androidTestTruth = "1.5.0-alpha05"
-    const val espresso = "3.5.0-alpha05"
-    const val testExtJunit = "1.1.4-alpha05"
+    const val androidTestCore = "1.4.1-alpha07"
+    const val androidTestTruth = "1.5.0-alpha07"
+    const val espresso = "3.5.0-alpha07"
+    const val testExtJunit = "1.1.4-alpha07"
 }
 
 object PublicVersions {
     val kotlin = Versions.kotlin
     const val compose = Versions.compose
-    const val ktlint = "0.45.1"
-    const val detekt = "1.19.0"
-    const val kotlinxKover = "0.5.0"
+    const val ktlint = "0.45.2"
+    const val detekt = "1.20.0"
+    const val kotlinxKover = "0.5.1"
 }
 
 object BuildVersions {
-    const val platformVersion = 32
+    const val platformVersion = 33
     const val compileSdkVersion = platformVersion
-    const val targetSdkVersion = 32
-    const val buildToolsVersion = "32.0.0"
-    const val cmdlineToolsVersion = "6.0"
+    const val targetSdkVersion = 33
+    const val buildToolsVersion = "33.0.0"
+    const val cmdlineToolsVersion = "7.0"
     const val minSdkVersion = 26
 }
 
@@ -99,7 +100,7 @@ object Libraries {
     const val composeAnimation = "androidx.compose.animation:animation:${Versions.compose}"
     const val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
     const val composeMaterialTheme =
-        "com.google.android.material:compose-theme-adapter:${Versions.compose}"
+        "com.google.android.material:compose-theme-adapter:${Versions.composeMaterial}"
     const val material = "com.google.android.material:material:${Versions.material}"
     const val swiperefreshlayout =
         "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"

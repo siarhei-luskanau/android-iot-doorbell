@@ -44,6 +44,12 @@ val ANDROID_EMULATORS = listOf(
         deviceType = "pixel_5",
         port = "5578",
     ),
+    EmulatorConfig(
+        avdName = "TestEmulator33",
+        sdkId = "system-images;android-33;google_apis;x86_64",
+        deviceType = "pixel_5",
+        port = "5580",
+    ),
 )
 
 fun platformExecutable(name: String, ext: String = "exe"): String =

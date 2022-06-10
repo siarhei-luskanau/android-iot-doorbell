@@ -1,6 +1,8 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
 import java.util.Properties
 import java.util.zip.ZipFile
 
@@ -21,7 +23,7 @@ val YES_INPUT: String = mutableListOf<String>()
     .joinToString()
 
 val EMULATOR_GRADLE = "EMULATOR_GRADLE"
-val COMMANDLINETOOLS_VERSION = "8092744"
+val COMMANDLINETOOLS_VERSION = "8512546"
 val COMMANDLINETOOLS_LINUX =
     "https://dl.google.com/android/repository/commandlinetools-linux-" +
             "${COMMANDLINETOOLS_VERSION}_latest.zip"
@@ -44,17 +46,14 @@ tasks.register("setupAndroidCmdlineTools") {
             else -> COMMANDLINETOOLS_LINUX
         }
 
-        exec {
-            commandLine = listOf(
-                "curl",
-                commandlinetoolsUrl,
-                "-o",
-                "${config.androidHome}/commandlinetools-linux.zip",
-            )
-            standardInput = "yes\n".byteInputStream()
-            standardOutput = ByteArrayOutputStream()
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        val commandlinetoolsPath = "${config.androidHome}/commandlinetools.zip"
+        println("downloading: $commandlinetoolsUrl")
+        URL(commandlinetoolsUrl).openStream().use { input ->
+            FileOutputStream(File(commandlinetoolsPath)).use { output ->
+                input.copyTo(output)
+            }
+        }
+        println("downloaded: $commandlinetoolsUrl")
 
         "${config.androidHome}/cmdline-tools/".also {
             println("deleting: $it")
@@ -62,27 +61,23 @@ tasks.register("setupAndroidCmdlineTools") {
             println("deleted: $it")
         }
 
-        "${config.androidHome}/commandlinetools-linux.zip".also {
-            println("unzupping: $it")
-            val destDirectory = File(it).parentFile
-            ZipFile(it).use { zip ->
-                zip.entries().asSequence().forEach { entry ->
-                    zip.getInputStream(entry).use { input ->
-                        val outputFile = File(destDirectory, entry.name)
-                        outputFile.parentFile.mkdirs()
-                        outputFile.outputStream().use { input.copyTo(it) }
-                        outputFile.setExecutable(true)
-                    }
+        println("unzupping: $commandlinetoolsPath")
+        val destDirectory = File(commandlinetoolsPath).parentFile
+        ZipFile(commandlinetoolsPath).use { zip ->
+            zip.entries().asSequence().forEach { entry ->
+                zip.getInputStream(entry).use { input ->
+                    val outputFile = File(destDirectory, entry.name)
+                    outputFile.parentFile.mkdirs()
+                    outputFile.outputStream().use { input.copyTo(it) }
+                    outputFile.setExecutable(true)
                 }
             }
-            println("unzupped: $it")
         }
+        println("unzupped: $commandlinetoolsPath")
 
-        "${config.androidHome}/commandlinetools-linux.zip".also {
-            println("deleting: $it")
-            File(it).deleteRecursively()
-            println("deleted: $it")
-        }
+        println("deleting: $commandlinetoolsPath")
+        File(commandlinetoolsPath).deleteRecursively()
+        println("deleted: $commandlinetoolsPath")
 
         exec {
             commandLine = listOf(
