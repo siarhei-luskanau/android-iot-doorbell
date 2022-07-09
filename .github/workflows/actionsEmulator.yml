@@ -17,7 +17,8 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '15'
-      - run: bash ./gradlew :setupAndroidCmdlineTools --stacktrace
+      - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
+        working-directory: ./android_sdk
       - run: bash ./gradlew ciEmulator${{ matrix.emulator-varsion }} --stacktrace
       - uses: actions/upload-artifact@v3
         if: always()

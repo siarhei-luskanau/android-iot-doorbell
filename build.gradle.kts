@@ -25,7 +25,6 @@ plugins {
     id("org.jetbrains.kotlinx.kover").version(PublicVersions.kotlinxKover)
 }
 
-apply(from = "$rootDir/emulator.gradle.kts")
 apply(from = "$rootDir/ci.gradle.kts")
 
 allprojects {

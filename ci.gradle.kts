@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 val CI_GRADLE = "CI_GRADLE"
 
 tasks.register("ciLint") {
@@ -109,19 +111,22 @@ fun runOnEmulator(
     gradlew(
         "setupAndroidSDK",
         "killAndroidEmulator",
-        addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
+        addToEnvironment = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
+        isAndroidSdkGradlew = true
     )
     gradlew(
         "setupAndroidEmulator",
-        addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
+        addToEnvironment = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
+        isAndroidSdkGradlew = true
     )
     Thread {
         gradlew(
             "runAndroidEmulator",
-            addToEnvironment = mapOf(ENV_EMULATOR_AVD_NAME to emulatorName)
+            addToEnvironment = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
+            isAndroidSdkGradlew = true
         )
     }.start()
-    gradlew("waitAndroidEmulator")
+    gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
     mutableListOf(
         "executeScreenshotTests",
         "-PdirectorySuffix=$directorySuffix",
@@ -130,22 +135,34 @@ fun runOnEmulator(
     }.also {
         gradlew(*it.toTypedArray())
     }
-    gradlew("killAndroidEmulator")
+    gradlew("killAndroidEmulator", isAndroidSdkGradlew = true)
+    gradlew("deleteAndroidEmulator", isAndroidSdkGradlew = true)
 }
 
-fun gradlew(vararg tasks: String, addToEnvironment: Map<String, String>? = null) {
+fun gradlew(
+    vararg tasks: String,
+    addToEnvironment: Map<String, String>? = null,
+    isAndroidSdkGradlew: Boolean = false,
+) {
     exec {
-        val gradlePath = File(
+        executable = File(
             project.rootDir,
-            platformExecutable(name = "gradlew", ext = "bat")
-        ).absolutePath
-        commandLine = mutableListOf<String>().apply {
-            add(gradlePath)
+            pathOf(
+                if (isAndroidSdkGradlew) "android_sdk" else null,
+                if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew",
+            )
+        )
+            .also { it.setExecutable(true) }
+            .absolutePath
+        if (isAndroidSdkGradlew) {
+            workingDir = File(project.rootDir, "android_sdk")
+        }
+        args = mutableListOf<String>().apply {
             addAll(tasks)
             add("--stacktrace")
         }
         addToEnvironment?.let {
-            environment = environment.orEmpty().toMutableMap().apply { putAll(it) }
+            environment = environment.toMutableMap().apply { putAll(it) }
         }
         println("commandLine: ${this.commandLine}")
     }.apply { println("ExecResult: $this") }

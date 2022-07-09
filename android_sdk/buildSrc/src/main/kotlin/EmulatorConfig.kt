@@ -1,7 +1,3 @@
-import org.apache.tools.ant.taskdefs.condition.Os
-
-const val ENV_EMULATOR_AVD_NAME = "ENV_EMULATOR_AVD_NAME"
-
 data class EmulatorConfig(
     val avdName: String,
     val sdkId: String,
@@ -51,10 +47,3 @@ val ANDROID_EMULATORS = listOf(
         port = "5580",
     ),
 )
-
-fun platformExecutable(name: String, ext: String = "exe"): String =
-    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        "$name.$ext"
-    } else {
-        name
-    }
