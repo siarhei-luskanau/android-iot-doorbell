@@ -104,7 +104,7 @@ abstract class BaseCameraRepository(
                     ?.associateBy(
                         { effect: Int -> getEffectName(effect) },
                         { effect: Int -> effect.toString() }
-                    ),
+                    )
             )
         }.getOrElse {
             Timber.d("Cam access exception getting characteristics.")
@@ -123,7 +123,7 @@ abstract class BaseCameraRepository(
                         implementationType = cameraInfo.implementationType,
                         sensorRotationDegrees = cameraInfo.sensorRotationDegrees.toString(),
                         hasFlashUnit = cameraInfo.hasFlashUnit().toString(),
-                        toString = cameraInfo.toString(),
+                        toString = cameraInfo.toString()
                     )
                 }
         }.getOrElse {

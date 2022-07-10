@@ -33,7 +33,6 @@ class ToothpickFragmentFactory(
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         Timber.d("AppFragmentFactory:instantiate:$className")
         return when (className) {
-
             SplashFragment::class.java.name -> {
                 SplashFragment { fragment: Fragment ->
                     val viewModelFactory: ViewModelProvider.Factory = ToothpickViewModelFactory(
@@ -86,7 +85,7 @@ class ToothpickFragmentFactory(
                         appNavigation = appNavigation,
                         fragment = fragment,
                         doorbellId = doorbellId,
-                        imageId = imageId,
+                        imageId = imageId
                     )
                 }
             }

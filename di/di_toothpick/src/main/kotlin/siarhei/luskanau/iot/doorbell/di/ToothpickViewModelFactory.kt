@@ -25,7 +25,6 @@ class ToothpickViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         Timber.d("AppViewModelFactory:instantiate:$modelClass")
         return when {
-
             SplashViewModel::class.java.isAssignableFrom(modelClass) -> SplashViewModel(
                 splashNavigation = appNavigation
             )
@@ -40,7 +39,7 @@ class ToothpickViewModelFactory(
                 doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId,
                 appNavigation = appNavigation,
                 doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
-                imagesDataSourceFactory = scope.getInstance(ImagesDataSourceFactory::class.java),
+                imagesDataSourceFactory = scope.getInstance(ImagesDataSourceFactory::class.java)
             )
 
             else -> modelClass.getConstructor().newInstance()

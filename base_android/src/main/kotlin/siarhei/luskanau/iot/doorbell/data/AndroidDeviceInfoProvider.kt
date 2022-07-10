@@ -5,8 +5,8 @@ import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import hu.supercluster.paperwork.Paperwork
-import java.util.UUID
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
+import java.util.UUID
 
 private const val GIT_SHA = "gitSha"
 private const val GIT_BRANCH = "gitBranch"

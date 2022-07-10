@@ -48,7 +48,7 @@ class DiHolderImpl(context: Context) : DiHolder {
                         DaggerDoorbellListComponent.factory()
                             .create(
                                 appNavigation = appNavigation,
-                                commonComponent = commonComponent,
+                                commonComponent = commonComponent
                             )
                             .provideFragmentFactory()
                             .get()
@@ -57,7 +57,7 @@ class DiHolderImpl(context: Context) : DiHolder {
                         DaggerImageListComponent.factory()
                             .create(
                                 appNavigation = appNavigation,
-                                commonComponent = commonComponent,
+                                commonComponent = commonComponent
                             )
                             .provideFragmentFactory()
                             .get()
@@ -66,7 +66,7 @@ class DiHolderImpl(context: Context) : DiHolder {
                         DaggerImageDetailsComponent.factory()
                             .create(
                                 appNavigation = appNavigation,
-                                commonComponent = commonComponent,
+                                commonComponent = commonComponent
                             )
                             .provideFragmentFactory()
                             .get()
@@ -81,6 +81,6 @@ class DiHolderImpl(context: Context) : DiHolder {
             doorbellRepository = { commonComponent.provideDoorbellRepository() },
             cameraRepository = { commonComponent.provideCameraRepository() },
             uptimeRepository = { commonComponent.provideUptimeRepository() },
-            imageRepository = { commonComponent.provideImageRepository() },
+            imageRepository = { commonComponent.provideImageRepository() }
         )
 }

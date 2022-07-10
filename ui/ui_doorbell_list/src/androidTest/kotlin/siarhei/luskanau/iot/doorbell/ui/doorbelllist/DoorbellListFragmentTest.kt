@@ -7,11 +7,11 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import com.karumi.shot.ScreenshotTest
-import kotlin.test.Test
 import kotlinx.coroutines.flow.flowOf
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
+import kotlin.test.Test
 import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.R as DoorbellListR
 
@@ -43,7 +43,7 @@ class DoorbellListFragmentTest : ScreenshotTest {
         scenario.onFragment {
             compareScreenshot(
                 fragment = it,
-                name = javaClass.simpleName + ".normal",
+                name = javaClass.simpleName + ".normal"
             )
         }
     }
@@ -68,7 +68,7 @@ class DoorbellListFragmentTest : ScreenshotTest {
         scenario.onFragment {
             compareScreenshot(
                 fragment = it,
-                name = javaClass.simpleName + ".empty",
+                name = javaClass.simpleName + ".empty"
             )
         }
     }

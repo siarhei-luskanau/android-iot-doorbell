@@ -81,7 +81,7 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
 
     override suspend fun getUptime(doorbellId: String): Uptime? =
         dataSnapshotObject<UptimeDto>(
-            getValueFromDatabase(getAppDatabase().child(UPTIME_KEY).child(doorbellId)),
+            getValueFromDatabase(getAppDatabase().child(UPTIME_KEY).child(doorbellId))
         )?.let { uptimeDto ->
             Uptime(
                 startupTimeMillis = uptimeDto.startupTimeMillis,

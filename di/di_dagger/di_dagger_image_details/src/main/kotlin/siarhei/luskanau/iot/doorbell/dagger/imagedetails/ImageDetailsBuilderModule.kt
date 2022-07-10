@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import dagger.Module
 import dagger.Provides
-import javax.inject.Provider
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerFragmentFactory
@@ -13,6 +12,7 @@ import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
+import javax.inject.Provider
 
 @Module
 class ImageDetailsBuilderModule {
@@ -44,7 +44,7 @@ class ImageDetailsBuilderModule {
 
     @Provides
     fun provideImageDetailsSlideFragment(
-        commonComponent: CommonComponent,
+        commonComponent: CommonComponent
     ) =
         ImageDetailsSlideFragment { fragment: Fragment ->
             val doorbellId = ImageDetailsFragmentArgs.fromBundle(
@@ -56,7 +56,7 @@ class ImageDetailsBuilderModule {
             ImageDetailsSlidePresenterImpl(
                 doorbellId = doorbellId,
                 imageId = imageId,
-                doorbellRepository = commonComponent.provideDoorbellRepository(),
+                doorbellRepository = commonComponent.provideDoorbellRepository()
             )
         }
 }

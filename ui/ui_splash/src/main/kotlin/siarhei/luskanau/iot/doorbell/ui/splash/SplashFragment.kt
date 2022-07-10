@@ -52,5 +52,5 @@ fun SplashPreview() =
         painter = painterResource(
             id = siarhei.luskanau.iot.doorbell.ui.common.R.drawable.ic_android
         ),
-        contentDescription = null,
+        contentDescription = null
     )

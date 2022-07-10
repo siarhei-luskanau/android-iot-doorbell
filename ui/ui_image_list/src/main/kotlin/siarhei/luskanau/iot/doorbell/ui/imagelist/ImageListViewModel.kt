@@ -16,7 +16,7 @@ class ImageListViewModel(
     private val doorbellId: String,
     private val appNavigation: AppNavigation,
     private val doorbellRepository: DoorbellRepository,
-    imagesDataSourceFactory: ImagesDataSourceFactory,
+    imagesDataSourceFactory: ImagesDataSourceFactory
 ) : ViewModel(), ImageListPresenter {
 
     override val viewStateFlow: Flow<ImageListState> =
@@ -27,7 +27,7 @@ class ImageListViewModel(
                 val cameraList = doorbellRepository.getCamerasList(doorbellId)
                 ImageListState(
                     cameraList = cameraList,
-                    pagingData = pagingData,
+                    pagingData = pagingData
                 )
             }
 

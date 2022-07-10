@@ -17,12 +17,11 @@ class ImageListViewModelFactory constructor(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
         when {
-
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
                 doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId,
                 appNavigation = appNavigation,
                 doorbellRepository = commonComponent.provideDoorbellRepository(),
-                imagesDataSourceFactory = commonComponent.provideImagesDataSourceFactory(),
+                imagesDataSourceFactory = commonComponent.provideImagesDataSourceFactory()
             )
 
             else -> modelClass.getConstructor().newInstance()

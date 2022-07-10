@@ -98,6 +98,7 @@ tasks.register("ciAll") {
             "ciEmulator28",
             "ciEmulator30",
             "ciEmulator31",
+            "ciEmulator32",
             "ciEmulator33",
         )
     }
@@ -127,14 +128,15 @@ fun runOnEmulator(
         )
     }.start()
     gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
-    mutableListOf(
-        "executeScreenshotTests",
-        "-PdirectorySuffix=$directorySuffix",
-    ).also {
-        if (isRecording) it.add("-Precord")
-    }.also {
-        gradlew(*it.toTypedArray())
-    }
+//    mutableListOf(
+//        "executeScreenshotTests",
+//        "-PdirectorySuffix=$directorySuffix",
+//    ).also {
+//        if (isRecording) it.add("-Precord")
+//    }.also {
+//        gradlew(*it.toTypedArray())
+//    }
+    gradlew("connectedAndroidTest")
     gradlew("killAndroidEmulator", isAndroidSdkGradlew = true)
     gradlew("deleteAndroidEmulator", isAndroidSdkGradlew = true)
 }

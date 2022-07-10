@@ -13,7 +13,7 @@ data class CameraInfoData(
     val infoSupportedHardwareLevel: String? = null,
     val scalerStreamConfigurationMap: Map<String, Map<String, String>>? = null,
     val controlAvailableEffects: Map<String, String>? = null,
-    val error: String? = null,
+    val error: String? = null
 )
 
 data class CameraxInfoData(
@@ -21,5 +21,5 @@ data class CameraxInfoData(
     val sensorRotationDegrees: String? = null,
     val hasFlashUnit: String? = null,
     val toString: String? = null,
-    val error: String? = null,
+    val error: String? = null
 )

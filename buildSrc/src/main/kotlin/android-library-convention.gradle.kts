@@ -47,10 +47,10 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = PublicVersions.compose
+        kotlinCompilerExtensionVersion = PublicVersions.composeCompiler
     }
 
-    packagingOptions.excludes.apply {
+    packagingOptions.resources.excludes.apply {
         add("META-INF/AL2.0")
         add("META-INF/LGPL2.1")
     }

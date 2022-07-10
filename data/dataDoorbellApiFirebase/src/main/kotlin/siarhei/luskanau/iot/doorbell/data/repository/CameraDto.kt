@@ -23,10 +23,10 @@ data class CameraInfoDto(
     @SerialName("CONTROL_AVAILABLE_EFFECTS")
     val controlAvailableEffects: Map<String, String>? = null,
     @SerialName("error")
-    val error: String? = null,
+    val error: String? = null
 )
 
 @Serializable
 data class CameraxInfoDto(
-    @SerialName("error") val error: String? = null,
+    @SerialName("error") val error: String? = null
 )

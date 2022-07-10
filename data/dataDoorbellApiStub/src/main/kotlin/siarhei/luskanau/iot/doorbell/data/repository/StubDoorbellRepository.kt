@@ -1,14 +1,14 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import kotlinx.coroutines.delay
+import siarhei.luskanau.iot.doorbell.data.model.CameraData
+import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
+import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
-import kotlinx.coroutines.delay
-import siarhei.luskanau.iot.doorbell.data.model.CameraData
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 @Suppress("TooManyFunctions")
 class StubDoorbellRepository : DoorbellRepository {
@@ -35,7 +35,7 @@ class StubDoorbellRepository : DoorbellRepository {
                 list.add(
                     DoorbellData(
                         doorbellId = "$i",
-                        name = "doorbell_$i",
+                        name = "doorbell_$i"
                     )
                 )
             }
@@ -47,7 +47,7 @@ class StubDoorbellRepository : DoorbellRepository {
         delay()
         return DoorbellData(
             doorbellId = doorbellId,
-            name = "doorbell_$doorbellId",
+            name = "doorbell_$doorbellId"
         )
     }
 
@@ -100,11 +100,11 @@ class StubDoorbellRepository : DoorbellRepository {
 
     override suspend fun getImage(
         doorbellId: String,
-        imageId: String,
+        imageId: String
     ): ImageData? {
         delay()
         return ImageData(
-            imageId = imageId,
+            imageId = imageId
         )
     }
 

@@ -16,7 +16,7 @@ class DefaultWorkerFactory(
     private val doorbellRepository: () -> DoorbellRepository,
     private val cameraRepository: () -> CameraRepository,
     private val uptimeRepository: () -> UptimeRepository,
-    private val imageRepository: () -> ImageRepository,
+    private val imageRepository: () -> ImageRepository
 ) : WorkerFactory() {
 
     override fun createWorker(
@@ -27,14 +27,13 @@ class DefaultWorkerFactory(
         runCatching {
             Timber.e("DefaultWorkerFactory:createWorker:$workerClassName")
             when (workerClassName) {
-
                 CameraWorker::class.java.name -> CameraWorker(
                     context = appContext,
                     workerParams = workerParameters,
                     thisDeviceRepository = thisDeviceRepository.invoke(),
                     doorbellRepository = doorbellRepository.invoke(),
                     cameraRepository = cameraRepository.invoke(),
-                    imageRepository = imageRepository.invoke(),
+                    imageRepository = imageRepository.invoke()
                 )
 
                 UptimeWorker::class.java.name -> UptimeWorker(

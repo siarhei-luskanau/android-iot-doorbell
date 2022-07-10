@@ -88,5 +88,5 @@ fun PermissionsPreview() =
             .fillMaxWidth()
             .fillMaxHeight(),
         text = "permissions",
-        style = MaterialTheme.typography.h6,
+        style = MaterialTheme.typography.h6
     )

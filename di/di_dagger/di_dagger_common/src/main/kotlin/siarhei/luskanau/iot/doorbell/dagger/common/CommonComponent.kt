@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.work.WorkManager
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Singleton
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
@@ -17,6 +16,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
+import javax.inject.Singleton
 
 @Suppress("TooManyFunctions")
 @Singleton

@@ -11,9 +11,9 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.karumi.shot.ScreenshotTest
-import kotlin.test.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
+import kotlin.test.Test
 import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 
 class ImageDetailsFragmentTest : ScreenshotTest {
@@ -76,7 +76,7 @@ class ImageDetailsFragmentTest : ScreenshotTest {
         scenario.onFragment {
             compareScreenshot(
                 fragment = it,
-                name = javaClass.simpleName + ".normal",
+                name = javaClass.simpleName + ".normal"
             )
         }
     }
@@ -103,7 +103,7 @@ class ImageDetailsFragmentTest : ScreenshotTest {
         scenario.onFragment {
             compareScreenshot(
                 fragment = it,
-                name = javaClass.simpleName + ".empty",
+                name = javaClass.simpleName + ".empty"
             )
         }
     }

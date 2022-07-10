@@ -19,7 +19,6 @@ class AppViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         Timber.d("AppViewModelFactory:instantiate:$modelClass")
         return when {
-
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
                 appNavigation = appNavigation,
                 thisDeviceRepository = appModules.thisDeviceRepository,
@@ -30,7 +29,7 @@ class AppViewModelFactory(
                 doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId,
                 appNavigation = appNavigation,
                 doorbellRepository = appModules.doorbellRepository,
-                imagesDataSourceFactory = appModules.imagesDataSourceFactory,
+                imagesDataSourceFactory = appModules.imagesDataSourceFactory
             )
 
             else -> modelClass.getConstructor().newInstance()

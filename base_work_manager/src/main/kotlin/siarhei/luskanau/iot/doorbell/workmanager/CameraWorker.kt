@@ -15,7 +15,7 @@ class CameraWorker(
     private val thisDeviceRepository: ThisDeviceRepository,
     private val doorbellRepository: DoorbellRepository,
     private val cameraRepository: CameraRepository,
-    private val imageRepository: ImageRepository,
+    private val imageRepository: ImageRepository
 ) : CoroutineWorker(
     context,
     workerParams

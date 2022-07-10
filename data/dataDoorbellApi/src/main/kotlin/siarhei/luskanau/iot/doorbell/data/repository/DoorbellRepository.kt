@@ -1,9 +1,9 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import java.io.InputStream
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
+import java.io.InputStream
 
 interface DoorbellRepository {
 
@@ -40,6 +40,6 @@ interface DoorbellRepository {
 
     suspend fun getImage(
         doorbellId: String,
-        imageId: String,
+        imageId: String
     ): ImageData?
 }

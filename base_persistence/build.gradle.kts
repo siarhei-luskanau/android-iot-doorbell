@@ -1,6 +1,6 @@
 plugins {
     id("android-library-convention")
-    kotlin("kapt")
+    // kotlin("kapt")
 }
 
 dependencies {
@@ -11,6 +11,6 @@ dependencies {
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 
-    kapt(Libraries.roomCompiler)
+    // kapt(Libraries.roomCompiler)
     implementation(Libraries.roomKtx)
 }

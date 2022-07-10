@@ -29,7 +29,7 @@ val imageListModule = module {
             doorbellId = doorbellId,
             appNavigation = get { parametersOf(activity) },
             doorbellRepository = get(),
-            imagesDataSourceFactory = get(),
+            imagesDataSourceFactory = get()
         )
     }
 }

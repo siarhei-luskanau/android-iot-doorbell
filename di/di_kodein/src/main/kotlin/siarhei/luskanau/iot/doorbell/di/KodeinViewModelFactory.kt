@@ -25,7 +25,7 @@ class KodeinViewModelFactory(
                 arg = ViewModelFactoryArgs(
                     activity = activity,
                     fragment = fragment,
-                    args = args,
+                    args = args
                 )
             )
             viewModel as T

@@ -6,5 +6,5 @@ import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 data class ImageListState(
     val pagingData: PagingData<ImageData>,
-    val cameraList: List<CameraData>,
+    val cameraList: List<CameraData>
 )

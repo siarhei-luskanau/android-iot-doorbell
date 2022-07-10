@@ -1,8 +1,6 @@
 package siarhei.luskanau.iot.doorbell.data
 
 import android.content.Context
-import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
@@ -13,6 +11,8 @@ import siarhei.luskanau.iot.doorbell.common.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class AndroidThisDeviceRepositoryTest {
 
@@ -76,7 +76,7 @@ class AndroidThisDeviceRepositoryTest {
             assertEquals(
                 expected = camerasList,
                 actual = resultCamerasList,
-                message = "should be the same list",
+                message = "should be the same list"
             )
         }
     }

@@ -56,7 +56,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = PublicVersions.compose
+        kotlinCompilerExtensionVersion = PublicVersions.composeCompiler
     }
 }
 

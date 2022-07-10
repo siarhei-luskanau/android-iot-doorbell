@@ -13,11 +13,11 @@ import androidx.camera.core.impl.CameraInfoInternal
 import androidx.camera.core.impl.utils.executor.CameraXExecutors
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.lifecycle.ProcessLifecycleOwner
+import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
-import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 
 class JetpackCameraRepository(
     private val context: Context,

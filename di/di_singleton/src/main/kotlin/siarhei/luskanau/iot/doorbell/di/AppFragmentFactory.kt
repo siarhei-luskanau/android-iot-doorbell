@@ -31,7 +31,6 @@ class AppFragmentFactory(
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         Timber.d("AppFragmentFactory:instantiate:$className")
         return when (className) {
-
             SplashFragment::class.java.name -> {
                 SplashFragment {
                     SplashViewModel(splashNavigation = appNavigation)

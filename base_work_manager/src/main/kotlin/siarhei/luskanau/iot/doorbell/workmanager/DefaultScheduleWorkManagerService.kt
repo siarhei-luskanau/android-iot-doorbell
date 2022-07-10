@@ -17,7 +17,6 @@ class DefaultScheduleWorkManagerService(
 ) : ScheduleWorkManagerService {
 
     override fun startUptimeNotifications() {
-
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()

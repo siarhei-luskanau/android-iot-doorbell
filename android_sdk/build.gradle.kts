@@ -420,7 +420,7 @@ private class AndroidSdkConfig {
                 System.getProperty("user.home"),
                 if (Os.isFamily(Os.FAMILY_MAC)) "Library" else null,
                 "Android",
-                "sdk"
+                if (Os.isFamily(Os.FAMILY_MAC)) "sdk" else "Sdk"
             )
 
     private fun readAndroidSdkFromLocalProperties(): String? {

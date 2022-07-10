@@ -6,8 +6,6 @@ import androidx.startup.AppInitializer
 import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
-import javax.inject.Provider
-import javax.inject.Singleton
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
@@ -34,6 +32,8 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
+import javax.inject.Provider
+import javax.inject.Singleton
 
 @Suppress("TooManyFunctions")
 @Module

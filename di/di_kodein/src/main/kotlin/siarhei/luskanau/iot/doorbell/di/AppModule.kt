@@ -215,7 +215,7 @@ val activityModule = DI.Module(name = "activityModule") {
                 arg = ViewModelFactoryArgs(
                     activity = activity,
                     fragment = fragment,
-                    args = fragment.arguments,
+                    args = fragment.arguments
                 )
             )
         }
@@ -246,7 +246,7 @@ val activityModule = DI.Module(name = "activityModule") {
                 arg = ViewModelFactoryArgs(
                     activity = activity,
                     fragment = fragment,
-                    args = fragment.arguments,
+                    args = fragment.arguments
                 )
             )
         }
@@ -262,7 +262,7 @@ val activityModule = DI.Module(name = "activityModule") {
             ImageDetailsSlidePresenterImpl(
                 doorbellId = doorbellId,
                 imageId = imageId,
-                doorbellRepository = instance(),
+                doorbellRepository = instance()
             )
         }
     }
@@ -295,7 +295,7 @@ val viewModelModule = DI.Module(name = "viewModelModule") {
             doorbellId = doorbellId,
             appNavigation = instance(arg = viewModelFactoryArgs.activity),
             doorbellRepository = instance(),
-            imagesDataSourceFactory = instance(),
+            imagesDataSourceFactory = instance()
         )
     }
 }
