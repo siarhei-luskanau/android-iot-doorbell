@@ -12,10 +12,6 @@ jobs:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'adopt'
-          java-version: '15'
       - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
         working-directory: ./android_sdk
       - run: bash ./gradlew ciLint --stacktrace
@@ -29,10 +25,6 @@ jobs:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'adopt'
-          java-version: '15'
       - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
         working-directory: ./android_sdk
       - run: bash ./gradlew ciUnitTest --stacktrace
@@ -50,10 +42,6 @@ jobs:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'adopt'
-          java-version: '15'
       - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
         working-directory: ./android_sdk
       - run: bash ./gradlew ciBuildApp --stacktrace

@@ -1,4 +1,5 @@
 import org.apache.tools.ant.taskdefs.condition.Os
+import java.util.Properties
 
 val CI_GRADLE = "CI_GRADLE"
 
@@ -165,6 +166,19 @@ fun gradlew(
         }
         addToEnvironment?.let {
             environment = environment.toMutableMap().apply { putAll(it) }
+        }
+        val sdkDirPath: String = Properties().apply {
+            val propertiesFile = File(rootDir, "local.properties")
+            if (propertiesFile.exists()) {
+                load(propertiesFile.inputStream())
+            }
+        }?.getProperty("sdk.dir")
+        val platformToolsDir = "$sdkDirPath${java.io.File.separator}platform-tools"
+        val pahtEnvironment = System.getenv("PATH").orEmpty()
+        if (!pahtEnvironment.contains(platformToolsDir)) {
+            environment = environment.toMutableMap().apply {
+                put("PATH", "$platformToolsDir:$pahtEnvironment")
+            }
         }
         println("commandLine: ${this.commandLine}")
     }.apply { println("ExecResult: $this") }

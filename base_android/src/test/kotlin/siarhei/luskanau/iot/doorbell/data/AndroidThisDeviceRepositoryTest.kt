@@ -1,6 +1,7 @@
 package siarhei.luskanau.iot.doorbell.data
 
 import android.content.Context
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
@@ -14,6 +15,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AndroidThisDeviceRepositoryTest {
 
     private val doorbellId = "doorbellId"

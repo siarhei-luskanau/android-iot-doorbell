@@ -27,18 +27,19 @@ val COMMANDLINETOOLS_WIN =
             "${COMMANDLINETOOLS_VERSION}_latest.zip"
 val CMDLINE_TOOLS_VERSION = "7.0"
 
+val androidSdkConfig = AndroidSdkConfig()
+
 tasks.register("setupAndroidCmdlineTools") {
     group = EMULATOR_GRADLE
     doLast {
-        val config = AndroidSdkConfig().apply { printSdkPath() }
-
+        androidSdkConfig.printSdkPath()
         val commandlinetoolsUrl = when {
             Os.isFamily(Os.FAMILY_WINDOWS) -> COMMANDLINETOOLS_WIN
             Os.isFamily(Os.FAMILY_MAC) -> COMMANDLINETOOLS_MAC
             else -> COMMANDLINETOOLS_LINUX
         }
 
-        val commandlinetoolsPath = "${config.androidHome}/commandlinetools.zip"
+        val commandlinetoolsPath = "${androidSdkConfig.sdkDirPath}/commandlinetools.zip"
 
         File(commandlinetoolsPath).parentFile.let {
             println("creating folder: $it")
@@ -53,7 +54,7 @@ tasks.register("setupAndroidCmdlineTools") {
         }
         println("downloaded: $commandlinetoolsUrl")
 
-        "${config.androidHome}/cmdline-tools/".also {
+        "${androidSdkConfig.sdkDirPath}/cmdline-tools/".also {
             println("deleting: $it")
             File(it).deleteRecursively()
             println("deleted: $it")
@@ -79,9 +80,9 @@ tasks.register("setupAndroidCmdlineTools") {
 
         exec {
             commandLine = listOf(
-                "${config.sdkmanager}",
+                "${androidSdkConfig.sdkmanager}",
                 "--licenses",
-                "--sdk_root=${config.androidHome}",
+                "--sdk_root=${androidSdkConfig.sdkDirPath}",
                 "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
@@ -91,9 +92,9 @@ tasks.register("setupAndroidCmdlineTools") {
 
         exec {
             commandLine = listOf(
-                config.sdkmanager.absolutePath,
+                androidSdkConfig.sdkmanager.absolutePath,
                 "cmdline-tools;$CMDLINE_TOOLS_VERSION",
-                "--sdk_root=${config.androidHome}",
+                "--sdk_root=${androidSdkConfig.sdkDirPath}",
                 "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
@@ -105,15 +106,13 @@ tasks.register("setupAndroidCmdlineTools") {
 
 tasks.register("setupAndroidSDK") {
     group = EMULATOR_GRADLE
-
     doLast {
-        val config = AndroidSdkConfig().apply { printSdkPath() }
-
+        androidSdkConfig.printSdkPath()
         exec {
             commandLine = listOf(
-                config.sdkmanager.absolutePath,
+                androidSdkConfig.sdkmanager.absolutePath,
                 "--update",
-                "--sdk_root=${config.androidHome}",
+                "--sdk_root=${androidSdkConfig.sdkDirPath}",
                 "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
@@ -123,9 +122,9 @@ tasks.register("setupAndroidSDK") {
 
         exec {
             commandLine = listOf(
-                config.sdkmanager.absolutePath,
+                androidSdkConfig.sdkmanager.absolutePath,
                 "--licenses",
-                "--sdk_root=${config.androidHome}",
+                "--sdk_root=${androidSdkConfig.sdkDirPath}",
                 "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
@@ -135,7 +134,7 @@ tasks.register("setupAndroidSDK") {
 
         exec {
             commandLine = mutableListOf(
-                config.sdkmanager.absolutePath,
+                androidSdkConfig.sdkmanager.absolutePath,
                 "platform-tools",
             ).apply {
                 val avdName =
@@ -148,7 +147,7 @@ tasks.register("setupAndroidSDK") {
             }.apply {
                 addAll(
                     listOf(
-                        "--sdk_root=${config.androidHome}",
+                        "--sdk_root=${androidSdkConfig.sdkDirPath}",
                         "--channel=3",
                     )
                 )
@@ -160,9 +159,9 @@ tasks.register("setupAndroidSDK") {
 
         exec {
             commandLine = listOf(
-                config.sdkmanager.absolutePath,
+                androidSdkConfig.sdkmanager.absolutePath,
                 "--list",
-                "--sdk_root=${config.androidHome}",
+                "--sdk_root=${androidSdkConfig.sdkDirPath}",
                 "--channel=3",
             )
             println("commandLine: ${this.commandLine}")
@@ -172,14 +171,11 @@ tasks.register("setupAndroidSDK") {
 
 tasks.register("setupAndroidEmulator") {
     group = EMULATOR_GRADLE
-
     doLast {
-        val config = AndroidSdkConfig().apply { printSdkPath() }
-
+        androidSdkConfig.printSdkPath()
         val avdName = requireNotNull(
-            GradleArguments.getEnvArgument(GradleArguments.EMULATOR_AVD_NAME),
-            { "Please provide EMULATOR_AVD_NAME argument" }
-        )
+            GradleArguments.getEnvArgument(GradleArguments.EMULATOR_AVD_NAME)
+        ) { "Please provide EMULATOR_AVD_NAME argument" }
 
         ANDROID_EMULATORS
             .filter {
@@ -192,7 +188,7 @@ tasks.register("setupAndroidEmulator") {
             .forEach { emulatorConfig ->
                 exec {
                     commandLine = listOf(
-                        config.avdmanager.absolutePath,
+                        androidSdkConfig.avdmanager.absolutePath,
                         "-v",
                         "create",
                         "avd",
@@ -210,19 +206,18 @@ tasks.register("setupAndroidEmulator") {
             }
 
         exec {
-            commandLine = listOf(config.avdmanager.absolutePath, "-v", "list", "avd")
+            commandLine = listOf(androidSdkConfig.avdmanager.absolutePath, "-v", "list", "avd")
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
     }
 }
 
 tasks.register("runAndroidEmulator") {
-    val config = AndroidSdkConfig().apply { printSdkPath() }
     group = EMULATOR_GRADLE
-
     doLast {
+        androidSdkConfig.printSdkPath()
         exec {
-            commandLine = listOf(config.adb.absolutePath, "start-server")
+            commandLine = listOf(androidSdkConfig.adb.absolutePath, "start-server")
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
 
@@ -233,7 +228,7 @@ tasks.register("runAndroidEmulator") {
 
         // https://developer.android.com/studio/run/emulator-commandline#startup-options
         val commandArgs = mutableListOf(
-            config.emulator.absolutePath,
+            androidSdkConfig.emulator.absolutePath,
             "-avd",
             emulatorConfig.avdName,
             "-port",
@@ -266,15 +261,14 @@ tasks.register("runAndroidEmulator") {
 }
 
 tasks.register("waitAndroidEmulator") {
-    val config = AndroidSdkConfig().apply { printSdkPath() }
     group = EMULATOR_GRADLE
-
     doLast {
+        androidSdkConfig.printSdkPath()
         var isEmulatorFound = false
         for (i in 1..300) {
             Thread.sleep(1_000)
             var result: String? = null
-            config.getDevicesList()
+            androidSdkConfig.getDevicesList()
                 .also {
                     if (it.isEmpty()) {
                         println("WaitAndroidEmulator: Wait $i: No emulators found!")
@@ -288,7 +282,7 @@ tasks.register("waitAndroidEmulator") {
                         val resultOutputStream = ByteArrayOutputStream()
                         exec {
                             commandLine = listOf(
-                                config.adb.absolutePath,
+                                androidSdkConfig.adb.absolutePath,
                                 "-s",
                                 emulatorAttributes.first(),
                                 "wait-for-device",
@@ -316,15 +310,14 @@ tasks.register("waitAndroidEmulator") {
 }
 
 tasks.register("killAndroidEmulator") {
-    val config = AndroidSdkConfig().apply { printSdkPath() }
     group = EMULATOR_GRADLE
-
     doLast {
-        config.getDevicesList().forEach { emulatorAttributes ->
+        androidSdkConfig.printSdkPath()
+        androidSdkConfig.getDevicesList().forEach { emulatorAttributes ->
             println("KillAndroidEmulator: $emulatorAttributes")
             exec {
                 commandLine = listOf(
-                    config.adb.absolutePath,
+                    androidSdkConfig.adb.absolutePath,
                     "-s",
                     emulatorAttributes.first(),
                     "emu",
@@ -338,15 +331,13 @@ tasks.register("killAndroidEmulator") {
 
 tasks.register("deleteAndroidEmulator") {
     group = EMULATOR_GRADLE
-
     doLast {
-        val config = AndroidSdkConfig().apply { printSdkPath() }
-
+        androidSdkConfig.printSdkPath()
         ANDROID_EMULATORS.forEach { emulatorConfig ->
             runCatching {
                 exec {
                     commandLine = listOf(
-                        config.avdmanager.absolutePath,
+                        androidSdkConfig.avdmanager.absolutePath,
                         "-v",
                         "delete",
                         "avd",
@@ -360,14 +351,30 @@ tasks.register("deleteAndroidEmulator") {
         }
 
         exec {
-            commandLine = listOf(config.avdmanager.absolutePath, "-v", "list", "avd")
+            commandLine = listOf(androidSdkConfig.avdmanager.absolutePath, "-v", "list", "avd")
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
     }
 }
 
-private class AndroidSdkConfig {
-    val androidHome = readAndroidSdkLocation()
+class AndroidSdkConfig {
+
+    val sdkDirPath: String by lazy {
+        readAndroidSdkFromLocalProperties()
+            ?: System.getenv("ANDROID_HOME")
+            ?: System.getenv("sdk.dir")
+            ?: pathOf(
+                System.getProperty("user.home"),
+                if (Os.isFamily(Os.FAMILY_MAC)) "Library" else null,
+                "Android",
+                if (Os.isFamily(Os.FAMILY_MAC)) "sdk" else "Sdk"
+            )
+    }
+
+    init {
+        writeAndroidSdkToLocalProperties()
+    }
+
     val sdkmanager = sdkFile(
         "cmdline-tools",
         "bin",
@@ -411,26 +418,30 @@ private class AndroidSdkConfig {
     }
 
     private fun sdkFile(vararg path: String) =
-        File(readAndroidSdkLocation(), path.joinToString(File.separator))
+        File(sdkDirPath, path.joinToString(File.separator))
 
-    private fun readAndroidSdkLocation(): String =
-        readAndroidSdkFromLocalProperties()
-            ?: run { System.getenv("ANDROID_HOME") }
-            ?: pathOf(
-                System.getProperty("user.home"),
-                if (Os.isFamily(Os.FAMILY_MAC)) "Library" else null,
-                "Android",
-                if (Os.isFamily(Os.FAMILY_MAC)) "sdk" else "Sdk"
-            )
+    private fun readAndroidSdkFromLocalProperties(): String? =
+        Properties().apply {
+            val propertiesFile = File(rootDir.parentFile, "local.properties")
+            if (propertiesFile.exists()) {
+                load(propertiesFile.inputStream())
+            }
+        }.getProperty(SDK_DIR)
 
-    private fun readAndroidSdkFromLocalProperties(): String? {
-        val localProperties = File(project.rootDir, "local.properties")
-        return if (localProperties.exists()) {
-            Properties().apply {
-                load(localProperties.inputStream())
-            }.getProperty("sdk.dir")
-        } else {
-            null
+    private fun writeAndroidSdkToLocalProperties() {
+        val propertiesFile = File(rootDir.parentFile, "local.properties")
+        val properties = Properties().apply {
+            if (propertiesFile.exists()) {
+                load(propertiesFile.inputStream())
+            }
         }
+        properties[SDK_DIR] = sdkDirPath
+        propertiesFile.outputStream().use { output ->
+            properties.store(output, "local.properties")
+        }
+    }
+
+    companion object {
+        private const val SDK_DIR = "sdk.dir"
     }
 }
