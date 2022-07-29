@@ -19,7 +19,7 @@ class ToothpickViewModelFactory(
     private val scope: Scope,
     private val appNavigation: DefaultAppNavigation,
     private val args: Bundle?
-) : ViewModelProvider.Factory {
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

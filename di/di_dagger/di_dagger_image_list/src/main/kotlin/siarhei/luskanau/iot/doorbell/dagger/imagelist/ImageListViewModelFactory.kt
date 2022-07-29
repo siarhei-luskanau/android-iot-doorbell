@@ -12,7 +12,7 @@ class ImageListViewModelFactory constructor(
     private val commonComponent: CommonComponent,
     private val appNavigation: AppNavigation,
     private val args: Bundle?
-) : ViewModelProvider.Factory {
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T =

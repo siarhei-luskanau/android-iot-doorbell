@@ -83,7 +83,6 @@ tasks.register("setupAndroidCmdlineTools") {
                 "${androidSdkConfig.sdkmanager}",
                 "--licenses",
                 "--sdk_root=${androidSdkConfig.sdkDirPath}",
-                "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -95,7 +94,6 @@ tasks.register("setupAndroidCmdlineTools") {
                 androidSdkConfig.sdkmanager.absolutePath,
                 "cmdline-tools;$CMDLINE_TOOLS_VERSION",
                 "--sdk_root=${androidSdkConfig.sdkDirPath}",
-                "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -113,7 +111,6 @@ tasks.register("setupAndroidSDK") {
                 androidSdkConfig.sdkmanager.absolutePath,
                 "--update",
                 "--sdk_root=${androidSdkConfig.sdkDirPath}",
-                "--channel=3",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -124,8 +121,7 @@ tasks.register("setupAndroidSDK") {
             commandLine = listOf(
                 androidSdkConfig.sdkmanager.absolutePath,
                 "--licenses",
-                "--sdk_root=${androidSdkConfig.sdkDirPath}",
-                "--channel=3",
+                "--sdk_root=${androidSdkConfig.sdkDirPath}"
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -145,12 +141,7 @@ tasks.register("setupAndroidSDK") {
                     add(emulatorConfig.sdkId)
                 }
             }.apply {
-                addAll(
-                    listOf(
-                        "--sdk_root=${androidSdkConfig.sdkDirPath}",
-                        "--channel=3",
-                    )
-                )
+                add("--sdk_root=${androidSdkConfig.sdkDirPath}")
             }
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -162,7 +153,6 @@ tasks.register("setupAndroidSDK") {
                 androidSdkConfig.sdkmanager.absolutePath,
                 "--list",
                 "--sdk_root=${androidSdkConfig.sdkDirPath}",
-                "--channel=3",
             )
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }

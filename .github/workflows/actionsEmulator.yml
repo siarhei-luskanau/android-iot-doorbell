@@ -21,3 +21,6 @@ jobs:
         with:
           name: screenshots
           path: ${{ github.workspace }}/**/build/tmp/shot/screenshot/*
+      - run: bash ./gradlew :killAndroidEmulator :deleteAndroidEmulator --stacktrace
+        working-directory: ./android_sdk
+        if: always()

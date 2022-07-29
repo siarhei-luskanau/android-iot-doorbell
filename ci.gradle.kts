@@ -139,7 +139,6 @@ fun runOnEmulator(
 //    }
     gradlew("connectedAndroidTest")
     gradlew("killAndroidEmulator", isAndroidSdkGradlew = true)
-    gradlew("deleteAndroidEmulator", isAndroidSdkGradlew = true)
 }
 
 fun gradlew(
@@ -167,17 +166,31 @@ fun gradlew(
         addToEnvironment?.let {
             environment = environment.toMutableMap().apply { putAll(it) }
         }
-        val sdkDirPath: String = Properties().apply {
+        val sdkDirPath = Properties().apply {
             val propertiesFile = File(rootDir, "local.properties")
             if (propertiesFile.exists()) {
                 load(propertiesFile.inputStream())
             }
         }?.getProperty("sdk.dir")
-        val platformToolsDir = "$sdkDirPath${java.io.File.separator}platform-tools"
-        val pahtEnvironment = System.getenv("PATH").orEmpty()
-        if (!pahtEnvironment.contains(platformToolsDir)) {
+        if (sdkDirPath != null) {
+            val platformToolsDir = "$sdkDirPath${java.io.File.separator}platform-tools"
+            val pahtEnvironment = System.getenv("PATH").orEmpty()
+            if (!pahtEnvironment.contains(platformToolsDir)) {
+                environment = environment.toMutableMap().apply {
+                    put("PATH", "$platformToolsDir:$pahtEnvironment")
+                }
+            }
+        }
+        if (System.getenv("JAVA_HOME") == null) {
+            System.getProperty("java.home")?.let { javaHome ->
+                environment = environment.toMutableMap().apply {
+                    put("JAVA_HOME", javaHome)
+                }
+            }
+        }
+        if (System.getenv("ANDROID_HOME") == null) {
             environment = environment.toMutableMap().apply {
-                put("PATH", "$platformToolsDir:$pahtEnvironment")
+                put("ANDROID_HOME", "$sdkDirPath")
             }
         }
         println("commandLine: ${this.commandLine}")

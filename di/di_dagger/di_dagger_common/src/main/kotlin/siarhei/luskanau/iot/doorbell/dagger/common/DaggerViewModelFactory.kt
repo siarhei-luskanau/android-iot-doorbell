@@ -8,7 +8,7 @@ import javax.inject.Provider
 
 class DaggerViewModelFactory @Inject constructor(
     private val providers: MutableMap<Class<out ViewModel>, Provider<ViewModel>>
-) : ViewModelProvider.Factory {
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

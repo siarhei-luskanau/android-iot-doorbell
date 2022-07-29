@@ -14,7 +14,7 @@ class KodeinViewModelFactory(
     private val activity: FragmentActivity,
     private val fragment: Fragment,
     private val args: Bundle?
-) : ViewModelProvider.Factory {
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
