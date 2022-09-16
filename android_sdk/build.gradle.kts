@@ -133,8 +133,7 @@ tasks.register("setupAndroidSDK") {
                 androidSdkConfig.sdkmanager.absolutePath,
                 "platform-tools",
             ).apply {
-                val avdName =
-                    GradleArguments.getEnvArgument(GradleArguments.EMULATOR_AVD_NAME).orEmpty()
+                val avdName = System.getProperty(GradleArguments.EMULATOR_AVD_NAME).orEmpty()
                 val emulatorConfig = ANDROID_EMULATORS.find { it.avdName == avdName }
                 if (emulatorConfig != null) {
                     add("emulator")
@@ -163,9 +162,9 @@ tasks.register("setupAndroidEmulator") {
     group = EMULATOR_GRADLE
     doLast {
         androidSdkConfig.printSdkPath()
-        val avdName = requireNotNull(
-            GradleArguments.getEnvArgument(GradleArguments.EMULATOR_AVD_NAME)
-        ) { "Please provide EMULATOR_AVD_NAME argument" }
+        val avdName = requireNotNull(System.getProperty(GradleArguments.EMULATOR_AVD_NAME)) {
+            "Please provide EMULATOR_AVD_NAME argument"
+        }
 
         ANDROID_EMULATORS
             .filter {
@@ -211,8 +210,8 @@ tasks.register("runAndroidEmulator") {
             println("commandLine: ${this.commandLine}")
         }.apply { println("ExecResult: $this") }
 
-        val avdName = GradleArguments.getEnvArgument(GradleArguments.EMULATOR_AVD_NAME).orEmpty()
-            .also { println("GradleArguments.getEnvArgument(${GradleArguments.EMULATOR_AVD_NAME}): $it") }
+        val avdName = System.getProperty(GradleArguments.EMULATOR_AVD_NAME).orEmpty()
+            .also { println("System.getProperty(${GradleArguments.EMULATOR_AVD_NAME}): $it") }
         val emulatorConfig = requireNotNull(ANDROID_EMULATORS.find { it.avdName == avdName })
             .also { println("EmulatorConfig: $it") }
 

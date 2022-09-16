@@ -1,9 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="siarhei.luskanau.iot.doorbell.workmanager">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application>
-
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -17,7 +15,5 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
         </provider>
-
     </application>
-
 </manifest>

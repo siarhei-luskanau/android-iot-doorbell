@@ -3,6 +3,10 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.ui.imagedetails"
+}
+
 dependencies {
     implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
@@ -15,7 +19,6 @@ dependencies {
     implementation(Libraries.material)
     implementation(Libraries.activityKtx)
     implementation(Libraries.fragmentKtx)
-    implementation(Libraries.lifecycleLivedataKtx)
     implementation(Libraries.navigationUiKtx)
 
     // unit test

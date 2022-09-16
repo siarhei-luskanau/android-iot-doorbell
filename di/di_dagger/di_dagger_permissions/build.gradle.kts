@@ -3,6 +3,10 @@ plugins {
     kotlin("kapt")
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.dagger.permissions"
+}
+
 dependencies {
     implementation(project(":di:di_dagger:di_dagger_common"))
     implementation(project(":data:dataDoorbellApi"))

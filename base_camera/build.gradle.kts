@@ -2,6 +2,10 @@ plugins {
     androidLibraryConvention
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.camera"
+}
+
 dependencies {
     implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))

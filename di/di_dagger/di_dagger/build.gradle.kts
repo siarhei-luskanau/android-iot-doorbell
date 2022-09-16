@@ -2,6 +2,10 @@ plugins {
     androidLibraryConvention
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.di.dagger"
+}
+
 dependencies {
     implementation(project(":di:di"))
     implementation(project(":di:di_dagger:di_dagger_common"))
@@ -17,7 +21,6 @@ dependencies {
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
     implementation(project(":base_persistence"))
-    implementation(project(":base_cache"))
     implementation(project(":base_work_manager"))
     implementation(project(":ui:ui_splash"))
     implementation(project(":ui:ui_permissions"))

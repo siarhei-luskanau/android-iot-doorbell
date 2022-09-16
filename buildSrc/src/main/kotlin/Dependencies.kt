@@ -12,25 +12,26 @@ private object Versions {
     val kotlin: String = versionsProperties["version.kotlin"].toString()
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
     val karumiShot: String = versionsProperties["version.karumiShot"].toString()
-    const val compose = "1.2.0"
-    const val composeMaterialAdapter = "1.1.15"
+    const val compose = "1.2.1"
+    const val composeMaterialAdapter = "1.1.16"
     const val desugar = "1.2.0"
     const val kotlinxDatetime = "0.4.0"
-    const val kotlinxSerialization = "1.3.3"
-    const val gson = "2.9.0"
+    const val kotlinxSerialization = "1.4.0"
+    const val gson = "2.9.1"
     const val navigation = "2.5.1"
-    const val androidxCamera = "1.2.0-alpha04"
+    const val androidxCamera = "1.2.0-beta01"
     const val androidxStartup = "1.1.1"
-    const val material = "1.7.0-alpha03"
+    const val material = "1.7.0-rc01"
     const val activity = "1.5.1"
-    const val fragment = "1.5.1"
+    const val fragment = "1.5.2"
     const val swiperefreshlayout = "1.1.0"
     const val lifecycle = "2.5.1"
-    const val paging = "3.1.1"
+    const val paging = "3.2.0-alpha02"
+    const val pagingCompose = "1.0.0-alpha16"
     const val room = "2.4.3"
     const val workManager = "2.7.1"
     const val timber = "5.0.1"
-    const val coil = "2.1.0"
+    const val coil = "2.2.0"
     const val paperwork = "1.2.7"
     const val googleServices = "4.3.13"
 
@@ -39,7 +40,7 @@ private object Versions {
     const val firebaseStorage = "20.0.1"
 
     // DI
-    const val dagger = "2.43"
+    const val dagger = "2.43.2"
     const val kodein = "7.14.0"
     const val koin = "3.2.0"
     const val toothpick = "3.1.0"
@@ -48,10 +49,10 @@ private object Versions {
     const val leakCanary = "2.9.1"
 
     // Testing
-    const val mockito = "4.6.1"
+    const val mockito = "4.7.0"
 
     // test instrumentation
-    const val androidTestCore = "1.4.1-alpha07"
+    const val androidTestCore = "1.5.0-alpha02"
     const val androidTestTruth = "1.5.0-alpha07"
     const val espresso = "3.5.0-alpha07"
     const val testExtJunit = "1.1.4-alpha07"
@@ -59,10 +60,10 @@ private object Versions {
 
 object PublicVersions {
     val kotlin = Versions.kotlin
-    const val composeCompiler = "1.3.0-rc01"
-    const val ktlint = "0.46.1"
+    const val composeCompiler = "1.3.0"
+    const val ktlint = "0.47.1"
     const val detekt = "1.21.0"
-    const val kotlinxKover = "0.5.1"
+    const val kotlinxKover = "0.6.0"
 }
 
 object BuildVersions {
@@ -106,13 +107,10 @@ object Libraries {
     const val activityKtx = "androidx.activity:activity-ktx:${Versions.activity}"
     const val activityCompose = "androidx.activity:activity-compose:${Versions.activity}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragment}"
-    const val lifecycleLivedataKtx =
-        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
-    const val lifecycleViewmodelKtx =
-        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val lifecycleProcess = "androidx.lifecycle:lifecycle-process:${Versions.lifecycle}"
     const val pagingCommonKtx = "androidx.paging:paging-common-ktx:${Versions.paging}"
     const val pagingRuntimeKtx = "androidx.paging:paging-runtime-ktx:${Versions.paging}"
+    const val pagingCompose = "androidx.paging:paging-compose:${Versions.pagingCompose}"
     const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
     const val roomCompiler = "androidx.room:room-compiler:${Versions.room}"
     const val workRuntimeKtx = "androidx.work:work-runtime-ktx:${Versions.workManager}"

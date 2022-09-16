@@ -1,8 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="siarhei.luskanau.iot.doorbell.navigation">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
-
         <activity
             android:name="siarhei.luskanau.iot.doorbell.navigation.NavigationActivity"
             android:exported="true"
@@ -14,7 +12,5 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
     </application>
-
 </manifest>

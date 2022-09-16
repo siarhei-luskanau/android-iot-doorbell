@@ -13,7 +13,6 @@ include(
     ":base_file",
     ":base_persistence",
     ":base_work_manager",
-    ":base_cache",
 
     ":ui:ui_common",
     ":ui:ui_splash",

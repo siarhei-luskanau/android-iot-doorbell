@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = "siarhei.luskanau.iot.doorbell"
     compileSdk = BuildVersions.compileSdkVersion
     buildToolsVersion = BuildVersions.buildToolsVersion
 
@@ -76,7 +77,6 @@ dependencies {
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
     implementation(project(":base_persistence"))
-    implementation(project(":base_cache"))
     implementation(project(":base_work_manager"))
     implementation(project(":ui:ui_common"))
     implementation(project(":ui:ui_splash"))

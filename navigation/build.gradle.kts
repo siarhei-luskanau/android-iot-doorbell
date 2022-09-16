@@ -3,6 +3,10 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.navigation"
+}
+
 dependencies {
     implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))

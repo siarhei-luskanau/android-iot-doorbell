@@ -10,7 +10,6 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.viewbinding.ViewBinding
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.common.adapter.AppLoadStateAdapter

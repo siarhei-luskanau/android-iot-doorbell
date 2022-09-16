@@ -3,6 +3,10 @@ plugins {
     kotlin("kapt")
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.dagger.splash"
+}
+
 dependencies {
     implementation(project(":di:di_dagger:di_dagger_common"))
     implementation(project(":ui:ui_common"))

@@ -3,6 +3,10 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.ui.splash"
+}
+
 dependencies {
     implementation(project(":ui:ui_common"))
 

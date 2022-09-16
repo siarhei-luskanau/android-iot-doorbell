@@ -3,7 +3,7 @@ package siarhei.luskanau.iot.doorbell.data.model
 data class CameraData(
     val cameraId: String,
     val name: String? = null,
-    val sizes: Map<Int, SizeData>? = null,
+    val sizes: Map<String, SizeData>? = null,
     val info: CameraInfoData? = null,
     val cameraxInfo: CameraxInfoData? = null
 )

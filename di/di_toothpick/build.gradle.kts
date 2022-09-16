@@ -3,6 +3,10 @@ plugins {
     kotlin("kapt")
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.di.toothpick"
+}
+
 dependencies {
     implementation(project(":di:di"))
     implementation(project(":data:dataDoorbellApi"))
@@ -13,7 +17,6 @@ dependencies {
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
     implementation(project(":base_persistence"))
-    implementation(project(":base_cache"))
     implementation(project(":base_work_manager"))
     implementation(project(":ui:ui_common"))
     implementation(project(":ui:ui_splash"))

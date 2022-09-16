@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class CameraDto(
     @SerialName("camera_id") val cameraId: String,
     @SerialName("name") val name: String?,
-    @SerialName("sizes") val sizes: Map<Int, SizeDto>? = null,
+    @SerialName("sizes") val sizes: Map<String, SizeDto>? = null,
     @SerialName("info") val info: CameraInfoDto? = null,
     @SerialName("camerax_info") val cameraxInfo: CameraxInfoDto? = null
 )

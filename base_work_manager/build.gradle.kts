@@ -2,6 +2,10 @@ plugins {
     androidLibraryConvention
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.workmanager"
+}
+
 dependencies {
     implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))

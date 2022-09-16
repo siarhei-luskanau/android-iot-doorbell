@@ -34,15 +34,13 @@ allprojects {
         mavenCentral()
     }
 
+    apply(plugin = "kover")
     apply(from = "$rootDir/ktlint.gradle.kts")
     apply(plugin = "io.gitlab.arturbosch.detekt")
+
+    koverMerged.enable()
 }
 
 tasks.register("clean").configure {
     delete("build")
-}
-
-kover {
-    coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
-    // coverageEngine.set(kotlinx.kover.api.CoverageEngine.JACOCO)
 }

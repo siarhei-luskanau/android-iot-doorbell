@@ -3,6 +3,10 @@ plugins {
     // kotlin("kapt")
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.persistence"
+}
+
 dependencies {
     implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))

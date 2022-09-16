@@ -3,6 +3,10 @@ plugins {
     id("hu.supercluster.paperwork")
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.android"
+}
+
 paperwork {
     set = runCatching {
         mapOf(

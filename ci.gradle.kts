@@ -7,7 +7,6 @@ tasks.register("ciLint") {
     group = CI_GRADLE
     doLast {
         gradlew(
-            "clean",
             "ktlintCheck",
             "detekt",
             "lintDebug",
@@ -31,7 +30,6 @@ tasks.register("ciBuildApp") {
     group = CI_GRADLE
     doLast {
         gradlew(
-            "clean",
             "assembleDebug",
         )
         copy {
@@ -42,20 +40,6 @@ tasks.register("ciBuildApp") {
             includeEmptyDirs = false
             into("$buildDir/apk/")
         }
-    }
-}
-
-tasks.register("ciEmulator26") {
-    group = CI_GRADLE
-    doLast {
-        runOnEmulator(emulatorName = "TestEmulator26")
-    }
-}
-
-tasks.register("ciEmulator28") {
-    group = CI_GRADLE
-    doLast {
-        runOnEmulator(emulatorName = "TestEmulator28")
     }
 }
 
@@ -91,12 +75,10 @@ tasks.register("ciAll") {
     group = CI_GRADLE
     doLast {
         gradlew(
+            "clean",
             "ktlintFormat",
             "ciLint",
-            "ciBuildApp",
             "ciUnitTest",
-            "ciEmulator26",
-            "ciEmulator28",
             "ciEmulator30",
             "ciEmulator31",
             "ciEmulator32",
@@ -113,37 +95,35 @@ fun runOnEmulator(
     gradlew(
         "setupAndroidSDK",
         "killAndroidEmulator",
-        addToEnvironment = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
+        addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
         isAndroidSdkGradlew = true
     )
     gradlew(
         "setupAndroidEmulator",
-        addToEnvironment = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
+        addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
         isAndroidSdkGradlew = true
     )
     Thread {
         gradlew(
             "runAndroidEmulator",
-            addToEnvironment = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
+            addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
             isAndroidSdkGradlew = true
         )
     }.start()
     gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
-//    mutableListOf(
-//        "executeScreenshotTests",
-//        "-PdirectorySuffix=$directorySuffix",
-//    ).also {
-//        if (isRecording) it.add("-Precord")
-//    }.also {
-//        gradlew(*it.toTypedArray())
-//    }
-    gradlew("connectedAndroidTest")
-    gradlew("killAndroidEmulator", isAndroidSdkGradlew = true)
+    mutableListOf(
+        "executeScreenshotTests",
+        "-PdirectorySuffix=$directorySuffix",
+    ).also {
+        if (isRecording) it.add("-Precord")
+    }.also {
+        gradlew(*it.toTypedArray())
+    }
 }
 
 fun gradlew(
     vararg tasks: String,
-    addToEnvironment: Map<String, String>? = null,
+    addToSystemProperties: Map<String, String>? = null,
     isAndroidSdkGradlew: Boolean = false,
 ) {
     exec {
@@ -159,12 +139,12 @@ fun gradlew(
         if (isAndroidSdkGradlew) {
             workingDir = File(project.rootDir, "android_sdk")
         }
-        args = mutableListOf<String>().apply {
-            addAll(tasks)
-            add("--stacktrace")
-        }
-        addToEnvironment?.let {
-            environment = environment.toMutableMap().apply { putAll(it) }
+        args = mutableListOf<String>().also { mutableArgs ->
+            mutableArgs.addAll(tasks)
+            addToSystemProperties?.toList()?.map { "-D${it.first}=${it.second}" }?.let {
+                mutableArgs.addAll(it)
+            }
+            mutableArgs.add("--stacktrace")
         }
         val sdkDirPath = Properties().apply {
             val propertiesFile = File(rootDir, "local.properties")

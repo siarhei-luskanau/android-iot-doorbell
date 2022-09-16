@@ -53,8 +53,8 @@ abstract class BaseCameraRepository(
             }
         }
 
-    private fun getSizes(cameraManager: CameraManager, cameraId: String): Map<Int, Size> =
-        mutableMapOf<Int, Size>().also { sizes ->
+    private fun getSizes(cameraManager: CameraManager, cameraId: String): Map<String, Size> =
+        mutableMapOf<String, Size>().also { sizes ->
             runCatching {
                 val characteristics = cameraManager.getCameraCharacteristics(cameraId)
                 characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
@@ -62,7 +62,7 @@ abstract class BaseCameraRepository(
                         sizes.putAll(
                             configs.getOutputSizes(ImageFormat.JPEG)
                                 .associateBy(
-                                    { size: Size -> size.height * size.width },
+                                    { size: Size -> "${size.width}x${size.height}" },
                                     { size: Size -> size }
                                 )
                         )

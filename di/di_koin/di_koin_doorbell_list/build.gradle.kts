@@ -2,6 +2,10 @@ plugins {
     androidLibraryConvention
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.koin.doorbelllist"
+}
+
 dependencies {
     implementation(project(":di:di_koin:di_koin_common"))
     implementation(project(":data:dataDoorbellApi"))

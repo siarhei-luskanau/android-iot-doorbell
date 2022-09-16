@@ -3,6 +3,10 @@ plugins {
     kotlin("plugin.serialization") version PublicVersions.kotlin
 }
 
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.data.firebase"
+}
+
 dependencies {
     implementation(project(":data:dataDoorbellApi"))
 
