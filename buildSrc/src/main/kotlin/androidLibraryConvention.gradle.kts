@@ -10,7 +10,6 @@ android {
 
     defaultConfig {
         minSdk = BuildVersions.minSdkVersion
-        targetSdk = BuildVersions.targetSdkVersion
         testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
         testApplicationId = "siarhei.luskanau.iot.doorbell.testapp"
     }
@@ -53,6 +52,8 @@ android {
     packagingOptions.resources.excludes.apply {
         add("META-INF/AL2.0")
         add("META-INF/LGPL2.1")
+        add("META-INF/LICENSE.md")
+        add("META-INF/LICENSE-notice.md")
     }
 
     dependencies {

@@ -101,10 +101,11 @@ class StubDoorbellRepository : DoorbellRepository {
     override suspend fun getImage(
         doorbellId: String,
         imageId: String
-    ): ImageData? {
+    ): ImageData {
         delay()
         return ImageData(
-            imageId = imageId
+            imageId = imageId,
+            imageUri = imageUriList[imageId.toInt() % imageUriList.size]
         )
     }
 
@@ -131,7 +132,7 @@ class StubDoorbellRepository : DoorbellRepository {
                 list.add(
                     ImageData(
                         imageId = "$i",
-                        imageUri = "imageUri_$i",
+                        imageUri = imageUriList[i % imageUriList.size],
                         timestampString = "timestampString_$i"
                     )
                 )
@@ -160,11 +161,11 @@ class StubDoorbellRepository : DoorbellRepository {
         val from: Int = if (orderAsc) {
             startAt?.let { it + 1 } ?: 0
         } else {
-            startAt?.let { it - 1 } ?: size - 1
+            startAt?.let { it - 1 } ?: (size - 1)
         }
 
         val to: Int = if (orderAsc) {
-            min(maxCount - 1, startAt?.let { it + size } ?: size - 1)
+            min(maxCount - 1, startAt?.let { it + size } ?: (size - 1))
         } else {
             max(0, startAt?.let { max((it - size), minCount) } ?: 0)
         }
@@ -184,5 +185,10 @@ class StubDoorbellRepository : DoorbellRepository {
         private const val IMAGE_MAX_COUNT = 150
         private const val PERCENT_FULL = 100
         private const val PERCENT_ERROR = 90
+        private val imageUriList = (1..10).map {
+            "https://github.com/google-developer-training/" +
+                "android-basics-kotlin-affirmations-app-solution/" +
+                "raw/main/app/src/main/res/drawable/image$it.jpg"
+        }
     }
 }

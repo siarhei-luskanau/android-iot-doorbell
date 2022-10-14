@@ -32,6 +32,6 @@ dependencies {
 
     // unit test
     testImplementation(TestLibraries.kotlinTest)
-    testImplementation(TestLibraries.mockitoCore)
+    testImplementation(TestLibraries.mockkCore)
     testImplementation(TestLibraries.kotlinxCoroutinesTest)
 }

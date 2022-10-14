@@ -4,9 +4,10 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import com.karumi.shot.ScreenshotTest
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito.mock
+import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import kotlin.test.Test
@@ -14,9 +15,13 @@ import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 
 class ImageListFragmentTest : ScreenshotTest {
 
-    private fun createFragment(state: ImageListState) = ImageListFragment {
-        mock(ImageListPresenter::class.java).apply {
-            given(viewStateFlow).willReturn(flowOf(state))
+    private fun createFragment(
+        pagingData: PagingData<ImageData>,
+        cameraList: List<CameraData>
+    ) = ImageListFragment {
+        mockk(relaxed = true, relaxUnitFun = true) {
+            every { doorbellListFlow } returns flowOf(pagingData)
+            every { runBlocking { getCameraList() } } returns cameraList
         }
     }
 
@@ -24,10 +29,15 @@ class ImageListFragmentTest : ScreenshotTest {
     fun testNormalState() {
         val scenario = launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(
-                state = ImageListState(
-                    pagingData = PagingData.from(listOf(ImageData(imageId = "imageId"))),
-                    cameraList = listOf(CameraData("NormalCameraId"))
-                )
+                pagingData = PagingData.from(
+                    listOf(
+                        ImageData(
+                            imageId = "imageId",
+                            imageUri = null
+                        )
+                    )
+                ),
+                cameraList = listOf(CameraData("NormalCameraId"))
             )
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -43,10 +53,8 @@ class ImageListFragmentTest : ScreenshotTest {
     fun testEmptyState() {
         val scenario = launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(
-                state = ImageListState(
-                    pagingData = PagingData.empty(),
-                    cameraList = listOf(CameraData("EmptyCameraId"))
-                )
+                pagingData = PagingData.empty(),
+                cameraList = listOf(CameraData("EmptyCameraId"))
             )
         }
         scenario.moveToState(Lifecycle.State.RESUMED)

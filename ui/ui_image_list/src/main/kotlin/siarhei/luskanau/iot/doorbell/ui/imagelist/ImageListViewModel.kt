@@ -2,9 +2,9 @@ package siarhei.luskanau.iot.doorbell.ui.imagelist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.ImagesDataSourceFactory
@@ -19,17 +19,13 @@ class ImageListViewModel(
     imagesDataSourceFactory: ImagesDataSourceFactory
 ) : ViewModel(), ImageListPresenter {
 
-    override val viewStateFlow: Flow<ImageListState> =
+    override suspend fun getCameraList(): List<CameraData> =
+        doorbellRepository.getCamerasList(doorbellId)
+
+    override val doorbellListFlow: Flow<PagingData<ImageData>> =
         imagesDataSourceFactory.createPager(doorbellId)
             .flow
             .cachedIn(viewModelScope)
-            .map { pagingData ->
-                val cameraList = doorbellRepository.getCamerasList(doorbellId)
-                ImageListState(
-                    cameraList = cameraList,
-                    pagingData = pagingData
-                )
-            }
 
     override fun onCameraClicked(cameraData: CameraData) {
         viewModelScope.launch {

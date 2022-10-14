@@ -13,57 +13,56 @@ private object Versions {
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
     val karumiShot: String = versionsProperties["version.karumiShot"].toString()
     const val compose = "1.2.1"
-    const val composeMaterialAdapter = "1.1.16"
-    const val desugar = "1.2.0"
+    const val composeMaterialAdapter = "1.1.20"
+    const val desugar = "2.0.0"
     const val kotlinxDatetime = "0.4.0"
     const val kotlinxSerialization = "1.4.0"
     const val gson = "2.9.1"
-    const val navigation = "2.5.1"
-    const val androidxCamera = "1.2.0-beta01"
+    const val navigation = "2.5.2"
+    const val androidxCamera = "1.2.0-beta02"
     const val androidxStartup = "1.1.1"
-    const val material = "1.7.0-rc01"
-    const val activity = "1.5.1"
-    const val fragment = "1.5.2"
-    const val swiperefreshlayout = "1.1.0"
+    const val material = "1.8.0-alpha01"
+    const val activity = "1.6.0"
+    const val fragment = "1.5.3"
     const val lifecycle = "2.5.1"
     const val paging = "3.2.0-alpha02"
     const val pagingCompose = "1.0.0-alpha16"
     const val room = "2.4.3"
     const val workManager = "2.7.1"
     const val timber = "5.0.1"
-    const val coil = "2.2.0"
+    const val coil = "2.2.1"
     const val paperwork = "1.2.7"
-    const val googleServices = "4.3.13"
+    const val googleServices = "4.3.14"
 
     // GMS versions
-    const val firebaseDatabase = "20.0.5"
-    const val firebaseStorage = "20.0.1"
+    const val firebaseDatabase = "20.0.6"
+    const val firebaseStorage = "20.0.2"
 
     // DI
-    const val dagger = "2.43.2"
+    const val dagger = "2.44"
     const val kodein = "7.14.0"
-    const val koin = "3.2.0"
+    const val koin = "3.2.2"
     const val toothpick = "3.1.0"
 
     // Development
     const val leakCanary = "2.9.1"
 
     // Testing
-    const val mockito = "4.7.0"
+    const val mockk = "1.13.1"
 
     // test instrumentation
-    const val androidTestCore = "1.5.0-alpha02"
-    const val androidTestTruth = "1.5.0-alpha07"
-    const val espresso = "3.5.0-alpha07"
-    const val testExtJunit = "1.1.4-alpha07"
+    const val androidTestCore = "1.5.0-beta01"
+    const val androidTestTruth = "1.5.0-beta01"
+    const val espresso = "3.5.0-beta01"
+    const val testExtJunit = "1.1.4-beta01"
 }
 
 object PublicVersions {
     val kotlin = Versions.kotlin
-    const val composeCompiler = "1.3.0"
+    const val composeCompiler = "1.3.2"
     const val ktlint = "0.47.1"
     const val detekt = "1.21.0"
-    const val kotlinxKover = "0.6.0"
+    const val kotlinxKover = "0.6.1"
 }
 
 object BuildVersions {
@@ -102,8 +101,6 @@ object Libraries {
     const val composeMaterialTheme =
         "com.google.android.material:compose-theme-adapter:${Versions.composeMaterialAdapter}"
     const val material = "com.google.android.material:material:${Versions.material}"
-    const val swiperefreshlayout =
-        "androidx.swiperefreshlayout:swiperefreshlayout:${Versions.swiperefreshlayout}"
     const val activityKtx = "androidx.activity:activity-ktx:${Versions.activity}"
     const val activityCompose = "androidx.activity:activity-compose:${Versions.activity}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragment}"
@@ -152,8 +149,8 @@ object TestLibraries {
     val kotlinxCoroutinesTest =
         "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.kotlinxCoroutines}"
     val kotlinTest = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin}"
-    const val mockitoCore = "org.mockito:mockito-core:${Versions.mockito}"
-    const val mockitoAndroid = "org.mockito:mockito-android:${Versions.mockito}"
+    const val mockkCore = "io.mockk:mockk:${Versions.mockk}"
+    const val mockkAndroid = "io.mockk:mockk-android:${Versions.mockk}"
     const val androidTestCoreKtx = "androidx.test:core-ktx:${Versions.androidTestCore}"
     const val androidTestExtTruth = "androidx.test.ext:truth:${Versions.androidTestTruth}"
     const val testEspressoCore = "androidx.test.espresso:espresso-core:${Versions.espresso}"

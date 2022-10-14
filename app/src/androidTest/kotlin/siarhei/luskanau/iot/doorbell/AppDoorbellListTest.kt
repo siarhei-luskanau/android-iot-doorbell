@@ -5,20 +5,26 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.filters.LargeTest
+import androidx.test.rule.GrantPermissionRule
 import org.junit.Rule
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 import kotlin.test.Test
 import siarhei.luskanau.iot.doorbell.navigation.R as NavigationR
-import siarhei.luskanau.iot.doorbell.ui.permissions.R as PermissionsR
+import siarhei.luskanau.iot.doorbell.ui.doorbelllist.R as DoorbellListR
 
 @LargeTest
-class AppSingletonPermissionTest {
+class AppDoorbellListTest {
+
+    @get:Rule
+    val grantPermissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+        android.Manifest.permission.CAMERA
+    )
 
     @get:Rule
     val activityScenarioRule = activityScenarioRule<NavigationActivity>(
         intent = NavDeepLinkBuilder(ApplicationProvider.getApplicationContext())
             .setGraph(NavigationR.navigation.nav_app)
-            .setDestination(PermissionsR.id.nav_permissions_xml)
+            .setDestination(DoorbellListR.id.nav_doorbell_list_xml)
             .setArguments(null)
             .createTaskStackBuilder()
             .intents

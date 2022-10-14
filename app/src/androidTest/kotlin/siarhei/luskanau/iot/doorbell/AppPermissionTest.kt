@@ -6,26 +6,20 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.filters.LargeTest
 import org.junit.Rule
-import siarhei.luskanau.iot.doorbell.navigation.NavRootDirections
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
 import kotlin.test.Test
 import siarhei.luskanau.iot.doorbell.navigation.R as NavigationR
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.R as ImageDetailsR
+import siarhei.luskanau.iot.doorbell.ui.permissions.R as PermissionsR
 
 @LargeTest
-class AppSingletonImageDetailsTest {
+class AppPermissionTest {
 
     @get:Rule
     val activityScenarioRule = activityScenarioRule<NavigationActivity>(
         intent = NavDeepLinkBuilder(ApplicationProvider.getApplicationContext())
             .setGraph(NavigationR.navigation.nav_app)
-            .setDestination(ImageDetailsR.id.nav_image_details_xml)
-            .setArguments(
-                NavRootDirections.actionImageListToImageDetails(
-                    doorbellId = "doorbellId",
-                    imageId = "imageId"
-                ).arguments
-            )
+            .setDestination(PermissionsR.id.nav_permissions_xml)
+            .setArguments(null)
             .createTaskStackBuilder()
             .intents
             .first()

@@ -7,13 +7,13 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
-import com.google.android.material.composethemeadapter.MdcTheme
 
 class SplashFragment(
     presenterProvider: (fragment: Fragment) -> SplashPresenter
@@ -28,7 +28,7 @@ class SplashFragment(
     ) =
         ComposeView(inflater.context).apply {
             setContent {
-                MdcTheme {
+                MaterialTheme {
                     SplashPreview()
                 }
             }

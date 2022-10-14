@@ -79,6 +79,7 @@ tasks.register("ciAll") {
             "ktlintFormat",
             "ciLint",
             "ciUnitTest",
+            "ciBuildApp",
             "ciEmulator30",
             "ciEmulator31",
             "ciEmulator32",

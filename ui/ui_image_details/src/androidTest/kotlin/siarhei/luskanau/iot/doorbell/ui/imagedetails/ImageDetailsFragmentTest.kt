@@ -11,8 +11,8 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.karumi.shot.ScreenshotTest
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito.mock
+import io.mockk.every
+import io.mockk.mockk
 import kotlin.test.Test
 import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 
@@ -25,18 +25,17 @@ class ImageDetailsFragmentTest : ScreenshotTest {
     private fun createNormalFragmentFactory() = object : FragmentFactory() {
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
             ImageDetailsFragment { fragment: Fragment ->
-                mock(ImageDetailsPresenter::class.java).apply {
-                    given(getImageDetailsStateData()).willReturn(
+                mockk(relaxed = true, relaxUnitFun = true) {
+                    every { getImageDetailsStateData() } returns
                         MutableLiveData<ImageDetailsState>().apply {
                             value = NormalImageDetailsState(
                                 adapter = object : FragmentStateAdapter(fragment) {
                                     override fun getItemCount(): Int = 1
                                     override fun createFragment(position: Int): Fragment =
-                                        Fragment(CommonR.layout.layout_generic_empty)
+                                        Fragment(R.layout.layout_image_details_slide_normal)
                                 }
                             )
                         }
-                    )
                 }
             }
     }

@@ -23,12 +23,12 @@ dependencies {
 
     // unit test
     testImplementation(TestLibraries.kotlinTest)
-    testImplementation(TestLibraries.mockitoCore)
+    testImplementation(TestLibraries.mockkCore)
 
     // android test
     androidTestImplementation(project(":common:common_test_ui"))
     androidTestImplementation(TestLibraries.kotlinTest)
-    androidTestImplementation(TestLibraries.mockitoAndroid)
+    androidTestImplementation(TestLibraries.mockkAndroid)
     androidTestImplementation(TestLibraries.testEspressoCore)
     androidTestImplementation(TestLibraries.androidTestCoreKtx)
     androidTestImplementation(TestLibraries.fragmentTesting)

@@ -1,12 +1,12 @@
 package siarhei.luskanau.iot.doorbell.data
 
 import android.content.Context
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
@@ -24,17 +24,17 @@ class AndroidThisDeviceRepositoryTest {
     private val doorbellData = DoorbellData(doorbellId, deviceName, deviceInfo)
     private val camerasList = listOf(CameraData("cameraId"))
     private val ipAddressList = mapOf("InterfaceName" to "IpAddress")
-    private val context = mock(Context::class.java)
-    private val deviceInfoProvider = mock(DeviceInfoProvider::class.java).apply {
-        given(buildDoorbellId()).willReturn(doorbellId)
-        given(buildDeviceName()).willReturn(deviceName)
-        given(buildDeviceInfo()).willReturn(deviceInfo)
+    private val context = mockk<Context>(relaxed = true, relaxUnitFun = true)
+    private val deviceInfoProvider = mockk<DeviceInfoProvider>(relaxed = true, relaxUnitFun = true) {
+        every { buildDoorbellId() } returns doorbellId
+        every { buildDeviceName() } returns deviceName
+        every { buildDeviceInfo() } returns deviceInfo
     }
-    private val cameraRepository = mock(CameraRepository::class.java).apply {
-        runTest { given(getCamerasList()).willReturn(camerasList) }
+    private val cameraRepository = mockk<CameraRepository>(relaxed = true, relaxUnitFun = true) {
+        every { runBlocking { getCamerasList() } } returns camerasList
     }
-    private val ipAddressProvider = mock(IpAddressProvider::class.java).apply {
-        runTest { given(getIpAddressList()).willReturn(ipAddressList) }
+    private val ipAddressProvider = mockk<IpAddressProvider>(relaxed = true, relaxUnitFun = true) {
+        every { runBlocking { getIpAddressList() } } returns ipAddressList
     }
 
     private val androidThisDeviceRepository = AndroidThisDeviceRepository(
@@ -59,9 +59,9 @@ class AndroidThisDeviceRepositoryTest {
     fun `test check doorbellData`() {
         runTest {
             val resultDoorbellData: DoorbellData = androidThisDeviceRepository.doorbellData()
-            verify(deviceInfoProvider, times(1)).buildDoorbellId()
-            verify(deviceInfoProvider, times(1)).buildDeviceName()
-            verify(deviceInfoProvider, times(1)).buildDeviceInfo()
+            verify { deviceInfoProvider.buildDoorbellId() }
+            verify { deviceInfoProvider.buildDeviceName() }
+            verify { deviceInfoProvider.buildDeviceInfo() }
             assertEquals(
                 expected = doorbellData,
                 actual = resultDoorbellData,
@@ -74,7 +74,7 @@ class AndroidThisDeviceRepositoryTest {
     fun `test check getCamerasList`() {
         runTest {
             val resultCamerasList = androidThisDeviceRepository.getCamerasList()
-            verify(cameraRepository, times(1)).getCamerasList()
+            verify { runBlocking { cameraRepository.getCamerasList() } }
             assertEquals(
                 expected = camerasList,
                 actual = resultCamerasList,
@@ -87,7 +87,7 @@ class AndroidThisDeviceRepositoryTest {
     fun `test check getIpAddressList`() {
         runTest {
             val resultIpAddressList = androidThisDeviceRepository.getIpAddressList()
-            verify(ipAddressProvider, times(1)).getIpAddressList()
+            verify { runBlocking { ipAddressProvider.getIpAddressList() } }
             assertEquals(
                 expected = ipAddressList,
                 actual = resultIpAddressList,

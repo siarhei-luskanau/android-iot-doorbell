@@ -4,9 +4,9 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import com.karumi.shot.ScreenshotTest
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
-import org.mockito.BDDMockito.given
-import org.mockito.Mockito.mock
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import kotlin.test.Test
 import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
@@ -14,8 +14,8 @@ import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 class DoorbellListFragmentTest : ScreenshotTest {
 
     private fun createFragment(pagingData: PagingData<DoorbellData>) = DoorbellListFragment {
-        mock(DoorbellListPresenter::class.java).apply {
-            given(doorbellListFlow).willReturn(flowOf(pagingData))
+        mockk(relaxed = true, relaxUnitFun = true) {
+            every { doorbellListFlow } returns flowOf(pagingData)
         }
     }
 

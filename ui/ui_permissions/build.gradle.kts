@@ -19,7 +19,7 @@ dependencies {
 
     // unit test
     testImplementation(TestLibraries.kotlinTest)
-    testImplementation(TestLibraries.mockitoCore)
+    testImplementation(TestLibraries.mockkCore)
 
     // android test
     androidTestImplementation(project(":common:common_test_ui"))

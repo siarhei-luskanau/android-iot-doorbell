@@ -19,20 +19,18 @@ dependencies {
     implementation(Libraries.material)
     implementation(Libraries.activityKtx)
     implementation(Libraries.fragmentKtx)
-    implementation(Libraries.swiperefreshlayout)
-    implementation(Libraries.pagingCommonKtx)
-    implementation(Libraries.pagingRuntimeKtx)
+    implementation(Libraries.pagingCompose)
     implementation(Libraries.navigationUiKtx)
 
     // unit test
     testImplementation(TestLibraries.kotlinTest)
-    testImplementation(TestLibraries.mockitoCore)
+    testImplementation(TestLibraries.mockkCore)
     testImplementation(TestLibraries.kotlinxCoroutinesTest)
 
     // android test
     androidTestImplementation(project(":common:common_test_ui"))
     androidTestImplementation(TestLibraries.kotlinTest)
-    androidTestImplementation(TestLibraries.mockitoAndroid)
+    androidTestImplementation(TestLibraries.mockkAndroid)
     androidTestImplementation(TestLibraries.testEspressoCore)
     androidTestImplementation(TestLibraries.androidTestCoreKtx)
     androidTestImplementation(TestLibraries.fragmentTesting)
