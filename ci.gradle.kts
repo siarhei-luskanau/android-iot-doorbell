@@ -88,6 +88,20 @@ tasks.register("ciAll") {
     }
 }
 
+tasks.register("ciSetupAndroid") {
+    group = CI_GRADLE
+    doLast {
+        gradlew(
+            "setupAndroidCmdlineTools",
+            isAndroidSdkGradlew = true
+        )
+        gradlew(
+            "setupAndroidSDK",
+            isAndroidSdkGradlew = true
+        )
+    }
+}
+
 fun runOnEmulator(
     emulatorName: String,
     directorySuffix: String = emulatorName,

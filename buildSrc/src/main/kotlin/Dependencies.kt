@@ -12,54 +12,54 @@ private object Versions {
     val kotlin: String = versionsProperties["version.kotlin"].toString()
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
     val karumiShot: String = versionsProperties["version.karumiShot"].toString()
-    const val compose = "1.2.1"
-    const val composeMaterialAdapter = "1.1.20"
+    const val compose = "1.4.0-alpha02"
+    const val composeMaterialAdapter = "1.2.0"
     const val desugar = "2.0.0"
     const val kotlinxDatetime = "0.4.0"
-    const val kotlinxSerialization = "1.4.0"
-    const val gson = "2.9.1"
-    const val navigation = "2.5.2"
-    const val androidxCamera = "1.2.0-beta02"
+    const val kotlinxSerialization = "1.4.1"
+    const val gson = "2.10"
+    const val navigation = "2.5.3"
+    const val androidxCamera = "1.3.0-alpha01"
     const val androidxStartup = "1.1.1"
-    const val material = "1.8.0-alpha01"
-    const val activity = "1.6.0"
-    const val fragment = "1.5.3"
+    const val material = "1.7.0"
+    const val activity = "1.6.1"
+    const val fragment = "1.5.4"
     const val lifecycle = "2.5.1"
-    const val paging = "3.2.0-alpha02"
-    const val pagingCompose = "1.0.0-alpha16"
+    const val paging = "3.2.0-alpha03"
+    const val pagingCompose = "1.0.0-alpha17"
     const val room = "2.4.3"
-    const val workManager = "2.7.1"
+    const val workManager = "2.8.0-beta02"
     const val timber = "5.0.1"
-    const val coil = "2.2.1"
+    const val coil = "2.2.2"
     const val paperwork = "1.2.7"
     const val googleServices = "4.3.14"
 
     // GMS versions
-    const val firebaseDatabase = "20.0.6"
-    const val firebaseStorage = "20.0.2"
+    const val firebaseDatabase = "20.1.0"
+    const val firebaseStorage = "20.1.0"
 
     // DI
     const val dagger = "2.44"
-    const val kodein = "7.14.0"
-    const val koin = "3.2.2"
+    const val kodein = "7.15.1"
+    const val koin = "3.3.0"
     const val toothpick = "3.1.0"
 
     // Development
     const val leakCanary = "2.9.1"
 
     // Testing
-    const val mockk = "1.13.1"
+    const val mockk = "1.13.2"
 
     // test instrumentation
-    const val androidTestCore = "1.5.0-beta01"
-    const val androidTestTruth = "1.5.0-beta01"
-    const val espresso = "3.5.0-beta01"
-    const val testExtJunit = "1.1.4-beta01"
+    const val androidTestCore = "1.5.0"
+    const val androidTestTruth = "1.5.0"
+    const val espresso = "3.5.0"
+    const val testExtJunit = "1.1.4"
 }
 
 object PublicVersions {
     val kotlin = Versions.kotlin
-    const val composeCompiler = "1.3.2"
+    const val composeCompiler = "1.4.0-alpha02"
     const val ktlint = "0.47.1"
     const val detekt = "1.21.0"
     const val kotlinxKover = "0.6.1"

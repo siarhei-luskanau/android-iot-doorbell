@@ -30,7 +30,7 @@ class DefaultScheduleWorkManagerService(
 
         workManager().enqueueUniquePeriodicWork(
             UPTIME_WORK_NAME,
-            ExistingPeriodicWorkPolicy.REPLACE,
+            ExistingPeriodicWorkPolicy.UPDATE,
             request
         )
     }
