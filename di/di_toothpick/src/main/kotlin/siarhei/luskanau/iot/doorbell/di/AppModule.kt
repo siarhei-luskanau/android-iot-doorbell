@@ -43,18 +43,6 @@ class AppModule(context: Context) : Module() {
         }
         bind(ImageRepository::class.java).toProviderInstance { imageRepository }
 
-        val doorbellRepository: DoorbellRepository by lazy {
-            FirebaseDoorbellRepository()
-            StubDoorbellRepository()
-        }
-        bind(DoorbellRepository::class.java).toProviderInstance { doorbellRepository }
-
-        val uptimeRepository: UptimeRepository by lazy {
-            UptimeFirebaseRepository()
-            StubUptimeRepository()
-        }
-        bind(UptimeRepository::class.java).toProviderInstance { uptimeRepository }
-
         val deviceInfoProvider: DeviceInfoProvider by lazy {
             AndroidDeviceInfoProvider(
                 context = context
@@ -82,6 +70,24 @@ class AppModule(context: Context) : Module() {
             )
         }
         bind(ThisDeviceRepository::class.java).toProviderInstance { thisDeviceRepository }
+
+        val doorbellRepository: DoorbellRepository by lazy {
+            if (thisDeviceRepository.isEmulator()) {
+                StubDoorbellRepository()
+            } else {
+                FirebaseDoorbellRepository()
+            }
+        }
+        bind(DoorbellRepository::class.java).toProviderInstance { doorbellRepository }
+
+        val uptimeRepository: UptimeRepository by lazy {
+            if (thisDeviceRepository.isEmulator()) {
+                StubUptimeRepository()
+            } else {
+                UptimeFirebaseRepository()
+            }
+        }
+        bind(UptimeRepository::class.java).toProviderInstance { uptimeRepository }
 
         val persistenceRepository: PersistenceRepository by lazy {
             DefaultPersistenceRepository(

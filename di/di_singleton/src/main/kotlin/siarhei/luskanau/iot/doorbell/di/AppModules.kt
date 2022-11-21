@@ -38,12 +38,18 @@ class AppModules(context: Context) {
         )
     }
     val doorbellRepository: DoorbellRepository by lazy {
-        FirebaseDoorbellRepository()
-        StubDoorbellRepository()
+        if (thisDeviceRepository.isEmulator()) {
+            StubDoorbellRepository()
+        } else {
+            FirebaseDoorbellRepository()
+        }
     }
     val uptimeRepository: UptimeRepository by lazy {
-        UptimeFirebaseRepository()
-        StubUptimeRepository()
+        if (thisDeviceRepository.isEmulator()) {
+            StubUptimeRepository()
+        } else {
+            UptimeFirebaseRepository()
+        }
     }
     val thisDeviceRepository: ThisDeviceRepository by lazy {
         AndroidThisDeviceRepository(

@@ -10,8 +10,8 @@ import java.util.Collections
 
 class AndroidIpAddressProvider : IpAddressProvider {
 
-    override suspend fun getIpAddressList(): Map<String, String> {
-        val ipAddressList = mutableMapOf<String, String>()
+    override suspend fun getIpAddressList(): Map<String, Pair<String, String>> {
+        val ipAddressList = mutableMapOf<String, Pair<String, String>>()
 
         runCatching {
             for (networkInterface in Collections.list(NetworkInterface.getNetworkInterfaces())) {
@@ -20,10 +20,12 @@ class AndroidIpAddressProvider : IpAddressProvider {
                         !inetAddress.isLoopbackAddress && inetAddress is Inet4Address
                     }
                     .map { inetAddress: InetAddress ->
-                        inetAddress.hostAddress.orEmpty() + " " +
+                        Pair(
+                            inetAddress.hostAddress.orEmpty(),
                             AppConstants.DATE_FORMAT.format(System.currentTimeMillis())
+                        )
                     }
-                    .forEach { hostAddress: String ->
+                    .forEach { hostAddress: Pair<String, String> ->
                         ipAddressList[networkInterface.name] = hostAddress
                     }
             }

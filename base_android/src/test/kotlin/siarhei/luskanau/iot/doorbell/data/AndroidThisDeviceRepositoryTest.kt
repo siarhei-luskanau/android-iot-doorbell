@@ -23,7 +23,7 @@ class AndroidThisDeviceRepositoryTest {
     private val deviceInfo = emptyMap<String, String>()
     private val doorbellData = DoorbellData(doorbellId, deviceName, deviceInfo)
     private val camerasList = listOf(CameraData("cameraId"))
-    private val ipAddressList = mapOf("InterfaceName" to "IpAddress")
+    private val ipAddressList = mapOf("InterfaceName" to Pair("IpAddress", "timestamp"))
     private val context = mockk<Context>(relaxed = true, relaxUnitFun = true)
     private val deviceInfoProvider = mockk<DeviceInfoProvider>(relaxed = true, relaxUnitFun = true) {
         every { buildDoorbellId() } returns doorbellId

@@ -57,10 +57,12 @@ class CommonModule {
 
     @Provides
     @Singleton
-    fun provideDoorbellRepository(): DoorbellRepository {
-        FirebaseDoorbellRepository()
-        return StubDoorbellRepository()
-    }
+    fun provideDoorbellRepository(thisDeviceRepository: ThisDeviceRepository): DoorbellRepository =
+        if (thisDeviceRepository.isEmulator()) {
+            StubDoorbellRepository()
+        } else {
+            FirebaseDoorbellRepository()
+        }
 
     @Provides
     @Singleton
@@ -87,10 +89,12 @@ class CommonModule {
 
     @Provides
     @Singleton
-    fun provideUptimeRepository(): UptimeRepository {
-        UptimeFirebaseRepository()
-        return StubUptimeRepository()
-    }
+    fun provideUptimeRepository(thisDeviceRepository: ThisDeviceRepository): UptimeRepository =
+        if (thisDeviceRepository.isEmulator()) {
+            StubUptimeRepository()
+        } else {
+            UptimeFirebaseRepository()
+        }
 
     @Provides
     @Singleton

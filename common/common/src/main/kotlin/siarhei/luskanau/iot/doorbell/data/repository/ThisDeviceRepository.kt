@@ -5,13 +5,15 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 
 interface ThisDeviceRepository {
 
+    fun isEmulator(): Boolean
+
     suspend fun doorbellId(): String
 
     suspend fun doorbellData(): DoorbellData
 
     suspend fun getCamerasList(): List<CameraData>
 
-    suspend fun getIpAddressList(): Map<String, String>
+    suspend fun getIpAddressList(): Map<String, Pair<String, String>>
 
     fun reboot()
 

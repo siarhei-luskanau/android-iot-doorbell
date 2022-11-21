@@ -1,7 +1,5 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import siarhei.luskanau.iot.doorbell.data.model.Uptime
 
 class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
@@ -97,10 +95,10 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
 
     override suspend fun sendIpAddressMap(
         doorbellId: String,
-        ipAddressMap: Map<String, String>
+        ipAddressMap: Map<String, Pair<String, String>>
     ) =
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId).child(IP_ADDRESS_KEY),
-            Json.encodeToString(ipAddressMap)
+            ipAddressMap
         )
 }

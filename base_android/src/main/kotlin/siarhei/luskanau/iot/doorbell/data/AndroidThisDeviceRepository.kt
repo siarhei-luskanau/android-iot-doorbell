@@ -2,6 +2,7 @@ package siarhei.luskanau.iot.doorbell.data
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.core.content.ContextCompat
 import siarhei.luskanau.iot.doorbell.common.AppConstants
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
@@ -17,6 +18,9 @@ class AndroidThisDeviceRepository(
     private val cameraRepository: CameraRepository,
     private val ipAddressProvider: IpAddressProvider
 ) : ThisDeviceRepository {
+
+    override fun isEmulator(): Boolean =
+        Build.FINGERPRINT.contains("generic")
 
     private val doorbellData = DoorbellData(
         deviceInfoProvider.buildDoorbellId(),

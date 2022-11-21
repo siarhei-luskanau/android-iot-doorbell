@@ -17,7 +17,6 @@ private object Versions {
     const val desugar = "2.0.0"
     const val kotlinxDatetime = "0.4.0"
     const val kotlinxSerialization = "1.4.1"
-    const val gson = "2.10"
     const val navigation = "2.5.3"
     const val androidxCamera = "1.3.0-alpha01"
     const val androidxStartup = "1.1.1"
@@ -45,7 +44,7 @@ private object Versions {
     const val toothpick = "3.1.0"
 
     // Development
-    const val leakCanary = "2.9.1"
+    const val leakCanary = "2.10"
 
     // Testing
     const val mockk = "1.13.2"
@@ -82,7 +81,6 @@ object Libraries {
     const val kotlinxSerializationJson =
         "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
     const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:${Versions.desugar}"
-    const val gson = "com.google.code.gson:gson:${Versions.gson}"
     const val navigationFragmentKtx =
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"

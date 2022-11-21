@@ -3,7 +3,6 @@ package siarhei.luskanau.iot.doorbell.data.repository
 import android.net.Uri
 import com.google.firebase.database.Query
 import com.google.firebase.database.ServerValue
-import kotlinx.serialization.encodeToString
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.CameraInfoData
 import siarhei.luskanau.iot.doorbell.data.model.CameraxInfoData
@@ -174,14 +173,12 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
 
         setValueToDatabase(
             getAppDatabase().child(IMAGES_KEY).child(doorbellId).child(imageId),
-            json.encodeToString(
-                ImageDto(
-                    imageId = imageId,
-                    imageStoragePath = uri.toString(),
-                    doorbellId = doorbellId,
-                    cameraId = cameraId,
-                    timestamp = 0
-                )
+            ImageDto(
+                imageId = imageId,
+                imageStoragePath = uri.toString(),
+                doorbellId = doorbellId,
+                cameraId = cameraId,
+                timestamp = 0
             )
         )
 

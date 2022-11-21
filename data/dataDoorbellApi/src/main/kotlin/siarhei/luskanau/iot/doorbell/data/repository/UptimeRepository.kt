@@ -32,6 +32,6 @@ interface UptimeRepository {
 
     suspend fun sendIpAddressMap(
         doorbellId: String,
-        ipAddressMap: Map<String, String>
+        ipAddressMap: Map<String, Pair<String, String>>
     )
 }

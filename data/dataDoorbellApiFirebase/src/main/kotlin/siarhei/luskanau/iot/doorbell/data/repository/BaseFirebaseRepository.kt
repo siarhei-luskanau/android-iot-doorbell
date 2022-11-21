@@ -10,16 +10,13 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.serializer
 import java.io.InputStream
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
@@ -36,12 +33,6 @@ open class BaseFirebaseRepository {
         }
     }
 
-    protected val gson: Gson by lazy {
-        GsonBuilder()
-            .serializeNulls()
-            .create()
-    }
-
     companion object {
         protected const val DOORBELL_APP_KEY = "doorbell_app"
     }
@@ -53,18 +44,20 @@ open class BaseFirebaseRepository {
         Firebase.storage.getReference(DOORBELL_APP_KEY)
 
     protected inline fun <reified T> dataSnapshotObject(dataSnapshot: DataSnapshot): T? =
-        (dataSnapshot.value as? Map<*, *>)?.toJsonObject().let { jsonObject ->
-            json.encodeToString(jsonObject).let { jsonString ->
-                json.decodeFromString(jsonString)
-            }
+        (dataSnapshot.value as? Map<*, *>)?.toJsonElement()?.let { jsonElement ->
+            json.decodeFromJsonElement(
+                deserializer = serializer(),
+                element = jsonElement
+            )
         }
 
     protected inline fun <reified T> dataSnapshotToList(dataSnapshot: DataSnapshot): List<T> =
         dataSnapshot.children.mapNotNull { child ->
-            (child.value as? Map<*, *>)?.toJsonObject().let { jsonObject ->
-                json.encodeToString(jsonObject).let { jsonString ->
-                    json.decodeFromString(jsonString)
-                }
+            (child.value as? Map<*, *>)?.toJsonElement()?.let { jsonElement ->
+                json.decodeFromJsonElement(
+                    deserializer = serializer(),
+                    element = jsonElement
+                )
             }
         }
 
@@ -72,9 +65,15 @@ open class BaseFirebaseRepository {
         dataSnapshot.children.associateBy(
             { it.key.orEmpty() },
             {
-                val jsonObject = (it.value as? Map<*, *>)?.toJsonObject()
-                val jsonString = json.encodeToString(jsonObject)
-                json.decodeFromString<T>(jsonString)
+                val jsonElement = when (val value = it.value) {
+                    is String -> JsonPrimitive(value)
+                    is Map<*, *> -> value.toJsonElement()
+                    else -> JsonPrimitive(value.toString())
+                }
+                json.decodeFromJsonElement(
+                    deserializer = serializer<T>(),
+                    element = jsonElement
+                )
             }
         )
             .filterValues { it != null }
@@ -98,10 +97,9 @@ open class BaseFirebaseRepository {
         }
 
     protected suspend inline fun <reified T> setValueToDatabase(ref: DatabaseReference, value: T?) =
-        json.encodeToString(value).let { jsonString ->
-            val map = gson.fromJson(jsonString, Map::class.java)
+        json.encodeToJsonElement(serializer = serializer(), value = value).let { jsonElement ->
             suspendCoroutine { continuation: Continuation<Unit> ->
-                ref.setValue(map)
+                ref.setValue(jsonElement.toMap())
                     .addOnSuccessListener {
                         continuation.resume(Unit)
                     }
@@ -124,38 +122,38 @@ open class BaseFirebaseRepository {
             })
         }
 
-    protected fun Map<*, *>.toJsonObject(): JsonObject {
-        val map = mutableMapOf<String, JsonElement>()
+    protected fun JsonElement.toMap(): Any? =
+        when (this) {
+            is JsonNull -> null
+            is JsonArray -> this.map { it.toMap() }
+            is JsonObject -> this.mapValues { it.value.toMap() }
+            is JsonPrimitive -> this.content
+        }
+
+    protected fun Map<*, *>.toJsonElement(): JsonElement {
+        val map: MutableMap<String, JsonElement> = mutableMapOf()
         this.forEach {
-            if (it.key is String) {
-                map[it.key as String] = it.value.toJsonElement()
+            val key = it.key as? String ?: return@forEach
+            val value = it.value ?: return@forEach
+            when (value) {
+                is Map<*, *> -> map[key] = (value).toJsonElement()
+                is List<*> -> map[key] = value.toJsonElement()
+                else -> map[key] = JsonPrimitive(value.toString())
             }
         }
         return JsonObject(map)
     }
 
-    private fun Any?.toJsonElement(): JsonElement {
-        return when (this) {
-            is Number -> JsonPrimitive(this)
-            is Boolean -> JsonPrimitive(this)
-            is String -> JsonPrimitive(this)
-            is Array<*> -> this.toJsonArray()
-            is List<*> -> this.toJsonArray()
-            is Map<*, *> -> this.toJsonObject()
-            is JsonElement -> this
-            else -> JsonNull
+    private fun List<*>.toJsonElement(): JsonElement {
+        val list: MutableList<JsonElement> = mutableListOf()
+        this.forEach {
+            val value = it ?: return@forEach
+            when (value) {
+                is Map<*, *> -> list.add((value).toJsonElement())
+                is List<*> -> list.add(value.toJsonElement())
+                else -> list.add(JsonPrimitive(value.toString()))
+            }
         }
-    }
-
-    private fun Array<*>.toJsonArray(): JsonArray {
-        val array = mutableListOf<JsonElement>()
-        this.forEach { array.add(it.toJsonElement()) }
-        return JsonArray(array)
-    }
-
-    private fun List<*>.toJsonArray(): JsonArray {
-        val array = mutableListOf<JsonElement>()
-        this.forEach { array.add(it.toJsonElement()) }
-        return JsonArray(array)
+        return JsonArray(list)
     }
 }

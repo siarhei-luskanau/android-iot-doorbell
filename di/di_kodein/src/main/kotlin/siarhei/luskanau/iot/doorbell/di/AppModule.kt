@@ -64,8 +64,11 @@ val appModule = DI.Module(name = "appModule") {
     }
     bind<ImageRepository>() with singleton { InternalStorageImageRepository(context = instance()) }
     bind<DoorbellRepository>() with singleton {
-        FirebaseDoorbellRepository()
-        StubDoorbellRepository()
+        if (instance<ThisDeviceRepository>().isEmulator()) {
+            StubDoorbellRepository()
+        } else {
+            FirebaseDoorbellRepository()
+        }
     }
     bind<PersistenceRepository>() with singleton {
         DefaultPersistenceRepository(
@@ -82,8 +85,11 @@ val appModule = DI.Module(name = "appModule") {
         )
     }
     bind<UptimeRepository>() with singleton {
-        UptimeFirebaseRepository()
-        StubUptimeRepository()
+        if (instance<ThisDeviceRepository>().isEmulator()) {
+            StubUptimeRepository()
+        } else {
+            UptimeFirebaseRepository()
+        }
     }
     bind<DoorbellsDataSource>() with singleton {
         DefaultDoorbellsDataSource(

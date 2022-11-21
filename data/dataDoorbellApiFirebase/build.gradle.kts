@@ -17,5 +17,4 @@ dependencies {
     implementation(Libraries.firebaseStorageKtx)
 
     implementation(Libraries.kotlinxSerializationJson)
-    implementation(Libraries.gson)
 }
