@@ -3,8 +3,8 @@ package siarhei.luskanau.iot.doorbell.dagger.splash
 import androidx.fragment.app.FragmentFactory
 import dagger.BindsInstance
 import dagger.Component
-import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 import javax.inject.Provider
+import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 
 @Component(
     modules = [

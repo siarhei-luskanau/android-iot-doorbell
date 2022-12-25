@@ -8,11 +8,11 @@ import androidx.test.espresso.matcher.ViewMatchers
 import com.karumi.shot.ScreenshotTest
 import io.mockk.every
 import io.mockk.mockk
+import kotlin.test.Test
 import kotlinx.coroutines.flow.flowOf
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
-import kotlin.test.Test
 import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
+import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
 
 class ImageDetailsSlideFragmentTest : ScreenshotTest {
 

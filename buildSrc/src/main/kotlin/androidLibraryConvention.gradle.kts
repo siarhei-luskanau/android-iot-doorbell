@@ -58,21 +58,16 @@ android {
 
     dependencies {
         "coreLibraryDesugaring"(Libraries.desugarJdkLibs)
-        // Integration with activities
         "implementation"(Libraries.activityCompose)
-        // Compose Material Design
+        "implementation"(platform(Libraries.composeBom))
         "implementation"(Libraries.composeMaterial)
-        // Animations
         "implementation"(Libraries.composeAnimation)
-        // Tooling support (Previews, etc.)
         "implementation"(Libraries.composeUiTooling)
-        // When using a MDC theme
         "implementation"(Libraries.composeMaterialTheme)
         "implementation"(Libraries.coil)
         "implementation"(Libraries.coilCompose)
-        // Test rules and transitive dependencies
+        "androidTestImplementation"(platform(Libraries.composeBom))
         "androidTestImplementation"(TestLibraries.composeUiTestJunit4)
-        // Needed for createComposeRule, but not createAndroidComposeRule:
         "androidTestImplementation"(TestLibraries.composeUiTestManifest)
     }
 }

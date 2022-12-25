@@ -254,7 +254,7 @@ tasks.register("waitAndroidEmulator") {
     doLast {
         androidSdkConfig.printSdkPath()
         var isEmulatorFound = false
-        for (i in 1..300) {
+        for (i in 1..700) {
             Thread.sleep(1_000)
             var result: String? = null
             androidSdkConfig.getDevicesList()

@@ -116,9 +116,8 @@ abstract class BaseCameraRepository(
         runCatching {
             ProcessCameraProvider.getInstance(context).get().availableCameraInfos
                 .map { it as Camera2CameraInfoImpl }
-                .firstOrNull {
-                    it.cameraId == cameraId
-                }?.let { cameraInfo: Camera2CameraInfoImpl ->
+                .firstOrNull { it.cameraId == cameraId }
+                ?.let { cameraInfo: Camera2CameraInfoImpl ->
                     CameraxInfoData(
                         implementationType = cameraInfo.implementationType,
                         sensorRotationDegrees = cameraInfo.sensorRotationDegrees.toString(),

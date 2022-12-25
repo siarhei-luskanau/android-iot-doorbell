@@ -6,11 +6,11 @@ import androidx.paging.PagingData
 import com.karumi.shot.ScreenshotTest
 import io.mockk.every
 import io.mockk.mockk
+import kotlin.test.Test
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import kotlin.test.Test
 import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 
 class ImageListFragmentTest : ScreenshotTest {

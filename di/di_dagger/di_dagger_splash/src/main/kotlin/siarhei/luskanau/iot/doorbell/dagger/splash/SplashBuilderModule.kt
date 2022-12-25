@@ -5,11 +5,11 @@ import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
+import javax.inject.Provider
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerFragmentFactory
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
-import javax.inject.Provider
 
 @Module
 class SplashBuilderModule {

@@ -13,6 +13,7 @@ dependencies {
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
 
+    implementation(platform(Libraries.firebaseBom))
     implementation(Libraries.firebaseDatabaseKtx)
     implementation(Libraries.firebaseStorageKtx)
 

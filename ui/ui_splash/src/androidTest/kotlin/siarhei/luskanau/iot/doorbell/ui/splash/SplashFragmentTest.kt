@@ -2,8 +2,8 @@ package siarhei.luskanau.iot.doorbell.ui.splash
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.karumi.shot.ScreenshotTest
-import org.junit.Rule
 import kotlin.test.Test
+import org.junit.Rule
 
 class SplashFragmentTest : ScreenshotTest {
 

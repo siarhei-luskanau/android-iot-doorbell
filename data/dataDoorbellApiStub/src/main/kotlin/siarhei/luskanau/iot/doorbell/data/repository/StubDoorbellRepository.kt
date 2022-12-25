@@ -1,14 +1,14 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import kotlinx.coroutines.delay
-import siarhei.luskanau.iot.doorbell.data.model.CameraData
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
-import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
+import kotlinx.coroutines.delay
+import siarhei.luskanau.iot.doorbell.data.model.CameraData
+import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
+import siarhei.luskanau.iot.doorbell.data.model.ImageData
 
 @Suppress("TooManyFunctions")
 class StubDoorbellRepository : DoorbellRepository {

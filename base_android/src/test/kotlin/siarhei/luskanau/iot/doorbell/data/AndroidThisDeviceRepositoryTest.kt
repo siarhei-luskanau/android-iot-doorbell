@@ -4,6 +4,8 @@ import android.content.Context
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -12,8 +14,6 @@ import siarhei.luskanau.iot.doorbell.common.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AndroidThisDeviceRepositoryTest {
@@ -24,16 +24,17 @@ class AndroidThisDeviceRepositoryTest {
     private val doorbellData = DoorbellData(doorbellId, deviceName, deviceInfo)
     private val camerasList = listOf(CameraData("cameraId"))
     private val ipAddressList = mapOf("InterfaceName" to Pair("IpAddress", "timestamp"))
-    private val context = mockk<Context>(relaxed = true, relaxUnitFun = true)
-    private val deviceInfoProvider = mockk<DeviceInfoProvider>(relaxed = true, relaxUnitFun = true) {
-        every { buildDoorbellId() } returns doorbellId
-        every { buildDeviceName() } returns deviceName
-        every { buildDeviceInfo() } returns deviceInfo
-    }
-    private val cameraRepository = mockk<CameraRepository>(relaxed = true, relaxUnitFun = true) {
+    private val context: Context = mockk(relaxed = true, relaxUnitFun = true)
+    private val deviceInfoProvider: DeviceInfoProvider =
+        mockk(relaxed = true, relaxUnitFun = true) {
+            every { buildDoorbellId() } returns doorbellId
+            every { buildDeviceName() } returns deviceName
+            every { buildDeviceInfo() } returns deviceInfo
+        }
+    private val cameraRepository: CameraRepository = mockk(relaxed = true, relaxUnitFun = true) {
         every { runBlocking { getCamerasList() } } returns camerasList
     }
-    private val ipAddressProvider = mockk<IpAddressProvider>(relaxed = true, relaxUnitFun = true) {
+    private val ipAddressProvider: IpAddressProvider = mockk(relaxed = true, relaxUnitFun = true) {
         every { runBlocking { getIpAddressList() } } returns ipAddressList
     }
 
