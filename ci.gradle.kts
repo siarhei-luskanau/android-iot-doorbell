@@ -1,5 +1,5 @@
-import org.apache.tools.ant.taskdefs.condition.Os
 import java.util.Properties
+import org.apache.tools.ant.taskdefs.condition.Os
 
 val CI_GRADLE = "CI_GRADLE"
 
@@ -9,7 +9,7 @@ tasks.register("ciLint") {
         gradlew(
             "ktlintCheck",
             "detekt",
-            "lintDebug",
+            "lintDebug"
         )
     }
 }
@@ -21,7 +21,7 @@ tasks.register("ciUnitTest") {
             "clean",
             "koverVerify",
             "koverReport",
-            "koverMergedReport",
+            "koverMergedReport"
         )
     }
 }
@@ -30,7 +30,7 @@ tasks.register("ciBuildApp") {
     group = CI_GRADLE
     doLast {
         gradlew(
-            "assembleDebug",
+            "assembleDebug"
         )
         copy {
             from(rootProject.subprojects.map { it.buildDir })
@@ -83,7 +83,7 @@ tasks.register("ciAll") {
             "ciEmulator30",
             "ciEmulator31",
             "ciEmulator32",
-            "ciEmulator33",
+            "ciEmulator33"
         )
     }
 }
@@ -105,7 +105,7 @@ tasks.register("ciSetupAndroid") {
 fun runOnEmulator(
     emulatorName: String,
     directorySuffix: String = emulatorName,
-    isRecording: Boolean = System.getenv("CI").isNullOrEmpty(),
+    isRecording: Boolean = System.getenv("CI").isNullOrEmpty()
 ) {
     gradlew(
         "setupAndroidSDK",
@@ -128,7 +128,7 @@ fun runOnEmulator(
     gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
     mutableListOf(
         "executeScreenshotTests",
-        "-PdirectorySuffix=$directorySuffix",
+        "-PdirectorySuffix=$directorySuffix"
     ).also {
         if (isRecording) it.add("-Precord")
     }.also {
@@ -139,14 +139,14 @@ fun runOnEmulator(
 fun gradlew(
     vararg tasks: String,
     addToSystemProperties: Map<String, String>? = null,
-    isAndroidSdkGradlew: Boolean = false,
+    isAndroidSdkGradlew: Boolean = false
 ) {
     exec {
         executable = File(
             project.rootDir,
             pathOf(
                 if (isAndroidSdkGradlew) "android_sdk" else null,
-                if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew",
+                if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew"
             )
         )
             .also { it.setExecutable(true) }

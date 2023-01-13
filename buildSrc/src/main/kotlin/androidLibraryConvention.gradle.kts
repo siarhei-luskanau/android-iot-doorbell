@@ -37,7 +37,7 @@ android {
                         org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
                         org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
                         org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT,
-                        org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR,
+                        org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR
                     )
                     exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
                 }
@@ -73,5 +73,5 @@ android {
 }
 
 shot {
-    tolerance =  0.1 // 0,1% tolerance
+    tolerance = 0.1 // 0,1% tolerance
 }

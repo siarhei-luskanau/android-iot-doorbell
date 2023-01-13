@@ -41,5 +41,5 @@ include(
     ":di:di_singleton",
     ":di:di_toothpick",
 
-    ":app",
+    ":app"
 )

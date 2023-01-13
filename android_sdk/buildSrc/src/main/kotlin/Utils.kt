@@ -1,5 +1,5 @@
-import org.apache.tools.ant.taskdefs.condition.Os
 import java.io.File
+import org.apache.tools.ant.taskdefs.condition.Os
 
 fun pathOf(vararg folders: String?) =
     folders.filterNotNull().joinToString(separator = File.separator)

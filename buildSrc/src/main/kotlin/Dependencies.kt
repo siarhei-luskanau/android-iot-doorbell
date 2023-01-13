@@ -56,7 +56,7 @@ private object Versions {
 object PublicVersions {
     val kotlin = Versions.kotlin
     const val composeCompiler = "1.4.0-alpha02"
-    const val ktlint = "0.48.0"
+    const val ktlint = "0.48.1"
     const val detekt = "1.22.0"
     const val kotlinxKover = "0.6.1"
 }
@@ -161,9 +161,11 @@ object TestLibraries {
 object GradlePlugin {
     const val googleServicePlugin = "com.google.gms:google-services:${Versions.googleServices}"
     const val hiltGradlePlugin = "com.google.dagger:hilt-android-gradle-plugin:${Versions.dagger}"
-    const val navigationSafeArgsGradlePlugin = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
+    const val navigationSafeArgsGradlePlugin =
+        "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
     const val paperworkPlugin = "hu.supercluster:paperwork-plugin:${Versions.paperwork}"
-    val androidToolsBuildGradle = "com.android.tools.build:gradle:${Versions.androidToolsBuildGradle}"
+    val androidToolsBuildGradle =
+        "com.android.tools.build:gradle:${Versions.androidToolsBuildGradle}"
     val karumiShotPlugin = "com.karumi:shot:${Versions.karumiShot}"
     val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 }
