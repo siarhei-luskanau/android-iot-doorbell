@@ -104,8 +104,7 @@ tasks.register("ciSetupAndroid") {
 
 fun runOnEmulator(
     emulatorName: String,
-    directorySuffix: String = emulatorName,
-    isRecording: Boolean = System.getenv("CI").isNullOrEmpty()
+    directorySuffix: String = emulatorName
 ) {
     gradlew(
         "setupAndroidSDK",
@@ -126,14 +125,11 @@ fun runOnEmulator(
         )
     }.start()
     gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
-    mutableListOf(
+    gradlew(
         "executeScreenshotTests",
-        "-PdirectorySuffix=$directorySuffix"
-    ).also {
-        if (isRecording) it.add("-Precord")
-    }.also {
-        gradlew(*it.toTypedArray())
-    }
+        "-PdirectorySuffix=$directorySuffix",
+        "-Precord"
+    )
 }
 
 fun gradlew(

@@ -13,19 +13,19 @@ private object Versions {
     val kotlinxCoroutines: String = versionsProperties["version.kotlinxCoroutines"].toString()
     val karumiShot: String = versionsProperties["version.karumiShot"].toString()
     const val activity = "1.6.1"
-    const val androidxCamera = "1.3.0-alpha01"
+    const val androidxCamera = "1.3.0-alpha03"
     const val androidxStartup = "1.1.1"
     const val coil = "2.2.2"
-    const val composeBom = "2022.12.00"
+    const val composeBom = "2023.01.00"
     const val composeMaterialAdapter = "1.2.0"
     const val desugar = "2.0.0"
-    const val firebaseBom = "31.1.1"
+    const val firebaseBom = "31.2.0"
     const val fragment = "1.5.4"
-    const val googleServices = "4.3.14"
+    const val googleServices = "4.3.15"
     const val kotlinxDatetime = "0.4.0"
     const val kotlinxSerialization = "1.4.1"
     const val lifecycle = "2.5.1"
-    const val material = "1.7.0"
+    const val material = "1.8.0"
     const val navigation = "2.5.3"
     const val paging = "3.2.0-alpha03"
     const val pagingCompose = "1.0.0-alpha17"
@@ -55,7 +55,7 @@ private object Versions {
 
 object PublicVersions {
     val kotlin = Versions.kotlin
-    const val composeCompiler = "1.4.0-alpha02"
+    const val composeCompiler = "1.4.0"
     const val ktlint = "0.48.1"
     const val detekt = "1.22.0"
     const val kotlinxKover = "0.6.1"

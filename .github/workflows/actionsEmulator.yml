@@ -30,7 +30,7 @@ jobs:
         if: always()
         with:
           name: screenshots
-          path: ${{ github.workspace }}/**/build/tmp/shot/screenshot/*
+          path: ${{ github.workspace }}/**/screenshot/debug/**/*.png
 
       - run: bash ./gradlew :killAndroidEmulator :deleteAndroidEmulator --stacktrace
         working-directory: ./android_sdk
