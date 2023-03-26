@@ -20,7 +20,7 @@ jobs:
         if: ${{ matrix.os != 'self-hosted' }}
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '11'
 
       - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
         working-directory: ./android_sdk
@@ -43,7 +43,7 @@ jobs:
         if: ${{ matrix.os != 'self-hosted' }}
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '11'
 
       - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
         working-directory: ./android_sdk
@@ -71,7 +71,7 @@ jobs:
         if: ${{ matrix.os != 'self-hosted' }}
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '11'
 
       - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
         working-directory: ./android_sdk

@@ -40,9 +40,8 @@ android {
     }
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     testOptions {
@@ -69,58 +68,48 @@ dependencies {
     "diSingletonImplementation"(project(":di:di_singleton"))
     "diToothpickImplementation"(project(":di:di_toothpick"))
 
-    implementation(project(":data:dataDoorbellApi"))
-    implementation(project(":data:dataDoorbellApiFirebase"))
-    implementation(project(":data:dataDoorbellApiStub"))
-    implementation(project(":common:common"))
     implementation(project(":base_android"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
     implementation(project(":base_persistence"))
     implementation(project(":base_work_manager"))
-    implementation(project(":ui:ui_common"))
-    implementation(project(":ui:ui_splash"))
-    implementation(project(":ui:ui_permissions"))
-    implementation(project(":ui:ui_doorbell_list"))
-    implementation(project(":ui:ui_image_list"))
-    implementation(project(":ui:ui_image_details"))
+    implementation(project(":common:common"))
+    implementation(project(":data:dataDoorbellApi"))
+    implementation(project(":data:dataDoorbellApiFirebase"))
+    implementation(project(":data:dataDoorbellApiStub"))
     implementation(project(":navigation"))
+    implementation(project(":ui:ui_common"))
+    implementation(project(":ui:ui_doorbell_list"))
+    implementation(project(":ui:ui_image_details"))
+    implementation(project(":ui:ui_image_list"))
+    implementation(project(":ui:ui_permissions"))
+    implementation(project(":ui:ui_splash"))
 
+    implementation(Libraries.activityCompose)
+    implementation(Libraries.activityKtx)
+    implementation(Libraries.androidxStartup)
+    implementation(Libraries.composeAnimation)
+    implementation(Libraries.composeMaterial)
+    implementation(Libraries.composeMaterialTheme)
+    implementation(Libraries.fragmentKtx)
     implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.timber)
-
     implementation(Libraries.material)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
     implementation(Libraries.navigationFragmentKtx)
-
-    implementation(Libraries.androidxStartup)
+    implementation(Libraries.timber)
     implementation(Libraries.workRuntimeKtx)
-
-    coreLibraryDesugaring(Libraries.desugarJdkLibs)
-    // Integration with activities
-    implementation(Libraries.activityCompose)
-    // Compose Material Design
-    implementation(Libraries.composeMaterial)
-    // Animations
-    implementation(Libraries.composeAnimation)
-    // Tooling support (Previews, etc.)
-    implementation(Libraries.composeUiTooling)
-    // When using a MDC theme
-    implementation(Libraries.composeMaterialTheme)
 
     // Development
     debugImplementation(Libraries.leakCanary)
 
     // android test
     androidTestImplementation(project(":common:common_test_ui"))
-    androidTestImplementation(TestLibraries.kotlinTest)
-    androidTestImplementation(TestLibraries.testEspressoCore)
-    androidTestImplementation(TestLibraries.testEspressoIntents)
-    androidTestImplementation(TestLibraries.testEspressoContrib)
     androidTestImplementation(TestLibraries.androidTestCoreKtx)
     androidTestImplementation(TestLibraries.androidTestExtTruth)
+    androidTestImplementation(TestLibraries.kotlinTest)
+    androidTestImplementation(TestLibraries.testEspressoContrib)
+    androidTestImplementation(TestLibraries.testEspressoCore)
+    androidTestImplementation(TestLibraries.testEspressoIntents)
     androidTestImplementation(TestLibraries.testExtJunitKtx)
 }
 

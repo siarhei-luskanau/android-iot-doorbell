@@ -15,7 +15,7 @@ val YES_INPUT: String = mutableListOf<String>()
     .joinToString()
 
 val EMULATOR_GRADLE = "EMULATOR_GRADLE"
-val COMMANDLINETOOLS_VERSION = "9123335"
+val COMMANDLINETOOLS_VERSION = "9477386"
 val COMMANDLINETOOLS_LINUX =
     "https://dl.google.com/android/repository/commandlinetools-linux-" +
             "${COMMANDLINETOOLS_VERSION}_latest.zip"
@@ -25,7 +25,7 @@ val COMMANDLINETOOLS_MAC =
 val COMMANDLINETOOLS_WIN =
     "https://dl.google.com/android/repository/commandlinetools-win-" +
             "${COMMANDLINETOOLS_VERSION}_latest.zip"
-val CMDLINE_TOOLS_VERSION = "8.0"
+val CMDLINE_TOOLS_VERSION = "9.0"
 
 val androidSdkConfig = AndroidSdkConfig()
 

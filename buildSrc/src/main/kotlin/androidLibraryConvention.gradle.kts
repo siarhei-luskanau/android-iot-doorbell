@@ -21,9 +21,8 @@ android {
     }
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     testOptions {
@@ -57,18 +56,19 @@ android {
     }
 
     dependencies {
-        "coreLibraryDesugaring"(Libraries.desugarJdkLibs)
         "implementation"(Libraries.activityCompose)
-        "implementation"(platform(Libraries.composeBom))
-        "implementation"(Libraries.composeMaterial)
-        "implementation"(Libraries.composeAnimation)
-        "implementation"(Libraries.composeUiTooling)
-        "implementation"(Libraries.composeMaterialTheme)
+        "implementation"(Libraries.androidxTracing)
         "implementation"(Libraries.coil)
         "implementation"(Libraries.coilCompose)
-        "androidTestImplementation"(platform(Libraries.composeBom))
+        "implementation"(Libraries.composeAnimation)
+        "implementation"(Libraries.composeMaterial)
+        "implementation"(Libraries.composeMaterialTheme)
+        "implementation"(Libraries.composeUiTooling)
+        "implementation"(platform(Libraries.composeBom))
+        "implementation"("androidx.tracing:tracing:+")
         "androidTestImplementation"(TestLibraries.composeUiTestJunit4)
         "androidTestImplementation"(TestLibraries.composeUiTestManifest)
+        "androidTestImplementation"(platform(Libraries.composeBom))
     }
 }
 

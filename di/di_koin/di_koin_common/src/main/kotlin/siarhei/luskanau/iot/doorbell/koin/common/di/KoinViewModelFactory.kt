@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.koin.core.instance.InstanceFactory
+import org.koin.core.definition.KoinDefinition
 import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
@@ -18,7 +18,7 @@ class KoinViewModelFactory(
     private val args: Bundle?
 ) : ViewModelProvider.NewInstanceFactory() {
 
-    @Suppress("UNCHECKED_CAST", "TooGenericExceptionCaught")
+    @Suppress("TooGenericExceptionCaught")
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
         try {
             Timber.d("KoinViewModelFactory:create:$modelClass")
@@ -38,7 +38,7 @@ class KoinViewModelFactory(
 
 inline fun <reified T : ViewModel> Module.viewModel(
     noinline definition: ViewModelDefinition<T>
-): Pair<Module, InstanceFactory<T>> =
+): KoinDefinition<T> =
     factory { (activity: FragmentActivity, fragment: Fragment, args: Bundle?) ->
         definition(activity, fragment, args)
     }
