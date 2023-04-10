@@ -12,7 +12,6 @@ dependencies {
     implementation(project(":ui:ui_common"))
     implementation(project(":ui:ui_splash"))
 
-    implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.material)
     implementation(Libraries.activityKtx)

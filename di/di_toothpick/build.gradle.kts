@@ -26,7 +26,6 @@ dependencies {
     implementation(project(":ui:ui_image_details"))
     implementation(project(":navigation"))
 
-    implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 

@@ -10,7 +10,6 @@ android {
 dependencies {
     implementation(project(":ui:ui_common"))
 
-    implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 

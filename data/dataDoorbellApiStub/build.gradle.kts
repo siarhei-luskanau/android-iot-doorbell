@@ -9,7 +9,6 @@ tasks.test {
 dependencies {
     implementation(project(":data:dataDoorbellApi"))
 
-    implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
 
     // unit test

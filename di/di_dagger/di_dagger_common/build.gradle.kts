@@ -18,7 +18,6 @@ dependencies {
     implementation(project(":base_persistence"))
     implementation(project(":base_work_manager"))
 
-    implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.timber)
 

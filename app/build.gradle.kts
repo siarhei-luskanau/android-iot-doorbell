@@ -92,7 +92,6 @@ dependencies {
     implementation(Libraries.composeMaterial)
     implementation(Libraries.composeMaterialTheme)
     implementation(Libraries.fragmentKtx)
-    implementation(Libraries.kotlinStdlibJdk8)
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.material)
     implementation(Libraries.navigationFragmentKtx)
