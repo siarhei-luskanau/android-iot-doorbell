@@ -223,12 +223,6 @@ tasks.register("runAndroidEmulator") {
             "-port",
             emulatorConfig.port,
         )
-        emulatorConfig.memory?.let { memory ->
-            commandArgs.addAll(listOf("-memory", memory))
-        }
-        emulatorConfig.partitionSize?.let { partitionSize ->
-            commandArgs.addAll(listOf("-partition-size", partitionSize))
-        }
         commandArgs.addAll(
             listOf(
                 "-accel",

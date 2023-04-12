@@ -117,6 +117,7 @@ fun runOnEmulator(
         addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
         isAndroidSdkGradlew = true
     )
+    gradlew("assembleDebugAndroidTest")
     Thread {
         gradlew(
             "runAndroidEmulator",

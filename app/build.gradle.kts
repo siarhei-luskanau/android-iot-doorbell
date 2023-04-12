@@ -90,7 +90,6 @@ dependencies {
     implementation(Libraries.androidxStartup)
     implementation(Libraries.composeAnimation)
     implementation(Libraries.composeMaterial)
-    implementation(Libraries.composeMaterialTheme)
     implementation(Libraries.fragmentKtx)
     implementation(Libraries.kotlinxCoroutinesCore)
     implementation(Libraries.material)

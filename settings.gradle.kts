@@ -1,27 +1,17 @@
 rootProject.name = "Doorbell"
 
 include(
-    ":data:dataDoorbellApi",
-    ":data:dataDoorbellApiFirebase",
-    ":data:dataDoorbellApiStub",
-
-    ":common:common",
-    ":common:common_test_ui",
-
+    ":app",
     ":base_android",
     ":base_camera",
     ":base_file",
     ":base_persistence",
     ":base_work_manager",
-
-    ":ui:ui_common",
-    ":ui:ui_splash",
-    ":ui:ui_permissions",
-    ":ui:ui_doorbell_list",
-    ":ui:ui_image_list",
-    ":ui:ui_image_details",
-    ":navigation",
-
+    ":common:common",
+    ":common:common_test_ui",
+    ":data:dataDoorbellApi",
+    ":data:dataDoorbellApiFirebase",
+    ":data:dataDoorbellApiStub",
     ":di:di",
     ":di:di_dagger:di_dagger",
     ":di:di_dagger:di_dagger_common",
@@ -40,6 +30,11 @@ include(
     ":di:di_koin:di_koin_splash",
     ":di:di_singleton",
     ":di:di_toothpick",
-
-    ":app"
+    ":navigation",
+    ":ui:ui_common",
+    ":ui:ui_doorbell_list",
+    ":ui:ui_image_details",
+    ":ui:ui_image_list",
+    ":ui:ui_permissions",
+    ":ui:ui_splash"
 )

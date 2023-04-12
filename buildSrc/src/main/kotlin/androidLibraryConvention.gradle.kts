@@ -62,7 +62,6 @@ android {
         "implementation"(Libraries.coilCompose)
         "implementation"(Libraries.composeAnimation)
         "implementation"(Libraries.composeMaterial)
-        "implementation"(Libraries.composeMaterialTheme)
         "implementation"(Libraries.composeUiTooling)
         "implementation"(platform(Libraries.composeBom))
         "implementation"("androidx.tracing:tracing:+")

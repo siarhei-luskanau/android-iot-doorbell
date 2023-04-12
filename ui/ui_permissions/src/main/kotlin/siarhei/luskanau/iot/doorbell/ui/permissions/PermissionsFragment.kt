@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.material.composethemeadapter.MdcTheme
 import siarhei.luskanau.iot.doorbell.common.AppConstants.PERMISSIONS
 
 class PermissionsFragment(
@@ -33,14 +32,11 @@ class PermissionsFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) =
-        ComposeView(inflater.context).apply {
-            setContent {
-                MdcTheme {
-                    PermissionsPreview()
-                }
-            }
+    ) = ComposeView(inflater.context).apply {
+        setContent {
+            PermissionsPreview()
         }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

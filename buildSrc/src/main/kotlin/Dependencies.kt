@@ -15,10 +15,9 @@ private object Versions {
     const val activity = "1.7.0"
     const val androidxCamera = "1.3.0-alpha05"
     const val androidxStartup = "1.1.1"
-    const val coil = "2.2.2"
-    const val composeBom = "2023.03.00"
-    const val composeMaterialAdapter = "1.2.0"
-    const val firebaseBom = "31.3.0"
+    const val coil = "2.3.0"
+    const val composeBom = "2023.04.00"
+    const val firebaseBom = "31.4.0"
     const val fragment = "1.5.6"
     const val googleServices = "4.3.15"
     const val kotlinxDatetime = "0.4.0"
@@ -29,13 +28,13 @@ private object Versions {
     const val paging = "3.2.0-alpha04"
     const val pagingCompose = "1.0.0-alpha18"
     const val paperwork = "1.2.7"
-    const val room = "2.4.3"
+    const val room = "2.5.1"
     const val timber = "5.0.1"
     const val workManager = "2.8.1"
 
     // DI
     const val dagger = "2.45"
-    const val kodein = "7.18.0"
+    const val kodein = "7.20.1"
     const val koin = "3.4.0"
     const val toothpick = "3.1.0"
 
@@ -84,8 +83,6 @@ object Libraries {
     const val composeAnimation = "androidx.compose.animation:animation"
     const val composeBom = "androidx.compose:compose-bom:${Versions.composeBom}"
     const val composeMaterial = "androidx.compose.material:material"
-    const val composeMaterialTheme =
-        "com.google.android.material:compose-theme-adapter:${Versions.composeMaterialAdapter}"
     const val composeUiTooling = "androidx.compose.ui:ui-tooling"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragment}"
     const val kotlinxDatetime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDatetime}"
