@@ -32,7 +32,7 @@ class ImageListFragmentTest : ScreenshotTest {
                 pagingData = PagingData.from(
                     listOf(
                         ImageData(
-                            imageId = "imageId",
+                            imageId = "1",
                             imageUri = null
                         )
                     )

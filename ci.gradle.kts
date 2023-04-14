@@ -76,7 +76,7 @@ tasks.register("ciAll") {
     doLast {
         gradlew(
             "clean",
-            "ktlintFormat",
+            // "ktlintFormat",
             "ciLint",
             "ciUnitTest",
             "ciBuildApp",
@@ -127,9 +127,10 @@ fun runOnEmulator(
     }.start()
     gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
     gradlew(
-        "executeScreenshotTests",
-        "-PdirectorySuffix=$directorySuffix",
-        "-Precord"
+        // "executeScreenshotTests",
+        // "-PdirectorySuffix=$directorySuffix",
+        // "-Precord"
+        "connectedAndroidTest"
     )
 }
 
@@ -163,7 +164,7 @@ fun gradlew(
             if (propertiesFile.exists()) {
                 load(propertiesFile.inputStream())
             }
-        }?.getProperty("sdk.dir")
+        }.getProperty("sdk.dir")
         if (sdkDirPath != null) {
             val platformToolsDir = "$sdkDirPath${java.io.File.separator}platform-tools"
             val pahtEnvironment = System.getenv("PATH").orEmpty()

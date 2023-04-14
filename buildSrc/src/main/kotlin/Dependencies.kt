@@ -53,7 +53,7 @@ private object Versions {
 
 object PublicVersions {
     val kotlin = Versions.kotlin
-    const val composeCompiler = "1.4.4"
+    const val composeCompiler = "1.4.5"
     const val ktlint = "0.48.2"
     const val detekt = "1.22.0"
     const val kotlinxKover = "0.6.1"

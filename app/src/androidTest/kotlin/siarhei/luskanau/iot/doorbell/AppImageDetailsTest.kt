@@ -23,7 +23,7 @@ class AppImageDetailsTest {
             .setArguments(
                 NavRootDirections.actionImageListToImageDetails(
                     doorbellId = "doorbellId",
-                    imageId = "imageId"
+                    imageId = "1"
                 ).arguments
             )
             .createTaskStackBuilder()
