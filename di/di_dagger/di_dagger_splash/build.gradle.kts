@@ -12,12 +12,10 @@ dependencies {
     implementation(project(":ui:ui_common"))
     implementation(project(":ui:ui_splash"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.material)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
-
-    // dagger
-    kapt(Libraries.daggerCompiler)
-    implementation(Libraries.dagger)
+    implementation(libs.android.material)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.dagger)
+    implementation(libs.kotlinx.coroutines.core)
+    kapt(libs.dagger.compiler)
 }

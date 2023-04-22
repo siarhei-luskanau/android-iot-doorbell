@@ -20,13 +20,11 @@ import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.JetpackCameraRepository
-import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.StubDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.StubUptimeRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
-import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
 import toothpick.config.Module
@@ -88,13 +86,6 @@ class AppModule(context: Context) : Module() {
             }
         }
         bind(UptimeRepository::class.java).toProviderInstance { uptimeRepository }
-
-        val persistenceRepository: PersistenceRepository by lazy {
-            DefaultPersistenceRepository(
-                context = context
-            )
-        }
-        bind(PersistenceRepository::class.java).toProviderInstance { persistenceRepository }
 
         val imagesDataSourceFactory: ImagesDataSourceFactory by lazy {
             ImagesDataSourceFactoryImpl(

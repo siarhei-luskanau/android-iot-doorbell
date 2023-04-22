@@ -8,31 +8,31 @@ android {
 }
 
 dependencies {
-    implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
+    implementation(project(":data:dataDoorbellApi"))
     implementation(project(":ui:ui_common"))
 
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.material)
-    implementation(Libraries.navigationUiKtx)
-    implementation(Libraries.pagingCommonKtx)
-    implementation(Libraries.pagingCompose)
-    implementation(Libraries.pagingRuntimeKtx)
-    implementation(Libraries.timber)
+    implementation(libs.android.material)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.paging.common.ktx)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.navigation.ui.ktx)
+    implementation(libs.timber)
 
     // unit test
-    testImplementation(TestLibraries.kotlinTest)
-    testImplementation(TestLibraries.kotlinxCoroutinesTest)
-    testImplementation(TestLibraries.mockkCore)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 
     // android test
+    androidTestImplementation(libs.androidx.fragment.testing)
+    androidTestImplementation(libs.androidx.paging.testing)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.kotlin.test)
+    androidTestImplementation(libs.mockk.android)
     androidTestImplementation(project(":common:common_test_ui"))
-    androidTestImplementation(TestLibraries.androidTestCoreKtx)
-    androidTestImplementation(TestLibraries.fragmentTesting)
-    androidTestImplementation(TestLibraries.kotlinTest)
-    androidTestImplementation(TestLibraries.mockkAndroid)
-    androidTestImplementation(TestLibraries.pagingTesting)
-    androidTestImplementation(TestLibraries.testEspressoCore)
 }

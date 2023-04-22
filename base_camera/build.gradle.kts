@@ -7,15 +7,14 @@ android {
 }
 
 dependencies {
-    implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
+    implementation(project(":data:dataDoorbellApi"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.timber)
-
-    implementation(Libraries.androidxCameraCamerae2)
-    implementation(Libraries.androidxCameraLifecycle)
-    implementation(Libraries.androidxCameraView)
-    implementation(Libraries.androidxCameraExtensions)
-    implementation(Libraries.lifecycleProcess)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.extensions)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.lifecycle.process)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.timber)
 }

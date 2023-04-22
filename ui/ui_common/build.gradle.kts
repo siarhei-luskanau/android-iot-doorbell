@@ -7,13 +7,12 @@ android {
 }
 
 dependencies {
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.timber)
-
-    implementation(Libraries.material)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
-    implementation(Libraries.pagingCommonKtx)
-    implementation(Libraries.pagingRuntimeKtx)
-    implementation(Libraries.pagingCompose)
+    implementation(libs.android.material)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.paging.common.ktx)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.timber)
 }

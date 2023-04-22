@@ -1,3 +1,4 @@
+import java.io.File
 import java.util.Properties
 import org.apache.tools.ant.taskdefs.condition.Os
 
@@ -127,10 +128,10 @@ fun runOnEmulator(
     }.start()
     gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
     gradlew(
-        // "executeScreenshotTests",
-        // "-PdirectorySuffix=$directorySuffix",
-        // "-Precord"
-        "connectedAndroidTest"
+        "executeScreenshotTests",
+        "-PdirectorySuffix=$directorySuffix",
+        "-Precord"
+        // "connectedAndroidTest"
     )
 }
 
@@ -142,10 +143,10 @@ fun gradlew(
     exec {
         executable = File(
             project.rootDir,
-            pathOf(
+            listOf(
                 if (isAndroidSdkGradlew) "android_sdk" else null,
                 if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew"
-            )
+            ).filterNotNull().joinToString(separator = File.separator)
         )
             .also { it.setExecutable(true) }
             .absolutePath

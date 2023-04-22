@@ -13,12 +13,10 @@ dependencies {
     implementation(project(":ui:ui_common"))
     implementation(project(":ui:ui_image_details"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.material)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
-    implementation(Libraries.navigationUiKtx)
-
-    // koin
-    implementation(Libraries.koinAndroid)
+    implementation(libs.android.material)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.koin.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.navigation.ui.ktx)
 }

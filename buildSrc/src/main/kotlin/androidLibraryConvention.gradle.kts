@@ -1,3 +1,5 @@
+val libs = project.extensions.getByType<VersionCatalogsExtension>().named("libs")
+
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -5,11 +7,11 @@ plugins {
 }
 
 android {
-    compileSdk = BuildVersions.compileSdkVersion
-    buildToolsVersion = BuildVersions.buildToolsVersion
+    compileSdk = libs.findVersion("android-build-compileSdk").get().requiredVersion.toInt()
+    buildToolsVersion = libs.findVersion("android-build-buildToolsVersion").get().requiredVersion
 
     defaultConfig {
-        minSdk = BuildVersions.minSdkVersion
+        minSdk = libs.findVersion("android-build-minSdk").get().requiredVersion.toInt()
         testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
         testApplicationId = "siarhei.luskanau.iot.doorbell.testapp"
     }
@@ -48,7 +50,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = PublicVersions.composeCompiler
+        kotlinCompilerExtensionVersion = libs.findVersion("compose-compiler").get().requiredVersion
     }
 
     packagingOptions.resources.excludes.apply {
@@ -59,18 +61,16 @@ android {
     }
 
     dependencies {
-        "implementation"(Libraries.activityCompose)
-        "implementation"(Libraries.androidxTracing)
-        "implementation"(Libraries.coil)
-        "implementation"(Libraries.coilCompose)
-        "implementation"(Libraries.composeAnimation)
-        "implementation"(Libraries.composeMaterial)
-        "implementation"(Libraries.composeUiTooling)
-        "implementation"(platform(Libraries.composeBom))
-        "implementation"("androidx.tracing:tracing:+")
-        "androidTestImplementation"(TestLibraries.composeUiTestJunit4)
-        "androidTestImplementation"(TestLibraries.composeUiTestManifest)
-        "androidTestImplementation"(platform(Libraries.composeBom))
+        "implementation"(libs.findLibrary("androidx-activity-compose").get())
+        "implementation"(libs.findLibrary("androidx-tracing").get())
+        "implementation"(libs.findLibrary("coil").get())
+        "implementation"(libs.findLibrary("coil-compose").get())
+        "implementation"(libs.findLibrary("compose-material").get())
+        "implementation"(libs.findLibrary("compose-ui-tooling").get())
+        "implementation"(platform(libs.findLibrary("compose-bom").get()))
+        "androidTestImplementation"(libs.findLibrary("compose-ui-test-junit4").get())
+        "androidTestImplementation"(libs.findLibrary("compose-ui-test-manifest").get())
+        "androidTestImplementation"(platform(libs.findLibrary("compose-bom").get()))
     }
 }
 

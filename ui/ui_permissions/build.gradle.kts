@@ -8,22 +8,21 @@ android {
 }
 
 dependencies {
-    implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
+    implementation(project(":data:dataDoorbellApi"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.timber)
-
-    implementation(Libraries.navigationUiKtx)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.navigation.ui.ktx)
+    implementation(libs.timber)
 
     // unit test
-    testImplementation(TestLibraries.kotlinTest)
-    testImplementation(TestLibraries.mockkCore)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.mockk)
 
     // android test
+    androidTestImplementation(libs.androidx.fragment.testing)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.kotlin.test)
     androidTestImplementation(project(":common:common_test_ui"))
-    androidTestImplementation(TestLibraries.kotlinTest)
-    androidTestImplementation(TestLibraries.testEspressoCore)
-    androidTestImplementation(TestLibraries.androidTestCoreKtx)
-    androidTestImplementation(TestLibraries.fragmentTesting)
 }

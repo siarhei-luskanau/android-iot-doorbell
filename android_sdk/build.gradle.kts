@@ -346,12 +346,12 @@ class AndroidSdkConfig {
         readAndroidSdkFromLocalProperties()
             ?: System.getenv("ANDROID_HOME")
             ?: System.getenv("sdk.dir")
-            ?: pathOf(
+            ?: listOf(
                 System.getProperty("user.home"),
                 if (Os.isFamily(Os.FAMILY_MAC)) "Library" else null,
                 "Android",
                 if (Os.isFamily(Os.FAMILY_MAC)) "sdk" else "Sdk"
-            )
+            ).filterNotNull().joinToString(separator = File.separator)
     }
 
     init {
@@ -426,5 +426,11 @@ class AndroidSdkConfig {
 
     companion object {
         private const val SDK_DIR = "sdk.dir"
+        private fun platformExecutable(name: String, ext: String = "exe"): String =
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                "$name.$ext"
+            } else {
+                name
+            }
     }
 }

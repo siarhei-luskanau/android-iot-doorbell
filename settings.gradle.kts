@@ -5,7 +5,6 @@ include(
     ":base_android",
     ":base_camera",
     ":base_file",
-    ":base_persistence",
     ":base_work_manager",
     ":common:common",
     ":common:common_test_ui",

@@ -20,13 +20,11 @@ import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.JetpackCameraRepository
-import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.StubDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.StubUptimeRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
-import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
 
@@ -68,11 +66,6 @@ class AppModules(context: Context) {
         JetpackCameraRepository(
             context = context,
             imageRepository = imageRepository
-        )
-    }
-    val persistenceRepository: PersistenceRepository by lazy {
-        DefaultPersistenceRepository(
-            context = context
         )
     }
     val imagesDataSourceFactory: ImagesDataSourceFactory by lazy {

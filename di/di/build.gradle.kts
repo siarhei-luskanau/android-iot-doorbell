@@ -7,7 +7,7 @@ android {
 }
 
 dependencies {
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.fragmentKtx)
-    implementation(Libraries.workRuntimeKtx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.kotlinx.coroutines.core)
 }

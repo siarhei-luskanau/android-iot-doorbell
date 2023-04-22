@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "siarhei.luskanau.iot.doorbell"
-    compileSdk = BuildVersions.compileSdkVersion
-    buildToolsVersion = BuildVersions.buildToolsVersion
+    compileSdk = libs.versions.android.build.compileSdk.get().toInt()
+    buildToolsVersion = libs.versions.android.build.buildToolsVersion.get()
 
     defaultConfig {
-        minSdk = BuildVersions.minSdkVersion
-        targetSdk = BuildVersions.targetSdkVersion
+        minSdk = libs.versions.android.build.minSdk.get().toInt()
+        targetSdk = libs.versions.android.build.targetSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         applicationId = "siarhei.luskanau.iot.doorbell"
         versionCode = 1
@@ -59,7 +59,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = PublicVersions.composeCompiler
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
@@ -74,7 +74,6 @@ dependencies {
     implementation(project(":base_android"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
-    implementation(project(":base_persistence"))
     implementation(project(":base_work_manager"))
     implementation(project(":common:common"))
     implementation(project(":data:dataDoorbellApi"))
@@ -88,30 +87,27 @@ dependencies {
     implementation(project(":ui:ui_permissions"))
     implementation(project(":ui:ui_splash"))
 
-    implementation(Libraries.activityCompose)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.androidxStartup)
-    implementation(Libraries.composeAnimation)
-    implementation(Libraries.composeMaterial)
-    implementation(Libraries.fragmentKtx)
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.material)
-    implementation(Libraries.navigationFragmentKtx)
-    implementation(Libraries.timber)
-    implementation(Libraries.workRuntimeKtx)
-
-    // Development
-    debugImplementation(Libraries.leakCanary)
+    debugImplementation(libs.leakcanary.android)
+    implementation(libs.android.material)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.startup.runtime)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.compose.material)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.timber)
 
     // android test
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.junit.ktx)
+    androidTestImplementation(libs.androidx.test.truth)
+    androidTestImplementation(libs.espresso.contrib)
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.kotlin.test)
     androidTestImplementation(project(":common:common_test_ui"))
-    androidTestImplementation(TestLibraries.androidTestCoreKtx)
-    androidTestImplementation(TestLibraries.androidTestExtTruth)
-    androidTestImplementation(TestLibraries.kotlinTest)
-    androidTestImplementation(TestLibraries.testEspressoContrib)
-    androidTestImplementation(TestLibraries.testEspressoCore)
-    androidTestImplementation(TestLibraries.testEspressoIntents)
-    androidTestImplementation(TestLibraries.testExtJunitKtx)
 }
 
 apply(plugin = "com.google.gms.google-services")

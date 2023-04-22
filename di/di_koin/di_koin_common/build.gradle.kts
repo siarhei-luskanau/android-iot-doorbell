@@ -7,15 +7,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
+    implementation(project(":data:dataDoorbellApi"))
 
-    implementation(Libraries.timber)
-
-    implementation(Libraries.material)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
-
-    // koin
-    implementation(Libraries.koinAndroid)
+    implementation(libs.android.material)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.koin.android)
+    implementation(libs.timber)
 }

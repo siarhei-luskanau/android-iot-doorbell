@@ -8,28 +8,24 @@ android {
 }
 
 dependencies {
-    implementation(project(":data:dataDoorbellApi"))
-    implementation(project(":data:dataDoorbellApiFirebase"))
-    implementation(project(":data:dataDoorbellApiStub"))
-    implementation(project(":common:common"))
     implementation(project(":base_android"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
-    implementation(project(":base_persistence"))
     implementation(project(":base_work_manager"))
+    implementation(project(":common:common"))
+    implementation(project(":data:dataDoorbellApi"))
+    implementation(project(":data:dataDoorbellApiFirebase"))
+    implementation(project(":data:dataDoorbellApiStub"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.timber)
-
-    implementation(Libraries.material)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
-    implementation(Libraries.pagingCommonKtx)
-    implementation(Libraries.pagingRuntimeKtx)
-    implementation(Libraries.androidxStartup)
-    implementation(Libraries.workRuntimeKtx)
-
-    // dagger
-    kapt(Libraries.daggerCompiler)
-    implementation(Libraries.dagger)
+    implementation(libs.android.material)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.paging.common.ktx)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.startup.runtime)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.dagger)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.timber)
+    kapt(libs.dagger.compiler)
 }

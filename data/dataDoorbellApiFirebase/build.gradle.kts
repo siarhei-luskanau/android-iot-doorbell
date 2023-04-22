@@ -1,6 +1,6 @@
 plugins {
     androidLibraryConvention
-    kotlin("plugin.serialization") version PublicVersions.kotlin
+    kotlin("plugin.serialization") version libs.versions.kotlin
 }
 
 android {
@@ -8,13 +8,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.storage)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(platform(libs.firebase.bom))
     implementation(project(":data:dataDoorbellApi"))
-
-    implementation(Libraries.kotlinxCoroutinesCore)
-
-    implementation(platform(Libraries.firebaseBom))
-    implementation(Libraries.firebaseDatabaseKtx)
-    implementation(Libraries.firebaseStorageKtx)
-
-    implementation(Libraries.kotlinxSerializationJson)
 }

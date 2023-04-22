@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.konan.properties.loadProperties
-
 plugins {
     `kotlin-dsl`
 }
@@ -9,10 +7,8 @@ repositories {
     mavenCentral()
 }
 
-val versions = loadProperties("$projectDir/src/main/resources/build_src_versions.properties")
-
 dependencies{
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:${versions["version.kotlin"]}")
-    implementation("com.android.tools.build:gradle:${versions["version.androidToolsBuildGradle"]}")
-    implementation("com.karumi:shot:${versions["version.karumiShot"]}")
+    implementation(buildSrcLibs.karumiShot)
+    implementation(buildSrcLibs.kotlin.gradle.plugin)
+    implementation(buildSrcLibs.android.gradle.plugin)
 }

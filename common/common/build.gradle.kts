@@ -9,8 +9,8 @@ android {
 dependencies {
     implementation(project(":data:dataDoorbellApi"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.timber)
-    implementation(Libraries.pagingCommonKtx)
-    implementation(Libraries.pagingRuntimeKtx)
+    implementation(libs.androidx.paging.common.ktx)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.timber)
 }

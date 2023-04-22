@@ -31,14 +31,12 @@ import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.JetpackCameraRepository
-import siarhei.luskanau.iot.doorbell.data.repository.PersistenceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.StubDoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.StubUptimeRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
-import siarhei.luskanau.iot.doorbell.persistence.DefaultPersistenceRepository
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListFragment
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
@@ -69,11 +67,6 @@ val appModule = DI.Module(name = "appModule") {
         } else {
             FirebaseDoorbellRepository()
         }
-    }
-    bind<PersistenceRepository>() with singleton {
-        DefaultPersistenceRepository(
-            context = instance()
-        )
     }
     bind<ScheduleWorkManagerService>() with singleton {
         DefaultScheduleWorkManagerService(workManager = { instance() })

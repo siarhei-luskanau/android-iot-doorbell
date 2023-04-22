@@ -10,19 +10,18 @@ buildscript {
     }
 
     dependencies {
-        classpath(GradlePlugin.androidToolsBuildGradle)
-        classpath(GradlePlugin.kotlinGradlePlugin)
-        classpath(GradlePlugin.navigationSafeArgsGradlePlugin)
-        classpath(GradlePlugin.googleServicePlugin)
-        classpath(GradlePlugin.paperworkPlugin)
-        classpath(GradlePlugin.hiltGradlePlugin)
-        classpath(GradlePlugin.karumiShotPlugin)
+        classpath(libs.android.gradle.plugin)
+        classpath(libs.google.services)
+        classpath(libs.karumiShot)
+        classpath(libs.kotlin.gradle.plugin)
+        classpath(libs.navigation.safeArgsGradlePlugin)
+        classpath(libs.paperwork.plugin)
     }
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version(PublicVersions.detekt)
-    id("org.jetbrains.kotlinx.kover").version(PublicVersions.kotlinxKover)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.kotlinx.kover)
 }
 
 apply(from = "$rootDir/ci.gradle.kts")

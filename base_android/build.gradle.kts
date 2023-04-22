@@ -21,16 +21,14 @@ dependencies {
     implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.timber)
-
-    implementation(Libraries.pagingCommonKtx)
-    implementation(Libraries.pagingRuntimeKtx)
-
-    implementation(Libraries.paperwork)
+    implementation(libs.androidx.paging.common.ktx)
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.paperwork)
+    implementation(libs.timber)
 
     // unit test
-    testImplementation(TestLibraries.kotlinTest)
-    testImplementation(TestLibraries.mockkCore)
-    testImplementation(TestLibraries.kotlinxCoroutinesTest)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }

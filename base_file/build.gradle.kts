@@ -10,6 +10,6 @@ dependencies {
     implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.timber)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.timber)
 }

@@ -8,20 +8,20 @@ android {
 }
 
 dependencies {
-    implementation(project(":data:dataDoorbellApi"))
     implementation(project(":common:common"))
+    implementation(project(":data:dataDoorbellApi"))
     implementation(project(":ui:ui_common"))
-    implementation(project(":ui:ui_splash"))
-    implementation(project(":ui:ui_permissions"))
     implementation(project(":ui:ui_doorbell_list"))
-    implementation(project(":ui:ui_image_list"))
     implementation(project(":ui:ui_image_details"))
+    implementation(project(":ui:ui_image_list"))
+    implementation(project(":ui:ui_permissions"))
+    implementation(project(":ui:ui_splash"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
-    implementation(Libraries.timber)
-    implementation(Libraries.material)
-    implementation(Libraries.activityKtx)
-    implementation(Libraries.fragmentKtx)
-    implementation(Libraries.navigationUiKtx)
-    implementation(Libraries.navigationFragmentKtx)
+    implementation(libs.android.material)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
+    implementation(libs.timber)
 }

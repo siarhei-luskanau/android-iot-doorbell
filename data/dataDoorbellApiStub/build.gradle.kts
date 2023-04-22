@@ -9,10 +9,10 @@ tasks.test {
 dependencies {
     implementation(project(":data:dataDoorbellApi"))
 
-    implementation(Libraries.kotlinxCoroutinesCore)
+    implementation(libs.kotlinx.coroutines.core)
 
     // unit test
-    testImplementation(TestLibraries.kotlinTest)
-    testImplementation(TestLibraries.mockkCore)
-    testImplementation(TestLibraries.kotlinxCoroutinesTest)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }
