@@ -87,11 +87,47 @@ jobs:
 
   Emulator:
     runs-on: ${{ matrix.os }}
+    continue-on-error: false
     strategy:
       fail-fast: false
       matrix:
         os: [ macos-latest ]
-        emulator-varsion: [ 30, 31, 32, 33 ]
+        emulator-varsion: [ 30, 31 ]
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        if: ${{ matrix.os != 'self-hosted' }}
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
+        working-directory: ./android_sdk
+
+      - run: bash ./gradlew ciEmulator${{ matrix.emulator-varsion }} --stacktrace
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: screenshots
+          path: ${{ github.workspace }}/**/screenshot/debug/**/*.png
+
+      - run: bash ./gradlew :killAndroidEmulator :deleteAndroidEmulator --stacktrace
+        working-directory: ./android_sdk
+        if: always()
+
+
+
+  Emulator2:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-latest ]
+        emulator-varsion: [ 32, 33 ]
     steps:
 
       - uses: actions/checkout@v3
