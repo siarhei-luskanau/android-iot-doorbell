@@ -15,7 +15,7 @@ class KoinViewModelFactory(
     private val scope: Scope,
     private val activity: FragmentActivity,
     private val fragment: Fragment,
-    private val args: Bundle?
+    private val args: Bundle?,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("TooGenericExceptionCaught")
@@ -25,7 +25,7 @@ class KoinViewModelFactory(
             scope.get(
                 clazz = modelClass.kotlin,
                 qualifier = null,
-                parameters = { parametersOf(activity, fragment, args) }
+                parameters = { parametersOf(activity, fragment, args) },
             )
         } catch (koinThrowable: Throwable) {
             try {
@@ -37,7 +37,7 @@ class KoinViewModelFactory(
 }
 
 inline fun <reified T : ViewModel> Module.viewModel(
-    noinline definition: ViewModelDefinition<T>
+    noinline definition: ViewModelDefinition<T>,
 ): KoinDefinition<T> =
     factory { (activity: FragmentActivity, fragment: Fragment, args: Bundle?) ->
         definition(activity, fragment, args)

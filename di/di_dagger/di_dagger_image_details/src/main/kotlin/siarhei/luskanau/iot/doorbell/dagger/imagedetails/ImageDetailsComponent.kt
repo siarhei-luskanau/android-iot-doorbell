@@ -3,15 +3,15 @@ package siarhei.luskanau.iot.doorbell.dagger.imagedetails
 import androidx.fragment.app.FragmentFactory
 import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Provider
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
+import javax.inject.Provider
 
 @Component(
     modules = [
         ImageDetailsBinderModule::class,
-        ImageDetailsBuilderModule::class
-    ]
+        ImageDetailsBuilderModule::class,
+    ],
 )
 interface ImageDetailsComponent {
 
@@ -22,7 +22,7 @@ interface ImageDetailsComponent {
 
         fun create(
             @BindsInstance appNavigation: AppNavigation,
-            @BindsInstance commonComponent: CommonComponent
+            @BindsInstance commonComponent: CommonComponent,
         ): ImageDetailsComponent
     }
 }

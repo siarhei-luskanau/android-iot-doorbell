@@ -6,7 +6,7 @@ import java.lang.Exception
 
 @Suppress("TooGenericExceptionCaught", "SwallowedException")
 class DelegateFragmentFactory(
-    private val providers: List<() -> FragmentFactory>
+    private val providers: List<() -> FragmentFactory>,
 ) : FragmentFactory() {
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
         for (provider in providers) {

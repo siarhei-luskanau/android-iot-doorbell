@@ -1,17 +1,17 @@
 package siarhei.luskanau.iot.doorbell.data
 
-import java.util.Timer
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.schedule
 import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import timber.log.Timber
+import java.util.Timer
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.schedule
 
 class AppBackgroundServices(
     private val doorbellRepository: DoorbellRepository,
     private val thisDeviceRepository: ThisDeviceRepository,
-    private val scheduleWorkManagerService: ScheduleWorkManagerService
+    private val scheduleWorkManagerService: ScheduleWorkManagerService,
 ) {
 
     fun startServices() {
@@ -19,12 +19,12 @@ class AppBackgroundServices(
         Timer("AppBackgroundServices", false)
             .schedule(
                 delay = 0,
-                period = period
+                period = period,
             ) {
                 runCatching {
                     val requestMap: Map<String, Boolean> = runBlocking {
                         doorbellRepository.getCameraImageRequest(
-                            thisDeviceRepository.doorbellId()
+                            thisDeviceRepository.doorbellId(),
                         )
                     }
                     Timber.d("listenCameraImageRequest:%s", requestMap)

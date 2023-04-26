@@ -1,14 +1,14 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
 import android.content.Context
+import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
-import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 
 class InternalStorageImageRepository(
-    private val context: Context
+    private val context: Context,
 ) : ImageRepository {
 
     override fun prepareFile(name: String): File =
@@ -25,7 +25,7 @@ class InternalStorageImageRepository(
             ImageFile(
                 name = name,
                 path = file.absolutePath,
-                size = file.length()
+                size = file.length(),
             )
         }.onFailure {
             ImageFile(throwable = it)
@@ -36,7 +36,7 @@ class InternalStorageImageRepository(
             ImageFile(
                 name = file.name,
                 path = file.absolutePath,
-                size = file.length()
+                size = file.length(),
             )
         }.onFailure {
             ImageFile(throwable = it)

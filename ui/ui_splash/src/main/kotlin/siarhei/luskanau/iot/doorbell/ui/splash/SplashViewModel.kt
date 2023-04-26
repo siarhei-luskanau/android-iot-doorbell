@@ -6,7 +6,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashViewModel(
-    private val splashNavigation: SplashNavigation
+    private val splashNavigation: SplashNavigation,
 ) : ViewModel(), SplashPresenter {
 
     override fun onResume() {

@@ -7,5 +7,5 @@ import androidx.fragment.app.FragmentActivity
 data class ViewModelFactoryArgs(
     val activity: FragmentActivity,
     val fragment: Fragment,
-    val args: Bundle?
+    val args: Bundle?,
 )

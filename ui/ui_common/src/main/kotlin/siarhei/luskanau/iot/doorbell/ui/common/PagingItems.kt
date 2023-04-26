@@ -21,7 +21,7 @@ fun LoadingItem() {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
     }
@@ -35,12 +35,12 @@ fun ErrorItem(text: String) {
         modifier = Modifier
             .padding(2.dp)
             .fillMaxWidth()
-            .wrapContentHeight()
+            .wrapContentHeight(),
     ) {
         Text(
             text = text,
             color = Color.Red,
-            style = MaterialTheme.typography.h5
+            style = MaterialTheme.typography.h5,
         )
     }
 }

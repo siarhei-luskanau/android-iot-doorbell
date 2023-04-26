@@ -18,7 +18,7 @@ import toothpick.Scope
 class ToothpickViewModelFactory(
     private val scope: Scope,
     private val appNavigation: DefaultAppNavigation,
-    private val args: Bundle?
+    private val args: Bundle?,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -26,20 +26,20 @@ class ToothpickViewModelFactory(
         Timber.d("AppViewModelFactory:instantiate:$modelClass")
         return when {
             SplashViewModel::class.java.isAssignableFrom(modelClass) -> SplashViewModel(
-                splashNavigation = appNavigation
+                splashNavigation = appNavigation,
             )
 
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
                 appNavigation = appNavigation,
                 thisDeviceRepository = scope.getInstance(ThisDeviceRepository::class.java),
-                doorbellsDataSource = scope.getInstance(DoorbellsDataSource::class.java)
+                doorbellsDataSource = scope.getInstance(DoorbellsDataSource::class.java),
             )
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
                 doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId,
                 appNavigation = appNavigation,
                 doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
-                imagesDataSourceFactory = scope.getInstance(ImagesDataSourceFactory::class.java)
+                imagesDataSourceFactory = scope.getInstance(ImagesDataSourceFactory::class.java),
             )
 
             else -> modelClass.getConstructor().newInstance()

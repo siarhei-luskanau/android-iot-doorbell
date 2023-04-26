@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.viewbinding.ViewBinding
 
 abstract class BaseRecyclerClickablePagingAdapter<T : Any, B : ViewBinding>(
-    diffCallback: DiffUtil.ItemCallback<T>
+    diffCallback: DiffUtil.ItemCallback<T>,
 ) : PagingDataAdapter<T, BindingViewHolder<B>>(
-    diffCallback
+    diffCallback,
 ) {
 
     var onItemClickListener: (
         context: Context,
         holder: BindingViewHolder<B>,
-        position: Int
+        position: Int,
     ) -> Unit = { _, _, _ -> }
 
     @Suppress("UNCHECKED_CAST")
@@ -37,7 +37,7 @@ abstract class BaseRecyclerClickablePagingAdapter<T : Any, B : ViewBinding>(
     abstract fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): BindingViewHolder<B>
 
     fun getItemAtPosition(position: Int) = super.getItem(position)

@@ -11,7 +11,7 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 class ImageListViewModelFactory constructor(
     private val commonComponent: CommonComponent,
     private val appNavigation: AppNavigation,
-    private val args: Bundle?
+    private val args: Bundle?,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -21,7 +21,7 @@ class ImageListViewModelFactory constructor(
                 doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId,
                 appNavigation = appNavigation,
                 doorbellRepository = commonComponent.provideDoorbellRepository(),
-                imagesDataSourceFactory = commonComponent.provideImagesDataSourceFactory()
+                imagesDataSourceFactory = commonComponent.provideImagesDataSourceFactory(),
             )
 
             else -> modelClass.getConstructor().newInstance()

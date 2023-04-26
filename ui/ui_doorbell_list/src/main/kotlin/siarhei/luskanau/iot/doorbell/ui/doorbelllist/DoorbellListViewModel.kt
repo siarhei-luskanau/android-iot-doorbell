@@ -16,13 +16,13 @@ import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 class DoorbellListViewModel(
     private val appNavigation: AppNavigation,
     private val thisDeviceRepository: ThisDeviceRepository,
-    private val doorbellsDataSource: DoorbellsDataSource
+    private val doorbellsDataSource: DoorbellsDataSource,
 ) : ViewModel(), DoorbellListPresenter {
 
     override val doorbellListFlow: Flow<PagingData<DoorbellData>> =
         Pager(
             config = PagingConfig(pageSize = PAGE_SIZE),
-            pagingSourceFactory = { doorbellsDataSource }
+            pagingSourceFactory = { doorbellsDataSource },
         )
             .flow
             .cachedIn(viewModelScope)
@@ -30,7 +30,7 @@ class DoorbellListViewModel(
     override fun onDoorbellClicked(doorbellData: DoorbellData) {
         viewModelScope.launch {
             appNavigation.navigateToImageList(
-                doorbellId = doorbellData.doorbellId
+                doorbellId = doorbellData.doorbellId,
             )
         }
     }

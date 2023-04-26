@@ -18,13 +18,13 @@ val EMULATOR_GRADLE = "EMULATOR_GRADLE"
 val COMMANDLINETOOLS_VERSION = "9477386"
 val COMMANDLINETOOLS_LINUX =
     "https://dl.google.com/android/repository/commandlinetools-linux-" +
-            "${COMMANDLINETOOLS_VERSION}_latest.zip"
+        "${COMMANDLINETOOLS_VERSION}_latest.zip"
 val COMMANDLINETOOLS_MAC =
     "https://dl.google.com/android/repository/commandlinetools-mac-" +
-            "${COMMANDLINETOOLS_VERSION}_latest.zip"
+        "${COMMANDLINETOOLS_VERSION}_latest.zip"
 val COMMANDLINETOOLS_WIN =
     "https://dl.google.com/android/repository/commandlinetools-win-" +
-            "${COMMANDLINETOOLS_VERSION}_latest.zip"
+        "${COMMANDLINETOOLS_VERSION}_latest.zip"
 val CMDLINE_TOOLS_VERSION = "9.0"
 
 val androidSdkConfig = AndroidSdkConfig()
@@ -121,7 +121,7 @@ tasks.register("setupAndroidSDK") {
             commandLine = listOf(
                 androidSdkConfig.sdkmanager.absolutePath,
                 "--licenses",
-                "--sdk_root=${androidSdkConfig.sdkDirPath}"
+                "--sdk_root=${androidSdkConfig.sdkDirPath}",
             )
             standardInput = YES_INPUT.byteInputStream()
             standardOutput = ByteArrayOutputStream()
@@ -233,7 +233,7 @@ tasks.register("runAndroidEmulator") {
                 "-no-audio",
                 "-no-boot-anim",
                 // "-no-window",
-            )
+            ),
         )
 
         exec {
@@ -350,7 +350,7 @@ class AndroidSdkConfig {
                 System.getProperty("user.home"),
                 if (Os.isFamily(Os.FAMILY_MAC)) "Library" else null,
                 "Android",
-                if (Os.isFamily(Os.FAMILY_MAC)) "sdk" else "Sdk"
+                if (Os.isFamily(Os.FAMILY_MAC)) "sdk" else "Sdk",
             ).filterNotNull().joinToString(separator = File.separator)
     }
 
@@ -361,13 +361,13 @@ class AndroidSdkConfig {
     val sdkmanager = sdkFile(
         "cmdline-tools",
         "bin",
-        platformExecutable(name = "sdkmanager", ext = "bat")
+        platformExecutable(name = "sdkmanager", ext = "bat"),
     )
     val avdmanager = sdkFile(
         "cmdline-tools",
         CMDLINE_TOOLS_VERSION,
         "bin",
-        platformExecutable(name = "avdmanager", ext = "bat")
+        platformExecutable(name = "avdmanager", ext = "bat"),
     )
     val emulator = sdkFile("emulator", platformExecutable(name = "emulator"))
     val adb = sdkFile("platform-tools", platformExecutable(name = "adb"))

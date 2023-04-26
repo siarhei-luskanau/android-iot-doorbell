@@ -10,11 +10,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import java.io.InputStream
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -22,6 +17,11 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.serializer
+import java.io.InputStream
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 @Suppress("TooManyFunctions")
 open class BaseFirebaseRepository {
@@ -47,7 +47,7 @@ open class BaseFirebaseRepository {
         (dataSnapshot.value as? Map<*, *>)?.toJsonElement()?.let { jsonElement ->
             json.decodeFromJsonElement(
                 deserializer = serializer(),
-                element = jsonElement
+                element = jsonElement,
             )
         }
 
@@ -56,7 +56,7 @@ open class BaseFirebaseRepository {
             (child.value as? Map<*, *>)?.toJsonElement()?.let { jsonElement ->
                 json.decodeFromJsonElement(
                     deserializer = serializer(),
-                    element = jsonElement
+                    element = jsonElement,
                 )
             }
         }
@@ -72,16 +72,16 @@ open class BaseFirebaseRepository {
                 }
                 json.decodeFromJsonElement(
                     deserializer = serializer<T>(),
-                    element = jsonElement
+                    element = jsonElement,
                 )
-            }
+            },
         )
             .filterValues { it != null }
             .mapValues { entry -> entry.value }
 
     protected suspend fun putStreamToStorage(
         storageRef: StorageReference,
-        stream: InputStream
+        stream: InputStream,
     ): Uri? =
         suspendCoroutine { continuation ->
             storageRef.putStream(stream)

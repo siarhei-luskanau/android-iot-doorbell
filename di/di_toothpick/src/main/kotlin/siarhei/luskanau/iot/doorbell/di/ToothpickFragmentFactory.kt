@@ -25,7 +25,7 @@ import toothpick.Scope
 @Suppress("LongMethod")
 class ToothpickFragmentFactory(
     fragmentActivity: FragmentActivity,
-    private val scope: Scope
+    private val scope: Scope,
 ) : FragmentFactory() {
 
     private val appNavigation by lazy { DefaultAppNavigation(fragmentActivity) }
@@ -38,7 +38,7 @@ class ToothpickFragmentFactory(
                     val viewModelFactory: ViewModelProvider.Factory = ToothpickViewModelFactory(
                         scope = scope,
                         appNavigation = appNavigation,
-                        args = fragment.arguments
+                        args = fragment.arguments,
                     )
                     ViewModelProvider(fragment, viewModelFactory)
                         .get(SplashViewModel::class.java)
@@ -54,7 +54,7 @@ class ToothpickFragmentFactory(
                     val viewModelFactory: ViewModelProvider.Factory = ToothpickViewModelFactory(
                         scope = scope,
                         appNavigation = appNavigation,
-                        args = fragment.arguments
+                        args = fragment.arguments,
                     )
                     ViewModelProvider(fragment, viewModelFactory)
                         .get(DoorbellListViewModel::class.java)
@@ -66,7 +66,7 @@ class ToothpickFragmentFactory(
                     val viewModelFactory: ViewModelProvider.Factory = ToothpickViewModelFactory(
                         scope = scope,
                         appNavigation = appNavigation,
-                        args = fragment.arguments
+                        args = fragment.arguments,
                     )
                     ViewModelProvider(fragment, viewModelFactory)
                         .get(ImageListViewModel::class.java)
@@ -76,16 +76,16 @@ class ToothpickFragmentFactory(
             ImageDetailsFragment::class.java.name -> {
                 ImageDetailsFragment { fragment: Fragment ->
                     val doorbellId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments)
+                        requireNotNull(fragment.arguments),
                     ).doorbellId
                     val imageId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments)
+                        requireNotNull(fragment.arguments),
                     ).imageId
                     ImageDetailsPresenterImpl(
                         appNavigation = appNavigation,
                         fragment = fragment,
                         doorbellId = doorbellId,
-                        imageId = imageId
+                        imageId = imageId,
                     )
                 }
             }
@@ -93,15 +93,15 @@ class ToothpickFragmentFactory(
             ImageDetailsSlideFragment::class.java.name -> {
                 ImageDetailsSlideFragment { fragment: Fragment ->
                     val doorbellId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments)
+                        requireNotNull(fragment.arguments),
                     ).doorbellId
                     val imageId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments)
+                        requireNotNull(fragment.arguments),
                     ).imageId
                     ImageDetailsSlidePresenterImpl(
                         doorbellId = doorbellId,
                         imageId = imageId,
-                        doorbellRepository = scope.getInstance(DoorbellRepository::class.java)
+                        doorbellRepository = scope.getInstance(DoorbellRepository::class.java),
                     )
                 }
             }

@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SizeDto(
     @SerialName("width") val width: Int,
-    @SerialName("height") val height: Int
+    @SerialName("height") val height: Int,
 )

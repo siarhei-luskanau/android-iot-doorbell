@@ -23,7 +23,7 @@ import timber.log.Timber
 @Suppress("LongMethod")
 class AppFragmentFactory(
     fragmentActivity: FragmentActivity,
-    private val appModules: AppModules
+    private val appModules: AppModules,
 ) : FragmentFactory() {
 
     private val appNavigation by lazy { DefaultAppNavigation(fragmentActivity) }
@@ -48,7 +48,7 @@ class AppFragmentFactory(
                     val viewModelFactory: ViewModelProvider.Factory = AppViewModelFactory(
                         appNavigation = appNavigation,
                         appModules = appModules,
-                        args = fragment.arguments
+                        args = fragment.arguments,
                     )
                     ViewModelProvider(fragment, viewModelFactory)
                         .get(DoorbellListViewModel::class.java)
@@ -60,7 +60,7 @@ class AppFragmentFactory(
                     val viewModelFactory: ViewModelProvider.Factory = AppViewModelFactory(
                         appNavigation = appNavigation,
                         appModules = appModules,
-                        args = fragment.arguments
+                        args = fragment.arguments,
                     )
                     ViewModelProvider(fragment, viewModelFactory)
                         .get(ImageListViewModel::class.java)
@@ -70,16 +70,16 @@ class AppFragmentFactory(
             ImageDetailsFragment::class.java.name -> {
                 ImageDetailsFragment { fragment: Fragment ->
                     val doorbellId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments)
+                        requireNotNull(fragment.arguments),
                     ).doorbellId
                     val imageId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments)
+                        requireNotNull(fragment.arguments),
                     ).imageId
                     ImageDetailsPresenterImpl(
                         appNavigation = appNavigation,
                         fragment = fragment,
                         doorbellId = doorbellId,
-                        imageId = imageId
+                        imageId = imageId,
                     )
                 }
             }
@@ -87,15 +87,15 @@ class AppFragmentFactory(
             ImageDetailsSlideFragment::class.java.name -> {
                 ImageDetailsSlideFragment { fragment: Fragment ->
                     val doorbellId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments)
+                        requireNotNull(fragment.arguments),
                     ).doorbellId
                     val imageId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments)
+                        requireNotNull(fragment.arguments),
                     ).imageId
                     ImageDetailsSlidePresenterImpl(
                         doorbellId = doorbellId,
                         imageId = imageId,
-                        doorbellRepository = appModules.doorbellRepository
+                        doorbellRepository = appModules.doorbellRepository,
                     )
                 }
             }

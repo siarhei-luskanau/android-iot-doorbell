@@ -7,7 +7,7 @@ repositories {
     mavenCentral()
 }
 
-dependencies{
+dependencies {
     implementation(buildSrcLibs.karumiShot)
     implementation(buildSrcLibs.kotlin.gradle.plugin)
     implementation(buildSrcLibs.android.gradle.plugin)

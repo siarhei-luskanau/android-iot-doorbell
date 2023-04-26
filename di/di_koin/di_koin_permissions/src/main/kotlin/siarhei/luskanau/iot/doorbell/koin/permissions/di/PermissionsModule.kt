@@ -19,7 +19,7 @@ val permissionsModule = module {
 
     factory { (activity: FragmentActivity, _: Fragment, _: Bundle?) ->
         PermissionsPresenter(
-            appNavigation = get { parametersOf(activity) }
+            appNavigation = get { parametersOf(activity) },
         )
     }
 }

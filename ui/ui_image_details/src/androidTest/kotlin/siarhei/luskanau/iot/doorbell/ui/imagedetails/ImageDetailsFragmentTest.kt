@@ -33,7 +33,7 @@ class ImageDetailsFragmentTest : ScreenshotTest {
                                     override fun getItemCount(): Int = 1
                                     override fun createFragment(position: Int): Fragment =
                                         Fragment(R.layout.layout_image_details_slide_normal)
-                                }
+                                },
                             )
                         }
                 }
@@ -48,7 +48,7 @@ class ImageDetailsFragmentTest : ScreenshotTest {
                         override fun getImageDetailsStateData(): LiveData<ImageDetailsState> =
                             MutableLiveData<ImageDetailsState>().apply {
                                 value = ErrorImageDetailsState(
-                                    error = RuntimeException(EXPECTED_ERROR_MESSAGE)
+                                    error = RuntimeException(EXPECTED_ERROR_MESSAGE),
                                 )
                             }
                     }
@@ -60,7 +60,7 @@ class ImageDetailsFragmentTest : ScreenshotTest {
         val fragmentFactory = createNormalFragmentFactory()
         val scenario = launchFragmentInContainer<ImageDetailsFragment>(
             factory = fragmentFactory,
-            themeResId = CommonR.style.AppTheme
+            themeResId = CommonR.style.AppTheme,
         )
         scenario.moveToState(Lifecycle.State.RESUMED)
 
@@ -75,7 +75,7 @@ class ImageDetailsFragmentTest : ScreenshotTest {
         scenario.onFragment {
             compareScreenshot(
                 fragment = it,
-                name = javaClass.simpleName + ".normal"
+                name = javaClass.simpleName + ".normal",
             )
         }
     }
@@ -85,7 +85,7 @@ class ImageDetailsFragmentTest : ScreenshotTest {
         val fragmentFactory = createErrorFragmentFactory()
         val scenario = launchFragmentInContainer<ImageDetailsFragment>(
             factory = fragmentFactory,
-            themeResId = CommonR.style.AppTheme
+            themeResId = CommonR.style.AppTheme,
         )
         scenario.moveToState(Lifecycle.State.RESUMED)
 
@@ -102,7 +102,7 @@ class ImageDetailsFragmentTest : ScreenshotTest {
         scenario.onFragment {
             compareScreenshot(
                 fragment = it,
-                name = javaClass.simpleName + ".empty"
+                name = javaClass.simpleName + ".empty",
             )
         }
     }

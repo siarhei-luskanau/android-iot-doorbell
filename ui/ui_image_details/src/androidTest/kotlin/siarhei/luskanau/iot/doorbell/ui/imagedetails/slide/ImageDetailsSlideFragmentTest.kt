@@ -8,11 +8,11 @@ import androidx.test.espresso.matcher.ViewMatchers
 import com.karumi.shot.ScreenshotTest
 import io.mockk.every
 import io.mockk.mockk
-import kotlin.test.Test
 import kotlinx.coroutines.flow.flowOf
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
+import kotlin.test.Test
+import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 
 class ImageDetailsSlideFragmentTest : ScreenshotTest {
 
@@ -27,7 +27,7 @@ class ImageDetailsSlideFragmentTest : ScreenshotTest {
         val expectedImageData = ImageData(
             imageId = "expectedImageId",
             imageUri = "expectedImageUri",
-            timestampString = "timestampString"
+            timestampString = "timestampString",
         )
         val scenario = launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(state = NormalImageDetailsSlideState(imageData = expectedImageData))
@@ -45,7 +45,7 @@ class ImageDetailsSlideFragmentTest : ScreenshotTest {
         scenario.onFragment {
             compareScreenshot(
                 fragment = it,
-                name = javaClass.simpleName + ".normal"
+                name = javaClass.simpleName + ".normal",
             )
         }
     }
@@ -55,7 +55,7 @@ class ImageDetailsSlideFragmentTest : ScreenshotTest {
         val expectedErrorMessage = "Test Exception"
         val scenario = launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(
-                state = ErrorImageDetailsSlideState(error = RuntimeException(expectedErrorMessage))
+                state = ErrorImageDetailsSlideState(error = RuntimeException(expectedErrorMessage)),
             )
         }
         scenario.moveToState(Lifecycle.State.RESUMED)
@@ -73,7 +73,7 @@ class ImageDetailsSlideFragmentTest : ScreenshotTest {
         scenario.onFragment {
             compareScreenshot(
                 fragment = it,
-                name = javaClass.simpleName + ".empty"
+                name = javaClass.simpleName + ".empty",
             )
         }
     }

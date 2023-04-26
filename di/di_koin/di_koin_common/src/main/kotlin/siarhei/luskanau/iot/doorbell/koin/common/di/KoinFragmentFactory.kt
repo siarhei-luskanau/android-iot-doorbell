@@ -12,7 +12,7 @@ import timber.log.Timber
 
 class KoinFragmentFactory(
     private val koin: Koin,
-    private val activity: FragmentActivity
+    private val activity: FragmentActivity,
 ) : FragmentFactory() {
 
     @Suppress("TooGenericExceptionCaught")
@@ -23,7 +23,7 @@ class KoinFragmentFactory(
             koin.get(
                 clazz = clazz.kotlin,
                 qualifier = null,
-                parameters = { parametersOf(activity) }
+                parameters = { parametersOf(activity) },
             )
         } catch (koinThrowable: Throwable) {
             try {
@@ -35,7 +35,7 @@ class KoinFragmentFactory(
 }
 
 inline fun <reified T : Fragment> Module.fragment(
-    noinline definition: FragmentDefinition<T>
+    noinline definition: FragmentDefinition<T>,
 ): KoinDefinition<T> =
     factory { (activity: FragmentActivity) ->
         definition(activity)

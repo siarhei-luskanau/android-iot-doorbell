@@ -32,7 +32,7 @@ class AppModules(context: Context) {
 
     val imageRepository: ImageRepository by lazy {
         InternalStorageImageRepository(
-            context = context
+            context = context,
         )
     }
     val doorbellRepository: DoorbellRepository by lazy {
@@ -54,29 +54,29 @@ class AppModules(context: Context) {
             context = context,
             deviceInfoProvider = deviceInfoProvider,
             cameraRepository = cameraRepository,
-            ipAddressProvider = ipAddressProvider
+            ipAddressProvider = ipAddressProvider,
         )
     }
     val deviceInfoProvider: DeviceInfoProvider by lazy {
         AndroidDeviceInfoProvider(
-            context = context
+            context = context,
         )
     }
     val cameraRepository: CameraRepository by lazy {
         JetpackCameraRepository(
             context = context,
-            imageRepository = imageRepository
+            imageRepository = imageRepository,
         )
     }
     val imagesDataSourceFactory: ImagesDataSourceFactory by lazy {
         ImagesDataSourceFactoryImpl(
-            doorbellRepository = doorbellRepository
+            doorbellRepository = doorbellRepository,
         )
     }
     val ipAddressProvider: IpAddressProvider by lazy { AndroidIpAddressProvider() }
     val doorbellsDataSource: DoorbellsDataSource by lazy {
         DefaultDoorbellsDataSource(
-            doorbellRepository = doorbellRepository
+            doorbellRepository = doorbellRepository,
         )
     }
     val workManager: WorkManager by lazy {
@@ -89,7 +89,7 @@ class AppModules(context: Context) {
         AppBackgroundServices(
             doorbellRepository = doorbellRepository,
             thisDeviceRepository = thisDeviceRepository,
-            scheduleWorkManagerService = scheduleWorkManagerService
+            scheduleWorkManagerService = scheduleWorkManagerService,
         )
     }
 }

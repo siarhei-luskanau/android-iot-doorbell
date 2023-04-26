@@ -5,7 +5,7 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
 class DefaultDoorbellsDataSource(
-    private val doorbellRepository: DoorbellRepository
+    private val doorbellRepository: DoorbellRepository,
 ) : DoorbellsDataSource() {
 
     @Suppress("TooGenericExceptionCaught")
@@ -15,7 +15,7 @@ class DefaultDoorbellsDataSource(
             LoadResult.Page(
                 data = data,
                 prevKey = params.key,
-                nextKey = data.lastOrNull()?.doorbellId
+                nextKey = data.lastOrNull()?.doorbellId,
             )
         } catch (exception: Exception) {
             LoadResult.Error(exception)

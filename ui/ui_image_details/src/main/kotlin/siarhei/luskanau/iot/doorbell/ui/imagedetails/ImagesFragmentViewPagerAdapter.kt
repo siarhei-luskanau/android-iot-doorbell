@@ -9,7 +9,7 @@ class ImagesFragmentViewPagerAdapter(
     private val appNavigation: AppNavigation,
     private val fragment: Fragment,
     private val doorbellId: String,
-    private val imageId: String
+    private val imageId: String,
 ) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 1
@@ -19,11 +19,11 @@ class ImagesFragmentViewPagerAdapter(
             fragmentFactory.instantiate(
                 fragmentFactory.javaClass.classLoader
                     ?: ClassLoader.getSystemClassLoader(),
-                ImageDetailsSlideFragment::class.java.name
+                ImageDetailsSlideFragment::class.java.name,
             ).apply {
                 arguments = appNavigation.buildImageDetailsArgs(
                     doorbellId = doorbellId,
-                    imageId = imageId
+                    imageId = imageId,
                 )
             }
         }

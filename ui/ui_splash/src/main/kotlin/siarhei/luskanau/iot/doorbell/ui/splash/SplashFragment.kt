@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 
 class SplashFragment(
-    presenterProvider: (fragment: Fragment) -> SplashPresenter
+    presenterProvider: (fragment: Fragment) -> SplashPresenter,
 ) : Fragment() {
 
     private val presenter: SplashPresenter by lazy { presenterProvider(this) }
@@ -24,7 +24,7 @@ class SplashFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) =
         ComposeView(inflater.context).apply {
             setContent {
@@ -50,7 +50,7 @@ fun SplashPreview() =
             .fillMaxWidth()
             .fillMaxHeight(),
         painter = painterResource(
-            id = siarhei.luskanau.iot.doorbell.ui.common.R.drawable.ic_android
+            id = siarhei.luskanau.iot.doorbell.ui.common.R.drawable.ic_android,
         ),
-        contentDescription = null
+        contentDescription = null,
     )

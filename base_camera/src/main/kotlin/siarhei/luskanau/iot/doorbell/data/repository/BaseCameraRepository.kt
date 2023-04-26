@@ -17,7 +17,7 @@ import siarhei.luskanau.iot.doorbell.data.model.SizeData
 import timber.log.Timber
 
 abstract class BaseCameraRepository(
-    private val context: Context
+    private val context: Context,
 ) : CameraRepository {
 
     override suspend fun getCamerasList(): List<CameraData> =
@@ -40,12 +40,12 @@ abstract class BaseCameraRepository(
                             sizes = sizes.mapValues { entry ->
                                 SizeData(
                                     entry.value.width,
-                                    entry.value.height
+                                    entry.value.height,
                                 )
                             },
                             info = info,
-                            cameraxInfo = cameraxInfo
-                        )
+                            cameraxInfo = cameraxInfo,
+                        ),
                     )
                 }
             }.onFailure {
@@ -63,8 +63,8 @@ abstract class BaseCameraRepository(
                             configs.getOutputSizes(ImageFormat.JPEG)
                                 .associateBy(
                                     { size: Size -> "${size.width}x${size.height}" },
-                                    { size: Size -> size }
-                                )
+                                    { size: Size -> size },
+                                ),
                         )
                     }
             }.onFailure {
@@ -77,10 +77,10 @@ abstract class BaseCameraRepository(
             val characteristics = cameraManager.getCameraCharacteristics(cameraId)
             CameraInfoData(
                 lensFacing = getLensFacingName(
-                    characteristics.get(CameraCharacteristics.LENS_FACING)
+                    characteristics.get(CameraCharacteristics.LENS_FACING),
                 ),
                 infoSupportedHardwareLevel = getHardwareLevelName(
-                    characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL)
+                    characteristics.get(CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL),
                 ),
                 scalerStreamConfigurationMap = characteristics
                     .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
@@ -94,17 +94,17 @@ abstract class BaseCameraRepository(
                                     configs.getOutputSizes(outputFormat)
                                         .associateBy(
                                             { it.toString() },
-                                            { it.toString() }
+                                            { it.toString() },
                                         )
-                                }
+                                },
                             )
                     },
                 controlAvailableEffects = characteristics
                     .get(CameraCharacteristics.CONTROL_AVAILABLE_EFFECTS)
                     ?.associateBy(
                         { effect: Int -> getEffectName(effect) },
-                        { effect: Int -> effect.toString() }
-                    )
+                        { effect: Int -> effect.toString() },
+                    ),
             )
         }.getOrElse {
             Timber.d("Cam access exception getting characteristics.")
@@ -122,13 +122,13 @@ abstract class BaseCameraRepository(
                         implementationType = cameraInfo.implementationType,
                         sensorRotationDegrees = cameraInfo.sensorRotationDegrees.toString(),
                         hasFlashUnit = cameraInfo.hasFlashUnit().toString(),
-                        toString = cameraInfo.toString()
+                        toString = cameraInfo.toString(),
                     )
                 }
         }.getOrElse {
             Timber.d("Cam access exception getting characteristics.")
             CameraxInfoData(
-                error = it.toString()
+                error = it.toString(),
             )
         }
 
@@ -190,7 +190,7 @@ abstract class BaseCameraRepository(
             ImageFormat.RGB_565 to "RGB_565",
             ImageFormat.YUV_420_888 to "YUV_420_888",
             ImageFormat.YUV_422_888 to "YUV_422_888",
-            ImageFormat.YUV_444_888 to "YUV_444_888"
+            ImageFormat.YUV_444_888 to "YUV_444_888",
         )
     }
 }

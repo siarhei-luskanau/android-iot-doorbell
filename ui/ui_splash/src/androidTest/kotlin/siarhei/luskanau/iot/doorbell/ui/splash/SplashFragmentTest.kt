@@ -2,8 +2,8 @@ package siarhei.luskanau.iot.doorbell.ui.splash
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.karumi.shot.ScreenshotTest
-import kotlin.test.Test
 import org.junit.Rule
+import kotlin.test.Test
 
 class SplashFragmentTest : ScreenshotTest {
 
@@ -15,7 +15,7 @@ class SplashFragmentTest : ScreenshotTest {
         composeRule.setContent { SplashPreview() }
         compareScreenshot(
             rule = composeRule,
-            name = javaClass.simpleName
+            name = javaClass.simpleName,
         )
     }
 }

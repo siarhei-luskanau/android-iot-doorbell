@@ -5,32 +5,32 @@ import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
-import javax.inject.Provider
 import siarhei.luskanau.iot.doorbell.dagger.common.DaggerFragmentFactory
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashFragment
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 import siarhei.luskanau.iot.doorbell.ui.splash.SplashViewModel
+import javax.inject.Provider
 
 @Module
 class SplashBuilderModule {
 
     @Provides
     fun providesFragmentFactory(
-        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>
+        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>,
     ): FragmentFactory = DaggerFragmentFactory(
-        providers
+        providers,
     )
 
     @Provides
     fun provideSplashViewModel(
-        splashNavigation: SplashNavigation
+        splashNavigation: SplashNavigation,
     ) = SplashViewModel(
-        splashNavigation = splashNavigation
+        splashNavigation = splashNavigation,
     )
 
     @Provides
     fun provideSplashFragment(
-        viewModelFactory: ViewModelProvider.Factory
+        viewModelFactory: ViewModelProvider.Factory,
     ) = SplashFragment { fragment: Fragment ->
         ViewModelProvider(fragment, viewModelFactory)
             .get(SplashViewModel::class.java)

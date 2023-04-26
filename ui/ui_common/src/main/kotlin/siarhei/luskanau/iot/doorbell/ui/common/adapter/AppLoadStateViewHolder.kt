@@ -10,7 +10,7 @@ import siarhei.luskanau.iot.doorbell.ui.common.databinding.ViewItemLoadStateFoot
 
 class AppLoadStateViewHolder(
     private val binding: ViewItemLoadStateFooterBinding,
-    retry: () -> Unit
+    retry: () -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     init {

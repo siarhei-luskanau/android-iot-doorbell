@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
 class ImagesDataSourceFactoryImpl(
-    private val doorbellRepository: DoorbellRepository
+    private val doorbellRepository: DoorbellRepository,
 ) : ImagesDataSourceFactory {
 
     override fun createPager(doorbellId: String) =
@@ -14,9 +14,9 @@ class ImagesDataSourceFactoryImpl(
             pagingSourceFactory = {
                 ImagesDataSourceImpl(
                     doorbellRepository = doorbellRepository,
-                    doorbellId = doorbellId
+                    doorbellId = doorbellId,
                 )
-            }
+            },
         )
 
     companion object {

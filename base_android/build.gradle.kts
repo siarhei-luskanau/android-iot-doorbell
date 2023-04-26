@@ -12,7 +12,7 @@ paperwork {
         mapOf(
             "gitSha" to gitSha(),
             "gitBranch" to gitBranch(),
-            "buildDate" to buildTime("yyyy-MM-dd HH:mm:ss", "GMT")
+            "buildDate" to buildTime("yyyy-MM-dd HH:mm:ss", "GMT"),
         )
     }.getOrNull()
 }

@@ -32,8 +32,8 @@ class DiHolderImpl(context: Context) : DiHolder {
                     imageDetailsModule,
                     imageListModule,
                     permissionsModule,
-                    splashModule
-                )
+                    splashModule,
+                ),
             )
         }
     }
@@ -54,6 +54,6 @@ class DiHolderImpl(context: Context) : DiHolder {
             doorbellRepository = { koinApplication.koin.get() },
             cameraRepository = { koinApplication.koin.get() },
             uptimeRepository = { koinApplication.koin.get() },
-            imageRepository = { koinApplication.koin.get() }
+            imageRepository = { koinApplication.koin.get() },
         )
 }

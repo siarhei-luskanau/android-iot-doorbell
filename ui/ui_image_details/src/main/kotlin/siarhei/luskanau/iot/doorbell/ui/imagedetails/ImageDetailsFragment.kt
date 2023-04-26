@@ -12,7 +12,7 @@ import siarhei.luskanau.iot.doorbell.ui.imagedetails.databinding.LayoutImageDeta
 import timber.log.Timber
 
 class ImageDetailsFragment(
-    presenterProvider: (fragment: Fragment) -> ImageDetailsPresenter
+    presenterProvider: (fragment: Fragment) -> ImageDetailsPresenter,
 ) : BaseFragment<ImageDetailsPresenter>(presenterProvider) {
 
     private lateinit var fragmentBinding: FragmentImageDetailsBinding
@@ -22,24 +22,24 @@ class ImageDetailsFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         fragmentBinding = FragmentImageDetailsBinding.inflate(
             inflater,
             container,
-            false
+            false,
         )
 
         normalStateBinding = LayoutImageDetailsNormalBinding.inflate(
             inflater,
             container,
-            false
+            false,
         )
 
         errorStateBinding = LayoutGenericErrorBinding.inflate(
             inflater,
             container,
-            false
+            false,
         )
 
         return fragmentBinding.root

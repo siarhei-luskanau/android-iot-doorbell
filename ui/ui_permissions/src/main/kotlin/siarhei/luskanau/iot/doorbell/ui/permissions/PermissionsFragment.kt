@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment
 import siarhei.luskanau.iot.doorbell.common.AppConstants.PERMISSIONS
 
 class PermissionsFragment(
-    presenterProvider: (fragment: Fragment) -> PermissionsPresenter
+    presenterProvider: (fragment: Fragment) -> PermissionsPresenter,
 ) : Fragment() {
 
     private val presenter: PermissionsPresenter by lazy { presenterProvider(this) }
@@ -31,7 +31,7 @@ class PermissionsFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ) = ComposeView(inflater.context).apply {
         setContent {
             PermissionsPreview()
@@ -42,7 +42,7 @@ class PermissionsFragment(
         super.onViewCreated(view, savedInstanceState)
 
         activityResultLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
+            ActivityResultContracts.RequestMultiplePermissions(),
         ) { result: Map<String, Boolean> ->
             val allGranted = result.values.reduce { acc, b -> acc && b }
             if (allGranted) {
@@ -64,7 +64,7 @@ class PermissionsFragment(
         for (permission in PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
-                    permission
+                    permission,
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 return false
@@ -84,5 +84,5 @@ fun PermissionsPreview() =
             .fillMaxWidth()
             .fillMaxHeight(),
         text = "permissions",
-        style = MaterialTheme.typography.h6
+        style = MaterialTheme.typography.h6,
     )

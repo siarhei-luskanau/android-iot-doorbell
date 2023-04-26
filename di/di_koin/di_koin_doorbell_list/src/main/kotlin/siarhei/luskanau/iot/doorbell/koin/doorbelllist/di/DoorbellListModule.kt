@@ -27,7 +27,7 @@ val doorbellListModule = module {
         DoorbellListViewModel(
             appNavigation = get { parametersOf(activity) },
             thisDeviceRepository = get(),
-            doorbellsDataSource = get()
+            doorbellsDataSource = get(),
         )
     }
 }

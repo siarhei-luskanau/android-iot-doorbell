@@ -36,14 +36,14 @@ class AppModule(context: Context) : Module() {
 
         val imageRepository: ImageRepository by lazy {
             InternalStorageImageRepository(
-                context = context
+                context = context,
             )
         }
         bind(ImageRepository::class.java).toProviderInstance { imageRepository }
 
         val deviceInfoProvider: DeviceInfoProvider by lazy {
             AndroidDeviceInfoProvider(
-                context = context
+                context = context,
             )
         }
         bind(DeviceInfoProvider::class.java).toProviderInstance { deviceInfoProvider }
@@ -51,7 +51,7 @@ class AppModule(context: Context) : Module() {
         val cameraRepository: CameraRepository by lazy {
             JetpackCameraRepository(
                 context = context,
-                imageRepository = imageRepository
+                imageRepository = imageRepository,
             )
         }
         bind(CameraRepository::class.java).toProviderInstance { cameraRepository }
@@ -64,7 +64,7 @@ class AppModule(context: Context) : Module() {
                 context = context,
                 deviceInfoProvider = deviceInfoProvider,
                 cameraRepository = cameraRepository,
-                ipAddressProvider = ipAddressProvider
+                ipAddressProvider = ipAddressProvider,
             )
         }
         bind(ThisDeviceRepository::class.java).toProviderInstance { thisDeviceRepository }
@@ -89,14 +89,14 @@ class AppModule(context: Context) : Module() {
 
         val imagesDataSourceFactory: ImagesDataSourceFactory by lazy {
             ImagesDataSourceFactoryImpl(
-                doorbellRepository = doorbellRepository
+                doorbellRepository = doorbellRepository,
             )
         }
         bind(ImagesDataSourceFactory::class.java).toProviderInstance { imagesDataSourceFactory }
 
         val doorbellsDataSource: DoorbellsDataSource by lazy {
             DefaultDoorbellsDataSource(
-                doorbellRepository = doorbellRepository
+                doorbellRepository = doorbellRepository,
             )
         }
         bind(DoorbellsDataSource::class.java).toProviderInstance { doorbellsDataSource }
@@ -118,7 +118,7 @@ class AppModule(context: Context) : Module() {
             AppBackgroundServices(
                 doorbellRepository = doorbellRepository,
                 thisDeviceRepository = thisDeviceRepository,
-                scheduleWorkManagerService = scheduleWorkManagerService
+                scheduleWorkManagerService = scheduleWorkManagerService,
             )
         }
         bind(AppBackgroundServices::class.java).toProviderInstance { appBackgroundServices }

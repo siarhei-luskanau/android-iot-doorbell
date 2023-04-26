@@ -11,12 +11,12 @@ import siarhei.luskanau.iot.doorbell.ui.common.adapter.BindingViewHolder
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.ViewItemImageBinding
 
 class ImageAdapter : BaseRecyclerClickablePagingAdapter<ImageData, ViewItemImageBinding>(
-    DIFF_CALLBACK
+    DIFF_CALLBACK,
 ) {
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): BindingViewHolder<ViewItemImageBinding> =
         BindingViewHolder(ViewItemImageBinding.inflate(inflater, parent, false))
 

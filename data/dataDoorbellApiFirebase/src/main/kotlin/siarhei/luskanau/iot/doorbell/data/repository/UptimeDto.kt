@@ -12,7 +12,7 @@ data class UptimeDto(
     @SerialName(REBOOT_REQUEST_TIME_MILLIS_KEY) val rebootRequestTimeMillis: Long?,
     @SerialName(REBOOT_REQUEST_TIME_STRING_KEY) val rebootRequestTimeString: String?,
     @SerialName(REBOOTING_TIME_MILLIS_KEY) val rebootingTimeMillis: Long?,
-    @SerialName(REBOOTING_TIME_STRING_KEY) val rebootingTimeString: String?
+    @SerialName(REBOOTING_TIME_STRING_KEY) val rebootingTimeString: String?,
 ) {
 
     companion object {

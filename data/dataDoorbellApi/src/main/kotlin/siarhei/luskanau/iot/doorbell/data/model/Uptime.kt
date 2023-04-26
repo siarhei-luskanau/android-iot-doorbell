@@ -8,5 +8,5 @@ data class Uptime(
     val rebootRequestTimeMillis: Long?,
     val rebootRequestTimeString: String?,
     val rebootingTimeMillis: Long?,
-    val rebootingTimeString: String?
+    val rebootingTimeString: String?,
 )

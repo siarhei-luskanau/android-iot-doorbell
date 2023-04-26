@@ -10,7 +10,7 @@ import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 import timber.log.Timber
 
 class DefaultAppNavigation(
-    private val activity: FragmentActivity
+    private val activity: FragmentActivity,
 ) : AppNavigation,
     SplashNavigation {
 
@@ -35,22 +35,22 @@ class DefaultAppNavigation(
     override fun navigateToImageList(doorbellId: String) =
         navigateTo(
             NavRootDirections.actionDoorbellListToImageList(
-                doorbellId = doorbellId
-            )
+                doorbellId = doorbellId,
+            ),
         )
 
     override fun navigateToImageDetails(doorbellId: String, imageId: String) =
         navigateTo(
             NavRootDirections.actionImageListToImageDetails(
                 doorbellId = doorbellId,
-                imageId = imageId
-            )
+                imageId = imageId,
+            ),
         )
 
     override fun buildImageDetailsArgs(doorbellId: String, imageId: String): Bundle =
         NavRootDirections.actionImageListToImageDetails(
             doorbellId = doorbellId,
-            imageId = imageId
+            imageId = imageId,
         ).arguments
 
     override fun onSplashComplete() =

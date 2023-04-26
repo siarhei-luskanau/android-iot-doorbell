@@ -15,37 +15,37 @@ class CameraWorker(
     private val thisDeviceRepository: ThisDeviceRepository,
     private val doorbellRepository: DoorbellRepository,
     private val cameraRepository: CameraRepository,
-    private val imageRepository: ImageRepository
+    private val imageRepository: ImageRepository,
 ) : CoroutineWorker(
     context,
-    workerParams
+    workerParams,
 ) {
 
     override suspend fun doWork(): Result =
         runCatching {
             doorbellRepository.getCameraImageRequest(
-                thisDeviceRepository.doorbellId()
+                thisDeviceRepository.doorbellId(),
             )
                 .filterValues { value -> value }
                 .onEach { (cameraId, _) ->
                     doorbellRepository.sendCameraImageRequest(
                         doorbellId = thisDeviceRepository.doorbellId(),
                         cameraId = cameraId,
-                        isRequested = false
+                        isRequested = false,
                     )
 
                     cameraRepository
                         .makeImage(
                             doorbellId = thisDeviceRepository.doorbellId(),
-                            cameraId = cameraId
+                            cameraId = cameraId,
                         )
                         .also { imageFile ->
                             doorbellRepository.sendImage(
                                 doorbellId = thisDeviceRepository.doorbellId(),
                                 cameraId = cameraId,
                                 imageInputStream = imageRepository.openInputStream(
-                                    imageFile.path.orEmpty()
-                                )
+                                    imageFile.path.orEmpty(),
+                                ),
                             )
                         }
                 }

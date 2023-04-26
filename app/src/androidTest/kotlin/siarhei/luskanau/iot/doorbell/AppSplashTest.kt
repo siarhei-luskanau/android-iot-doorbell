@@ -5,9 +5,9 @@ import androidx.navigation.NavDeepLinkBuilder
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.filters.LargeTest
-import kotlin.test.Test
 import org.junit.Rule
 import siarhei.luskanau.iot.doorbell.navigation.NavigationActivity
+import kotlin.test.Test
 import siarhei.luskanau.iot.doorbell.navigation.R as NavigationR
 import siarhei.luskanau.iot.doorbell.ui.splash.R as SplashR
 
@@ -22,7 +22,7 @@ class AppSplashTest {
             .setArguments(null)
             .createTaskStackBuilder()
             .intents
-            .first()
+            .first(),
     )
 
     @Test

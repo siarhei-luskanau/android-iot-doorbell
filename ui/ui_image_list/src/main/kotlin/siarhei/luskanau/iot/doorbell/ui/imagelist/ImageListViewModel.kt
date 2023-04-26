@@ -16,7 +16,7 @@ class ImageListViewModel(
     private val doorbellId: String,
     private val appNavigation: AppNavigation,
     private val doorbellRepository: DoorbellRepository,
-    imagesDataSourceFactory: ImagesDataSourceFactory
+    imagesDataSourceFactory: ImagesDataSourceFactory,
 ) : ViewModel(), ImageListPresenter {
 
     override suspend fun getCameraList(): List<CameraData> =
@@ -32,7 +32,7 @@ class ImageListViewModel(
             doorbellRepository.sendCameraImageRequest(
                 doorbellId = doorbellId,
                 cameraId = cameraData.cameraId,
-                isRequested = true
+                isRequested = true,
             )
         }
     }
@@ -41,7 +41,7 @@ class ImageListViewModel(
         viewModelScope.launch {
             appNavigation.navigateToImageDetails(
                 doorbellId = doorbellId,
-                imageId = imageData.imageId
+                imageId = imageData.imageId,
             )
         }
     }

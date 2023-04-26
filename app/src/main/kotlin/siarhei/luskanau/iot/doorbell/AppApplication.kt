@@ -26,7 +26,7 @@ class AppApplication : Application(), WorkerFactoryProvider {
                     fragmentActivity.supportFragmentManager.fragmentFactory =
                         diHolder.getFragmentFactory(fragmentActivity = fragmentActivity)
                 }
-            }
+            },
         )
     }
 

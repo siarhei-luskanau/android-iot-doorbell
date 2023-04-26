@@ -40,7 +40,7 @@ import siarhei.luskanau.iot.doorbell.ui.common.R
 import siarhei.luskanau.iot.doorbell.ui.imagelist.databinding.FragmentImageListBinding
 
 class ImageListFragment(
-    presenterProvider: (fragment: Fragment) -> ImageListPresenter
+    presenterProvider: (fragment: Fragment) -> ImageListPresenter,
 ) : BaseFragment<ImageListPresenter>(presenterProvider) {
 
     private lateinit var fragmentBinding: FragmentImageListBinding
@@ -51,12 +51,12 @@ class ImageListFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         fragmentBinding = FragmentImageListBinding.inflate(
             inflater,
             container,
-            false
+            false,
         )
         normalStateCompose = ComposeView(inflater.context).apply {
             setContent {
@@ -65,7 +65,7 @@ class ImageListFragment(
                         items = presenter.doorbellListFlow.collectAsLazyPagingItems(),
                         onItemClickListener = { imageData ->
                             imageData?.let { presenter.onImageClicked(it) }
-                        }
+                        },
                     )
                 }
             }
@@ -96,23 +96,23 @@ class ImageListFragment(
 @Suppress("FunctionNaming", "EmptyFunctionBlock", "UnusedPrivateMember")
 fun ImageListComposable(
     items: LazyPagingItems<ImageData>,
-    onItemClickListener: (ImageData?) -> Unit
+    onItemClickListener: (ImageData?) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(all = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(
             items = items,
             key = { imageData ->
                 imageData.imageId
-            }
+            },
         ) { imageData ->
             imageData?.let {
                 ImageDataItem(
                     imageData = imageData,
-                    onItemClickListener = onItemClickListener
+                    onItemClickListener = onItemClickListener,
                 )
             }
         }
@@ -137,7 +137,7 @@ fun ImageListComposable(
 @Suppress("FunctionNaming")
 fun ImageDataItem(
     imageData: ImageData,
-    onItemClickListener: (ImageData?) -> Unit
+    onItemClickListener: (ImageData?) -> Unit,
 ) {
     val painter =
         rememberAsyncImagePainter(
@@ -146,7 +146,7 @@ fun ImageDataItem(
                 .crossfade(durationMillis = 1000)
                 .error(R.drawable.ic_error_outline)
                 .placeholder(R.drawable.ic_image)
-                .build()
+                .build(),
         )
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -159,13 +159,13 @@ fun ImageDataItem(
             null
         } else {
             BorderStroke(1.dp, MaterialTheme.colors.surface)
-        }
+        },
     ) {
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painter,
             contentDescription = "Unsplash Image",
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
     }
 }

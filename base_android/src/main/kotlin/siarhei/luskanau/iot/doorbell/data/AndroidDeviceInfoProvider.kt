@@ -5,15 +5,15 @@ import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import hu.supercluster.paperwork.Paperwork
-import java.util.UUID
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
+import java.util.UUID
 
 private const val GIT_SHA = "gitSha"
 private const val GIT_BRANCH = "gitBranch"
 private const val BUILD_DATE = "buildDate"
 
 class AndroidDeviceInfoProvider(
-    private val context: Context
+    private val context: Context,
 ) : DeviceInfoProvider {
 
     private val paperwork: Paperwork = Paperwork(context)
@@ -22,7 +22,7 @@ class AndroidDeviceInfoProvider(
     override fun buildDoorbellId(): String {
         val doorbellId: String = Settings.Secure.getString(
             context.contentResolver,
-            Settings.Secure.ANDROID_ID
+            Settings.Secure.ANDROID_ID,
         ) ?: UUID.randomUUID().toString()
 
         return "${doorbellId}_${Build.MODEL}"
@@ -37,6 +37,6 @@ class AndroidDeviceInfoProvider(
         "RELEASE" to Build.VERSION.RELEASE,
         GIT_SHA to paperwork[GIT_SHA],
         GIT_BRANCH to paperwork[GIT_BRANCH],
-        BUILD_DATE to paperwork[BUILD_DATE]
+        BUILD_DATE to paperwork[BUILD_DATE],
     )
 }

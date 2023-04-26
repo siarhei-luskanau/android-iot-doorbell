@@ -12,74 +12,74 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
     override suspend fun uptimeStartup(
         doorbellId: String,
         startupTimeMillis: Long,
-        startupTimeString: String
+        startupTimeString: String,
     ) {
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId)
                 .child(UptimeDto.STARTUP_TIME_MILLIS_KEY),
-            startupTimeMillis
+            startupTimeMillis,
         )
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId)
                 .child(UptimeDto.STARTUP_TIME_STRING_KEY),
-            startupTimeString
+            startupTimeString,
         )
     }
 
     override suspend fun uptimePing(
         doorbellId: String,
         pingTimeMillis: Long,
-        pingTimeString: String
+        pingTimeString: String,
     ) {
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId)
                 .child(UptimeDto.PING_TIME_MILLIS_KEY),
-            pingTimeMillis
+            pingTimeMillis,
         )
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId)
                 .child(UptimeDto.PING_TIME_STRING_KEY),
-            pingTimeString
+            pingTimeString,
         )
     }
 
     override suspend fun uptimeRebootRequest(
         doorbellId: String,
         rebootRequestTimeMillis: Long,
-        rebootRequestTimeString: String
+        rebootRequestTimeString: String,
     ) {
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId)
                 .child(UptimeDto.REBOOT_REQUEST_TIME_MILLIS_KEY),
-            rebootRequestTimeMillis
+            rebootRequestTimeMillis,
         )
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId)
                 .child(UptimeDto.REBOOT_REQUEST_TIME_STRING_KEY),
-            rebootRequestTimeString
+            rebootRequestTimeString,
         )
     }
 
     override suspend fun uptimeRebooting(
         doorbellId: String,
         rebootingTimeMillis: Long,
-        rebootingTimeString: String
+        rebootingTimeString: String,
     ) {
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId)
                 .child(UptimeDto.REBOOTING_TIME_MILLIS_KEY),
-            rebootingTimeMillis
+            rebootingTimeMillis,
         )
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId)
                 .child(UptimeDto.REBOOTING_TIME_STRING_KEY),
-            rebootingTimeString
+            rebootingTimeString,
         )
     }
 
     override suspend fun getUptime(doorbellId: String): Uptime? =
         dataSnapshotObject<UptimeDto>(
-            getValueFromDatabase(getAppDatabase().child(UPTIME_KEY).child(doorbellId))
+            getValueFromDatabase(getAppDatabase().child(UPTIME_KEY).child(doorbellId)),
         )?.let { uptimeDto ->
             Uptime(
                 startupTimeMillis = uptimeDto.startupTimeMillis,
@@ -89,16 +89,16 @@ class UptimeFirebaseRepository : BaseFirebaseRepository(), UptimeRepository {
                 rebootRequestTimeMillis = uptimeDto.rebootRequestTimeMillis,
                 rebootRequestTimeString = uptimeDto.rebootRequestTimeString,
                 rebootingTimeMillis = uptimeDto.rebootingTimeMillis,
-                rebootingTimeString = uptimeDto.rebootingTimeString
+                rebootingTimeString = uptimeDto.rebootingTimeString,
             )
         }
 
     override suspend fun sendIpAddressMap(
         doorbellId: String,
-        ipAddressMap: Map<String, Pair<String, String>>
+        ipAddressMap: Map<String, Pair<String, String>>,
     ) =
         setValueToDatabase(
             getAppDatabase().child(UPTIME_KEY).child(doorbellId).child(IP_ADDRESS_KEY),
-            ipAddressMap
+            ipAddressMap,
         )
 }

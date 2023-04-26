@@ -1,6 +1,6 @@
+import org.apache.tools.ant.taskdefs.condition.Os
 import java.io.File
 import java.util.Properties
-import org.apache.tools.ant.taskdefs.condition.Os
 
 val CI_GRADLE = "CI_GRADLE"
 
@@ -10,7 +10,7 @@ tasks.register("ciLint") {
         gradlew(
             "ktlintCheck",
             "detekt",
-            "lintDebug"
+            "lintDebug",
         )
     }
 }
@@ -22,7 +22,7 @@ tasks.register("ciUnitTest") {
             "clean",
             "koverVerify",
             "koverReport",
-            "koverMergedReport"
+            "koverMergedReport",
         )
     }
 }
@@ -31,7 +31,7 @@ tasks.register("ciBuildApp") {
     group = CI_GRADLE
     doLast {
         gradlew(
-            "assembleDebug"
+            "assembleDebug",
         )
         copy {
             from(rootProject.subprojects.map { it.buildDir })
@@ -84,7 +84,7 @@ tasks.register("ciAll") {
             "ciEmulator30",
             "ciEmulator31",
             "ciEmulator32",
-            "ciEmulator33"
+            "ciEmulator33",
         )
     }
 }
@@ -94,43 +94,43 @@ tasks.register("ciSetupAndroid") {
     doLast {
         gradlew(
             "setupAndroidCmdlineTools",
-            isAndroidSdkGradlew = true
+            isAndroidSdkGradlew = true,
         )
         gradlew(
             "setupAndroidSDK",
-            isAndroidSdkGradlew = true
+            isAndroidSdkGradlew = true,
         )
     }
 }
 
 fun runOnEmulator(
     emulatorName: String,
-    directorySuffix: String = emulatorName
+    directorySuffix: String = emulatorName,
 ) {
     gradlew(
         "setupAndroidSDK",
         "killAndroidEmulator",
         addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
-        isAndroidSdkGradlew = true
+        isAndroidSdkGradlew = true,
     )
     gradlew(
         "setupAndroidEmulator",
         addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
-        isAndroidSdkGradlew = true
+        isAndroidSdkGradlew = true,
     )
     gradlew("assembleDebugAndroidTest")
     Thread {
         gradlew(
             "runAndroidEmulator",
             addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
-            isAndroidSdkGradlew = true
+            isAndroidSdkGradlew = true,
         )
     }.start()
     gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
     gradlew(
         "executeScreenshotTests",
         "-PdirectorySuffix=$directorySuffix",
-        "-Precord"
+        "-Precord",
         // "connectedAndroidTest"
     )
 }
@@ -138,15 +138,15 @@ fun runOnEmulator(
 fun gradlew(
     vararg tasks: String,
     addToSystemProperties: Map<String, String>? = null,
-    isAndroidSdkGradlew: Boolean = false
+    isAndroidSdkGradlew: Boolean = false,
 ) {
     exec {
         executable = File(
             project.rootDir,
             listOf(
                 if (isAndroidSdkGradlew) "android_sdk" else null,
-                if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew"
-            ).filterNotNull().joinToString(separator = File.separator)
+                if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew",
+            ).filterNotNull().joinToString(separator = File.separator),
         )
             .also { it.setExecutable(true) }
             .absolutePath

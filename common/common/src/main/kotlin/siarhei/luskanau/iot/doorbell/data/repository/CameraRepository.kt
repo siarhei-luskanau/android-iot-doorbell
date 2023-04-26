@@ -7,7 +7,7 @@ interface CameraRepository {
 
     suspend fun makeImage(
         doorbellId: String,
-        cameraId: String
+        cameraId: String,
     ): ImageFile
 
     suspend fun getCamerasList(): List<CameraData>

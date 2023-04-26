@@ -6,7 +6,7 @@ import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
 class ImagesDataSourceImpl(
     private val doorbellRepository: DoorbellRepository,
-    private val doorbellId: String
+    private val doorbellId: String,
 ) : ImagesDataSource() {
 
     @Suppress("TooGenericExceptionCaught")
@@ -16,12 +16,12 @@ class ImagesDataSourceImpl(
                 doorbellId = doorbellId,
                 size = params.loadSize,
                 imageIdAt = params.key,
-                orderAsc = true
+                orderAsc = true,
             )
             LoadResult.Page(
                 data = data,
                 prevKey = params.key,
-                nextKey = data.lastOrNull()?.imageId
+                nextKey = data.lastOrNull()?.imageId,
             )
         } catch (exception: Exception) {
             LoadResult.Error(exception)

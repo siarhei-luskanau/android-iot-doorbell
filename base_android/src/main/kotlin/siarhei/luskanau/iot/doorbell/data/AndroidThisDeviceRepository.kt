@@ -16,7 +16,7 @@ class AndroidThisDeviceRepository(
     private val context: Context,
     private val deviceInfoProvider: DeviceInfoProvider,
     private val cameraRepository: CameraRepository,
-    private val ipAddressProvider: IpAddressProvider
+    private val ipAddressProvider: IpAddressProvider,
 ) : ThisDeviceRepository {
 
     @Suppress("CyclomaticComplexMethod")
@@ -42,7 +42,7 @@ class AndroidThisDeviceRepository(
     private val doorbellData = DoorbellData(
         deviceInfoProvider.buildDoorbellId(),
         deviceInfoProvider.buildDeviceName(),
-        deviceInfoProvider.buildDeviceInfo()
+        deviceInfoProvider.buildDeviceInfo(),
     )
 
     override suspend fun doorbellId() =
@@ -70,7 +70,7 @@ class AndroidThisDeviceRepository(
         for (permission in AppConstants.PERMISSIONS) {
             if (ContextCompat.checkSelfPermission(
                     context,
-                    permission
+                    permission,
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 return false

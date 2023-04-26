@@ -31,7 +31,7 @@ class DiHolderImpl(context: Context) : DiHolder {
     override fun getFragmentFactory(fragmentActivity: FragmentActivity): FragmentFactory =
         ToothpickFragmentFactory(
             fragmentActivity = fragmentActivity,
-            scope = scope
+            scope = scope,
         )
 
     override fun provideWorkerFactory(): WorkerFactory =
@@ -40,6 +40,6 @@ class DiHolderImpl(context: Context) : DiHolder {
             doorbellRepository = { scope.getInstance() },
             cameraRepository = { scope.getInstance() },
             uptimeRepository = { scope.getInstance() },
-            imageRepository = { scope.getInstance() }
+            imageRepository = { scope.getInstance() },
         )
 }

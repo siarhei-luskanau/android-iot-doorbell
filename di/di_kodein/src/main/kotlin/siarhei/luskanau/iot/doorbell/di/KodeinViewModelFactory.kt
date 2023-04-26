@@ -13,7 +13,7 @@ class KodeinViewModelFactory(
     private val injector: DirectDI,
     private val activity: FragmentActivity,
     private val fragment: Fragment,
-    private val args: Bundle?
+    private val args: Bundle?,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -25,8 +25,8 @@ class KodeinViewModelFactory(
                 arg = ViewModelFactoryArgs(
                     activity = activity,
                     fragment = fragment,
-                    args = args
-                )
+                    args = args,
+                ),
             )
             viewModel as T
         }

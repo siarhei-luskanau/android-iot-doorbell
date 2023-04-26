@@ -9,12 +9,12 @@ import siarhei.luskanau.iot.doorbell.ui.common.adapter.BindingViewHolder
 import siarhei.luskanau.iot.doorbell.ui.common.databinding.ViewItemCameraBinding
 
 class CameraAdapter : BaseRecyclerClickableListAdapter<CameraData, ViewItemCameraBinding>(
-    DIFF_CALLBACK
+    DIFF_CALLBACK,
 ) {
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
-        viewType: Int
+        viewType: Int,
     ): BindingViewHolder<ViewItemCameraBinding> =
         BindingViewHolder(ViewItemCameraBinding.inflate(inflater, parent, false))
 

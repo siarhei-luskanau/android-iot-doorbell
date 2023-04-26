@@ -5,7 +5,7 @@ import android.app.Application
 import android.os.Bundle
 
 open class OnActivityCreatedLifecycleCallbacks(
-    private val callbacks: (Activity) -> Unit
+    private val callbacks: (Activity) -> Unit,
 ) : Application.ActivityLifecycleCallbacks {
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {

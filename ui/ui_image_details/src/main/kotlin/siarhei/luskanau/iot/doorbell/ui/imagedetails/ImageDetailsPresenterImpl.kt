@@ -9,7 +9,7 @@ class ImageDetailsPresenterImpl(
     private val appNavigation: AppNavigation,
     private val fragment: Fragment,
     private val doorbellId: String,
-    private val imageId: String
+    private val imageId: String,
 ) : ImageDetailsPresenter {
 
     override fun getImageDetailsStateData(): LiveData<ImageDetailsState> =
@@ -21,12 +21,12 @@ class ImageDetailsPresenterImpl(
                             appNavigation = appNavigation,
                             fragment = fragment,
                             doorbellId = doorbellId,
-                            imageId = imageId
-                        )
+                            imageId = imageId,
+                        ),
                     )
                 }.onFailure {
                     ErrorImageDetailsState(it)
-                }.getOrNull()
+                }.getOrNull(),
             )
         }
 }
