@@ -13,7 +13,7 @@ class StubDoorbellRepositoryTest {
 
     @Test
     @Suppress("LongMethod")
-    fun `test getFromToRange()`() {
+    fun testGetFromToRange() {
         listOf(
             FromToRangeData(
                 startAt = null,

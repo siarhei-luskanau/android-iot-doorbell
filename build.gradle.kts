@@ -27,17 +27,19 @@ plugins {
 apply(from = "$rootDir/ci.gradle.kts")
 
 allprojects {
-
     repositories {
         google()
         mavenCentral()
     }
-
-    apply(plugin = "kover")
-    apply(from = "$rootDir/ktlint.gradle.kts")
+    apply(plugin = "org.jetbrains.kotlinx.kover")
     apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(from = "$rootDir/ktlint.gradle.kts")
+}
 
-    koverMerged.enable()
+dependencies {
+    subprojects.map { it.path }.forEach {
+        kover(project(it))
+    }
 }
 
 tasks.register("clean").configure {
