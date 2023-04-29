@@ -2,8 +2,52 @@ val libs = project.extensions.getByType<VersionCatalogsExtension>().named("libs"
 
 plugins {
     id("com.android.library")
-    kotlin("android")
     id("shot")
+    kotlin("multiplatform")
+}
+
+kotlin {
+    android {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+            }
+        }
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.findLibrary("androidx-activity-compose").get())
+                implementation(libs.findLibrary("androidx-tracing").get())
+                implementation(libs.findLibrary("coil").get())
+                implementation(libs.findLibrary("coil-compose").get())
+                implementation(libs.findLibrary("compose-material").get())
+                implementation(libs.findLibrary("compose-ui-tooling").get())
+            }
+        }
+        val androidUnitTest by getting {
+            dependencies {
+                implementation(libs.findLibrary("kotlin-test").get())
+                implementation(libs.findLibrary("kotlinx-coroutines-test").get())
+                implementation(libs.findLibrary("mockk").get())
+            }
+        }
+        val androidInstrumentedTest by getting {
+            dependencies {
+                implementation(libs.findLibrary("compose-ui-test-junit4").get())
+                implementation(libs.findLibrary("compose-ui-test-manifest").get())
+            }
+        }
+    }
 }
 
 android {
@@ -25,9 +69,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
     }
 
     testOptions {
@@ -56,22 +97,13 @@ android {
     packagingOptions.resources.excludes.apply {
         add("META-INF/AL2.0")
         add("META-INF/LGPL2.1")
-        add("META-INF/LICENSE.md")
         add("META-INF/LICENSE-notice.md")
+        add("META-INF/LICENSE.md")
     }
+}
 
-    dependencies {
-        "implementation"(libs.findLibrary("androidx-activity-compose").get())
-        "implementation"(libs.findLibrary("androidx-tracing").get())
-        "implementation"(libs.findLibrary("coil").get())
-        "implementation"(libs.findLibrary("coil-compose").get())
-        "implementation"(libs.findLibrary("compose-material").get())
-        "implementation"(libs.findLibrary("compose-ui-tooling").get())
-        "implementation"(platform(libs.findLibrary("compose-bom").get()))
-        "androidTestImplementation"(libs.findLibrary("compose-ui-test-junit4").get())
-        "androidTestImplementation"(libs.findLibrary("compose-ui-test-manifest").get())
-        "androidTestImplementation"(platform(libs.findLibrary("compose-bom").get()))
-    }
+dependencies {
+    implementation(platform(libs.findLibrary("compose-bom").get()))
 }
 
 shot {

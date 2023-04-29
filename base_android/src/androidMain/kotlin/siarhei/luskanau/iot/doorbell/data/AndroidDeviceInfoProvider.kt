@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
-import hu.supercluster.paperwork.Paperwork
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import java.util.UUID
 
@@ -15,8 +14,6 @@ private const val BUILD_DATE = "buildDate"
 class AndroidDeviceInfoProvider(
     private val context: Context,
 ) : DeviceInfoProvider {
-
-    private val paperwork: Paperwork = Paperwork(context)
 
     @SuppressLint("HardwareIds")
     override fun buildDoorbellId(): String {
@@ -35,8 +32,5 @@ class AndroidDeviceInfoProvider(
         "MODEL" to Build.MODEL,
         "SDK_INT" to Build.VERSION.SDK_INT.toString(),
         "RELEASE" to Build.VERSION.RELEASE,
-        GIT_SHA to paperwork[GIT_SHA],
-        GIT_BRANCH to paperwork[GIT_BRANCH],
-        BUILD_DATE to paperwork[BUILD_DATE],
     )
 }

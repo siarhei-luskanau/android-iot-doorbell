@@ -1,15 +1,16 @@
 plugins {
-    androidLibraryConvention
+    multiplatformConvention
 }
 
-android {
-    namespace = "siarhei.luskanau.iot.doorbell.file"
-}
+android.namespace = "siarhei.luskanau.iot.doorbell.file"
 
-dependencies {
-    implementation(project(":data:dataDoorbellApi"))
-    implementation(project(":common:common"))
-
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.timber)
+kotlin {
+    sourceSets {
+        val androidMain by getting {
+            dependencies {
+                implementation(project(":data:dataDoorbellApi"))
+                implementation(project(":common:common"))
+            }
+        }
+    }
 }

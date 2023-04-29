@@ -1,10 +1,5 @@
 plugins {
-    androidLibraryConvention
+    multiplatformConvention
 }
 
-android {
-    namespace = "siarhei.luskanau.iot.doorbell.common.test.ui"
-}
-
-dependencies {
-}
+android.namespace = "siarhei.luskanau.iot.doorbell.common.test.ui"

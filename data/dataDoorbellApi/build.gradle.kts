@@ -1,3 +1,5 @@
 plugins {
-    jvmConvention
+    multiplatformConvention
 }
+
+android.namespace = "siarhei.luskanau.iot.doorbell.data.repository"

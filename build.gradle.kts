@@ -15,7 +15,6 @@ buildscript {
         classpath(libs.karumiShot)
         classpath(libs.kotlin.gradle.plugin)
         classpath(libs.navigation.safeArgsGradlePlugin)
-        classpath(libs.paperwork.plugin)
     }
 }
 

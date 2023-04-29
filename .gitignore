@@ -13,10 +13,6 @@ bin/
 gen/
 out/
 
-# Gradle files
-.gradle/
-build/
-
 # Local configuration file (sdk path, etc)
 local.properties
 
@@ -47,5 +43,14 @@ FLOOBITS_README.md
 # Google and Firebase access
 google-services.json
 
-# Paperwork
-paperwork.json
+.gradle
+.idea
+.DS_Store
+build
+*/build
+captures
+.externalNativeBuild
+.cxx
+xcuserdata/
+Pods/
+*yarn.lock

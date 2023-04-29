@@ -28,6 +28,7 @@ dagger = "2.45"
 detekt = "1.22.0"
 espresso = "3.6.0-alpha01"
 firebase-bom = "31.5.0"
+gitlive-firebase = "1.8.1"
 google-services = "4.3.15"
 karumiShot = "5.14.1"
 kodein = "7.20.1"
@@ -41,7 +42,6 @@ ktlint = "0.49.0"
 leakcanary = "2.10"
 mockk = "1.13.3"
 navigation = "2.5.3"
-paperwork = "1.2.7"
 timber = "5.0.1"
 toothpick = "3.1.0"
 
@@ -84,6 +84,7 @@ espresso-intents = { module = "androidx.test.espresso:espresso-intents", version
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-database = { module = "com.google.firebase:firebase-database-ktx" }
 firebase-storage = { module = "com.google.firebase:firebase-storage-ktx" }
+gitlive-firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "gitlive-firebase" }
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
 karumiShot = { module = "com.karumi:shot", version.ref = "karumiShot" }
 kodein-android-core = { module = "org.kodein.di:kodein-di-framework-android-core", version.ref = "kodein" }
@@ -103,8 +104,6 @@ mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-safeArgsGradlePlugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
-paperwork = { module = "hu.supercluster:paperwork", version.ref = "paperwork" }
-paperwork-plugin = { module = "hu.supercluster:paperwork-plugin", version.ref = "paperwork" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 toothpick-compiler = { module = "com.github.stephanenicolas.toothpick:toothpick-compiler", version.ref = "toothpick" }
 toothpick-ktp = { module = "com.github.stephanenicolas.toothpick:ktp", version.ref = "toothpick" }

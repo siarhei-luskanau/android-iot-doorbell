@@ -1,21 +1,27 @@
 plugins {
-    androidLibraryConvention
+    multiplatformConvention
     kotlin("kapt")
 }
 
-android {
-    namespace = "siarhei.luskanau.iot.doorbell.dagger.splash"
+android.namespace = "siarhei.luskanau.iot.doorbell.dagger.splash"
+
+kotlin {
+    sourceSets {
+        val androidMain by getting {
+            dependencies {
+                implementation(project(":di:di_dagger:di_dagger_common"))
+                implementation(project(":ui:ui_common"))
+                implementation(project(":ui:ui_splash"))
+                implementation(libs.android.material)
+                implementation(libs.androidx.activity.ktx)
+                implementation(libs.androidx.fragment.ktx)
+                implementation(libs.dagger)
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
+    }
 }
 
 dependencies {
-    implementation(project(":di:di_dagger:di_dagger_common"))
-    implementation(project(":ui:ui_common"))
-    implementation(project(":ui:ui_splash"))
-
-    implementation(libs.android.material)
-    implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.fragment.ktx)
-    implementation(libs.dagger)
-    implementation(libs.kotlinx.coroutines.core)
     kapt(libs.dagger.compiler)
 }

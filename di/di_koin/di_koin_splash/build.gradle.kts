@@ -1,21 +1,24 @@
 plugins {
-    androidLibraryConvention
+    multiplatformConvention
 }
 
-android {
-    namespace = "siarhei.luskanau.iot.doorbell.koin.splash"
-}
+android.namespace = "siarhei.luskanau.iot.doorbell.koin.splash"
 
-dependencies {
-    implementation(project(":common:common"))
-    implementation(project(":data:dataDoorbellApi"))
-    implementation(project(":di:di_koin:di_koin_common"))
-    implementation(project(":ui:ui_common"))
-    implementation(project(":ui:ui_splash"))
-
-    implementation(libs.android.material)
-    implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.fragment.ktx)
-    implementation(libs.koin.android)
-    implementation(libs.kotlinx.coroutines.core)
+kotlin {
+    sourceSets {
+        val androidMain by getting {
+            dependencies {
+                implementation(project(":common:common"))
+                implementation(project(":data:dataDoorbellApi"))
+                implementation(project(":di:di_koin:di_koin_common"))
+                implementation(project(":ui:ui_common"))
+                implementation(project(":ui:ui_splash"))
+                implementation(libs.android.material)
+                implementation(libs.androidx.activity.ktx)
+                implementation(libs.androidx.fragment.ktx)
+                implementation(libs.koin.android)
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
+    }
 }

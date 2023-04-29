@@ -20,6 +20,7 @@ tasks.register("ciUnitTest") {
     doLast {
         gradlew(
             "clean",
+            "test",
             ":koverHtmlReport",
             ":koverXmlReport",
         )
