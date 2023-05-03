@@ -78,27 +78,23 @@ tasks.register("setupAndroidCmdlineTools") {
         File(commandlinetoolsPath).deleteRecursively()
         println("deleted: $commandlinetoolsPath")
 
-        exec {
-            commandLine = listOf(
+        runExec(
+            commands = listOf(
                 "${androidSdkConfig.sdkmanager}",
                 "--licenses",
                 "--sdk_root=${androidSdkConfig.sdkDirPath}",
-            )
-            standardInput = YES_INPUT.byteInputStream()
-            standardOutput = ByteArrayOutputStream()
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+            ),
+            inputText = YES_INPUT,
+        )
 
-        exec {
-            commandLine = listOf(
+        runExec(
+            commands = listOf(
                 androidSdkConfig.sdkmanager.absolutePath,
                 "cmdline-tools;$CMDLINE_TOOLS_VERSION",
                 "--sdk_root=${androidSdkConfig.sdkDirPath}",
-            )
-            standardInput = YES_INPUT.byteInputStream()
-            standardOutput = ByteArrayOutputStream()
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+            ),
+            inputText = YES_INPUT,
+        )
     }
 }
 
@@ -106,30 +102,26 @@ tasks.register("setupAndroidSDK") {
     group = EMULATOR_GRADLE
     doLast {
         androidSdkConfig.printSdkPath()
-        exec {
-            commandLine = listOf(
+        runExec(
+            commands = listOf(
                 androidSdkConfig.sdkmanager.absolutePath,
                 "--update",
                 "--sdk_root=${androidSdkConfig.sdkDirPath}",
-            )
-            standardInput = YES_INPUT.byteInputStream()
-            standardOutput = ByteArrayOutputStream()
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+            ),
+            inputText = YES_INPUT,
+        )
 
-        exec {
-            commandLine = listOf(
+        runExec(
+            commands = listOf(
                 androidSdkConfig.sdkmanager.absolutePath,
                 "--licenses",
                 "--sdk_root=${androidSdkConfig.sdkDirPath}",
-            )
-            standardInput = YES_INPUT.byteInputStream()
-            standardOutput = ByteArrayOutputStream()
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+            ),
+            inputText = YES_INPUT,
+        )
 
-        exec {
-            commandLine = mutableListOf(
+        runExec(
+            commands = mutableListOf(
                 androidSdkConfig.sdkmanager.absolutePath,
                 "platform-tools",
             ).apply {
@@ -141,20 +133,17 @@ tasks.register("setupAndroidSDK") {
                 }
             }.apply {
                 add("--sdk_root=${androidSdkConfig.sdkDirPath}")
-            }
-            standardInput = YES_INPUT.byteInputStream()
-            standardOutput = ByteArrayOutputStream()
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+            },
+            inputText = YES_INPUT,
+        )
 
-        exec {
-            commandLine = listOf(
+        runExec(
+            commands = listOf(
                 androidSdkConfig.sdkmanager.absolutePath,
                 "--list",
                 "--sdk_root=${androidSdkConfig.sdkDirPath}",
-            )
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+            ),
+        )
     }
 }
 
@@ -175,8 +164,8 @@ tasks.register("setupAndroidEmulator") {
                 }
             }
             .forEach { emulatorConfig ->
-                exec {
-                    commandLine = listOf(
+                runExec(
+                    commands = listOf(
                         androidSdkConfig.avdmanager.absolutePath,
                         "-v",
                         "create",
@@ -188,16 +177,11 @@ tasks.register("setupAndroidEmulator") {
                         emulatorConfig.deviceType,
                         "-k",
                         emulatorConfig.sdkId,
-                    )
-                    standardOutput = ByteArrayOutputStream()
-                    println("commandLine: ${this.commandLine}")
-                }.apply { println("ExecResult: $this") }
+                    ),
+                )
             }
 
-        exec {
-            commandLine = listOf(androidSdkConfig.avdmanager.absolutePath, "-v", "list", "avd")
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        runExec(commands = listOf(androidSdkConfig.avdmanager.absolutePath, "-v", "list", "avd"))
     }
 }
 
@@ -205,10 +189,7 @@ tasks.register("runAndroidEmulator") {
     group = EMULATOR_GRADLE
     doLast {
         androidSdkConfig.printSdkPath()
-        exec {
-            commandLine = listOf(androidSdkConfig.adb.absolutePath, "start-server")
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        runExec(commands = listOf(androidSdkConfig.adb.absolutePath, "start-server"))
 
         val avdName = System.getProperty(GradleArguments.EMULATOR_AVD_NAME).orEmpty()
             .also { println("System.getProperty(${GradleArguments.EMULATOR_AVD_NAME}): $it") }
@@ -216,30 +197,56 @@ tasks.register("runAndroidEmulator") {
             .also { println("EmulatorConfig: $it") }
 
         // https://developer.android.com/studio/run/emulator-commandline#startup-options
-        val commandArgs = mutableListOf(
+        val commandArgs = listOf(
             androidSdkConfig.emulator.absolutePath,
             "-avd",
             emulatorConfig.avdName,
             "-port",
             emulatorConfig.port,
-        )
-        commandArgs.addAll(
-            listOf(
-                "-accel",
-                "auto",
-                "-gpu",
-                "auto",
-                "-no-snapshot",
-                "-no-audio",
-                "-no-boot-anim",
-                // "-no-window",
-            ),
+            "-accel",
+            "auto",
+            "-gpu",
+            "auto",
+            "-no-snapshot",
+            "-no-audio",
+            "-no-boot-anim",
+            // "-no-window",
         )
 
-        exec {
-            commandLine = commandArgs
-            println("Start emulator: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        runExec(commands = commandArgs)
+    }
+}
+
+tasks.register("fixAndroidEmulatorSize") {
+    group = EMULATOR_GRADLE
+    doLast {
+        val avdName = requireNotNull(System.getProperty(GradleArguments.EMULATOR_AVD_NAME)) {
+            "Please provide EMULATOR_AVD_NAME argument"
+        }
+        val emulatorPath: String = runExec(
+            commands = listOf(androidSdkConfig.avdmanager.absolutePath, "list", "avd"),
+        )
+            .split("---------")
+            .first { it.contains(avdName) }
+            .lines()
+            .filter { it.contains("Path:") }
+            .map { it.substringAfter("Path:") }
+            .first()
+            .trim()
+
+        val userdataQemuImgFile = File(File(emulatorPath), "userdata-qemu.img")
+        while (!userdataQemuImgFile.exists()) {
+            println("Wait for file: ${userdataQemuImgFile.name}")
+            Thread.sleep(500)
+        }
+        runExec(
+            commands = listOf(
+                androidSdkConfig.resize2fs.absolutePath,
+                userdataQemuImgFile.path,
+                "1024M",
+            ),
+        )
+        println("${userdataQemuImgFile.name} is resized")
     }
 }
 
@@ -262,21 +269,18 @@ tasks.register("waitAndroidEmulator") {
                     if (emulatorAttributes.contains("offline")) {
                         println("WaitAndroidEmulator: offline")
                     } else {
-                        val resultOutputStream = ByteArrayOutputStream()
-                        exec {
-                            commandLine = listOf(
-                                androidSdkConfig.adb.absolutePath,
-                                "-s",
-                                emulatorAttributes.first(),
-                                "wait-for-device",
-                                "shell",
-                                "getprop sys.boot_completed",
+                        result = runCatching {
+                            runExec(
+                                commands = listOf(
+                                    androidSdkConfig.adb.absolutePath,
+                                    "-s",
+                                    emulatorAttributes.first(),
+                                    "wait-for-device",
+                                    "shell",
+                                    "getprop sys.boot_completed",
+                                ),
                             )
-                            standardOutput = resultOutputStream
-                            isIgnoreExitValue = true
-                            println("commandLine: ${this.commandLine}")
-                        }.apply { println("ExecResult: $this") }
-                        result = String(resultOutputStream.toByteArray()).trim()
+                        }.getOrNull()
                     }
                 }
             println("sys.boot_completed = $result")
@@ -298,16 +302,15 @@ tasks.register("killAndroidEmulator") {
         androidSdkConfig.printSdkPath()
         androidSdkConfig.getDevicesList().forEach { emulatorAttributes ->
             println("KillAndroidEmulator: $emulatorAttributes")
-            exec {
-                commandLine = listOf(
+            runExec(
+                commands = listOf(
                     androidSdkConfig.adb.absolutePath,
                     "-s",
                     emulatorAttributes.first(),
                     "emu",
                     "kill",
-                )
-                println("commandLine: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
+                ),
+            )
         }
     }
 }
@@ -318,27 +321,36 @@ tasks.register("deleteAndroidEmulator") {
         androidSdkConfig.printSdkPath()
         ANDROID_EMULATORS.forEach { emulatorConfig ->
             runCatching {
-                exec {
-                    commandLine = listOf(
+                runExec(
+                    commands = listOf(
                         androidSdkConfig.avdmanager.absolutePath,
                         "-v",
                         "delete",
                         "avd",
                         "-n",
                         emulatorConfig.avdName,
-                    )
-                    standardOutput = ByteArrayOutputStream()
-                    println("commandLine: ${this.commandLine}")
-                }.apply { println("ExecResult: $this") }
+                    ),
+                )
             }
         }
 
-        exec {
-            commandLine = listOf(androidSdkConfig.avdmanager.absolutePath, "-v", "list", "avd")
-            println("commandLine: ${this.commandLine}")
-        }.apply { println("ExecResult: $this") }
+        runExec(commands = listOf(androidSdkConfig.avdmanager.absolutePath, "-v", "list", "avd"))
     }
 }
+
+fun runExec(
+    commands: List<String>,
+    inputText: String? = null,
+): String =
+    ByteArrayOutputStream().let { resultOutputStream ->
+        exec {
+            commandLine = commands
+            inputText?.also { standardInput = it.byteInputStream() }
+            standardOutput = resultOutputStream
+            println("commandLine: ${this.commandLine.joinToString(separator = " ")}")
+        }.apply { println("ExecResult: $this") }
+        String(resultOutputStream.toByteArray()).trim()
+    }
 
 class AndroidSdkConfig {
 
@@ -346,12 +358,12 @@ class AndroidSdkConfig {
         readAndroidSdkFromLocalProperties()
             ?: System.getenv("ANDROID_HOME")
             ?: System.getenv("sdk.dir")
-            ?: listOf(
+            ?: listOfNotNull(
                 System.getProperty("user.home"),
                 if (Os.isFamily(Os.FAMILY_MAC)) "Library" else null,
                 "Android",
                 if (Os.isFamily(Os.FAMILY_MAC)) "sdk" else "Sdk",
-            ).filterNotNull().joinToString(separator = File.separator)
+            ).joinToString(separator = File.separator)
     }
 
     init {
@@ -369,18 +381,16 @@ class AndroidSdkConfig {
         "bin",
         platformExecutable(name = "avdmanager", ext = "bat"),
     )
+    val resize2fs = sdkFile(
+        "emulator",
+        "bin64",
+        platformExecutable(name = "resize2fs", ext = "bat"),
+    )
     val emulator = sdkFile("emulator", platformExecutable(name = "emulator"))
     val adb = sdkFile("platform-tools", platformExecutable(name = "adb"))
 
     fun getDevicesList(): List<List<String>> =
-        ByteArrayOutputStream().also { devicesOutput ->
-            exec {
-                commandLine = listOf(adb.absolutePath, "devices", "-l")
-                standardOutput = devicesOutput
-                isIgnoreExitValue = true
-                println("getDevicesList: ${this.commandLine}")
-            }.apply { println("ExecResult: $this") }
-        }.let { devicesOutput ->
+        runExec(commands = listOf(adb.absolutePath, "devices", "-l")).let { devicesOutput ->
             println(devicesOutput)
             String(devicesOutput.toByteArray())
                 .split("\n")
@@ -396,6 +406,7 @@ class AndroidSdkConfig {
         println("sdk: ${sdkFile().exists()}: ${sdkFile()}")
         println("sdkmanager: ${sdkmanager.exists()}: $sdkmanager")
         println("avdmanager: ${avdmanager.exists()}: $avdmanager")
+        println("resize2fs: ${resize2fs.exists()}: $resize2fs")
         println("emulator: ${emulator.exists()}: $emulator")
         println("adb: ${adb.exists()}: $adb")
     }

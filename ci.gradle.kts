@@ -77,7 +77,7 @@ tasks.register("ciAll") {
     doLast {
         gradlew(
             "clean",
-            // "ktlintFormat",
+            "ktlintFormat",
             "ciLint",
             "ciUnitTest",
             "ciBuildApp",
@@ -126,6 +126,11 @@ fun runOnEmulator(
             isAndroidSdkGradlew = true,
         )
     }.start()
+    gradlew(
+        "fixAndroidEmulatorSize",
+        addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
+        isAndroidSdkGradlew = true,
+    )
     gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
     gradlew(
         "executeScreenshotTests",
