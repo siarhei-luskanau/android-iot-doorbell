@@ -52,6 +52,7 @@ class DiHolderImpl(context: Context) : DiHolder {
         DefaultWorkerFactory(
             thisDeviceRepository = { koinApplication.koin.get() },
             doorbellRepository = { koinApplication.koin.get() },
+            imageSenderRepository = { koinApplication.koin.get() },
             cameraRepository = { koinApplication.koin.get() },
             uptimeRepository = { koinApplication.koin.get() },
             imageRepository = { koinApplication.koin.get() },

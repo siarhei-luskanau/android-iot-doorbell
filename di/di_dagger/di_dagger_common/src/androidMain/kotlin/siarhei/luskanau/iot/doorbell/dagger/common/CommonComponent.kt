@@ -13,6 +13,7 @@ import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
+import siarhei.luskanau.iot.doorbell.data.repository.ImageSenderRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import javax.inject.Singleton
@@ -25,6 +26,7 @@ interface CommonComponent {
     fun provideWorkManager(): WorkManager
     fun provideImageRepository(): ImageRepository
     fun provideDoorbellRepository(): DoorbellRepository
+    fun provideImageSenderRepository(): ImageSenderRepository
     fun provideScheduleWorkManagerService(): ScheduleWorkManagerService
     fun provideCameraRepository(): CameraRepository
     fun provideUptimeRepository(): UptimeRepository

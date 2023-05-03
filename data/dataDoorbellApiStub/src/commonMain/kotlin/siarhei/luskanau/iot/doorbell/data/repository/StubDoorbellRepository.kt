@@ -4,8 +4,6 @@ import kotlinx.coroutines.delay
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import java.io.IOException
-import java.io.InputStream
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
@@ -20,7 +18,7 @@ class StubDoorbellRepository : DoorbellRepository {
     ): List<DoorbellData> {
         delay()
         if (startAt != null && Random.nextInt(PERCENT_FULL) > PERCENT_ERROR) {
-            throw IOException("test")
+            throw Exception("test")
         }
         val fromToPair = getFromToRange(
             size = size,
@@ -90,14 +88,6 @@ class StubDoorbellRepository : DoorbellRepository {
         return emptyMap()
     }
 
-    override suspend fun sendImage(
-        doorbellId: String,
-        cameraId: String,
-        imageInputStream: InputStream,
-    ) {
-        delay()
-    }
-
     override suspend fun getImage(
         doorbellId: String,
         imageId: String,
@@ -117,7 +107,7 @@ class StubDoorbellRepository : DoorbellRepository {
     ): List<ImageData> {
         delay()
         if (imageIdAt != null && Random.nextInt(PERCENT_FULL) > PERCENT_ERROR) {
-            throw IOException("test")
+            throw Exception("test")
         }
         val fromToPair = getFromToRange(
             size = size,

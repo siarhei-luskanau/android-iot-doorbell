@@ -79,6 +79,7 @@ class DiHolderImpl(context: Context) : DiHolder {
         DefaultWorkerFactory(
             thisDeviceRepository = { commonComponent.provideThisDeviceRepository() },
             doorbellRepository = { commonComponent.provideDoorbellRepository() },
+            imageSenderRepository = { commonComponent.provideImageSenderRepository() },
             cameraRepository = { commonComponent.provideCameraRepository() },
             uptimeRepository = { commonComponent.provideUptimeRepository() },
             imageRepository = { commonComponent.provideImageRepository() },

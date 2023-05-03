@@ -38,6 +38,7 @@ class DiHolderImpl(context: Context) : DiHolder {
         DefaultWorkerFactory(
             thisDeviceRepository = { scope.getInstance() },
             doorbellRepository = { scope.getInstance() },
+            imageSenderRepository = { scope.getInstance() },
             cameraRepository = { scope.getInstance() },
             uptimeRepository = { scope.getInstance() },
             imageRepository = { scope.getInstance() },

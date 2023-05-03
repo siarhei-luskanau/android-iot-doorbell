@@ -17,10 +17,13 @@ import siarhei.luskanau.iot.doorbell.data.ScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.FirebaseDoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.FirebaseImageSenderRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
+import siarhei.luskanau.iot.doorbell.data.repository.ImageSenderRepository
 import siarhei.luskanau.iot.doorbell.data.repository.InternalStorageImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.JetpackCameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.StubDoorbellRepository
+import siarhei.luskanau.iot.doorbell.data.repository.StubImageSenderRepository
 import siarhei.luskanau.iot.doorbell.data.repository.StubUptimeRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
@@ -40,6 +43,13 @@ class AppModules(context: Context) {
             StubDoorbellRepository()
         } else {
             FirebaseDoorbellRepository()
+        }
+    }
+    val imageSenderRepository: ImageSenderRepository by lazy {
+        if (thisDeviceRepository.isEmulator()) {
+            StubImageSenderRepository()
+        } else {
+            FirebaseImageSenderRepository()
         }
     }
     val uptimeRepository: UptimeRepository by lazy {

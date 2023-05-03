@@ -39,6 +39,7 @@ class DiHolderImpl(context: Context) : DiHolder {
         DefaultWorkerFactory(
             thisDeviceRepository = { di.direct.instance() },
             doorbellRepository = { di.direct.instance() },
+            imageSenderRepository = { di.direct.instance() },
             cameraRepository = { di.direct.instance() },
             uptimeRepository = { di.direct.instance() },
             imageRepository = { di.direct.instance() },

@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
+import siarhei.luskanau.iot.doorbell.data.repository.ImageSenderRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import timber.log.Timber
@@ -14,6 +15,7 @@ import timber.log.Timber
 class DefaultWorkerFactory(
     private val thisDeviceRepository: () -> ThisDeviceRepository,
     private val doorbellRepository: () -> DoorbellRepository,
+    private val imageSenderRepository: () -> ImageSenderRepository,
     private val cameraRepository: () -> CameraRepository,
     private val uptimeRepository: () -> UptimeRepository,
     private val imageRepository: () -> ImageRepository,
@@ -32,6 +34,7 @@ class DefaultWorkerFactory(
                     workerParams = workerParameters,
                     thisDeviceRepository = thisDeviceRepository.invoke(),
                     doorbellRepository = doorbellRepository.invoke(),
+                    imageSenderRepository = imageSenderRepository.invoke(),
                     cameraRepository = cameraRepository.invoke(),
                     imageRepository = imageRepository.invoke(),
                 )

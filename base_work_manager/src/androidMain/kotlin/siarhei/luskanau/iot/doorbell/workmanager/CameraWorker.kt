@@ -6,6 +6,7 @@ import androidx.work.WorkerParameters
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
+import siarhei.luskanau.iot.doorbell.data.repository.ImageSenderRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import timber.log.Timber
 
@@ -14,6 +15,7 @@ class CameraWorker(
     workerParams: WorkerParameters,
     private val thisDeviceRepository: ThisDeviceRepository,
     private val doorbellRepository: DoorbellRepository,
+    private val imageSenderRepository: ImageSenderRepository,
     private val cameraRepository: CameraRepository,
     private val imageRepository: ImageRepository,
 ) : CoroutineWorker(
@@ -40,7 +42,7 @@ class CameraWorker(
                             cameraId = cameraId,
                         )
                         .also { imageFile ->
-                            doorbellRepository.sendImage(
+                            imageSenderRepository.sendImage(
                                 doorbellId = thisDeviceRepository.doorbellId(),
                                 cameraId = cameraId,
                                 imageInputStream = imageRepository.openInputStream(
