@@ -1,47 +1,43 @@
 [versions]
 
-agp = "8.0.1"
-android-build-buildToolsVersion = "33.0.2"
-android-build-compileSdk = "33"
+agp = "8.1.0-rc01"
+android-build-compileSdk = "34"
 android-build-minSdk = "26"
-android-build-targetSdk = "33"
-android-material = "1.8.0"
-androidx-activity = "1.7.1"
-androidx-activity-compose = "1.7.1"
-androidx-appcompat = "1.6.1"
-androidx-camera = "1.3.0-alpha06"
-androidx-fragment = "1.5.7"
+android-build-targetSdk = "34"
+android-material = "1.9.0"
+androidx-activity = "1.7.2"
+androidx-activity-compose = "1.7.2"
+androidx-camera = "1.3.0-beta01"
+androidx-fragment = "1.6.0"
 androidx-lifecycle = "2.6.1"
-androidx-paging = "3.2.0-alpha04"
-androidx-paging-compose = "1.0.0-alpha18"
+androidx-paging = "3.2.0-rc01"
 androidx-startup = "1.1.1"
 androidx-test-core = "1.6.0-alpha01"
 androidx-test-junit = "1.2.0-alpha01"
 androidx-test-truth = "1.6.0-alpha01"
 androidx-tracing = "1.1.0"
 androidx-work = "2.8.1"
-buildConfig = "3.1.0"
-coil = "2.3.0"
-compose-bom = "2023.04.01"
-compose-compiler = "1.4.6"
-dagger = "2.45"
-detekt = "1.22.0"
+coil = "2.4.0"
+compose-bom = "2023.06.01"
+compose-compiler = "1.4.8"
+dagger = "2.46.1"
+detekt = "1.23.0"
 espresso = "3.6.0-alpha01"
-firebase-bom = "31.5.0"
+firebase-bom = "32.1.1"
 gitlive-firebase = "1.8.1"
 google-services = "4.3.15"
 karumiShot = "5.14.1"
-kodein = "7.20.1"
-koin = "3.4.0"
-kotlin = "1.8.20"
-kotlinx-coroutines = "1.6.4"
+kodein = "7.20.2"
+koin = "3.4.2"
+kotlin = "1.8.22"
+kotlinx-coroutines = "1.7.2"
 kotlinx-datetime = "0.4.0"
-kotlinx-kover = "0.7.0-Beta"
-kotlinx-serialization = "1.5.0"
-ktlint = "0.49.0"
-leakcanary = "2.10"
-mockk = "1.13.3"
-navigation = "2.5.3"
+kotlinx-kover = "0.7.2"
+kotlinx-serialization = "1.5.1"
+ktlint = "0.50.0"
+leakcanary = "2.12"
+mockk = "1.13.5"
+navigation = "2.6.0"
 timber = "5.0.1"
 toothpick = "3.1.0"
 
@@ -51,7 +47,6 @@ android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref
 android-material = { module = "com.google.android.material:material", version.ref = "android-material" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "androidx-camera" }
 androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "androidx-camera" }
 androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "androidx-camera" }
@@ -60,7 +55,7 @@ androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref
 androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "androidx-fragment" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle" }
 androidx-paging-common-ktx = { module = "androidx.paging:paging-common-ktx", version.ref = "androidx-paging" }
-androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging-compose" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "androidx-paging" }
 androidx-paging-testing = { module = "androidx.paging:paging-testing", version.ref = "androidx-paging" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup" }
@@ -109,9 +104,5 @@ toothpick-ktp = { module = "com.github.stephanenicolas.toothpick:ktp", version.r
 
 [plugins]
 
-android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinx-kover" }
-kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

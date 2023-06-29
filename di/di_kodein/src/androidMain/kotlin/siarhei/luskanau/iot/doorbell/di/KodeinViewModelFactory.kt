@@ -32,7 +32,7 @@ class KodeinViewModelFactory(
         }
             .getOrElse { kodeinThrowable: Throwable ->
                 runCatching {
-                    modelClass.newInstance()
+                    modelClass.getDeclaredConstructor().newInstance()
                 }
                     .getOrNull() ?: throw kodeinThrowable
             }

@@ -28,7 +28,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import kotlinx.coroutines.launch
@@ -104,11 +105,11 @@ fun ImageListComposable(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(
-            items = items,
-            key = { imageData ->
-                imageData.imageId
-            },
-        ) { imageData ->
+            count = items.itemCount,
+            key = items.itemKey { it.imageId },
+            contentType = items.itemContentType { null },
+        ) { index ->
+            val imageData = items[index]
             imageData?.let {
                 ImageDataItem(
                     imageData = imageData,

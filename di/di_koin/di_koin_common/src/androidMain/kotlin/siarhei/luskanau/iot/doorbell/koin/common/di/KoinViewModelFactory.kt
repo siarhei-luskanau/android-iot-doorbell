@@ -29,7 +29,7 @@ class KoinViewModelFactory(
             )
         } catch (koinThrowable: Throwable) {
             try {
-                modelClass.newInstance()
+                modelClass.getDeclaredConstructor().newInstance()
             } catch (_: Throwable) {
                 throw koinThrowable
             }

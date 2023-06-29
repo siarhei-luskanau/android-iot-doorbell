@@ -30,4 +30,10 @@ val ANDROID_EMULATORS = listOf(
         deviceType = "pixel_5",
         port = "5580",
     ),
+    EmulatorConfig(
+        avdName = "TestEmulator34",
+        sdkId = "system-images;android-34;google_apis;x86_64",
+        deviceType = "pixel_5",
+        port = "5582",
+    ),
 )

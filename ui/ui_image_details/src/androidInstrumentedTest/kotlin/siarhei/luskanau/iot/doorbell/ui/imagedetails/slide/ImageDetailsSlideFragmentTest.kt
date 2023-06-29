@@ -6,8 +6,6 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import com.karumi.shot.ScreenshotTest
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.R
@@ -17,8 +15,8 @@ import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 class ImageDetailsSlideFragmentTest : ScreenshotTest {
 
     private fun createFragment(state: ImageDetailsSlideState) = ImageDetailsSlideFragment {
-        mockk(relaxed = true, relaxUnitFun = true) {
-            every { getImageDetailsSlideStateFlow() } returns flowOf(state)
+        object : ImageDetailsSlidePresenter {
+            override fun getImageDetailsSlideStateFlow() = flowOf(state)
         }
     }
 

@@ -4,8 +4,6 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import com.karumi.shot.ScreenshotTest
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import kotlin.test.Test
@@ -14,8 +12,10 @@ import siarhei.luskanau.iot.doorbell.ui.common.R as CommonR
 class DoorbellListFragmentTest : ScreenshotTest {
 
     private fun createFragment(pagingData: PagingData<DoorbellData>) = DoorbellListFragment {
-        mockk(relaxed = true, relaxUnitFun = true) {
-            every { doorbellListFlow } returns flowOf(pagingData)
+        object : DoorbellListPresenter {
+            override val doorbellListFlow = flowOf(pagingData)
+            override fun checkPermissions() = Unit
+            override fun onDoorbellClicked(doorbellData: DoorbellData) = Unit
         }
     }
 

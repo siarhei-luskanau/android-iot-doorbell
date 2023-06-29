@@ -239,13 +239,16 @@ tasks.register("fixAndroidEmulatorSize") {
             println("Wait for file: ${userdataQemuImgFile.name}")
             Thread.sleep(500)
         }
-        runExec(
-            commands = listOf(
-                androidSdkConfig.resize2fs.absolutePath,
-                userdataQemuImgFile.path,
-                "1024M",
-            ),
-        )
+        Thread.sleep(500)
+        runCatching {
+            runExec(
+                commands = listOf(
+                    androidSdkConfig.resize2fs.absolutePath,
+                    userdataQemuImgFile.path,
+                    "1024M",
+                ),
+            )
+        }.onFailure { it.printStackTrace() }
         println("${userdataQemuImgFile.name} is resized")
     }
 }
@@ -341,6 +344,7 @@ tasks.register("deleteAndroidEmulator") {
 fun runExec(
     commands: List<String>,
     inputText: String? = null,
+    isOutputPrinted: Boolean = true,
 ): String =
     ByteArrayOutputStream().let { resultOutputStream ->
         exec {
@@ -350,6 +354,10 @@ fun runExec(
             println("commandLine: ${this.commandLine.joinToString(separator = " ")}")
         }.apply { println("ExecResult: $this") }
         String(resultOutputStream.toByteArray()).trim()
+    }.also {
+        if (isOutputPrinted) {
+            println(it)
+        }
     }
 
 class AndroidSdkConfig {

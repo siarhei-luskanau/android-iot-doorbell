@@ -4,10 +4,7 @@ import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import com.karumi.shot.ScreenshotTest
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.runBlocking
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import kotlin.test.Test
@@ -19,9 +16,11 @@ class ImageListFragmentTest : ScreenshotTest {
         pagingData: PagingData<ImageData>,
         cameraList: List<CameraData>,
     ) = ImageListFragment {
-        mockk(relaxed = true, relaxUnitFun = true) {
-            every { doorbellListFlow } returns flowOf(pagingData)
-            every { runBlocking { getCameraList() } } returns cameraList
+        object : ImageListPresenter {
+            override suspend fun getCameraList(): List<CameraData> = cameraList
+            override val doorbellListFlow = flowOf(pagingData)
+            override fun onCameraClicked(cameraData: CameraData) = Unit
+            override fun onImageClicked(imageData: ImageData) = Unit
         }
     }
 

@@ -30,7 +30,8 @@ import androidx.fragment.app.Fragment
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.common.ErrorItem
@@ -78,11 +79,11 @@ fun DoorbellListComposable(
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(
-            items = items,
-            key = { doorbellData ->
-                doorbellData.doorbellId
-            },
-        ) { doorbellData ->
+            count = items.itemCount,
+            key = items.itemKey { it.doorbellId },
+            contentType = items.itemContentType { null },
+        ) { index ->
+            val doorbellData = items[index]
             doorbellData?.let {
                 DoorbellDataItem(
                     doorbellData = doorbellData,

@@ -6,7 +6,6 @@ plugins {
 android {
     namespace = "siarhei.luskanau.iot.doorbell"
     compileSdk = libs.versions.android.build.compileSdk.get().toInt()
-    buildToolsVersion = libs.versions.android.build.buildToolsVersion.get()
 
     defaultConfig {
         minSdk = libs.versions.android.build.minSdk.get().toInt()

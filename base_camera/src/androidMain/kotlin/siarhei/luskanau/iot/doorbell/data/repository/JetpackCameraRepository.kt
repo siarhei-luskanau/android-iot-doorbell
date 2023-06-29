@@ -11,6 +11,9 @@ import androidx.camera.core.ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.impl.CameraInfoInternal
 import androidx.camera.core.impl.utils.executor.CameraXExecutors
+import androidx.camera.core.resolutionselector.ResolutionSelector
+import androidx.camera.core.resolutionselector.ResolutionStrategy
+import androidx.camera.core.resolutionselector.ResolutionStrategy.FALLBACK_RULE_CLOSEST_LOWER
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.lifecycle.ProcessLifecycleOwner
 import siarhei.luskanau.iot.doorbell.data.model.ImageFile
@@ -45,7 +48,16 @@ class JetpackCameraRepository(
 
                         val imageCapture = ImageCapture.Builder()
                             .setCaptureMode(CAPTURE_MODE_MINIMIZE_LATENCY)
-                            .setTargetResolution(Size(WIDTH, HEIGHT))
+                            .setResolutionSelector(
+                                ResolutionSelector.Builder()
+                                    .setResolutionStrategy(
+                                        ResolutionStrategy(
+                                            Size(480, 640),
+                                            FALLBACK_RULE_CLOSEST_LOWER,
+                                        ),
+                                    )
+                                    .build(),
+                            )
                             .build()
 
                         val processCameraProvider = ProcessCameraProvider.getInstance(context).get()
@@ -95,7 +107,5 @@ class JetpackCameraRepository(
 
     companion object {
         private const val SLEEP = 1_000L
-        private const val WIDTH = 480
-        private const val HEIGHT = 640
     }
 }

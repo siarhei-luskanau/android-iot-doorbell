@@ -72,6 +72,13 @@ tasks.register("ciEmulator33") {
     }
 }
 
+tasks.register("ciEmulator34") {
+    group = CI_GRADLE
+    doLast {
+        runOnEmulator(emulatorName = "TestEmulator34")
+    }
+}
+
 tasks.register("ciAll") {
     group = CI_GRADLE
     doLast {
@@ -85,6 +92,7 @@ tasks.register("ciAll") {
             "ciEmulator31",
             "ciEmulator32",
             "ciEmulator33",
+            "ciEmulator34",
         )
     }
 }

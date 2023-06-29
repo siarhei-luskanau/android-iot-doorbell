@@ -92,7 +92,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ macos-latest ]
-        emulator-varsion: [ 30, 31 ]
+        emulator-version: [ 30, 31 ]
     steps:
 
       - uses: actions/checkout@v3
@@ -106,7 +106,7 @@ jobs:
       - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
         working-directory: ./android_sdk
 
-      - run: bash ./gradlew ciEmulator${{ matrix.emulator-varsion }} --stacktrace
+      - run: bash ./gradlew ciEmulator${{ matrix.emulator-version }} --stacktrace
 
       - uses: actions/upload-artifact@v3
         if: always()
@@ -127,7 +127,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ macos-latest ]
-        emulator-varsion: [ 32, 33 ]
+        emulator-version: [ 32, 33, 34 ]
     steps:
 
       - uses: actions/checkout@v3
@@ -141,7 +141,7 @@ jobs:
       - run: bash ./gradlew :setupAndroidCmdlineTools :setupAndroidSDK --stacktrace
         working-directory: ./android_sdk
 
-      - run: bash ./gradlew ciEmulator${{ matrix.emulator-varsion }} --stacktrace
+      - run: bash ./gradlew ciEmulator${{ matrix.emulator-version }} --stacktrace
 
       - uses: actions/upload-artifact@v3
         if: always()
