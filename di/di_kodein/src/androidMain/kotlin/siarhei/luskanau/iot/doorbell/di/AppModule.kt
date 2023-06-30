@@ -159,8 +159,7 @@ val activityModule = DI.Module(name = "activityModule") {
                         args = fragment.arguments,
                     ),
                 )
-            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)
-                .get(SplashViewModel::class.java)
+            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)[SplashViewModel::class.java]
         }
     }
 
@@ -192,8 +191,7 @@ val activityModule = DI.Module(name = "activityModule") {
                         args = fragment.arguments,
                     ),
                 )
-            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)
-                .get(DoorbellListViewModel::class.java)
+            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)[DoorbellListViewModel::class.java]
         }
     }
 
@@ -210,8 +208,7 @@ val activityModule = DI.Module(name = "activityModule") {
                         args = fragment.arguments,
                     ),
                 )
-            ViewModelProvider(fragment, viewModelFactory)
-                .get(ImageListViewModel::class.java)
+            ViewModelProvider(fragment, viewModelFactory)[ImageListViewModel::class.java]
         }
     }
 

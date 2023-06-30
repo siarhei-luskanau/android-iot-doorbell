@@ -4,7 +4,6 @@ import android.content.Context
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
@@ -15,7 +14,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AndroidThisDeviceRepositoryTest {
 
     private val doorbellId = "doorbellId"

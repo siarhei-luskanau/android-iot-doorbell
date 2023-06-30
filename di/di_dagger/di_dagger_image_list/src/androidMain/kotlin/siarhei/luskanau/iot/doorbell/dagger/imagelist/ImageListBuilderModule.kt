@@ -32,7 +32,6 @@ class ImageListBuilderModule {
             appNavigation = appNavigation,
             args = fragment.arguments,
         )
-        ViewModelProvider(fragment, viewModelFactory)
-            .get(ImageListViewModel::class.java)
+        ViewModelProvider(fragment, viewModelFactory)[ImageListViewModel::class.java]
     }
 }

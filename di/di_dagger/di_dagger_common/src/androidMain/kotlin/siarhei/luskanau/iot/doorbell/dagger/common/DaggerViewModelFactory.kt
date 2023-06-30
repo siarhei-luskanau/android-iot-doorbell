@@ -10,7 +10,6 @@ class DaggerViewModelFactory @Inject constructor(
     private val providers: MutableMap<Class<out ViewModel>, Provider<ViewModel>>,
 ) : ViewModelProvider.NewInstanceFactory() {
 
-    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         Timber.d("DaggerViewModelFactory.create: $modelClass")
         return requireNotNull(getProvider(modelClass).get()) {

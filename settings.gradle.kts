@@ -5,7 +5,6 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 
@@ -13,7 +12,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 
@@ -44,7 +42,7 @@ include(
     ":di:di_koin:di_koin_image_list",
     ":di:di_koin:di_koin_permissions",
     ":di:di_koin:di_koin_splash",
-    ":di:di_singleton",
+    ":di:di_manual",
     ":di:di_toothpick",
     ":navigation",
     ":ui:ui_common",

@@ -18,8 +18,7 @@ val doorbellListModule = module {
         DoorbellListFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
                 get { parametersOf(activity, fragment, fragment.arguments) }
-            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)
-                .get(DoorbellListViewModel::class.java)
+            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)[DoorbellListViewModel::class.java]
         }
     }
 

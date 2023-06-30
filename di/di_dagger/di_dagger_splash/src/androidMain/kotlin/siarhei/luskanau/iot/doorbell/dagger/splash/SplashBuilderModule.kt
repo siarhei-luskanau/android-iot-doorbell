@@ -32,7 +32,6 @@ class SplashBuilderModule {
     fun provideSplashFragment(
         viewModelFactory: ViewModelProvider.Factory,
     ) = SplashFragment { fragment: Fragment ->
-        ViewModelProvider(fragment, viewModelFactory)
-            .get(SplashViewModel::class.java)
+        ViewModelProvider(fragment, viewModelFactory)[SplashViewModel::class.java]
     }
 }

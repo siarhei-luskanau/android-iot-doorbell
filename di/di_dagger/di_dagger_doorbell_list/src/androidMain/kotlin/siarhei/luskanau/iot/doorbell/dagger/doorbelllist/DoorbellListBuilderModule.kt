@@ -36,7 +36,6 @@ class DoorbellListBuilderModule {
     fun provideDoorbellListFragment(
         viewModelFactory: ViewModelProvider.Factory,
     ) = DoorbellListFragment { fragment: Fragment ->
-        ViewModelProvider(fragment, viewModelFactory)
-            .get(DoorbellListViewModel::class.java)
+        ViewModelProvider(fragment, viewModelFactory)[DoorbellListViewModel::class.java]
     }
 }

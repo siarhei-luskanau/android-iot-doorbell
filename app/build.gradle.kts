@@ -21,7 +21,7 @@ android {
         create("diDagger") { dimension = "di_variant" }
         create("diKodein") { dimension = "di_variant" }
         create("diKoin") { dimension = "di_variant" }
-        create("diSingleton") { dimension = "di_variant" }
+        create("diManual") { dimension = "di_variant" }
         create("diToothpick") { dimension = "di_variant" }
     }
 
@@ -39,11 +39,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.valueOf(libs.versions.build.javaVersion.get())
+        targetCompatibility = JavaVersion.valueOf(libs.versions.build.javaVersion.get())
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = libs.versions.build.jvmTarget.get()
     }
 
     testOptions {
@@ -67,7 +67,7 @@ dependencies {
     "diDaggerImplementation"(project(":di:di_dagger:di_dagger"))
     "diKodeinImplementation"(project(":di:di_kodein"))
     "diKoinImplementation"(project(":di:di_koin:di_koin"))
-    "diSingletonImplementation"(project(":di:di_singleton"))
+    "diManualImplementation"(project(":di:di_manual"))
     "diToothpickImplementation"(project(":di:di_toothpick"))
 
     implementation(project(":base_android"))

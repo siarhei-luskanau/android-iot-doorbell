@@ -67,7 +67,7 @@ class AppModules(context: Context) {
             ipAddressProvider = ipAddressProvider,
         )
     }
-    val deviceInfoProvider: DeviceInfoProvider by lazy {
+    private val deviceInfoProvider: DeviceInfoProvider by lazy {
         AndroidDeviceInfoProvider(
             context = context,
         )
@@ -83,13 +83,13 @@ class AppModules(context: Context) {
             doorbellRepository = doorbellRepository,
         )
     }
-    val ipAddressProvider: IpAddressProvider by lazy { AndroidIpAddressProvider() }
+    private val ipAddressProvider: IpAddressProvider by lazy { AndroidIpAddressProvider() }
     val doorbellsDataSource: DoorbellsDataSource by lazy {
         DefaultDoorbellsDataSource(
             doorbellRepository = doorbellRepository,
         )
     }
-    val workManager: WorkManager by lazy {
+    private val workManager: WorkManager by lazy {
         AppInitializer.getInstance(context).initializeComponent(WorkManagerInitializer::class.java)
     }
     val scheduleWorkManagerService: ScheduleWorkManagerService by lazy {

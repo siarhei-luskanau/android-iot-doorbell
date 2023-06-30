@@ -8,7 +8,7 @@ import siarhei.luskanau.iot.doorbell.dagger.common.CommonComponent
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 
-class ImageListViewModelFactory constructor(
+class ImageListViewModelFactory(
     private val commonComponent: CommonComponent,
     private val appNavigation: AppNavigation,
     private val args: Bundle?,

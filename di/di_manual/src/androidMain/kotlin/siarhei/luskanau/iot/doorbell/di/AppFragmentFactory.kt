@@ -50,8 +50,7 @@ class AppFragmentFactory(
                         appModules = appModules,
                         args = fragment.arguments,
                     )
-                    ViewModelProvider(fragment, viewModelFactory)
-                        .get(DoorbellListViewModel::class.java)
+                    ViewModelProvider(fragment, viewModelFactory)[DoorbellListViewModel::class.java]
                 }
             }
 
@@ -62,8 +61,7 @@ class AppFragmentFactory(
                         appModules = appModules,
                         args = fragment.arguments,
                     )
-                    ViewModelProvider(fragment, viewModelFactory)
-                        .get(ImageListViewModel::class.java)
+                    ViewModelProvider(fragment, viewModelFactory)[ImageListViewModel::class.java]
                 }
             }
 

@@ -18,8 +18,7 @@ val imageListModule = module {
         ImageListFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
                 get { parametersOf(activity, fragment, fragment.arguments) }
-            ViewModelProvider(fragment, viewModelFactory)
-                .get(ImageListViewModel::class.java)
+            ViewModelProvider(fragment, viewModelFactory)[ImageListViewModel::class.java]
         }
     }
 

@@ -40,8 +40,7 @@ class ToothpickFragmentFactory(
                         appNavigation = appNavigation,
                         args = fragment.arguments,
                     )
-                    ViewModelProvider(fragment, viewModelFactory)
-                        .get(SplashViewModel::class.java)
+                    ViewModelProvider(fragment, viewModelFactory)[SplashViewModel::class.java]
                 }
             }
 
@@ -56,8 +55,7 @@ class ToothpickFragmentFactory(
                         appNavigation = appNavigation,
                         args = fragment.arguments,
                     )
-                    ViewModelProvider(fragment, viewModelFactory)
-                        .get(DoorbellListViewModel::class.java)
+                    ViewModelProvider(fragment, viewModelFactory)[DoorbellListViewModel::class.java]
                 }
             }
 
@@ -68,8 +66,7 @@ class ToothpickFragmentFactory(
                         appNavigation = appNavigation,
                         args = fragment.arguments,
                     )
-                    ViewModelProvider(fragment, viewModelFactory)
-                        .get(ImageListViewModel::class.java)
+                    ViewModelProvider(fragment, viewModelFactory)[ImageListViewModel::class.java]
                 }
             }
 

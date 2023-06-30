@@ -2,7 +2,7 @@ plugins {
     multiplatformConvention
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.di.singleton"
+android.namespace = "siarhei.luskanau.iot.doorbell.di.manual"
 
 kotlin {
     sourceSets {

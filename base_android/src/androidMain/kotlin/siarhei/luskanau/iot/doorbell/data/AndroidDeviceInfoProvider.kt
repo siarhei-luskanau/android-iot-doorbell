@@ -7,10 +7,6 @@ import android.provider.Settings
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import java.util.UUID
 
-private const val GIT_SHA = "gitSha"
-private const val GIT_BRANCH = "gitBranch"
-private const val BUILD_DATE = "buildDate"
-
 class AndroidDeviceInfoProvider(
     private val context: Context,
 ) : DeviceInfoProvider {
