@@ -34,6 +34,7 @@ include(
     ":di:di_dagger:di_dagger_image_list",
     ":di:di_dagger:di_dagger_permissions",
     ":di:di_dagger:di_dagger_splash",
+    ":di:di_hilt",
     ":di:di_kodein",
     ":di:di_koin:di_koin",
     ":di:di_koin:di_koin_common",

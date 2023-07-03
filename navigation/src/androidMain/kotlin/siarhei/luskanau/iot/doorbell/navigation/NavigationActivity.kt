@@ -9,7 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import siarhei.luskanau.iot.doorbell.navigation.databinding.ActivityNavigationBinding
 
-class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
+open class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
 
     private val binding by lazy {
         ActivityNavigationBinding.bind(findViewById(R.id.container))

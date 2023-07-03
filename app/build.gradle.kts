@@ -23,6 +23,7 @@ android {
         create("diKodein") { dimension = "di_variant" }
         create("diKoin") { dimension = "di_variant" }
         create("diManual") { dimension = "di_variant" }
+        create("diHilt") { dimension = "di_variant" }
     }
 
     buildTypes {
@@ -57,6 +58,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(project(":di:di"))
     "diDaggerImplementation"(project(":di:di_dagger:di_dagger"))
+    "diHiltImplementation"(project(":di:di_hilt"))
     "diKodeinImplementation"(project(":di:di_kodein"))
     "diKoinImplementation"(project(":di:di_koin:di_koin"))
     "diManualImplementation"(project(":di:di_manual"))

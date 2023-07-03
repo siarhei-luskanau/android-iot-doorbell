@@ -1,14 +1,14 @@
 package siarhei.luskanau.iot.doorbell
 
-import android.app.Application
 import androidx.fragment.app.FragmentActivity
 import androidx.startup.AppInitializer
 import androidx.work.WorkerFactory
+import siarhei.luskanau.iot.doorbell.di.BaseDiApplication
 import siarhei.luskanau.iot.doorbell.navigation.OnActivityCreatedLifecycleCallbacks
 import siarhei.luskanau.iot.doorbell.workmanager.WorkerFactoryProvider
 import timber.log.Timber
 
-class AppApplication : Application(), WorkerFactoryProvider {
+class AppApplication : BaseDiApplication(), WorkerFactoryProvider {
 
     private val diHolder by lazy {
         AppInitializer.getInstance(this).initializeComponent(DiInitializer::class.java)

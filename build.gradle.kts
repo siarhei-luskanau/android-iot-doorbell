@@ -12,6 +12,7 @@ buildscript {
 plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.ksp) apply false
+    alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.ktlint.jlleitschuh)
 }
