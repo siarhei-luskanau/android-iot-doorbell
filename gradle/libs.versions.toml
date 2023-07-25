@@ -1,6 +1,5 @@
 [versions]
-
-agp = "8.1.0-rc01"
+agp = "8.1.0"
 android-build-compileSdk = "34"
 android-build-minSdk = "26"
 android-build-targetSdk = "34"
@@ -9,6 +8,7 @@ androidx-activity = "1.7.2"
 androidx-camera = "1.3.0-beta01"
 androidx-fragment = "1.6.0"
 androidx-lifecycle = "2.6.1"
+androidx-navigation = "2.6.0"
 androidx-paging = "3.2.0-rc01"
 androidx-startup = "1.1.1"
 androidx-test-core = "1.6.0-alpha01"
@@ -20,17 +20,17 @@ build-javaVersion = "VERSION_17"
 build-jvmTarget = "17"
 coil = "2.4.0"
 compose-bom = "2023.06.01"
-compose-compiler = "1.4.8"
-dagger = "2.46.1"
+compose-compiler = "1.5.0"
+dagger = "2.47"
 detekt = "1.23.0"
 espresso = "3.6.0-alpha01"
-firebase-bom = "32.1.1"
+firebase-bom = "32.2.0"
 gitlive-firebase = "1.8.1"
 google-services = "4.3.15"
 karumiShot = "5.14.1"
 kodein = "7.20.2"
 koin = "3.4.2"
-kotlin = "1.8.22"
+kotlin = "1.9.0"
 kotlinx-coroutines = "1.7.2"
 kotlinx-datetime = "0.4.0"
 kotlinx-kover = "0.7.2"
@@ -38,12 +38,10 @@ kotlinx-serialization = "1.5.1"
 ktlint = "0.50.0"
 leakcanary = "2.12"
 mockk = "1.13.5"
-navigation = "2.6.0"
 timber = "5.0.1"
 toothpick = "3.1.0"
 
 [libraries]
-
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 android-material = { module = "com.google.android.material:material", version.ref = "android-material" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -55,6 +53,9 @@ androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
 androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "androidx-fragment" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle" }
+androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidx-navigation" }
+androidx-navigation-safeArgsGradlePlugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "androidx-navigation" }
+androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidx-navigation" }
 androidx-paging-common-ktx = { module = "androidx.paging:paging-common-ktx", version.ref = "androidx-paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "androidx-paging" }
 androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "androidx-paging" }
@@ -96,14 +97,10 @@ ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
-navigation-safeArgsGradlePlugin = { module = "androidx.navigation:navigation-safe-args-gradle-plugin", version.ref = "navigation" }
-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 toothpick-compiler = { module = "com.github.stephanenicolas.toothpick:toothpick-compiler", version.ref = "toothpick" }
 toothpick-ktp = { module = "com.github.stephanenicolas.toothpick:ktp", version.ref = "toothpick" }
 
 [plugins]
-
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinx-kover" }

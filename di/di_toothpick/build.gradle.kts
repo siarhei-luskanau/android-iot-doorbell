@@ -28,10 +28,10 @@ kotlin {
                 implementation(libs.android.material)
                 implementation(libs.androidx.activity.ktx)
                 implementation(libs.androidx.fragment.ktx)
+                implementation(libs.androidx.navigation.fragment.ktx)
                 implementation(libs.androidx.startup.runtime)
                 implementation(libs.androidx.work.runtime.ktx)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.navigation.fragment.ktx)
                 implementation(libs.timber)
                 implementation(libs.toothpick.ktp)
             }

@@ -91,11 +91,11 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.compose.material)
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.navigation.fragment.ktx)
     implementation(libs.timber)
 
     // android test

@@ -14,8 +14,8 @@ kotlin {
                 implementation(project(":ui:ui_common"))
                 implementation(libs.android.material)
                 implementation(libs.androidx.fragment.ktx)
+                implementation(libs.androidx.navigation.ui.ktx)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.navigation.ui.ktx)
                 implementation(libs.timber)
             }
         }

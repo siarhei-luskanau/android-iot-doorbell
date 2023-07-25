@@ -11,8 +11,8 @@ kotlin {
             dependencies {
                 implementation(project(":common:common"))
                 implementation(project(":data:dataDoorbellApi"))
+                implementation(libs.androidx.navigation.ui.ktx)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.navigation.ui.ktx)
                 implementation(libs.timber)
             }
         }

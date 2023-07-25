@@ -10,8 +10,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(project(":ui:ui_common"))
+                implementation(libs.androidx.navigation.ui.ktx)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.navigation.ui.ktx)
                 implementation(libs.timber)
             }
         }

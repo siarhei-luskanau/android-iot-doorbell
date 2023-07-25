@@ -15,9 +15,9 @@ kotlin {
                 implementation(libs.android.material)
                 implementation(libs.androidx.activity.ktx)
                 implementation(libs.androidx.fragment.ktx)
+                implementation(libs.androidx.navigation.ui.ktx)
                 implementation(libs.androidx.paging.compose)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.navigation.ui.ktx)
                 implementation(libs.timber)
             }
         }

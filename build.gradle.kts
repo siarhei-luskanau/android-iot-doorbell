@@ -3,18 +3,12 @@ System.getProperties().forEach { key, value -> println("System.getProperties(): 
 System.getenv().forEach { (key, value) -> println("System.getenv(): $key=$value") }
 
 buildscript {
-
-    repositories {
-        google()
-        mavenCentral()
-    }
-
     dependencies {
         classpath(libs.android.gradle.plugin)
+        classpath(libs.androidx.navigation.safeArgsGradlePlugin)
         classpath(libs.google.services)
         classpath(libs.karumiShot)
         classpath(libs.kotlin.gradle.plugin)
-        classpath(libs.navigation.safeArgsGradlePlugin)
     }
 }
 
@@ -26,10 +20,6 @@ plugins {
 apply(from = "$rootDir/ci.gradle.kts")
 
 allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
     apply(plugin = "org.jetbrains.kotlinx.kover")
     apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(from = "$rootDir/ktlint.gradle.kts")

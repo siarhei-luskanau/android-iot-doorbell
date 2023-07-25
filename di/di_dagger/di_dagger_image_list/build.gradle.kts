@@ -18,12 +18,12 @@ kotlin {
                 implementation(libs.android.material)
                 implementation(libs.androidx.activity.ktx)
                 implementation(libs.androidx.fragment.ktx)
+                implementation(libs.androidx.navigation.ui.ktx)
                 implementation(libs.androidx.paging.common.ktx)
                 implementation(libs.androidx.paging.runtime.ktx)
                 implementation(libs.androidx.work.runtime.ktx)
                 implementation(libs.dagger)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.navigation.ui.ktx)
             }
         }
     }
