@@ -25,7 +25,7 @@ val COMMANDLINETOOLS_MAC =
 val COMMANDLINETOOLS_WIN =
     "https://dl.google.com/android/repository/commandlinetools-win-" +
         "${COMMANDLINETOOLS_VERSION}_latest.zip"
-val CMDLINE_TOOLS_VERSION = "9.0"
+val CMDLINE_TOOLS_VERSION = "11.0"
 
 val androidSdkConfig = AndroidSdkConfig()
 
