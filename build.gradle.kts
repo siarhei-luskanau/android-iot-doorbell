@@ -11,9 +11,6 @@ buildscript {
 }
 
 plugins {
-    // alias(libs.plugins.android.application) apply false
-    // alias(libs.plugins.android.library) apply false
-    // alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinx.kover)
 }
@@ -21,15 +18,38 @@ plugins {
 apply(from = "$rootDir/ci.gradle.kts")
 
 allprojects {
-    apply(plugin = "org.jetbrains.kotlinx.kover")
     apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(from = "$rootDir/ktlint.gradle.kts")
 }
 
-dependencies {
-    subprojects.map { it.path }.forEach {
-        kover(project(it))
+koverReport {
+    verify {
+        rule {
+            minBound(95)
+            maxBound(98)
+        }
     }
+}
+
+subprojects.filter {
+    !listOf(
+        ":",
+        ":app",
+        ":common",
+        ":data",
+        ":di",
+        ":ui",
+        ":di:di_dagger",
+        ":di:di_koin",
+    ).contains(it.path)
+}.forEach {
+    it.apply(plugin = "org.jetbrains.kotlinx.kover")
+    it.koverReport {
+        defaults {
+            mergeWith("debug")
+        }
+    }
+    it.dependencies { kover(project(it.path)) }
 }
 
 tasks.register("clean").configure {
