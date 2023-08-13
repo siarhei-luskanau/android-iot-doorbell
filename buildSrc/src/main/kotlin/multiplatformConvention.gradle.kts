@@ -55,6 +55,7 @@ android {
 
     defaultConfig {
         minSdk = libs.findVersion("android-build-minSdk").get().requiredVersion.toInt()
+        targetSdk = libs.findVersion("android-build-targetSdk").get().requiredVersion.toInt()
         testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
         testApplicationId = "siarhei.luskanau.iot.doorbell.testapp"
     }

@@ -4,15 +4,16 @@ System.getenv().forEach { (key, value) -> println("System.getenv(): $key=$value"
 
 buildscript {
     dependencies {
-        classpath(libs.android.gradle.plugin)
         classpath(libs.androidx.navigation.safeArgsGradlePlugin)
         classpath(libs.google.services)
         classpath(libs.karumiShot)
-        classpath(libs.kotlin.gradle.plugin)
     }
 }
 
 plugins {
+    // alias(libs.plugins.android.application) apply false
+    // alias(libs.plugins.android.library) apply false
+    // alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinx.kover)
 }
