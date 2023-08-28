@@ -47,42 +47,14 @@ tasks.register("ciBuildApp") {
     }
 }
 
-tasks.register("ciEmulator30") {
+tasks.register("ciEmulatorJobsMatrixSetup") {
     group = CI_GRADLE
     doLast {
-        runOnEmulator("TestEmulator30")
+        EmulatorJobsMatrix().createMatrixJsonFile(rootProject = project)
     }
 }
 
-tasks.register("ciEmulator31") {
-    group = CI_GRADLE
-    doLast {
-        runOnEmulator(emulatorName = "TestEmulator31")
-    }
-}
-
-tasks.register("ciEmulator32") {
-    group = CI_GRADLE
-    doLast {
-        runOnEmulator(emulatorName = "TestEmulator32")
-    }
-}
-
-tasks.register("ciEmulator33") {
-    group = CI_GRADLE
-    doLast {
-        runOnEmulator(emulatorName = "TestEmulator33")
-    }
-}
-
-tasks.register("ciEmulator34") {
-    group = CI_GRADLE
-    doLast {
-        runOnEmulator(emulatorName = "TestEmulator34")
-    }
-}
-
-tasks.register("ciAll") {
+tasks.register("devAll") {
     group = CI_GRADLE
     doLast {
         gradlew(
@@ -91,84 +63,25 @@ tasks.register("ciAll") {
             "ciLint",
             "ciUnitTest",
             "ciBuildApp",
-            "ciEmulator30",
-            "ciEmulator31",
-            "ciEmulator32",
-            "ciEmulator33",
-            "ciEmulator34",
+            "cleanManagedDevices",
+            "ciEmulatorJobsMatrixSetup",
         )
+        EmulatorJobsMatrix().getTaskList(rootProject = project).map { it.split(" ") }
+            .forEach { tasks -> gradlew(*tasks.toTypedArray()) }
     }
-}
-
-tasks.register("ciSetupAndroid") {
-    group = CI_GRADLE
-    doLast {
-        gradlew(
-            "setupAndroidCmdlineTools",
-            isAndroidSdkGradlew = true,
-        )
-        gradlew(
-            "setupAndroidSDK",
-            isAndroidSdkGradlew = true,
-        )
-    }
-}
-
-fun runOnEmulator(
-    emulatorName: String,
-    directorySuffix: String = emulatorName,
-) {
-    gradlew(
-        "setupAndroidSDK",
-        "killAndroidEmulator",
-        addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
-        isAndroidSdkGradlew = true,
-    )
-    gradlew(
-        "setupAndroidEmulator",
-        addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
-        isAndroidSdkGradlew = true,
-    )
-    gradlew("assembleDebugAndroidTest")
-    Thread {
-        gradlew(
-            "runAndroidEmulator",
-            addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
-            isAndroidSdkGradlew = true,
-        )
-    }.start()
-    gradlew(
-        "fixAndroidEmulatorSize",
-        addToSystemProperties = mapOf(GradleArguments.EMULATOR_AVD_NAME to emulatorName),
-        isAndroidSdkGradlew = true,
-    )
-    gradlew("waitAndroidEmulator", isAndroidSdkGradlew = true)
-    gradlew(
-        "executeScreenshotTests",
-        "-PdirectorySuffix=$directorySuffix",
-        "-Precord",
-        // "connectedAndroidTest"
-    )
 }
 
 fun gradlew(
     vararg tasks: String,
     addToSystemProperties: Map<String, String>? = null,
-    isAndroidSdkGradlew: Boolean = false,
 ) {
     exec {
         executable = File(
             project.rootDir,
-            listOf(
-                if (isAndroidSdkGradlew) "android_sdk" else null,
-                if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew",
-            ).filterNotNull().joinToString(separator = File.separator),
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew",
         )
             .also { it.setExecutable(true) }
             .absolutePath
-        if (isAndroidSdkGradlew) {
-            workingDir = File(project.rootDir, "android_sdk")
-        }
         args = mutableListOf<String>().also { mutableArgs ->
             mutableArgs.addAll(tasks)
             addToSystemProperties?.toList()?.map { "-D${it.first}=${it.second}" }?.let {
@@ -203,6 +116,6 @@ fun gradlew(
                 put("ANDROID_HOME", "$sdkDirPath")
             }
         }
-        println("commandLine: ${this.commandLine}")
+        println("commandLine: ${this.commandLine.joinToString(separator = " ")}")
     }.apply { println("ExecResult: $this") }
 }

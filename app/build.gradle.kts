@@ -46,16 +46,7 @@ android {
         jvmTarget = libs.versions.build.jvmTarget.get()
     }
 
-    testOptions {
-        animationsDisabled = true
-        unitTests.all {
-            it.testLogging.events = setOf(
-                org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-                org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
-            )
-        }
-    }
+    testOptions.configureAndroidTestOptions()
 
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
