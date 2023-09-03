@@ -2,7 +2,7 @@ val libs = project.extensions.getByType<VersionCatalogsExtension>().named("libs"
 
 plugins {
     id("com.android.library")
-    id("shot")
+    id("io.github.takahirom.roborazzi")
     kotlin("multiplatform")
 }
 
@@ -26,7 +26,10 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
+                implementation(libs.findLibrary("android-material").get())
                 implementation(libs.findLibrary("androidx-activity-compose").get())
+                implementation(libs.findLibrary("androidx-activity-ktx").get())
+                implementation(libs.findLibrary("androidx-fragment-ktx").get())
                 implementation(libs.findLibrary("androidx-tracing").get())
                 implementation(libs.findLibrary("coil").get())
                 implementation(libs.findLibrary("coil-compose").get())
@@ -36,15 +39,22 @@ kotlin {
         }
         val androidUnitTest by getting {
             dependencies {
+                implementation(libs.findLibrary("androidx-fragment-testing").get())
+                implementation(libs.findLibrary("androidx-paging-testing").get())
+                implementation(libs.findLibrary("espresso-core").get())
                 implementation(libs.findLibrary("kotlin-test").get())
                 implementation(libs.findLibrary("kotlinx-coroutines-test").get())
                 implementation(libs.findLibrary("mockk").get())
+                implementation(libs.findLibrary("robolectric").get())
+                implementation(libs.findLibrary("roborazzi").get())
+                implementation(libs.findLibrary("roborazzi-compose").get())
             }
         }
         val androidInstrumentedTest by getting {
             dependencies {
+                implementation(libs.findLibrary("espresso-core").get())
+                implementation(libs.findLibrary("kotlin-test").get())
                 implementation(libs.findLibrary("compose-ui-test-junit4").get())
-                implementation(libs.findLibrary("compose-ui-test-manifest").get())
             }
         }
     }
@@ -55,9 +65,7 @@ android {
 
     defaultConfig {
         minSdk = libs.findVersion("android-build-minSdk").get().requiredVersion.toInt()
-        targetSdk = libs.findVersion("android-build-targetSdk").get().requiredVersion.toInt()
-        testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
-        testApplicationId = "siarhei.luskanau.iot.doorbell.testapp"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
@@ -86,13 +94,10 @@ android {
         add("META-INF/LGPL2.1")
         add("META-INF/LICENSE-notice.md")
         add("META-INF/LICENSE.md")
+        add("META-INF/com.google.dagger_dagger.version")
     }
 }
 
 dependencies {
     implementation(platform(libs.findLibrary("compose-bom").get()))
-}
-
-shot {
-    tolerance = 0.1 // 0,1% tolerance
 }

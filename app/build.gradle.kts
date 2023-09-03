@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("io.github.takahirom.roborazzi")
     kotlin("android")
 }
 
@@ -53,6 +54,7 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.compose.bom))
     implementation(project(":di:di"))
     "diDaggerImplementation"(project(":di:di_dagger:di_dagger"))
     "diKodeinImplementation"(project(":di:di_kodein"))
@@ -75,7 +77,7 @@ dependencies {
     implementation(project(":ui:ui_permissions"))
     implementation(project(":ui:ui_splash"))
 
-    debugImplementation(libs.leakcanary.android)
+    // debugImplementation(libs.leakcanary.android)
     implementation(libs.android.material)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.activity.ktx)
@@ -87,15 +89,21 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.timber)
 
+    // unit test
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.androidx.test.junit.ktx)
+    testImplementation(libs.androidx.test.truth)
+    testImplementation(libs.espresso.contrib)
+    testImplementation(libs.espresso.core)
+    testImplementation(libs.espresso.intents)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.roborazzi)
+    testImplementation(project(":common:common_test_ui"))
+
     // android test
-    androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.androidx.test.junit.ktx)
-    androidTestImplementation(libs.androidx.test.truth)
-    androidTestImplementation(libs.espresso.contrib)
+    androidTestImplementation(kotlin("test"))
     androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.espresso.intents)
-    androidTestImplementation(libs.kotlin.test)
-    androidTestImplementation(project(":common:common_test_ui"))
 }
 
 apply(plugin = "com.google.gms.google-services")

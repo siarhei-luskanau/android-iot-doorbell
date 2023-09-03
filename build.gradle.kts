@@ -6,7 +6,6 @@ buildscript {
     dependencies {
         classpath(libs.androidx.navigation.safeArgsGradlePlugin)
         classpath(libs.google.services)
-        classpath(libs.karumiShot)
     }
 }
 

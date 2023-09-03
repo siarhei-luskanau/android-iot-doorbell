@@ -29,7 +29,6 @@ gitlive-firebase = "1.8.1"
 google-ksp = "1.9.10-1.0.13"
 google-services = "4.3.15"
 gson = "2.10.1"
-karumiShot = "6.0.0"
 kodein = "7.20.2"
 koin = "3.4.3"
 kotlin = "1.9.10"
@@ -41,6 +40,8 @@ ktlint-jlleitschuh = "11.5.1"
 leakcanary = "2.12"
 mockk = "1.13.5"
 pinterest-ktlint = "0.50.0"
+robolectric = "4.10.3"
+roborazzi = "1.6.0-alpha-3"
 timber = "5.0.1"
 
 [libraries]
@@ -73,7 +74,6 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-material = { module = "androidx.compose.material:material" }
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
@@ -85,7 +85,6 @@ firebase-storage = { module = "com.google.firebase:firebase-storage-ktx" }
 gitlive-firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "gitlive-firebase" }
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
-karumiShot = { module = "com.karumi:shot", version.ref = "karumiShot" }
 kodein-android-core = { module = "org.kodein.di:kodein-di-framework-android-core", version.ref = "kodein" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -99,6 +98,10 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
+roborazzi-gradle-plugin = { module = "io.github.takahirom.roborazzi:roborazzi-gradle-plugin", version.ref = "roborazzi" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]

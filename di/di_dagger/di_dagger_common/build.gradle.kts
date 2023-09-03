@@ -17,9 +17,6 @@ kotlin {
                 implementation(project(":data:dataDoorbellApi"))
                 implementation(project(":data:dataDoorbellApiFirebase"))
                 implementation(project(":data:dataDoorbellApiStub"))
-                implementation(libs.android.material)
-                implementation(libs.androidx.activity.ktx)
-                implementation(libs.androidx.fragment.ktx)
                 implementation(libs.androidx.paging.common.ktx)
                 implementation(libs.androidx.paging.runtime.ktx)
                 implementation(libs.androidx.startup.runtime)
@@ -33,5 +30,5 @@ kotlin {
 }
 
 dependencies {
-    ksp(libs.dagger.compiler)
+    kspAndroid(libs.dagger.compiler)
 }

@@ -13,9 +13,6 @@ kotlin {
                 implementation(project(":di:di_koin:di_koin_common"))
                 implementation(project(":ui:ui_common"))
                 implementation(project(":ui:ui_permissions"))
-                implementation(libs.android.material)
-                implementation(libs.androidx.activity.ktx)
-                implementation(libs.androidx.fragment.ktx)
                 implementation(libs.koin.android)
                 implementation(libs.kotlinx.coroutines.core)
             }

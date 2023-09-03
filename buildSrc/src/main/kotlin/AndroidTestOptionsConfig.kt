@@ -6,6 +6,7 @@ val EMULATOR_VERSIONS = 30..34
 
 fun TestOptions.configureAndroidTestOptions() {
     unitTests {
+        isIncludeAndroidResources = true
         all { test: org.gradle.api.tasks.testing.Test ->
             test.testLogging.events = setOf(
                 org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,

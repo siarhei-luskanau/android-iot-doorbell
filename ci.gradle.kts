@@ -30,6 +30,19 @@ tasks.register("ciUnitTest") {
     }
 }
 
+tasks.register("ciRecordScreenshots") {
+    group = CI_GRADLE
+    doLast {
+        gradlew(
+            "recordRoborazziDebug",
+            "recordRoborazziDiDaggerDebug",
+            "recordRoborazziDiKodeinDebug",
+            "recordRoborazziDiKoinDebug",
+            "recordRoborazziDiManualDebug",
+        )
+    }
+}
+
 tasks.register("ciBuildApp") {
     group = CI_GRADLE
     doLast {
@@ -50,7 +63,7 @@ tasks.register("ciBuildApp") {
 tasks.register("ciEmulatorJobsMatrixSetup") {
     group = CI_GRADLE
     doLast {
-        EmulatorJobsMatrix().createMatrixJsonFile(rootProject = project)
+        EmulatorJobsMatrix().createMatrixJsonFile(rootProject = rootProject)
     }
 }
 
@@ -62,7 +75,9 @@ tasks.register("devAll") {
             "ktlintFormat",
             "ciLint",
             "ciUnitTest",
+            "ciRecordScreenshots",
             "ciBuildApp",
+            "assembleAndroidTest",
         )
     }
 }
@@ -72,11 +87,12 @@ tasks.register("devAllEmulator") {
     doLast {
         gradlew(
             "clean",
-            "cleanManagedDevices",
             "ciEmulatorJobsMatrixSetup",
         )
-        EmulatorJobsMatrix().getTaskList(rootProject = project).map { it.split(" ") }
+        gradlew("cleanManagedDevices", "--unused-only")
+        EmulatorJobsMatrix().getTaskList(rootProject = rootProject).map { it.split(" ") }
             .forEach { tasks -> gradlew(*tasks.toTypedArray()) }
+        gradlew("cleanManagedDevices")
     }
 }
 

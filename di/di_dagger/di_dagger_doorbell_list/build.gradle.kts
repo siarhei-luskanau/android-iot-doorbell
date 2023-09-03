@@ -14,9 +14,6 @@ kotlin {
                 implementation(project(":di:di_dagger:di_dagger_common"))
                 implementation(project(":ui:ui_common"))
                 implementation(project(":ui:ui_doorbell_list"))
-                implementation(libs.android.material)
-                implementation(libs.androidx.activity.ktx)
-                implementation(libs.androidx.fragment.ktx)
                 implementation(libs.androidx.paging.common.ktx)
                 implementation(libs.androidx.paging.runtime.ktx)
                 implementation(libs.androidx.work.runtime.ktx)
@@ -28,5 +25,5 @@ kotlin {
 }
 
 dependencies {
-    ksp(libs.dagger.compiler)
+    kspAndroid(libs.dagger.compiler)
 }

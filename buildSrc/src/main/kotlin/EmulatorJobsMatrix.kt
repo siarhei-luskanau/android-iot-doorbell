@@ -19,21 +19,34 @@ class EmulatorJobsMatrix {
     }
 
     fun getTaskList(rootProject: Project): List<String> =
-        rootProject.subprojects
-            .filter { subProject ->
-                listOf(
-                    "src${File.separator}androidTest",
-                    "src${File.separator}androidInstrumentedTest",
-                )
-                    .map { srcPath -> File(subProject.projectDir, srcPath) }
-                    .any { srcDir -> srcDir.exists() }
-            }
-            .flatMap { subProject ->
-                EMULATOR_VERSIONS.map { version ->
-                    listOf(
-                        "${subProject.path}:managedVirtualDevice${version}Check",
-                        "-Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect",
-                    ).joinToString(separator = " ")
+        rootProject.subprojects.flatMap { subProject ->
+            EMULATOR_VERSIONS.mapNotNull { version ->
+                when {
+                    ":app" == subProject.path -> listOf(
+                        "${subProject.path}:managedVirtualDevice${version}DiDaggerDebugAndroidTest",
+                        "${subProject.path}:managedVirtualDevice${version}DiKodeinDebugAndroidTest",
+                        "${subProject.path}:managedVirtualDevice${version}DiKoinDebugAndroidTest",
+                        "${subProject.path}:managedVirtualDevice${version}DiManualDebugAndroidTest",
+                    )
+
+                    File(
+                        subProject.projectDir,
+                        "src${File.separator}androidInstrumentedTest"
+                    ).exists() -> listOf("${subProject.path}:managedVirtualDevice${version}DebugAndroidTest")
+
+                    else -> null
                 }
             }
+        }.map { taskList ->
+            taskList.toMutableList().also {
+                it.add("--no-parallel")
+                it.add("--max-workers=1")
+                it.add("-Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect")
+                it.add("-Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true")
+            }.also {
+                if (!true.toString().equals(other = System.getProperty("CI"), ignoreCase = true)) {
+                    it.add("--enable-display")
+                }
+            }.joinToString(separator = " ")
+        }.sorted()
 }

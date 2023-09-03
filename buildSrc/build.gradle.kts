@@ -10,6 +10,6 @@ repositories {
 dependencies {
     implementation(buildSrcLibs.android.gradle.plugin)
     implementation(buildSrcLibs.gson)
-    implementation(buildSrcLibs.karumiShot)
+    implementation(buildSrcLibs.roborazzi.gradle.plugin)
     implementation(buildSrcLibs.kotlin.gradle.plugin)
 }
