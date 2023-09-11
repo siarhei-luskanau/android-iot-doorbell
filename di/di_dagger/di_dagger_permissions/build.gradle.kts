@@ -1,6 +1,6 @@
 plugins {
     multiplatformConvention
-    kotlin("kapt")
+    id("com.google.devtools.ksp")
 }
 
 android.namespace = "siarhei.luskanau.iot.doorbell.dagger.permissions"
@@ -25,5 +25,5 @@ kotlin {
 }
 
 dependencies {
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 }

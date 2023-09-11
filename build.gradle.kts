@@ -12,14 +12,19 @@ buildscript {
 
 plugins {
     alias(libs.plugins.detekt)
+    alias(libs.plugins.google.ksp) apply false
     alias(libs.plugins.kotlinx.kover)
+    alias(libs.plugins.ktlint.jlleitschuh)
 }
 
 apply(from = "$rootDir/ci.gradle.kts")
 
 allprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
-    apply(from = "$rootDir/ktlint.gradle.kts")
+}
+
+ktlint {
+    version.set(libs.versions.pinterest.ktlint)
 }
 
 koverReport {

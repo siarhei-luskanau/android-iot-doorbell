@@ -22,7 +22,6 @@ android {
         create("diKodein") { dimension = "di_variant" }
         create("diKoin") { dimension = "di_variant" }
         create("diManual") { dimension = "di_variant" }
-        create("diToothpick") { dimension = "di_variant" }
     }
 
     buildTypes {
@@ -59,7 +58,6 @@ dependencies {
     "diKodeinImplementation"(project(":di:di_kodein"))
     "diKoinImplementation"(project(":di:di_koin:di_koin"))
     "diManualImplementation"(project(":di:di_manual"))
-    "diToothpickImplementation"(project(":di:di_toothpick"))
 
     implementation(project(":base_android"))
     implementation(project(":base_camera"))

@@ -63,6 +63,15 @@ tasks.register("devAll") {
             "ciLint",
             "ciUnitTest",
             "ciBuildApp",
+        )
+    }
+}
+
+tasks.register("devAllEmulator") {
+    group = CI_GRADLE
+    doLast {
+        gradlew(
+            "clean",
             "cleanManagedDevices",
             "ciEmulatorJobsMatrixSetup",
         )

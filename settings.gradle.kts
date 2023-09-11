@@ -43,7 +43,6 @@ include(
     ":di:di_koin:di_koin_permissions",
     ":di:di_koin:di_koin_splash",
     ":di:di_manual",
-    ":di:di_toothpick",
     ":navigation",
     ":ui:ui_common",
     ":ui:ui_doorbell_list",
