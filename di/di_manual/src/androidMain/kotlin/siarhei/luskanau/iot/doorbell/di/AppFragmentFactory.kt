@@ -10,8 +10,6 @@ import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import siarhei.luskanau.iot.doorbell.ui.permissions.PermissionsFragment
@@ -74,23 +72,6 @@ class AppFragmentFactory(
                         requireNotNull(fragment.arguments),
                     ).imageId
                     ImageDetailsPresenterImpl(
-                        appNavigation = appNavigation,
-                        fragment = fragment,
-                        doorbellId = doorbellId,
-                        imageId = imageId,
-                    )
-                }
-            }
-
-            ImageDetailsSlideFragment::class.java.name -> {
-                ImageDetailsSlideFragment { fragment: Fragment ->
-                    val doorbellId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments),
-                    ).doorbellId
-                    val imageId = ImageDetailsFragmentArgs.fromBundle(
-                        requireNotNull(fragment.arguments),
-                    ).imageId
-                    ImageDetailsSlidePresenterImpl(
                         doorbellId = doorbellId,
                         imageId = imageId,
                         doorbellRepository = appModules.doorbellRepository,

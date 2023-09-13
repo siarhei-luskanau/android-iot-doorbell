@@ -7,15 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.VisibleForTesting
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import siarhei.luskanau.iot.doorbell.common.AppConstants.PERMISSIONS
@@ -34,7 +26,7 @@ class PermissionsFragment(
         savedInstanceState: Bundle?,
     ) = ComposeView(inflater.context).apply {
         setContent {
-            PermissionsPreview()
+            PermissionsComposable()
         }
     }
 
@@ -73,16 +65,3 @@ class PermissionsFragment(
         return true
     }
 }
-
-@Preview
-@Composable
-@Suppress("FunctionNaming")
-@VisibleForTesting
-fun PermissionsPreview() =
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        text = "permissions",
-        style = MaterialTheme.typography.h6,
-    )

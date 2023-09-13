@@ -19,11 +19,11 @@ plugins {
 apply(from = "$rootDir/ci.gradle.kts")
 
 allprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
     apply(plugin = "io.gitlab.arturbosch.detekt")
-}
-
-ktlint {
-    version.set(libs.versions.pinterest.ktlint)
+    ktlint {
+        version.set("0.50.0")
+    }
 }
 
 koverReport {

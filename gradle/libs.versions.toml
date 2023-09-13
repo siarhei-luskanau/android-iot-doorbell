@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.0-alpha03"
+agp = "8.1.1"
 android-build-compileSdk = "34"
 android-build-minSdk = "26"
 android-build-targetSdk = "34"
@@ -30,7 +30,7 @@ google-ksp = "1.9.10-1.0.13"
 google-services = "4.3.15"
 gson = "2.10.1"
 kodein = "7.20.2"
-koin = "3.4.3"
+koin = "3.5.0"
 kotlin = "1.9.10"
 kotlinx-coroutines = "1.7.3"
 kotlinx-datetime = "0.4.0"
@@ -39,10 +39,10 @@ kotlinx-serialization = "1.6.0"
 ktlint-jlleitschuh = "11.5.1"
 leakcanary = "2.12"
 mockk = "1.13.5"
-pinterest-ktlint = "0.50.0"
 robolectric = "4.10.3"
 roborazzi = "1.6.0-alpha-3"
 timber = "5.0.1"
+zoomable = "1.5.1"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -103,6 +103,7 @@ roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = 
 roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
 roborazzi-gradle-plugin = { module = "io.github.takahirom.roborazzi:roborazzi-gradle-plugin", version.ref = "roborazzi" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

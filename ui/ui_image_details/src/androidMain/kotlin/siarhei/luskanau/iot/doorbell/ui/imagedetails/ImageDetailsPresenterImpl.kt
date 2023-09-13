@@ -1,32 +1,25 @@
 package siarhei.luskanau.iot.doorbell.ui.imagedetails
 
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 
 class ImageDetailsPresenterImpl(
-    private val appNavigation: AppNavigation,
-    private val fragment: Fragment,
     private val doorbellId: String,
     private val imageId: String,
+    private val doorbellRepository: DoorbellRepository,
 ) : ImageDetailsPresenter {
 
-    override fun getImageDetailsStateData(): LiveData<ImageDetailsState> =
-        MutableLiveData<ImageDetailsState>().also { liveData ->
-            liveData.postValue(
-                runCatching {
-                    NormalImageDetailsState(
-                        ImagesFragmentViewPagerAdapter(
-                            appNavigation = appNavigation,
-                            fragment = fragment,
-                            doorbellId = doorbellId,
-                            imageId = imageId,
-                        ),
-                    )
-                }.onFailure {
-                    ErrorImageDetailsState(it)
-                }.getOrNull(),
+    override fun getImageDetailsStateFlow(): Flow<ImageDetailsState> = flowOf(Any())
+        .map {
+            val imageData = doorbellRepository.getImage(
+                doorbellId = doorbellId,
+                imageId = imageId,
             )
+            NormalImageDetailsState(requireNotNull(imageData))
+        }.catch {
+            ErrorImageDetailsState(it)
         }
 }

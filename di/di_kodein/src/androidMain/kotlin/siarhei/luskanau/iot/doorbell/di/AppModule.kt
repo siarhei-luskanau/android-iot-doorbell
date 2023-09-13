@@ -45,8 +45,6 @@ import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlideFragment
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.slide.ImageDetailsSlidePresenterImpl
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
@@ -235,37 +233,6 @@ val activityModule = DI.Module(name = "activityModule") {
                 requireNotNull(viewModelFactoryArgs.args),
             ).imageId
             ImageDetailsPresenterImpl(
-                appNavigation = instance(arg = viewModelFactoryArgs.activity),
-                fragment = viewModelFactoryArgs.fragment,
-                doorbellId = doorbellId,
-                imageId = imageId,
-            )
-        }
-    }
-
-    // ImageDetailsSlide
-    bind<Fragment>(
-        tag = ImageDetailsSlideFragment::class.simpleName,
-    ) with factory { activity: FragmentActivity ->
-        ImageDetailsSlideFragment { fragment: Fragment ->
-            instance(
-                arg = ViewModelFactoryArgs(
-                    activity = activity,
-                    fragment = fragment,
-                    args = fragment.arguments,
-                ),
-            )
-        }
-    }
-    bind {
-        factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
-            val doorbellId = ImageDetailsFragmentArgs.fromBundle(
-                requireNotNull(viewModelFactoryArgs.args),
-            ).doorbellId
-            val imageId = ImageDetailsFragmentArgs.fromBundle(
-                requireNotNull(viewModelFactoryArgs.args),
-            ).imageId
-            ImageDetailsSlidePresenterImpl(
                 doorbellId = doorbellId,
                 imageId = imageId,
                 doorbellRepository = instance(),

@@ -9,7 +9,7 @@ class SplashViewModel(
     private val splashNavigation: SplashNavigation,
 ) : ViewModel(), SplashPresenter {
 
-    override fun onResume() {
+    override fun onSplashComplete() {
         viewModelScope.launch {
             delay(DELAY_SPLASH)
             splashNavigation.onSplashComplete()

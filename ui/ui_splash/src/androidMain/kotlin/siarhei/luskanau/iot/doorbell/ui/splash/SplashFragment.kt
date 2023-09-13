@@ -3,16 +3,8 @@ package siarhei.luskanau.iot.doorbell.ui.splash
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.VisibleForTesting
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 
 class SplashFragment(
@@ -29,28 +21,10 @@ class SplashFragment(
         ComposeView(inflater.context).apply {
             setContent {
                 MaterialTheme {
-                    SplashPreview()
+                    SplashComposable(
+                        onSplashComplete = { presenter.onSplashComplete() },
+                    )
                 }
             }
         }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.onResume()
-    }
 }
-
-@Composable
-@Preview
-@Suppress("FunctionNaming")
-@VisibleForTesting
-fun SplashPreview() =
-    Icon(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        painter = painterResource(
-            id = siarhei.luskanau.iot.doorbell.ui.common.R.drawable.ic_android,
-        ),
-        contentDescription = null,
-    )

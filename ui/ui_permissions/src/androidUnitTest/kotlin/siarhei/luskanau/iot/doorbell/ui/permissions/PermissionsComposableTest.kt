@@ -10,12 +10,12 @@ import kotlin.test.Test
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [33])
-class PermissionsFragmentTest {
+class PermissionsComposableTest {
 
     @Test
     fun testNormalState() {
-        captureRoboImage(filePath = "screenshots/PermissionsPreview.png") {
-            PermissionsPreview()
+        captureRoboImage(filePath = "screenshots/Permissions.png") {
+            PermissionsComposable()
         }
     }
 }

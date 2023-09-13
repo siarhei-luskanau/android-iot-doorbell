@@ -15,6 +15,7 @@ kotlin {
                 implementation(libs.androidx.navigation.ui.ktx)
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.timber)
+                implementation(libs.zoomable)
             }
         }
     }

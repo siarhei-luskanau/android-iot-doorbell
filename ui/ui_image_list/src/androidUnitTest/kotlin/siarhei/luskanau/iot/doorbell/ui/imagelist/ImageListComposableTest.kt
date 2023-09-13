@@ -15,7 +15,7 @@ import kotlin.test.Test
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [33])
-class ImageListFragmentTest {
+class ImageListComposableTest {
 
     @Test
     fun testNormalState() {

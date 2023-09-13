@@ -15,7 +15,7 @@ import kotlin.test.Test
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [33])
-class DoorbellListFragmentTest {
+class DoorbellListComposableTest {
 
     @Test
     fun testNormalState() {
@@ -26,6 +26,7 @@ class DoorbellListFragmentTest {
         captureRoboImage(filePath = "screenshots/DoorbellListComposable.Normal.png") {
             DoorbellListComposable(
                 items = pager.flow.collectAsLazyPagingItems(),
+                checkPermissions = {},
                 onItemClickListener = {},
             )
         }
@@ -40,6 +41,7 @@ class DoorbellListFragmentTest {
         captureRoboImage(filePath = "screenshots/DoorbellListComposable.Empty.png") {
             DoorbellListComposable(
                 items = pager.flow.collectAsLazyPagingItems(),
+                checkPermissions = {},
                 onItemClickListener = {},
             )
         }
