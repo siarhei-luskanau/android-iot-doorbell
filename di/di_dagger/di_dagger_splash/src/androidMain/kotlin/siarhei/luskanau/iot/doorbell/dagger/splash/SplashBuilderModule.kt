@@ -16,21 +16,21 @@ class SplashBuilderModule {
 
     @Provides
     fun providesFragmentFactory(
-        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>,
+        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>
     ): FragmentFactory = DaggerFragmentFactory(
-        providers,
+        providers
     )
 
     @Provides
     fun provideSplashViewModel(
-        splashNavigation: SplashNavigation,
+        splashNavigation: SplashNavigation
     ) = SplashViewModel(
-        splashNavigation = splashNavigation,
+        splashNavigation = splashNavigation
     )
 
     @Provides
     fun provideSplashFragment(
-        viewModelFactory: ViewModelProvider.Factory,
+        viewModelFactory: ViewModelProvider.Factory
     ) = SplashFragment { fragment: Fragment ->
         ViewModelProvider(fragment, viewModelFactory)[SplashViewModel::class.java]
     }

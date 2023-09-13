@@ -17,24 +17,24 @@ class DoorbellListBuilderModule {
 
     @Provides
     fun providesFragmentFactory(
-        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>,
+        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>
     ): FragmentFactory = DaggerFragmentFactory(
-        providers,
+        providers
     )
 
     @Provides
     fun provideDoorbellListViewModel(
         appNavigation: AppNavigation,
-        commonComponent: CommonComponent,
+        commonComponent: CommonComponent
     ) = DoorbellListViewModel(
         appNavigation = appNavigation,
         thisDeviceRepository = commonComponent.provideThisDeviceRepository(),
-        doorbellsDataSource = commonComponent.provideDoorbellsDataSource(),
+        doorbellsDataSource = commonComponent.provideDoorbellsDataSource()
     )
 
     @Provides
     fun provideDoorbellListFragment(
-        viewModelFactory: ViewModelProvider.Factory,
+        viewModelFactory: ViewModelProvider.Factory
     ) = DoorbellListFragment { fragment: Fragment ->
         ViewModelProvider(fragment, viewModelFactory)[DoorbellListViewModel::class.java]
     }

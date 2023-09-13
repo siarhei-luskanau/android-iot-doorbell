@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class DoorbellDto(
     @SerialName("doorbell_id") val doorbellId: String,
     @SerialName("name") val name: String?,
-    @SerialName("info") val info: Map<String, String>?,
+    @SerialName("info") val info: Map<String, String>?
 )

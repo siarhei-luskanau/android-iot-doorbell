@@ -6,6 +6,6 @@ interface ImageSenderRepository {
     suspend fun sendImage(
         doorbellId: String,
         cameraId: String,
-        imageInputStream: InputStream,
+        imageInputStream: InputStream
     )
 }

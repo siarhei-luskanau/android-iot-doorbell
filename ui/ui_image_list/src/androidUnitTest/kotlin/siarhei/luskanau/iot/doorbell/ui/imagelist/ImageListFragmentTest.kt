@@ -24,14 +24,14 @@ class ImageListFragmentTest {
             pagingSourceFactory = listOf(
                 ImageData(
                     imageId = "1",
-                    imageUri = null,
-                ),
-            ).asPagingSourceFactory(),
+                    imageUri = null
+                )
+            ).asPagingSourceFactory()
         )
         captureRoboImage(filePath = "screenshots/ImageListComposable.Normal.png") {
             ImageListComposable(
                 items = pager.flow.collectAsLazyPagingItems(),
-                onItemClickListener = {},
+                onItemClickListener = {}
             )
         }
     }
@@ -40,12 +40,12 @@ class ImageListFragmentTest {
     fun testEmptyState() {
         val pager = Pager(
             config = PagingConfig(pageSize = 1),
-            pagingSourceFactory = emptyList<ImageData>().asPagingSourceFactory(),
+            pagingSourceFactory = emptyList<ImageData>().asPagingSourceFactory()
         )
         captureRoboImage(filePath = "screenshots/ImageListComposable.Empty.png") {
             ImageListComposable(
                 items = pager.flow.collectAsLazyPagingItems(),
-                onItemClickListener = {},
+                onItemClickListener = {}
             )
         }
     }

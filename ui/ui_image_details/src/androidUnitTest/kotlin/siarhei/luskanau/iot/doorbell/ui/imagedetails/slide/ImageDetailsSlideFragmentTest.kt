@@ -31,7 +31,7 @@ class ImageDetailsSlideFragmentTest {
         val expectedImageData = ImageData(
             imageId = "expectedImageId",
             imageUri = "expectedImageUri",
-            timestampString = "timestampString",
+            timestampString = "timestampString"
         )
         val scenario = launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(state = NormalImageDetailsSlideState(imageData = expectedImageData))
@@ -56,7 +56,7 @@ class ImageDetailsSlideFragmentTest {
         val expectedErrorMessage = "Test Exception"
         val scenario = launchFragmentInContainer(themeResId = CommonR.style.AppTheme) {
             createFragment(
-                state = ErrorImageDetailsSlideState(error = RuntimeException(expectedErrorMessage)),
+                state = ErrorImageDetailsSlideState(error = RuntimeException(expectedErrorMessage))
             )
         }
         scenario.moveToState(Lifecycle.State.RESUMED)

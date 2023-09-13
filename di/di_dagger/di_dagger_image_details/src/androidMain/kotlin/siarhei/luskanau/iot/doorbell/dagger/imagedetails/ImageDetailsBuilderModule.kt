@@ -19,44 +19,44 @@ class ImageDetailsBuilderModule {
 
     @Provides
     fun providesFragmentFactory(
-        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>,
+        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>
     ): FragmentFactory = DaggerFragmentFactory(
-        providers,
+        providers
     )
 
     @Provides
     fun provideImageDetailsFragment(
-        appNavigation: AppNavigation,
+        appNavigation: AppNavigation
     ) = ImageDetailsFragment { fragment: Fragment ->
         val doorbellId = ImageDetailsFragmentArgs.fromBundle(
-            requireNotNull(fragment.arguments),
+            requireNotNull(fragment.arguments)
         ).doorbellId
         val imageId = ImageDetailsFragmentArgs.fromBundle(
-            requireNotNull(fragment.arguments),
+            requireNotNull(fragment.arguments)
         ).imageId
         ImageDetailsPresenterImpl(
             appNavigation = appNavigation,
             fragment = fragment,
             doorbellId = doorbellId,
-            imageId = imageId,
+            imageId = imageId
         )
     }
 
     @Provides
     fun provideImageDetailsSlideFragment(
-        commonComponent: CommonComponent,
+        commonComponent: CommonComponent
     ) =
         ImageDetailsSlideFragment { fragment: Fragment ->
             val doorbellId = ImageDetailsFragmentArgs.fromBundle(
-                requireNotNull(fragment.arguments),
+                requireNotNull(fragment.arguments)
             ).doorbellId
             val imageId = ImageDetailsFragmentArgs.fromBundle(
-                requireNotNull(fragment.arguments),
+                requireNotNull(fragment.arguments)
             ).imageId
             ImageDetailsSlidePresenterImpl(
                 doorbellId = doorbellId,
                 imageId = imageId,
-                doorbellRepository = commonComponent.provideDoorbellRepository(),
+                doorbellRepository = commonComponent.provideDoorbellRepository()
             )
         }
 }

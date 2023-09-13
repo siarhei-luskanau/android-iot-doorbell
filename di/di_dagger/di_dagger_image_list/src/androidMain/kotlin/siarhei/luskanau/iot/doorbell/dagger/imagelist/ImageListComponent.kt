@@ -10,8 +10,8 @@ import javax.inject.Provider
 @Component(
     modules = [
         ImageListBinderModule::class,
-        ImageListBuilderModule::class,
-    ],
+        ImageListBuilderModule::class
+    ]
 )
 interface ImageListComponent {
 
@@ -22,7 +22,7 @@ interface ImageListComponent {
 
         fun create(
             @BindsInstance appNavigation: AppNavigation,
-            @BindsInstance commonComponent: CommonComponent,
+            @BindsInstance commonComponent: CommonComponent
         ): ImageListComponent
     }
 }

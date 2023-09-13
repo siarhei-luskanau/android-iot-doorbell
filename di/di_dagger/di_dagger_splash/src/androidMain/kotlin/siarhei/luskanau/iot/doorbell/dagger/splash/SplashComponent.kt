@@ -9,8 +9,8 @@ import javax.inject.Provider
 @Component(
     modules = [
         SplashBinderModule::class,
-        SplashBuilderModule::class,
-    ],
+        SplashBuilderModule::class
+    ]
 )
 interface SplashComponent {
 

@@ -21,12 +21,13 @@ class DoorbellListFragmentTest {
     fun testNormalState() {
         val pager = Pager(
             config = PagingConfig(pageSize = 1),
-            pagingSourceFactory = listOf(DoorbellData(doorbellId = "doorbellId")).asPagingSourceFactory(),
+            pagingSourceFactory = listOf(DoorbellData(doorbellId = "doorbellId")).asPagingSourceFactory()
         )
         captureRoboImage(filePath = "screenshots/DoorbellListComposable.Normal.png") {
             DoorbellListComposable(
                 items = pager.flow.collectAsLazyPagingItems(),
-                onItemClickListener = {},
+                checkPermissions = {},
+                onItemClickListener = {}
             )
         }
     }
@@ -35,12 +36,13 @@ class DoorbellListFragmentTest {
     fun testEmptyState() {
         val pager = Pager(
             config = PagingConfig(pageSize = 1),
-            pagingSourceFactory = emptyList<DoorbellData>().asPagingSourceFactory(),
+            pagingSourceFactory = emptyList<DoorbellData>().asPagingSourceFactory()
         )
         captureRoboImage(filePath = "screenshots/DoorbellListComposable.Empty.png") {
             DoorbellListComposable(
                 items = pager.flow.collectAsLazyPagingItems(),
-                onItemClickListener = {},
+                checkPermissions = {},
+                onItemClickListener = {}
             )
         }
     }

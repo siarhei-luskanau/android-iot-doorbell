@@ -37,7 +37,7 @@ class ImageDetailsFragmentTest {
                                     override fun getItemCount(): Int = 1
                                     override fun createFragment(position: Int): Fragment =
                                         Fragment(R.layout.layout_image_details_slide_normal)
-                                },
+                                }
                             )
                         }
                 }
@@ -52,7 +52,7 @@ class ImageDetailsFragmentTest {
                         override fun getImageDetailsStateData(): LiveData<ImageDetailsState> =
                             MutableLiveData<ImageDetailsState>().apply {
                                 value = ErrorImageDetailsState(
-                                    error = RuntimeException(EXPECTED_ERROR_MESSAGE),
+                                    error = RuntimeException(EXPECTED_ERROR_MESSAGE)
                                 )
                             }
                     }
@@ -64,7 +64,7 @@ class ImageDetailsFragmentTest {
         val fragmentFactory = createNormalFragmentFactory()
         val scenario = launchFragmentInContainer<ImageDetailsFragment>(
             factory = fragmentFactory,
-            themeResId = siarhei.luskanau.iot.doorbell.ui.common.R.style.AppTheme,
+            themeResId = siarhei.luskanau.iot.doorbell.ui.common.R.style.AppTheme
         )
         scenario.moveToState(Lifecycle.State.RESUMED)
 
@@ -86,7 +86,7 @@ class ImageDetailsFragmentTest {
         val fragmentFactory = createErrorFragmentFactory()
         val scenario = launchFragmentInContainer<ImageDetailsFragment>(
             factory = fragmentFactory,
-            themeResId = siarhei.luskanau.iot.doorbell.ui.common.R.style.AppTheme,
+            themeResId = siarhei.luskanau.iot.doorbell.ui.common.R.style.AppTheme
         )
         scenario.moveToState(Lifecycle.State.RESUMED)
 

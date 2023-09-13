@@ -9,8 +9,8 @@ import javax.inject.Provider
 @Component(
     modules = [
         PermissionsBinderModule::class,
-        PermissionsBuilderModule::class,
-    ],
+        PermissionsBuilderModule::class
+    ]
 )
 interface PermissionsComponent {
 

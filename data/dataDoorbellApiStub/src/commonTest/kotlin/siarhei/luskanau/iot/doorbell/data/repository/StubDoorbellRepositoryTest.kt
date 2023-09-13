@@ -18,70 +18,70 @@ class StubDoorbellRepositoryTest {
             FromToRangeData(
                 startAt = null,
                 orderAsc = true,
-                expected = Pair(0, 19),
+                expected = Pair(0, 19)
             ),
             FromToRangeData(
                 startAt = null,
                 orderAsc = false,
-                expected = Pair(19, 0),
+                expected = Pair(19, 0)
             ),
             FromToRangeData(
                 startAt = "10",
                 orderAsc = true,
-                expected = Pair(11, 30),
+                expected = Pair(11, 30)
             ),
             FromToRangeData(
                 startAt = "10",
                 orderAsc = false,
-                expected = Pair(9, 0),
+                expected = Pair(9, 0)
             ),
             FromToRangeData(
                 startAt = "1",
                 orderAsc = false,
-                expected = Pair(0, 0),
+                expected = Pair(0, 0)
             ),
             FromToRangeData(
                 startAt = "0",
                 orderAsc = false,
-                expected = null,
+                expected = null
             ),
             FromToRangeData(
                 startAt = "-1",
                 orderAsc = false,
-                expected = null,
+                expected = null
             ),
             FromToRangeData(
                 startAt = "90",
                 orderAsc = true,
-                expected = Pair(91, 99),
+                expected = Pair(91, 99)
             ),
             FromToRangeData(
                 startAt = "90",
                 orderAsc = false,
-                expected = Pair(89, 70),
+                expected = Pair(89, 70)
             ),
             FromToRangeData(
                 startAt = "99",
                 orderAsc = true,
-                expected = null,
+                expected = null
             ),
             FromToRangeData(
                 startAt = "100",
                 orderAsc = true,
-                expected = null,
-            ),
+                expected = null
+            )
         ).forEach { data ->
             val actual = stubDoorbellRepository.getFromToRange(
                 startAt = data.startAt?.toInt(),
                 orderAsc = data.orderAsc,
                 minCount = MIN_COUNT,
                 maxCount = MAX_COUNT,
-                size = SIZE,
+                size = SIZE
             )
             assertEquals(
                 expected = data.expected,
                 actual = actual,
-                message = "actual=$actual expected=$data",
+                message = "actual=$actual expected=$data"
             )
         }
     }
@@ -90,5 +90,5 @@ class StubDoorbellRepositoryTest {
 private data class FromToRangeData(
     val startAt: String?,
     val orderAsc: Boolean,
-    val expected: Pair<Int, Int>?,
+    val expected: Pair<Int, Int>?
 )

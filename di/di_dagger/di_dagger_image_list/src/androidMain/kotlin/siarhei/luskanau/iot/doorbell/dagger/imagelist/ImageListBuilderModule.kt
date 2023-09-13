@@ -17,20 +17,20 @@ class ImageListBuilderModule {
 
     @Provides
     fun provideFragmentFactory(
-        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>,
+        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>
     ): FragmentFactory = DaggerFragmentFactory(
-        providers,
+        providers
     )
 
     @Provides
     fun provideImageListFragment(
         appNavigation: AppNavigation,
-        commonComponent: CommonComponent,
+        commonComponent: CommonComponent
     ) = ImageListFragment { fragment: Fragment ->
         val viewModelFactory = ImageListViewModelFactory(
             commonComponent = commonComponent,
             appNavigation = appNavigation,
-            args = fragment.arguments,
+            args = fragment.arguments
         )
         ViewModelProvider(fragment, viewModelFactory)[ImageListViewModel::class.java]
     }

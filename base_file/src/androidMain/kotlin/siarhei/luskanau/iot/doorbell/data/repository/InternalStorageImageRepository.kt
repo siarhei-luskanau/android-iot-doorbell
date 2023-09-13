@@ -8,7 +8,7 @@ import java.io.InputStream
 import java.nio.ByteBuffer
 
 class InternalStorageImageRepository(
-    private val context: Context,
+    private val context: Context
 ) : ImageRepository {
 
     override fun prepareFile(name: String): File =
@@ -25,7 +25,7 @@ class InternalStorageImageRepository(
             ImageFile(
                 name = name,
                 path = file.absolutePath,
-                size = file.length(),
+                size = file.length()
             )
         }.onFailure {
             ImageFile(throwable = it)
@@ -36,7 +36,7 @@ class InternalStorageImageRepository(
             ImageFile(
                 name = file.name,
                 path = file.absolutePath,
-                size = file.length(),
+                size = file.length()
             )
         }.onFailure {
             ImageFile(throwable = it)

@@ -18,14 +18,14 @@ class FirebaseImageSenderRepository : BaseFirebaseRepository(), ImageSenderRepos
     override suspend fun sendImage(
         doorbellId: String,
         cameraId: String,
-        imageInputStream: InputStream,
+        imageInputStream: InputStream
     ) {
         val imageId: String =
             getAppDatabase().child(FirebaseDoorbellRepository.IMAGES_KEY).child(doorbellId).push().key.orEmpty()
 
         val uri: Uri? = putStreamToStorage(
             getAppStorage().child(imageId),
-            imageInputStream,
+            imageInputStream
         )
 
         getAppDatabase().child(FirebaseDoorbellRepository.IMAGES_KEY).child(doorbellId).child(imageId).setValue(
@@ -34,8 +34,8 @@ class FirebaseImageSenderRepository : BaseFirebaseRepository(), ImageSenderRepos
                 imageStoragePath = uri.toString(),
                 doorbellId = doorbellId,
                 cameraId = cameraId,
-                timestamp = 0,
-            ),
+                timestamp = 0
+            )
         )
 
         getAppDatabase().child(FirebaseDoorbellRepository.IMAGES_KEY).child(doorbellId).child(imageId).child("timestamp")
@@ -44,7 +44,7 @@ class FirebaseImageSenderRepository : BaseFirebaseRepository(), ImageSenderRepos
 
     private suspend fun putStreamToStorage(
         storageRef: StorageReference,
-        stream: InputStream,
+        stream: InputStream
     ): Uri? =
         suspendCoroutine { continuation ->
             storageRef.putStream(stream)

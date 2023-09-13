@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.viewbinding.ViewBinding
 
 abstract class BaseRecyclerClickableListAdapter<T, B : ViewBinding>(
-    diffCallback: DiffUtil.ItemCallback<T>,
+    diffCallback: DiffUtil.ItemCallback<T>
 ) : ListAdapter<T, BindingViewHolder<B>>(
-    diffCallback,
+    diffCallback
 ) {
 
     var onItemClickListener: (
         context: Context,
         holder: BindingViewHolder<B>,
-        position: Int,
+        position: Int
     ) -> Unit = { _, _, _ -> }
 
     @Suppress("UNCHECKED_CAST")
@@ -37,7 +37,7 @@ abstract class BaseRecyclerClickableListAdapter<T, B : ViewBinding>(
     abstract fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
-        viewType: Int,
+        viewType: Int
     ): BindingViewHolder<B>
 
     public override fun getItem(position: Int): T = super.getItem(position)

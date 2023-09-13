@@ -10,8 +10,8 @@ import javax.inject.Provider
 @Component(
     modules = [
         DoorbellListBinderModule::class,
-        DoorbellListBuilderModule::class,
-    ],
+        DoorbellListBuilderModule::class
+    ]
 )
 interface DoorbellListComponent {
 
@@ -22,7 +22,7 @@ interface DoorbellListComponent {
 
         fun create(
             @BindsInstance appNavigation: AppNavigation,
-            @BindsInstance commonComponent: CommonComponent,
+            @BindsInstance commonComponent: CommonComponent
         ): DoorbellListComponent
     }
 }

@@ -24,13 +24,13 @@ import kotlin.coroutines.suspendCoroutine
 
 class JetpackCameraRepository(
     private val context: Context,
-    private val imageRepository: ImageRepository,
+    private val imageRepository: ImageRepository
 ) : BaseCameraRepository(context) {
 
     @SuppressLint("RestrictedApi", "UnsafeOptInUsageError")
     override suspend fun makeImage(
         doorbellId: String,
-        cameraId: String,
+        cameraId: String
     ): ImageFile =
         suspendCoroutine { continuation: Continuation<ImageFile> ->
             runCatching {
@@ -53,10 +53,10 @@ class JetpackCameraRepository(
                                     .setResolutionStrategy(
                                         ResolutionStrategy(
                                             Size(480, 640),
-                                            FALLBACK_RULE_CLOSEST_LOWER,
-                                        ),
+                                            FALLBACK_RULE_CLOSEST_LOWER
+                                        )
                                     )
-                                    .build(),
+                                    .build()
                             )
                             .build()
 
@@ -64,7 +64,7 @@ class JetpackCameraRepository(
                         processCameraProvider.bindToLifecycle(
                             ProcessLifecycleOwner.get(),
                             cameraSelector,
-                            imageCapture,
+                            imageCapture
                         )
 
                         // TODO use ImageAnalysis to check if camera is ready
@@ -77,13 +77,13 @@ class JetpackCameraRepository(
                             object : ImageCapture.OnImageSavedCallback {
 
                                 override fun onImageSaved(
-                                    outputFileResults: ImageCapture.OutputFileResults,
+                                    outputFileResults: ImageCapture.OutputFileResults
                                 ) {
                                     handler.post {
                                         runCatching {
                                             processCameraProvider.unbind(imageCapture)
                                             continuation.resume(
-                                                imageRepository.saveImage(file = photoFile),
+                                                imageRepository.saveImage(file = photoFile)
                                             )
                                         }.onFailure {
                                             continuation.resumeWithException(it)
@@ -94,7 +94,7 @@ class JetpackCameraRepository(
                                 override fun onError(exception: ImageCaptureException) {
                                     continuation.resumeWithException(exception)
                                 }
-                            },
+                            }
                         )
                     }.onFailure {
                         continuation.resumeWithException(it)

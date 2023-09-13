@@ -17,33 +17,33 @@ class UptimeWorker(
     workerParams: WorkerParameters,
     private val uptimeRepository: UptimeRepository,
     private val thisDeviceRepository: ThisDeviceRepository,
-    private val doorbellRepository: DoorbellRepository,
+    private val doorbellRepository: DoorbellRepository
 ) : CoroutineWorker(
     context,
-    workerParams,
+    workerParams
 ) {
 
     override suspend fun doWork(): Result =
         runCatching {
             uptimeRepository.sendIpAddressMap(
                 thisDeviceRepository.doorbellId(),
-                thisDeviceRepository.getIpAddressList(),
+                thisDeviceRepository.getIpAddressList()
             )
 
             val currentTimeMillis = System.currentTimeMillis()
             uptimeRepository.uptimePing(
                 thisDeviceRepository.doorbellId(),
                 currentTimeMillis,
-                DATE_FORMAT.format(currentTimeMillis),
+                DATE_FORMAT.format(currentTimeMillis)
             )
 
             doorbellRepository.sendDoorbellData(
-                thisDeviceRepository.doorbellData(),
+                thisDeviceRepository.doorbellData()
             )
 
             doorbellRepository.sendCamerasList(
                 thisDeviceRepository.doorbellId(),
-                thisDeviceRepository.getCamerasList(),
+                thisDeviceRepository.getCamerasList()
             )
 
             Result.success()

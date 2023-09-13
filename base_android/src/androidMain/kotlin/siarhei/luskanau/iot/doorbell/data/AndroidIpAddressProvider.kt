@@ -22,7 +22,7 @@ class AndroidIpAddressProvider : IpAddressProvider {
                     .map { inetAddress: InetAddress ->
                         Pair(
                             inetAddress.hostAddress.orEmpty(),
-                            AppConstants.DATE_FORMAT.format(System.currentTimeMillis()),
+                            AppConstants.DATE_FORMAT.format(System.currentTimeMillis())
                         )
                     }
                     .forEach { hostAddress: Pair<String, String> ->

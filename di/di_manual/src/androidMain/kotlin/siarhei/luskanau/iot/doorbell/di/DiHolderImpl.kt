@@ -23,7 +23,7 @@ class DiHolderImpl(context: Context) : DiHolder {
     override fun getFragmentFactory(fragmentActivity: FragmentActivity): FragmentFactory =
         AppFragmentFactory(
             fragmentActivity = fragmentActivity,
-            appModules = appModules,
+            appModules = appModules
         )
 
     override fun provideWorkerFactory(): WorkerFactory =
@@ -33,6 +33,6 @@ class DiHolderImpl(context: Context) : DiHolder {
             imageSenderRepository = { appModules.imageSenderRepository },
             cameraRepository = { appModules.cameraRepository },
             uptimeRepository = { appModules.uptimeRepository },
-            imageRepository = { appModules.imageRepository },
+            imageRepository = { appModules.imageRepository }
         )
 }

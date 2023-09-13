@@ -42,6 +42,6 @@ class DiHolderImpl(context: Context) : DiHolder {
             imageSenderRepository = { di.direct.instance() },
             cameraRepository = { di.direct.instance() },
             uptimeRepository = { di.direct.instance() },
-            imageRepository = { di.direct.instance() },
+            imageRepository = { di.direct.instance() }
         )
 }

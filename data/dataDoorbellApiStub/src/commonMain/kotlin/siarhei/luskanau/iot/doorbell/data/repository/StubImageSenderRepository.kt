@@ -6,6 +6,6 @@ class StubImageSenderRepository : ImageSenderRepository {
     override suspend fun sendImage(
         doorbellId: String,
         cameraId: String,
-        imageInputStream: InputStream,
+        imageInputStream: InputStream
     ) = Unit
 }

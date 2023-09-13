@@ -24,10 +24,10 @@ val imageDetailsModule = module {
     }
 
     factory<ImageDetailsPresenter> { (
-        activity: FragmentActivity,
-        fragment: Fragment,
-        args: Bundle?,
-    ),
+            activity: FragmentActivity,
+            fragment: Fragment,
+            args: Bundle?
+        )
         ->
         val doorbellId = ImageDetailsFragmentArgs.fromBundle(requireNotNull(args)).doorbellId
         val imageId = ImageDetailsFragmentArgs.fromBundle(args).imageId
@@ -35,7 +35,7 @@ val imageDetailsModule = module {
             appNavigation = get { parametersOf(activity) },
             fragment = fragment,
             doorbellId = doorbellId,
-            imageId = imageId,
+            imageId = imageId
         )
     }
 
@@ -50,7 +50,7 @@ val imageDetailsModule = module {
         ImageDetailsSlidePresenterImpl(
             doorbellId = doorbellId,
             imageId = imageId,
-            doorbellRepository = get(),
+            doorbellRepository = get()
         )
     }
 }

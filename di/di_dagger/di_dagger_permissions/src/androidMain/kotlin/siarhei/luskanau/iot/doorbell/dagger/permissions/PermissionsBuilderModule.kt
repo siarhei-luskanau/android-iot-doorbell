@@ -15,14 +15,14 @@ class PermissionsBuilderModule {
 
     @Provides
     fun providesFragmentFactory(
-        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>,
+        providers: MutableMap<Class<out Fragment>, Provider<Fragment>>
     ): FragmentFactory = DaggerFragmentFactory(
-        providers,
+        providers
     )
 
     @Provides
     fun providePermissionsFragment(
-        appNavigation: AppNavigation,
+        appNavigation: AppNavigation
     ) = PermissionsFragment {
         PermissionsPresenter(appNavigation = appNavigation)
     }

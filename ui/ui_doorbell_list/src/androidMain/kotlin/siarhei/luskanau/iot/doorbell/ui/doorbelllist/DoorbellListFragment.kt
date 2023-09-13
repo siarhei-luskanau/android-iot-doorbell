@@ -20,6 +20,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -39,55 +40,51 @@ import siarhei.luskanau.iot.doorbell.ui.common.LoadingItem
 import siarhei.luskanau.iot.doorbell.ui.common.R
 
 class DoorbellListFragment(
-    presenterProvider: (fragment: Fragment) -> DoorbellListPresenter,
+    presenterProvider: (fragment: Fragment) -> DoorbellListPresenter
 ) : BaseFragment<DoorbellListPresenter>(presenterProvider) {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View =
         ComposeView(inflater.context).apply {
             setContent {
                 MaterialTheme {
                     DoorbellListComposable(
                         presenter.doorbellListFlow.collectAsLazyPagingItems(),
+                        checkPermissions = { presenter.checkPermissions() },
                         onItemClickListener = { doorbellData ->
                             doorbellData?.let { presenter.onDoorbellClicked(it) }
-                        },
+                        }
                     )
                 }
             }
         }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        presenter.checkPermissions()
-    }
 }
 
 @Composable
 @Suppress("FunctionNaming")
 fun DoorbellListComposable(
     items: LazyPagingItems<DoorbellData>,
-    onItemClickListener: (DoorbellData?) -> Unit,
+    checkPermissions: () -> Unit,
+    onItemClickListener: (DoorbellData?) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(all = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(
             count = items.itemCount,
             key = items.itemKey { it.doorbellId },
-            contentType = items.itemContentType { null },
+            contentType = items.itemContentType { null }
         ) { index ->
             val doorbellData = items[index]
             doorbellData?.let {
                 DoorbellDataItem(
                     doorbellData = doorbellData,
-                    onItemClickListener = onItemClickListener,
+                    onItemClickListener = onItemClickListener
                 )
             }
         }
@@ -106,13 +103,16 @@ fun DoorbellListComposable(
             is LoadState.NotLoading -> Unit
         }
     }
+    LaunchedEffect(true) {
+        checkPermissions.invoke()
+    }
 }
 
 @Composable
 @Suppress("FunctionNaming")
 fun DoorbellDataItem(
     doorbellData: DoorbellData,
-    onItemClickListener: (DoorbellData?) -> Unit,
+    onItemClickListener: (DoorbellData?) -> Unit
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
@@ -123,24 +123,24 @@ fun DoorbellDataItem(
             null
         } else {
             BorderStroke(1.dp, MaterialTheme.colors.surface)
-        },
+        }
     ) {
         Row(
             modifier = Modifier
                 .padding(all = 8.dp)
                 .fillMaxWidth()
                 .clickable { onItemClickListener.invoke(doorbellData) },
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             val text = doorbellData.name ?: doorbellData.doorbellId
             Icon(
                 painter = painterResource(id = R.drawable.ic_device_hub),
-                contentDescription = text,
+                contentDescription = text
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h5
             )
         }
     }
@@ -153,8 +153,8 @@ fun DoorbellDataItemPreview() {
     DoorbellDataItem(
         doorbellData = DoorbellData(
             doorbellId = "doorbellId",
-            name = "name",
+            name = "name"
         ),
-        onItemClickListener = {},
+        onItemClickListener = {}
     )
 }

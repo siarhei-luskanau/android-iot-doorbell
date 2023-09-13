@@ -77,7 +77,7 @@ class CommonModule {
     @Provides
     @Singleton
     fun provideScheduleWorkManagerService(
-        workManager: Provider<WorkManager>,
+        workManager: Provider<WorkManager>
     ): ScheduleWorkManagerService =
         DefaultScheduleWorkManagerService(workManager = { workManager.get() })
 
@@ -85,11 +85,11 @@ class CommonModule {
     @Singleton
     fun provideCameraRepository(
         context: Provider<Context>,
-        imageRepository: Provider<ImageRepository>,
+        imageRepository: Provider<ImageRepository>
     ): CameraRepository =
         JetpackCameraRepository(
             context = context.get(),
-            imageRepository = imageRepository.get(),
+            imageRepository = imageRepository.get()
         )
 
     @Provides
@@ -104,10 +104,10 @@ class CommonModule {
     @Provides
     @Singleton
     fun provideDoorbellsDataSource(
-        doorbellRepository: Provider<DoorbellRepository>,
+        doorbellRepository: Provider<DoorbellRepository>
     ): DoorbellsDataSource =
         DefaultDoorbellsDataSource(
-            doorbellRepository = doorbellRepository.get(),
+            doorbellRepository = doorbellRepository.get()
         )
 
     @Provides
@@ -123,10 +123,10 @@ class CommonModule {
     @Provides
     @Singleton
     fun provideImagesDataSourceFactory(
-        doorbellRepository: Provider<DoorbellRepository>,
+        doorbellRepository: Provider<DoorbellRepository>
     ): ImagesDataSourceFactory =
         ImagesDataSourceFactoryImpl(
-            doorbellRepository = doorbellRepository.get(),
+            doorbellRepository = doorbellRepository.get()
         )
 
     @Provides
@@ -135,13 +135,13 @@ class CommonModule {
         context: Provider<Context>,
         deviceInfoProvider: Provider<DeviceInfoProvider>,
         cameraRepository: Provider<CameraRepository>,
-        ipAddressProvider: Provider<IpAddressProvider>,
+        ipAddressProvider: Provider<IpAddressProvider>
     ): ThisDeviceRepository =
         AndroidThisDeviceRepository(
             context = context.get(),
             deviceInfoProvider = deviceInfoProvider.get(),
             cameraRepository = cameraRepository.get(),
-            ipAddressProvider = ipAddressProvider.get(),
+            ipAddressProvider = ipAddressProvider.get()
         )
 
     @Provides
@@ -149,11 +149,11 @@ class CommonModule {
     fun provideAppBackgroundServices(
         doorbellRepository: Provider<DoorbellRepository>,
         thisDeviceRepository: Provider<ThisDeviceRepository>,
-        scheduleWorkManagerService: Provider<ScheduleWorkManagerService>,
+        scheduleWorkManagerService: Provider<ScheduleWorkManagerService>
     ): AppBackgroundServices =
         AppBackgroundServices(
             doorbellRepository = doorbellRepository.get(),
             thisDeviceRepository = thisDeviceRepository.get(),
-            scheduleWorkManagerService = scheduleWorkManagerService.get(),
+            scheduleWorkManagerService = scheduleWorkManagerService.get()
         )
 }

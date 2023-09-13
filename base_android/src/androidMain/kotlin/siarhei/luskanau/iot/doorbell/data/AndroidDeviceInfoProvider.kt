@@ -8,14 +8,14 @@ import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import java.util.UUID
 
 class AndroidDeviceInfoProvider(
-    private val context: Context,
+    private val context: Context
 ) : DeviceInfoProvider {
 
     @SuppressLint("HardwareIds")
     override fun buildDoorbellId(): String {
         val doorbellId: String = Settings.Secure.getString(
             context.contentResolver,
-            Settings.Secure.ANDROID_ID,
+            Settings.Secure.ANDROID_ID
         ) ?: UUID.randomUUID().toString()
 
         return "${doorbellId}_${Build.MODEL}"
@@ -27,6 +27,6 @@ class AndroidDeviceInfoProvider(
         "DEVICE" to Build.DEVICE,
         "MODEL" to Build.MODEL,
         "SDK_INT" to Build.VERSION.SDK_INT.toString(),
-        "RELEASE" to Build.VERSION.RELEASE,
+        "RELEASE" to Build.VERSION.RELEASE
     )
 }
