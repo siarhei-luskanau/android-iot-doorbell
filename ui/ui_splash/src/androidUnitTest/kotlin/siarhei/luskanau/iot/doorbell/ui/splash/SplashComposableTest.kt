@@ -10,12 +10,12 @@ import kotlin.test.Test
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [33])
-class SplashFragmentTest {
+class SplashComposableTest {
 
     @Test
-    fun testNormalState() {
-        captureRoboImage(filePath = "screenshots/SplashPreview.png") {
-            SplashPreview()
+    fun test() {
+        captureRoboImage(filePath = "screenshots/Splash.png") {
+            SplashComposable(onSplashComplete = {})
         }
     }
 }

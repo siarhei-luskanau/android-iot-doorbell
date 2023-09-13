@@ -1,4 +1,4 @@
-package siarhei.luskanau.iot.doorbell.ui.doorbelllist
+package siarhei.luskanau.iot.doorbell.ui.imagelist
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -9,24 +9,28 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
+import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import kotlin.test.Test
 
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [33])
-class DoorbellListFragmentTest {
+class ImageListComposableTest {
 
     @Test
     fun testNormalState() {
         val pager = Pager(
             config = PagingConfig(pageSize = 1),
-            pagingSourceFactory = listOf(DoorbellData(doorbellId = "doorbellId")).asPagingSourceFactory()
+            pagingSourceFactory = listOf(
+                ImageData(
+                    imageId = "1",
+                    imageUri = null
+                )
+            ).asPagingSourceFactory()
         )
-        captureRoboImage(filePath = "screenshots/DoorbellListComposable.Normal.png") {
-            DoorbellListComposable(
+        captureRoboImage(filePath = "screenshots/ImageListComposable.Normal.png") {
+            ImageListComposable(
                 items = pager.flow.collectAsLazyPagingItems(),
-                checkPermissions = {},
                 onItemClickListener = {}
             )
         }
@@ -36,12 +40,11 @@ class DoorbellListFragmentTest {
     fun testEmptyState() {
         val pager = Pager(
             config = PagingConfig(pageSize = 1),
-            pagingSourceFactory = emptyList<DoorbellData>().asPagingSourceFactory()
+            pagingSourceFactory = emptyList<ImageData>().asPagingSourceFactory()
         )
-        captureRoboImage(filePath = "screenshots/DoorbellListComposable.Empty.png") {
-            DoorbellListComposable(
+        captureRoboImage(filePath = "screenshots/ImageListComposable.Empty.png") {
+            ImageListComposable(
                 items = pager.flow.collectAsLazyPagingItems(),
-                checkPermissions = {},
                 onItemClickListener = {}
             )
         }

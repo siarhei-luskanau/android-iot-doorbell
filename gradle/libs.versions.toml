@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.0-alpha03"
+agp = "8.1.1"
 android-build-compileSdk = "34"
 android-build-minSdk = "26"
 android-build-targetSdk = "34"
@@ -43,6 +43,7 @@ pinterest-ktlint = "0.50.0"
 robolectric = "4.10.3"
 roborazzi = "1.6.0-alpha-3"
 timber = "5.0.1"
+zoomable = "1.5.1"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -103,6 +104,7 @@ roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = 
 roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose", version.ref = "roborazzi" }
 roborazzi-gradle-plugin = { module = "io.github.takahirom.roborazzi:roborazzi-gradle-plugin", version.ref = "roborazzi" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

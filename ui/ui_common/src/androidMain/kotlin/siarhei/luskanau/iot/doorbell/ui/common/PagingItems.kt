@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-@Suppress("FunctionNaming")
 fun LoadingItem() {
     Box(
         modifier = Modifier
@@ -28,7 +27,6 @@ fun LoadingItem() {
 }
 
 @Composable
-@Suppress("FunctionNaming")
 fun ErrorItem(text: String) {
     Card(
         elevation = 2.dp,
