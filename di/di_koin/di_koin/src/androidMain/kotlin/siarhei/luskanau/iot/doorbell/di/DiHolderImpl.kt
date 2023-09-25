@@ -55,6 +55,5 @@ class DiHolderImpl(context: Context) : DiHolder {
             imageSenderRepository = { koinApplication.koin.get() },
             cameraRepository = { koinApplication.koin.get() },
             uptimeRepository = { koinApplication.koin.get() },
-            imageRepository = { koinApplication.koin.get() },
         )
 }

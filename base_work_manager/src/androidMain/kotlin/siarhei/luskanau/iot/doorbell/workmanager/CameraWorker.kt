@@ -1,11 +1,12 @@
 package siarhei.luskanau.iot.doorbell.workmanager
 
 import android.content.Context
+import android.net.Uri
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import dev.gitlive.firebase.storage.File
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
 import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
-import siarhei.luskanau.iot.doorbell.data.repository.ImageRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ImageSenderRepository
 import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import timber.log.Timber
@@ -17,7 +18,6 @@ class CameraWorker(
     private val doorbellRepository: DoorbellRepository,
     private val imageSenderRepository: ImageSenderRepository,
     private val cameraRepository: CameraRepository,
-    private val imageRepository: ImageRepository,
 ) : CoroutineWorker(
     context,
     workerParams,
@@ -42,12 +42,11 @@ class CameraWorker(
                             cameraId = cameraId,
                         )
                         .also { imageFile ->
+                            val uri = Uri.fromFile(imageFile.path?.let { java.io.File(it) })
                             imageSenderRepository.sendImage(
                                 doorbellId = thisDeviceRepository.doorbellId(),
                                 cameraId = cameraId,
-                                imageInputStream = imageRepository.openInputStream(
-                                    imageFile.path.orEmpty(),
-                                ),
+                                file = File(uri),
                             )
                         }
                 }

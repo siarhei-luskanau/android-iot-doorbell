@@ -7,10 +7,10 @@ android.namespace = "siarhei.luskanau.iot.doorbell.data.firebase"
 
 kotlin {
     sourceSets {
-        val androidMain by getting {
+        val commonMain by getting {
             dependencies {
-                implementation(libs.firebase.storage)
                 implementation(libs.gitlive.firebase.database)
+                implementation(libs.gitlive.firebase.storage)
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.kotlinx.serialization.json)
@@ -18,8 +18,4 @@ kotlin {
             }
         }
     }
-}
-
-dependencies {
-    implementation(platform(libs.firebase.bom))
 }

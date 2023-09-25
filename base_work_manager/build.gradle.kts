@@ -12,6 +12,7 @@ kotlin {
                 implementation(project(":data:dataDoorbellApi"))
                 implementation(libs.androidx.startup.runtime)
                 implementation(libs.androidx.work.runtime.ktx)
+                implementation(libs.gitlive.firebase.storage)
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.timber)
             }

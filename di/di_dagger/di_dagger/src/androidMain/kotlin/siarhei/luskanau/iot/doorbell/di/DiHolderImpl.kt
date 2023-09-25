@@ -82,6 +82,5 @@ class DiHolderImpl(context: Context) : DiHolder {
             imageSenderRepository = { commonComponent.provideImageSenderRepository() },
             cameraRepository = { commonComponent.provideCameraRepository() },
             uptimeRepository = { commonComponent.provideUptimeRepository() },
-            imageRepository = { commonComponent.provideImageRepository() },
         )
 }

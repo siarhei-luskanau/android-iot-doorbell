@@ -4,7 +4,6 @@ import android.content.Context
 import siarhei.luskanau.iot.doorbell.data.model.ImageFile
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
 import java.nio.ByteBuffer
 
 class InternalStorageImageRepository(
@@ -41,7 +40,4 @@ class InternalStorageImageRepository(
         }.onFailure {
             ImageFile(throwable = it)
         }.getOrThrow()
-
-    override fun openInputStream(imagePath: String): InputStream =
-        File(imagePath).inputStream()
 }

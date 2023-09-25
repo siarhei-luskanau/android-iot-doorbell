@@ -1,11 +1,11 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import java.io.InputStream
+import dev.gitlive.firebase.storage.File
 
 interface ImageSenderRepository {
     suspend fun sendImage(
         doorbellId: String,
         cameraId: String,
-        imageInputStream: InputStream,
+        file: File,
     )
 }
