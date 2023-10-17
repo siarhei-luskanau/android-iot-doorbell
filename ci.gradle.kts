@@ -70,9 +70,9 @@ tasks.register("ciEmulatorJobsMatrixSetup") {
 tasks.register("devAll") {
     group = CI_GRADLE
     doLast {
+        gradlew("clean")
+        gradlew("ktlintFormat")
         gradlew(
-            "clean",
-            "ktlintFormat",
             "ciLint",
             "ciUnitTest",
             "ciRecordScreenshots",

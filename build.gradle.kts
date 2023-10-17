@@ -19,8 +19,8 @@ plugins {
 apply(from = "$rootDir/ci.gradle.kts")
 
 allprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
     apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
     ktlint {
         version.set("0.50.0")
     }
