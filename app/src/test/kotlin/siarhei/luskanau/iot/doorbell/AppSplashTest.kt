@@ -18,7 +18,7 @@ import siarhei.luskanau.iot.doorbell.ui.splash.R as SplashR
 
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Config(sdk = [33])
+@Config(sdk = [34])
 class AppSplashTest {
 
     @get:Rule

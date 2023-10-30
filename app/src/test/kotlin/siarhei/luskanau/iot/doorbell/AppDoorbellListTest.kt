@@ -19,7 +19,7 @@ import siarhei.luskanau.iot.doorbell.ui.doorbelllist.R as DoorbellListR
 
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Config(sdk = [33])
+@Config(sdk = [34])
 class AppDoorbellListTest {
 
     @get:Rule
