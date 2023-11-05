@@ -1,6 +1,7 @@
 import com.google.gson.GsonBuilder
 import org.gradle.api.Project
 import java.io.File
+import java.util.Properties
 
 class EmulatorJobsMatrix {
 
@@ -23,16 +24,17 @@ class EmulatorJobsMatrix {
             EMULATOR_VERSIONS.mapNotNull { version ->
                 when {
                     ":app" == subProject.path -> listOf(
+                        "ciSdkManagerLicenses",
                         "${subProject.path}:managedVirtualDevice${version}DiDaggerDebugAndroidTest",
                         "${subProject.path}:managedVirtualDevice${version}DiKodeinDebugAndroidTest",
                         "${subProject.path}:managedVirtualDevice${version}DiKoinDebugAndroidTest",
                         "${subProject.path}:managedVirtualDevice${version}DiManualDebugAndroidTest",
                     )
 
-                    File(
-                        subProject.projectDir,
-                        "src${File.separator}androidInstrumentedTest"
-                    ).exists() -> listOf("${subProject.path}:managedVirtualDevice${version}DebugAndroidTest")
+                    File(subProject.projectDir, "src${File.separator}androidInstrumentedTest").exists() -> listOf(
+                        "ciSdkManagerLicenses",
+                        "${subProject.path}:managedVirtualDevice${version}DebugAndroidTest"
+                    )
 
                     else -> null
                 }
@@ -49,4 +51,37 @@ class EmulatorJobsMatrix {
                 }
             }.joinToString(separator = " ")
         }.sorted()
+}
+
+fun getAndroidSdkPath(rootDir: File): String? = Properties().apply {
+    val propertiesFile = File(rootDir, "local.properties")
+    if (propertiesFile.exists()) {
+        load(propertiesFile.inputStream())
+    }
+}.getProperty("sdk.dir").let { propertiesSdkDirPath ->
+    (propertiesSdkDirPath ?: System.getenv("ANDROID_HOME"))
+}
+
+fun getApksignerFile(rootDir: File): File? = getAndroidSdkPath(rootDir = rootDir)?.let { sdkDirPath ->
+    println("sdkDirPath: $sdkDirPath")
+    val apksignerFile = File(sdkDirPath).walk()
+        .filter { it.path.endsWith("apksigner") }
+        .map {
+            println("walk apksigner: ${it.absolutePath}")
+            it
+        }
+        .firstOrNull()
+    println("apksignerFile: $apksignerFile")
+    apksignerFile
+}
+
+fun getSdkmanagerFile(rootDir: File): File? = getAndroidSdkPath(rootDir = rootDir)?.let { sdkDirPath ->
+    println("sdkDirPath: $sdkDirPath")
+    val files = File(sdkDirPath).walk().filter { file ->
+        file.path.contains("cmdline-tools") && file.path.endsWith("sdkmanager")
+    }
+    files.forEach { println("walk: ${it.absolutePath}") }
+    val sdkmanagerFile = files.firstOrNull()
+    println("sdkmanagerFile: $sdkmanagerFile")
+    sdkmanagerFile
 }

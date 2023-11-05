@@ -1,5 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import java.io.File
+import java.io.InputStream
 import java.util.Properties
 
 val CI_GRADLE = "CI_GRADLE"
@@ -64,6 +65,31 @@ tasks.register("ciEmulatorJobsMatrixSetup") {
     group = CI_GRADLE
     doLast {
         EmulatorJobsMatrix().createMatrixJsonFile(rootProject = rootProject)
+    }
+}
+
+tasks.register("ciSdkManagerLicenses") {
+    group = CI_GRADLE
+    doLast {
+        val sdkDirPath = getAndroidSdkPath(rootDir = rootDir)
+        getSdkmanagerFile(rootDir = rootDir)?.let { sdkmanagerFile ->
+            val yesInputStream = object : InputStream() {
+                private val yesString = "y\n"
+                private var counter = 0
+                override fun read(): Int = yesString[counter % 2].also { counter++ }.code
+            }
+            exec {
+                executable = sdkmanagerFile.absolutePath
+                args = listOf("--list", "--sdk_root=$sdkDirPath")
+                println("exec: ${this.commandLine.joinToString(separator = " ")}")
+            }.apply { println("ExecResult: $this") }
+            exec {
+                executable = sdkmanagerFile.absolutePath
+                args = listOf("--licenses", "--sdk_root=$sdkDirPath")
+                standardInput = yesInputStream
+                println("exec: ${this.commandLine.joinToString(separator = " ")}")
+            }.apply { println("ExecResult: $this") }
+        }
     }
 }
 

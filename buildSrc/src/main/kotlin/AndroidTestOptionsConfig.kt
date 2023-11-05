@@ -8,13 +8,17 @@ fun TestOptions.configureAndroidTestOptions() {
     unitTests {
         isIncludeAndroidResources = true
         all { test: org.gradle.api.tasks.testing.Test ->
-            test.testLogging.events = setOf(
-                org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
-                org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
-                org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
-                org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT,
-                org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR,
-            )
+            test.testLogging {
+                exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+                events = setOf(
+                    org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED,
+                    org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED,
+                    org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED,
+                    org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT,
+                    org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR,
+                    org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+                )
+            }
         }
     }
     animationsDisabled = true
@@ -25,6 +29,11 @@ fun TestOptions.configureAndroidTestOptions() {
         managedDevices.devices.create<ManagedVirtualDevice>("managedVirtualDevice$version") {
             device = "Pixel 2"
             apiLevel = version
+            systemImageSource = if (version != 34) {
+                "google-atd"
+            } else {
+                "google"
+            }
         }
     }
 }
