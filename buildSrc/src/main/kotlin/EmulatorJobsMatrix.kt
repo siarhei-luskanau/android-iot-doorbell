@@ -24,7 +24,6 @@ class EmulatorJobsMatrix {
             EMULATOR_VERSIONS.mapNotNull { version ->
                 when {
                     ":app" == subProject.path -> listOf(
-                        "ciSdkManagerLicenses",
                         "${subProject.path}:managedVirtualDevice${version}DiDaggerDebugAndroidTest",
                         "${subProject.path}:managedVirtualDevice${version}DiKodeinDebugAndroidTest",
                         "${subProject.path}:managedVirtualDevice${version}DiKoinDebugAndroidTest",
@@ -32,7 +31,6 @@ class EmulatorJobsMatrix {
                     )
 
                     File(subProject.projectDir, "src${File.separator}androidInstrumentedTest").exists() -> listOf(
-                        "ciSdkManagerLicenses",
                         "${subProject.path}:managedVirtualDevice${version}DebugAndroidTest"
                     )
 
@@ -46,7 +44,7 @@ class EmulatorJobsMatrix {
                 it.add("-Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect")
                 it.add("-Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true")
             }.also {
-                if (!true.toString().equals(other = System.getProperty("CI"), ignoreCase = true)) {
+                if (!true.toString().equals(other = System.getenv("CI"), ignoreCase = true)) {
                     it.add("--enable-display")
                 }
             }.joinToString(separator = " ")
