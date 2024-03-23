@@ -8,8 +8,8 @@ repositories {
 }
 
 dependencies {
-    implementation(buildSrcLibs.android.gradle.plugin)
-    implementation(buildSrcLibs.gson)
-    implementation(buildSrcLibs.roborazzi.gradle.plugin)
-    implementation(buildSrcLibs.kotlin.gradle.plugin)
+    implementation(libs.android.gradle.plugin)
+    implementation(libs.gson)
+    implementation(libs.roborazzi.gradle.plugin)
+    implementation(libs.kotlin.gradle.plugin)
 }

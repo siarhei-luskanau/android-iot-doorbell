@@ -1,6 +1,6 @@
 dependencyResolutionManagement {
     versionCatalogs {
-        create("buildSrcLibs") {
+        create("libs") {
             from(files("../gradle/libs.versions.toml"))
         }
     }
