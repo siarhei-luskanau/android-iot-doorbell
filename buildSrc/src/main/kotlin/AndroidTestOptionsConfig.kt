@@ -29,11 +29,7 @@ fun TestOptions.configureAndroidTestOptions() {
         managedDevices.devices.create<ManagedVirtualDevice>("managedVirtualDevice$version") {
             device = "Pixel 2"
             apiLevel = version
-            systemImageSource = if (version != 34) {
-                "google-atd"
-            } else {
-                "google"
-            }
+            systemImageSource = "google"
         }
     }
 }
