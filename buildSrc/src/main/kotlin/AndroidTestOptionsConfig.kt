@@ -29,11 +29,12 @@ fun TestOptions.configureAndroidTestOptions() {
         managedDevices.devices.create<ManagedVirtualDevice>("managedVirtualDevice$version") {
             device = "Pixel 2"
             apiLevel = version
-            systemImageSource = if (version != 34) {
-                "google-atd"
-            } else {
-                "google"
+            val systemImageConfig: Pair<String?, Boolean?> = when (apiLevel) {
+                34 -> "aosp" to true
+                else -> null to null
             }
+            systemImageConfig.first?.also { systemImageSource = it }
+            systemImageConfig.second?.also { require64Bit = it }
         }
     }
 }
