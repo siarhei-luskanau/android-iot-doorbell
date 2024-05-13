@@ -39,7 +39,7 @@ ktlint-jlleitschuh = "12.1.1"
 leakcanary = "2.14"
 mockk = "1.13.10"
 robolectric = "4.12.1"
-roborazzi = "1.14.0"
+roborazzi = "1.15.0"
 timber = "5.0.1"
 zoomable = "1.6.1"
 
