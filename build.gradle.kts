@@ -26,11 +26,13 @@ allprojects {
     }
 }
 
-koverReport {
-    verify {
-        rule {
-            minBound(95)
-            maxBound(98)
+kover {
+    reports {
+        verify {
+            rule {
+                minBound(95)
+                maxBound(98)
+            }
         }
     }
 }
@@ -48,11 +50,6 @@ subprojects.filter {
     ).contains(it.path)
 }.forEach {
     it.apply(plugin = "org.jetbrains.kotlinx.kover")
-    it.koverReport {
-        defaults {
-            mergeWith("debug")
-        }
-    }
     it.dependencies { kover(project(it.path)) }
 }
 
