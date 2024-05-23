@@ -44,6 +44,7 @@ FLOOBITS_README.md
 google-services.json
 
 .gradle
+.kotlin
 .idea
 .DS_Store
 build

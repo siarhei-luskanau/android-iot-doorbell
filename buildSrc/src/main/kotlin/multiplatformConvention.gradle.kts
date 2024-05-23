@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     id("io.github.takahirom.roborazzi")
     kotlin("multiplatform")
+    kotlin("plugin.compose")
 }
 
 kotlin {

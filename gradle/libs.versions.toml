@@ -25,12 +25,12 @@ compose-compiler = "1.5.14"
 dagger = "2.51.1"
 detekt = "1.23.6"
 gitlive-firebase = "1.12.0"
-google-ksp = "1.9.24-1.0.20"
+google-ksp = "2.0.0-1.0.21"
 google-services = "4.4.1"
 gson = "2.11.0"
 kodein = "7.22.0"
 koin = "3.5.6"
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 kotlinx-coroutines = "1.8.1"
 kotlinx-datetime = "0.6.0"
 kotlinx-kover = "0.8.0"
@@ -83,6 +83,7 @@ gitlive-firebase-database = { module = "dev.gitlive:firebase-database", version.
 gitlive-firebase-storage = { module = "dev.gitlive:firebase-storage", version.ref = "gitlive-firebase" }
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+jetbrains-compose-compiler-plugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 kodein-android-core = { module = "org.kodein.di:kodein-di-framework-android-core", version.ref = "kodein" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -106,6 +107,7 @@ zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
