@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("io.github.takahirom.roborazzi")
     kotlin("android")
+    kotlin("plugin.compose")
 }
 
 android {
