@@ -86,10 +86,6 @@ android {
 
     testOptions.configureAndroidTestOptions()
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.findVersion("compose-compiler").get().requiredVersion
-    }
-
     packagingOptions.resources.excludes.apply {
         add("META-INF/AL2.0")
         add("META-INF/LGPL2.1")
