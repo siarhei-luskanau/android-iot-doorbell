@@ -2,18 +2,13 @@ println("gradle.startParameter.taskNames: ${gradle.startParameter.taskNames}")
 System.getProperties().forEach { key, value -> println("System.getProperties(): $key=$value") }
 System.getenv().forEach { (key, value) -> println("System.getenv(): $key=$value") }
 
-buildscript {
-    dependencies {
-        classpath(libs.androidx.navigation.safeArgsGradlePlugin)
-        classpath(libs.google.services)
-    }
-}
-
 plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.ksp) apply false
+    alias(libs.plugins.google.services) apply false
     alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.ktlint.jlleitschuh)
+    alias(libs.plugins.navigation.safeargs.kotlin) apply false
 }
 
 apply(from = "$rootDir/ci.gradle.kts")
