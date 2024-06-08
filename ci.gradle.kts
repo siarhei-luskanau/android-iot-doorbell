@@ -27,7 +27,6 @@ tasks.register("ciUnitTest") {
             "koverHtmlReport",
             "koverVerifyDebug",
             "koverVerify",
-            "verifyRoborazziDebug",
         )
         gradlew(
             "verifyRoborazziDebug",
