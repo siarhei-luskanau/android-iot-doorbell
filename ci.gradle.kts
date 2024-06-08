@@ -28,6 +28,13 @@ tasks.register("ciUnitTest") {
             "koverVerifyDebug",
             "koverVerify",
         )
+        gradlew(
+            "verifyRoborazziDebug",
+            "verifyRoborazziDiDaggerDebug",
+            "verifyRoborazziDiKodeinDebug",
+            "verifyRoborazziDiKoinDebug",
+            "verifyRoborazziDiManualDebug",
+        )
     }
 }
 
