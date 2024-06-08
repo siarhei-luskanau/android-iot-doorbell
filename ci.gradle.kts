@@ -16,19 +16,6 @@ tasks.register("ciLint") {
     }
 }
 
-tasks.register("ciRecordScreenshots") {
-    group = CI_GRADLE
-    doLast {
-        gradlew(
-            "recordRoborazziDebug",
-            "recordRoborazziDiDaggerDebug",
-            "recordRoborazziDiKodeinDebug",
-            "recordRoborazziDiKoinDebug",
-            "recordRoborazziDiManualDebug",
-        )
-    }
-}
-
 tasks.register("ciUnitTest") {
     group = CI_GRADLE
     doLast {
@@ -48,6 +35,19 @@ tasks.register("ciUnitTest") {
             "verifyRoborazziDiKodeinDebug",
             "verifyRoborazziDiKoinDebug",
             "verifyRoborazziDiManualDebug",
+        )
+    }
+}
+
+tasks.register("ciRecordScreenshots") {
+    group = CI_GRADLE
+    doLast {
+        gradlew(
+            "recordRoborazziDebug",
+            "recordRoborazziDiDaggerDebug",
+            "recordRoborazziDiKodeinDebug",
+            "recordRoborazziDiKoinDebug",
+            "recordRoborazziDiManualDebug",
         )
     }
 }
