@@ -41,6 +41,13 @@ tasks.register("ciRecordScreenshots") {
             "recordRoborazziDiKoinDebug",
             "recordRoborazziDiManualDebug",
         )
+        gradlew(
+            "verifyRoborazziDebug",
+            "verifyRoborazziDiDaggerDebug",
+            "verifyRoborazziDiKodeinDebug",
+            "verifyRoborazziDiKoinDebug",
+            "verifyRoborazziDiManualDebug",
+        )
     }
 }
 
