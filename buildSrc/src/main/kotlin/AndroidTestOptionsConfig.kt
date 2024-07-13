@@ -2,7 +2,7 @@ import com.android.build.api.dsl.ManagedVirtualDevice
 import com.android.build.api.dsl.TestOptions
 import org.gradle.kotlin.dsl.create
 
-val EMULATOR_VERSIONS = 30..34
+val EMULATOR_VERSIONS = 30..35
 
 fun TestOptions.configureAndroidTestOptions() {
     unitTests {
@@ -30,7 +30,7 @@ fun TestOptions.configureAndroidTestOptions() {
             device = "Pixel 2"
             apiLevel = version
             val systemImageConfig: Pair<String?, Boolean?> = when (apiLevel) {
-                30, 33, 34 -> "aosp" to true
+                30, 33, 34, 35 -> "aosp" to true
                 else -> null to null
             }
             systemImageConfig.first?.also { systemImageSource = it }
