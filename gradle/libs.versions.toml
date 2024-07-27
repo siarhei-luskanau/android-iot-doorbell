@@ -21,6 +21,7 @@ build-javaVersion = "VERSION_17"
 build-jvmTarget = "17"
 coil = "2.7.0"
 compose-bom = "2024.06.00"
+compose-screenshot = "0.0.1-alpha03"
 dagger = "2.51.1"
 detekt = "1.23.6"
 gitlive-firebase = "1.13.0"
@@ -105,6 +106,7 @@ zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+compose-screenshot = { id = "com.android.compose.screenshot", version.ref = "compose-screenshot"}
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }

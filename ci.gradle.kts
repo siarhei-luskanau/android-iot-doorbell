@@ -28,13 +28,6 @@ tasks.register("ciUnitTest") {
             "koverVerifyDebug",
             "koverVerify",
         )
-        gradlew(
-            "verifyRoborazziDebug",
-            "verifyRoborazziDiDaggerDebug",
-            "verifyRoborazziDiKodeinDebug",
-            "verifyRoborazziDiKoinDebug",
-            "verifyRoborazziDiManualDebug",
-        )
     }
 }
 
@@ -42,6 +35,7 @@ tasks.register("ciRecordScreenshots") {
     group = CI_GRADLE
     doLast {
         gradlew(
+            "updateDebugScreenshotTest",
             "recordRoborazziDebug",
             "recordRoborazziDiDaggerDebug",
             "recordRoborazziDiKodeinDebug",

@@ -1,9 +1,13 @@
 plugins {
     multiplatformConvention
     id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.compose.screenshot)
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.ui.splash"
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.ui.splash"
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
+}
 
 kotlin {
     sourceSets {
