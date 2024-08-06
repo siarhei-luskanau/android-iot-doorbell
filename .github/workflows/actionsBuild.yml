@@ -25,9 +25,9 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
 
-      - uses: gradle/gradle-build-action@v3
-        with:
-          arguments: ciLint --stacktrace
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: ./gradlew ciLint --stacktrace
 
 
 
@@ -47,9 +47,9 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
 
-      - uses: gradle/gradle-build-action@v3
-        with:
-          arguments: ciUnitTest --stacktrace
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: ./gradlew ciUnitTest --stacktrace
 
 
 
@@ -69,9 +69,9 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
 
-      - uses: gradle/gradle-build-action@v3
-        with:
-          arguments: ciRecordScreenshots --stacktrace
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: ./gradlew ciRecordScreenshots --stacktrace
 
       - uses: stefanzweifel/git-auto-commit-action@v5
 
@@ -93,9 +93,9 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
 
-      - uses: gradle/gradle-build-action@v3
-        with:
-          arguments: ciBuildApp --stacktrace
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: ./gradlew ciBuildApp --stacktrace
 
       - uses: actions/upload-artifact@v4
         with:
@@ -118,9 +118,9 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
 
-      - uses: gradle/gradle-build-action@v3
-        with:
-          arguments: ciEmulatorJobsMatrixSetup --stacktrace
+      - uses: gradle/actions/setup-gradle@v4
+
+      - run: ./gradlew ciEmulatorJobsMatrixSetup --stacktrace
 
       - id: dataStep
         run: echo "emulator_jobs_matrix=$(jq -c . < ./build/emulator_jobs_matrix.json)" >> $GITHUB_OUTPUT
@@ -150,10 +150,8 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ env.JAVA_VERSION }}
 
-      - uses: gradle/gradle-build-action@v3
-        with:
-          arguments: ciSdkManagerLicenses --stacktrace
+      - uses: gradle/actions/setup-gradle@v4
 
-      - uses: gradle/gradle-build-action@v3
-        with:
-          arguments: ${{ matrix.gradle_tasks }} --stacktrace
+      - run: ./gradlew ciSdkManagerLicenses --stacktrace
+
+      - run: ./gradlew ${{ matrix.gradle_tasks }} --stacktrace
