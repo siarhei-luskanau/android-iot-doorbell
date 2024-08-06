@@ -30,7 +30,7 @@ fun TestOptions.configureAndroidTestOptions() {
             device = "Pixel 2"
             apiLevel = version
             val systemImageConfig: Pair<String?, Boolean?> = when (apiLevel) {
-                33, 34 -> "aosp" to true
+                30, 33, 34 -> "aosp" to true
                 else -> null to null
             }
             systemImageConfig.first?.also { systemImageSource = it }
