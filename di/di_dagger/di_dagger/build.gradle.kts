@@ -27,11 +27,9 @@ kotlin {
                 implementation(project(":ui:ui_image_list"))
                 implementation(project(":ui:ui_permissions"))
                 implementation(project(":ui:ui_splash"))
-                implementation(libs.androidx.navigation.fragment.ktx)
                 implementation(libs.androidx.work.runtime.ktx)
                 implementation(libs.dagger)
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.timber)
             }
         }
     }

@@ -1,6 +1,5 @@
 package siarhei.luskanau.iot.doorbell.ui.imagelist
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,9 +7,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -85,13 +84,7 @@ fun ImageDataItem(
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable { onItemClickListener.invoke(imageData) },
-        color = MaterialTheme.colors.background,
-        elevation = 2.dp,
-        border = if (MaterialTheme.colors.isLight) {
-            null
-        } else {
-            BorderStroke(1.dp, MaterialTheme.colors.surface)
-        },
+        color = MaterialTheme.colorScheme.background,
     ) {
         Image(
             modifier = Modifier.fillMaxSize(),

@@ -13,7 +13,6 @@ kotlin {
                 implementation(project(":ui:ui_common"))
                 implementation(project(":ui:ui_splash"))
                 implementation(libs.dagger)
-                implementation(libs.kotlinx.coroutines.core)
             }
         }
     }

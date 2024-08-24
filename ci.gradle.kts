@@ -34,30 +34,21 @@ tasks.register("ciUnitTest") {
 tasks.register("ciRecordScreenshots") {
     group = CI_GRADLE
     doLast {
-        gradlew(
-            "updateDebugScreenshotTest",
-            "recordRoborazziDebug",
-            "recordRoborazziDiDaggerDebug",
-            "recordRoborazziDiKodeinDebug",
-            "recordRoborazziDiKoinDebug",
-            "recordRoborazziDiManualDebug",
-        )
+        gradlew("updateDebugScreenshotTest")
     }
 }
 
 tasks.register("ciBuildApp") {
     group = CI_GRADLE
     doLast {
-        gradlew(
-            "assembleDebug",
-        )
+        gradlew("assembleDebug")
         copy {
-            from(rootProject.subprojects.map { it.buildDir })
+            from(rootProject.subprojects.map { it.layout.buildDirectory.asFile.get() })
             include("**/*.apk")
             exclude("**/apk/androidTest/**")
             eachFile { path = name }
             includeEmptyDirs = false
-            into("$buildDir/apk/")
+            into("${layout.buildDirectory.asFile.get().path}/apk/")
         }
     }
 }

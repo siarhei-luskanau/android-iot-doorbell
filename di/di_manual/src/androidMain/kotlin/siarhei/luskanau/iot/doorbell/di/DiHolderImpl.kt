@@ -2,8 +2,6 @@ package siarhei.luskanau.iot.doorbell.di
 
 import android.app.Application
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentFactory
 import androidx.work.WorkerFactory
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultWorkerFactory
 
@@ -19,12 +17,6 @@ class DiHolderImpl(context: Context) : DiHolder {
     }
 
     override fun onAppTrimMemory(application: Application) = Unit
-
-    override fun getFragmentFactory(fragmentActivity: FragmentActivity): FragmentFactory =
-        AppFragmentFactory(
-            fragmentActivity = fragmentActivity,
-            appModules = appModules,
-        )
 
     override fun provideWorkerFactory(): WorkerFactory =
         DefaultWorkerFactory(

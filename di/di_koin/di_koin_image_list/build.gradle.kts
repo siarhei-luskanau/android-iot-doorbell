@@ -13,7 +13,6 @@ kotlin {
                 implementation(project(":di:di_koin:di_koin_common"))
                 implementation(project(":ui:ui_common"))
                 implementation(project(":ui:ui_image_list"))
-                implementation(libs.androidx.navigation.ui.ktx)
                 implementation(libs.androidx.paging.common.ktx)
                 implementation(libs.androidx.paging.runtime.ktx)
                 implementation(libs.androidx.work.runtime.ktx)
