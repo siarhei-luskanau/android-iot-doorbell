@@ -1,6 +1,6 @@
 plugins {
     multiplatformConvention
-    id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android.namespace = "siarhei.luskanau.iot.doorbell.navigation"
@@ -17,9 +17,10 @@ kotlin {
                 implementation(project(":ui:ui_image_list"))
                 implementation(project(":ui:ui_permissions"))
                 implementation(project(":ui:ui_splash"))
-                implementation(libs.androidx.navigation.fragment.ktx)
-                implementation(libs.androidx.navigation.ui.ktx)
+                implementation(libs.androidx.splashscreen)
                 implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.moko.permissions.compose)
                 implementation(libs.timber)
             }
         }

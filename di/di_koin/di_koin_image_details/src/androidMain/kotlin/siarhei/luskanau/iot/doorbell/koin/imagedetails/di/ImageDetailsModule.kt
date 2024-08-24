@@ -7,7 +7,6 @@ import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.koin.common.di.fragment
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragment
-import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenter
 import siarhei.luskanau.iot.doorbell.ui.imagedetails.ImageDetailsPresenterImpl
 
@@ -20,8 +19,8 @@ val imageDetailsModule = module {
     }
 
     factory<ImageDetailsPresenter> { (_: FragmentActivity, _: Fragment, args: Bundle?) ->
-        val doorbellId = ImageDetailsFragmentArgs.fromBundle(requireNotNull(args)).doorbellId
-        val imageId = ImageDetailsFragmentArgs.fromBundle(args).imageId
+        val doorbellId = "doorbellId"
+        val imageId = "imageId"
         ImageDetailsPresenterImpl(
             doorbellId = doorbellId,
             imageId = imageId,

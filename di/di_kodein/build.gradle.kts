@@ -24,7 +24,6 @@ kotlin {
                 implementation(project(":ui:ui_image_list"))
                 implementation(project(":ui:ui_permissions"))
                 implementation(project(":ui:ui_splash"))
-                implementation(libs.androidx.navigation.fragment.ktx)
                 implementation(libs.androidx.paging.common.ktx)
                 implementation(libs.androidx.paging.runtime.ktx)
                 implementation(libs.androidx.startup.runtime)

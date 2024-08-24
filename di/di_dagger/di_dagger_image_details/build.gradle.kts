@@ -14,7 +14,6 @@ kotlin {
                 implementation(project(":di:di_dagger:di_dagger_common"))
                 implementation(project(":ui:ui_common"))
                 implementation(project(":ui:ui_image_details"))
-                implementation(libs.androidx.navigation.ui.ktx)
                 implementation(libs.dagger)
                 implementation(libs.kotlinx.coroutines.core)
             }

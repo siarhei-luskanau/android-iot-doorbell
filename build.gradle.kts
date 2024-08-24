@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.ktlint.jlleitschuh)
-    alias(libs.plugins.navigation.safeargs.kotlin) apply false
 }
 
 apply(from = "$rootDir/ci.gradle.kts")

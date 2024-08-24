@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.ui.doorbelllist.DoorbellListViewModel
-import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import timber.log.Timber
 
@@ -26,7 +25,7 @@ class AppViewModelFactory(
             )
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
-                doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId,
+                doorbellId = "doorbellId",
                 appNavigation = appNavigation,
                 doorbellRepository = appModules.doorbellRepository,
                 imagesDataSourceFactory = appModules.imagesDataSourceFactory,
