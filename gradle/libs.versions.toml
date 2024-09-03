@@ -41,7 +41,7 @@ mockk = "1.13.12"
 robolectric = "4.13"
 roborazzi = "1.26.0"
 timber = "5.0.1"
-zoomable = "1.6.1"
+zoomable = "2.0.0-beta01"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
