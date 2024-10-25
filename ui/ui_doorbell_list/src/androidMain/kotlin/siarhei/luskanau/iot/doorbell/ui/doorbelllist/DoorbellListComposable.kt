@@ -1,6 +1,5 @@
 package siarhei.luskanau.iot.doorbell.ui.doorbelllist
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,10 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -82,13 +81,7 @@ fun DoorbellDataItem(
     Surface(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-        color = MaterialTheme.colors.background,
-        elevation = 2.dp,
-        border = if (MaterialTheme.colors.isLight) {
-            null
-        } else {
-            BorderStroke(1.dp, MaterialTheme.colors.surface)
-        },
+        color = MaterialTheme.colorScheme.background,
     ) {
         Row(
             modifier = Modifier
@@ -105,7 +98,7 @@ fun DoorbellDataItem(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }

@@ -1,6 +1,5 @@
 plugins {
     id("com.android.application")
-    id("io.github.takahirom.roborazzi")
     kotlin("android")
     kotlin("plugin.compose")
 }
@@ -34,8 +33,6 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
-        buildConfig = false
         compose = true
     }
 
@@ -51,13 +48,13 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.compose.bom))
     implementation(project(":di:di"))
     "diDaggerImplementation"(project(":di:di_dagger:di_dagger"))
     "diKodeinImplementation"(project(":di:di_kodein"))
     "diKoinImplementation"(project(":di:di_koin:di_koin"))
     "diManualImplementation"(project(":di:di_manual"))
 
+    implementation(libs.jetbrains.navigation.compose)
     implementation(project(":base_android"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
@@ -74,12 +71,10 @@ dependencies {
     implementation(project(":ui:ui_permissions"))
     implementation(project(":ui:ui_splash"))
 
-    // debugImplementation(libs.leakcanary.android)
+    debugImplementation(libs.leakcanary.android)
     implementation(libs.android.material)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.compose.material)
@@ -94,13 +89,7 @@ dependencies {
     testImplementation(libs.espresso.core)
     testImplementation(libs.espresso.intents)
     testImplementation(libs.kotlin.test)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.roborazzi)
     testImplementation(project(":common:common_test_ui"))
-
-    // android test
-    androidTestImplementation(kotlin("test"))
-    androidTestImplementation(libs.espresso.core)
 }
 
 apply(plugin = "com.google.gms.google-services")

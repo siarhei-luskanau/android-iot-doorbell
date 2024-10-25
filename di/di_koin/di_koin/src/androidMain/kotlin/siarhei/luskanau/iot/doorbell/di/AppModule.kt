@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.ViewModelProvider
 import androidx.startup.AppInitializer
 import org.koin.dsl.module
-import siarhei.luskanau.iot.doorbell.common.AppNavigation
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
@@ -32,15 +31,10 @@ import siarhei.luskanau.iot.doorbell.data.repository.ThisDeviceRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.koin.common.di.KoinFragmentFactory
 import siarhei.luskanau.iot.doorbell.koin.common.di.KoinViewModelFactory
-import siarhei.luskanau.iot.doorbell.navigation.DefaultAppNavigation
-import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
 
 val appModule = module {
-
-    factory<AppNavigation> { (activity: FragmentActivity) -> DefaultAppNavigation(activity) }
-    factory<SplashNavigation> { (activity: FragmentActivity) -> DefaultAppNavigation(activity) }
 
     factory<FragmentFactory> { (activity: FragmentActivity) ->
         KoinFragmentFactory(

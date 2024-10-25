@@ -15,8 +15,8 @@ class EmulatorJobsMatrix {
     fun createMatrixJsonFile(rootProject: Project) {
         val matrix = mapOf("gradle_tasks" to getTaskList(rootProject = rootProject))
         val jsonText = gson.toJson(matrix)
-        rootProject.buildDir.mkdirs()
-        File(rootProject.buildDir, "emulator_jobs_matrix.json").writeText(jsonText)
+        rootProject.layout.buildDirectory.asFile.get().mkdirs()
+        File(rootProject.layout.buildDirectory.asFile.get(), "emulator_jobs_matrix.json").writeText(jsonText)
     }
 
     fun getTaskList(rootProject: Project): List<String> =

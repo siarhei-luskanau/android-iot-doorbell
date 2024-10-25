@@ -1,58 +1,20 @@
 package siarhei.luskanau.iot.doorbell.navigation
 
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavController
-import androidx.navigation.NavDirections
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.NavHostController
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
-import siarhei.luskanau.iot.doorbell.ui.splash.SplashNavigation
-import timber.log.Timber
 
 class DefaultAppNavigation(
-    private val activity: FragmentActivity,
-) : AppNavigation,
-    SplashNavigation {
+    private val navHostController: NavHostController,
+) : AppNavigation {
 
-    private fun getNavController(): NavController =
-        (activity.supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment)
-            .navController
+    override fun goBack(): Boolean = navHostController.popBackStack()
 
-    @Suppress("TooGenericExceptionCaught")
-    private fun navigateTo(direction: NavDirections) =
-        try {
-            getNavController().navigate(direction)
-        } catch (e: Exception) {
-            Timber.e(e)
-        }
+    override fun goDoorbellListToPermissions() = Unit
 
-    override fun goBack(): Boolean =
-        getNavController().popBackStack()
+    override fun navigateToImageList(doorbellId: String) = Unit
 
-    override fun goDoorbellListToPermissions() =
-        navigateTo(NavRootDirections.actionDoorbellListToPermissions())
+    override fun navigateToImageDetails(doorbellId: String, imageId: String) = Unit
 
-    override fun navigateToImageList(doorbellId: String) =
-        navigateTo(
-            NavRootDirections.actionDoorbellListToImageList(
-                doorbellId = doorbellId,
-            ),
-        )
-
-    override fun navigateToImageDetails(doorbellId: String, imageId: String) =
-        navigateTo(
-            NavRootDirections.actionImageListToImageDetails(
-                doorbellId = doorbellId,
-                imageId = imageId,
-            ),
-        )
-
-    override fun buildImageDetailsArgs(doorbellId: String, imageId: String): Bundle =
-        NavRootDirections.actionImageListToImageDetails(
-            doorbellId = doorbellId,
-            imageId = imageId,
-        ).arguments
-
-    override fun onSplashComplete() =
-        navigateTo(NavRootDirections.actionSplashToDoorbellList())
+    override fun buildImageDetailsArgs(doorbellId: String, imageId: String): Bundle = Bundle()
 }

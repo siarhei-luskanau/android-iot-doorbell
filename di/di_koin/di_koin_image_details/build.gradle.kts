@@ -13,7 +13,6 @@ kotlin {
                 implementation(project(":common:common"))
                 implementation(project(":ui:ui_common"))
                 implementation(project(":ui:ui_image_details"))
-                implementation(libs.androidx.navigation.ui.ktx)
                 implementation(libs.koin.android)
                 implementation(libs.kotlinx.coroutines.core)
             }

@@ -1,9 +1,12 @@
 plugins {
     multiplatformConvention
-    id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.compose.screenshot)
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.ui.permissions"
+android {
+    namespace = "siarhei.luskanau.iot.doorbell.ui.permissions"
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
+}
 
 kotlin {
     sourceSets {
@@ -11,9 +14,9 @@ kotlin {
             dependencies {
                 implementation(project(":common:common"))
                 implementation(project(":data:dataDoorbellApi"))
-                implementation(libs.androidx.navigation.ui.ktx)
+                implementation(project(":ui:ui_common"))
                 implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.timber)
+                implementation(libs.moko.permissions.compose)
             }
         }
     }

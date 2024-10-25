@@ -1,6 +1,6 @@
 plugins {
     multiplatformConvention
-    kotlin("plugin.serialization") version libs.versions.kotlin
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android.namespace = "siarhei.luskanau.iot.doorbell.data.firebase"

@@ -9,7 +9,6 @@ import org.koin.dsl.module
 import siarhei.luskanau.iot.doorbell.koin.common.di.fragment
 import siarhei.luskanau.iot.doorbell.koin.common.di.viewModel
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragment
-import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListFragmentArgs
 import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 
 val imageListModule = module {
@@ -23,7 +22,7 @@ val imageListModule = module {
     }
 
     viewModel { activity: FragmentActivity, _: Fragment, args: Bundle? ->
-        val doorbellId = ImageListFragmentArgs.fromBundle(requireNotNull(args)).doorbellId
+        val doorbellId = "doorbellId"
         ImageListViewModel(
             doorbellId = doorbellId,
             appNavigation = get { parametersOf(activity) },
