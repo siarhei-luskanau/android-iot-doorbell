@@ -130,6 +130,7 @@ jobs:
   Emulator:
     needs: jobEmulatorMatrixSetup
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.variants.experimental }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.jobEmulatorMatrixSetup.outputs.emulator_jobs_matrix) }}
@@ -154,4 +155,4 @@ jobs:
 
       - run: ./gradlew ciSdkManagerLicenses --stacktrace
 
-      - run: ./gradlew ${{ matrix.gradle_tasks }} --stacktrace
+      - run: ./gradlew ${{ matrix.variants.gradle_tasks }} --stacktrace
