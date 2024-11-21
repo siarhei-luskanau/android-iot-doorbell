@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-latest, ubuntu-latest, windows-latest ]
+        os: [ macos-latest, ubuntu-latest ]
     steps:
 
       - uses: actions/checkout@v4
@@ -68,6 +68,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ macos-latest ]
+    permissions:
+      contents: write
     steps:
 
       - uses: actions/checkout@v4
