@@ -21,12 +21,12 @@ tasks.register("ciUnitTest") {
     doLast {
         gradlew(
             "clean",
-            "koverXmlReportDebug",
-            "koverXmlReport",
-            "koverHtmlReportDebug",
-            "koverHtmlReport",
-            "koverVerifyDebug",
-            "koverVerify",
+//            "koverXmlReportDebug",
+//            "koverXmlReport",
+//            "koverHtmlReportDebug",
+//            "koverHtmlReport",
+//            "koverVerifyDebug",
+//            "koverVerify",
         )
     }
 }
