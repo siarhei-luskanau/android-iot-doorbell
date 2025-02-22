@@ -16,6 +16,7 @@ kotlin {
                 implementation(project(":data:dataDoorbellApi"))
                 implementation(project(":ui:ui_common"))
                 implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.moko.permissions.camera)
                 implementation(libs.moko.permissions.compose)
             }
         }
