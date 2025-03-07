@@ -52,8 +52,6 @@ kotlin {
                 implementation(libs.findLibrary("coil-compose").get())
                 implementation(libs.findLibrary("compose-material").get())
                 implementation(libs.findLibrary("compose-ui-tooling").get())
-                implementation(libs.findLibrary("jetbrains-lifecycle-viewmodel-compose").get())
-                implementation(libs.findLibrary("jetbrains-navigation-compose").get())
             }
         }
         val androidUnitTest by getting {

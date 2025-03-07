@@ -54,7 +54,6 @@ dependencies {
     "diKoinImplementation"(project(":di:di_koin:di_koin"))
     "diManualImplementation"(project(":di:di_manual"))
 
-    implementation(libs.jetbrains.navigation.compose)
     implementation(project(":base_android"))
     implementation(project(":base_camera"))
     implementation(project(":base_file"))
