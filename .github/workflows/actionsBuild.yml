@@ -69,6 +69,7 @@ jobs:
         os: [ macos-latest ]
     permissions:
       contents: write
+    continue-on-error: true
     steps:
 
       - uses: actions/checkout@v4
