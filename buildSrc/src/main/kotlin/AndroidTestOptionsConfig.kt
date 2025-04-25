@@ -19,7 +19,7 @@ fun TestOptions.configureAndroidTestOptions() {
         enableForTestFailures = false
     }
     EMULATOR_VERSIONS.forEach { version ->
-        managedDevices.devices.create<ManagedVirtualDevice>("managedVirtualDevice$version") {
+        managedDevices.allDevices.create<ManagedVirtualDevice>("managedVirtualDevice$version") {
             device = "Pixel 2"
             apiLevel = version
             val systemImageConfig: Pair<String?, Boolean?> = when (apiLevel) {
