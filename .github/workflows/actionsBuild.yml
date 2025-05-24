@@ -10,6 +10,7 @@ on:
 
 env:
   JAVA_VERSION: 21
+  JAVA_DISTRIBUTION: 'temurin'
 
 jobs:
 
@@ -21,22 +22,28 @@ jobs:
       contents: write
     steps:
 
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
-        if: ${{ matrix.os != 'self-hosted' }}
-        with:
-          distribution: 'temurin'
-          java-version: ${{ env.JAVA_VERSION }}
+    - uses: actions/setup-java@v4
+      if: ${{ matrix.os != 'self-hosted' }}
+      with:
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
+        java-version: ${{ env.JAVA_VERSION }}
 
-      - uses: gradle/actions/setup-gradle@v4
+    - uses: gradle/actions/setup-gradle@v4
 
-      - run: ./gradlew ktlintFormat ciLint --stacktrace
+    - run: ./gradlew wrapper --gradle-version latest --stacktrace
+    - run: ./gradlew wrapper --gradle-version latest --stacktrace
+    - uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: Update Gradle wrapper
 
-      - run: ./gradlew wrapper --gradle-version latest --stacktrace
-      - run: ./gradlew wrapper --gradle-version latest --stacktrace
+    - run: ./gradlew ktlintFormat --stacktrace
+    - uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: Ktlint format
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+    - run: ./gradlew ciLint --stacktrace
 
 
 
@@ -53,7 +60,7 @@ jobs:
       - uses: actions/setup-java@v4
         if: ${{ matrix.os != 'self-hosted' }}
         with:
-          distribution: 'temurin'
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
 
       - uses: gradle/actions/setup-gradle@v4
@@ -78,7 +85,7 @@ jobs:
       - uses: actions/setup-java@v4
         if: ${{ matrix.os != 'self-hosted' }}
         with:
-          distribution: 'temurin'
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
 
       - uses: gradle/actions/setup-gradle@v4
@@ -102,7 +109,7 @@ jobs:
       - uses: actions/setup-java@v4
         if: ${{ matrix.os != 'self-hosted' }}
         with:
-          distribution: 'temurin'
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
 
       - uses: gradle/actions/setup-gradle@v4
@@ -127,7 +134,7 @@ jobs:
       - uses: actions/setup-java@v4
         if: ${{ matrix.os != 'self-hosted' }}
         with:
-          distribution: 'temurin'
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
 
       - uses: gradle/actions/setup-gradle@v4
@@ -160,7 +167,7 @@ jobs:
       - uses: actions/setup-java@v4
         if: ${{ matrix.os != 'self-hosted' }}
         with:
-          distribution: 'temurin'
+          distribution: ${{ env.JAVA_DISTRIBUTION }}
           java-version: ${{ env.JAVA_VERSION }}
 
       - uses: gradle/actions/setup-gradle@v4
