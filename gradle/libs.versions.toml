@@ -41,7 +41,7 @@ leakcanary = "2.14"
 mockk = "1.14.2"
 moko-permissions = "0.19.1"
 timber = "5.0.1"
-zoomable = "2.7.0"
+zoomable = "2.8.0"
 
 [libraries]
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
