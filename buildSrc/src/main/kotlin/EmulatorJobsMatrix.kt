@@ -15,7 +15,7 @@ class EmulatorJobsMatrix {
     fun createMatrixJsonFile(rootProject: Project) {
         val map = getTaskList(rootProject = rootProject).map {
             mapOf(
-                "experimental" to it.contains("managedVirtualDevice35"),
+                "experimental" to it.contains("managedVirtualDevice37"),
                 "gradle_tasks" to it
             )
         }

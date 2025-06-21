@@ -1,8 +1,6 @@
-import com.android.build.api.dsl.ManagedVirtualDevice
 import com.android.build.api.dsl.TestOptions
-import org.gradle.kotlin.dsl.create
 
-val EMULATOR_VERSIONS = 30..35
+val EMULATOR_VERSIONS = 30..36
 
 fun TestOptions.configureAndroidTestOptions() {
     unitTests {
@@ -19,15 +17,9 @@ fun TestOptions.configureAndroidTestOptions() {
         enableForTestFailures = false
     }
     EMULATOR_VERSIONS.forEach { version ->
-        managedDevices.allDevices.create<ManagedVirtualDevice>("managedVirtualDevice$version") {
+        managedDevices.localDevices.create("managedVirtualDevice$version") {
             device = "Pixel 2"
             apiLevel = version
-            val systemImageConfig: Pair<String?, Boolean?> = when (apiLevel) {
-                30, 33, 34, 35 -> "aosp" to true
-                else -> null to null
-            }
-            systemImageConfig.first?.also { systemImageSource = it }
-            systemImageConfig.second?.also { require64Bit = it }
         }
     }
 }
