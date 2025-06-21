@@ -17,3 +17,7 @@ kotlin {
         }
     }
 }
+
+dependencies {
+    screenshotTestImplementation(libs.screenshot.validation.api)
+}
