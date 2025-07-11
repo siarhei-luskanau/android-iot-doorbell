@@ -11,12 +11,14 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.model.SizeData
 
-class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository {
+class FirebaseDoorbellRepository :
+    BaseFirebaseRepository(),
+    DoorbellRepository {
 
     override suspend fun getDoorbellsList(
         size: Int,
         startAt: String?,
-        orderAsc: Boolean,
+        orderAsc: Boolean
     ): List<DoorbellData> {
         var query: Query = getAppDatabase().child(DOORBELLS_KEY)
         query = query.orderByChild("doorbell_id")
@@ -42,7 +44,7 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                 DoorbellData(
                     doorbellId = it.doorbellId,
                     name = it.name,
-                    info = it.info,
+                    info = it.info
                 )
             }
     }
@@ -54,7 +56,7 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                 DoorbellData(
                     doorbellId = it.doorbellId,
                     name = it.name,
-                    info = it.info?.mapValues { entry -> entry.value },
+                    info = it.info?.mapValues { entry -> entry.value }
                 )
             }.firstOrNull()
 
@@ -69,7 +71,7 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                     sizes = it.sizes?.mapValues { entry ->
                         SizeData(
                             entry.value.width,
-                            entry.value.height,
+                            entry.value.height
                         )
                     },
                     info = it.info?.let { info ->
@@ -78,14 +80,14 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                             infoSupportedHardwareLevel = info.infoSupportedHardwareLevel,
                             scalerStreamConfigurationMap = info.scalerStreamConfigurationMap,
                             controlAvailableEffects = info.controlAvailableEffects,
-                            error = info.error,
+                            error = info.error
                         )
                     },
                     cameraxInfo = it.cameraxInfo?.let { cameraxInfo ->
                         CameraxInfoData(
-                            error = cameraxInfo.error,
+                            error = cameraxInfo.error
                         )
-                    },
+                    }
                 )
             }
 
@@ -94,8 +96,8 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
             DoorbellDto(
                 doorbellId = doorbellData.doorbellId,
                 name = doorbellData.name,
-                info = doorbellData.info,
-            ),
+                info = doorbellData.info
+            )
         )
 
     override suspend fun sendCamerasList(doorbellId: String, list: List<CameraData>) {
@@ -106,7 +108,7 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                 sizes = data.sizes?.mapValues { entry ->
                     SizeDto(
                         width = entry.value.width,
-                        height = entry.value.height,
+                        height = entry.value.height
                     )
                 },
                 info = data.info?.let { info ->
@@ -115,18 +117,18 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                         infoSupportedHardwareLevel = info.infoSupportedHardwareLevel,
                         scalerStreamConfigurationMap = info.scalerStreamConfigurationMap,
                         controlAvailableEffects = info.controlAvailableEffects,
-                        error = info.error,
+                        error = info.error
                     )
                 },
                 cameraxInfo = data.cameraxInfo?.let { cameraxInfo ->
                     CameraxInfoDto(
-                        error = cameraxInfo.error,
+                        error = cameraxInfo.error
                     )
-                },
+                }
             )
         }.associateBy(
             { data -> data.cameraId },
-            { data -> data },
+            { data -> data }
         )
         getAppDatabase().child(CAMERAS_KEY).child(doorbellId).setValue(value)
     }
@@ -134,10 +136,9 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
     override suspend fun sendCameraImageRequest(
         doorbellId: String,
         cameraId: String,
-        isRequested: Boolean,
-    ) =
-        getAppDatabase().child(IMAGE_REQUEST_KEY).child(doorbellId).child(cameraId)
-            .setValue(isRequested)
+        isRequested: Boolean
+    ) = getAppDatabase().child(IMAGE_REQUEST_KEY).child(doorbellId).child(cameraId)
+        .setValue(isRequested)
 
     override suspend fun getCameraImageRequest(doorbellId: String): Map<String, Boolean> =
         getAppDatabase().child(IMAGE_REQUEST_KEY).child(doorbellId).valueEvents
@@ -151,7 +152,7 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
         doorbellId: String,
         size: Int,
         imageIdAt: String?,
-        orderAsc: Boolean,
+        orderAsc: Boolean
     ): List<ImageData> {
         var query: Query = getAppDatabase().child(IMAGES_KEY).child(doorbellId)
 
@@ -186,15 +187,12 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                 ImageData(
                     imageId = imageDto.imageId,
                     imageUri = imageDto.imageStoragePath,
-                    timestampString = Clock.System.now().toString(),
+                    timestampString = Clock.System.now().toString()
                 )
             }
     }
 
-    override suspend fun getImage(
-        doorbellId: String,
-        imageId: String,
-    ): ImageData? =
+    override suspend fun getImage(doorbellId: String, imageId: String): ImageData? =
         getAppDatabase().child(IMAGES_KEY).child(doorbellId).child(imageId).valueEvents
             .map { it.value<ImageDto>() }
             .firstOrNull()
@@ -202,7 +200,7 @@ class FirebaseDoorbellRepository : BaseFirebaseRepository(), DoorbellRepository 
                 ImageData(
                     imageId = imageDto.imageId,
                     imageUri = imageDto.imageStoragePath,
-                    timestampString = Clock.System.now().toString(),
+                    timestampString = Clock.System.now().toString()
                 )
             }
 

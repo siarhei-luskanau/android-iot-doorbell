@@ -6,6 +6,8 @@ import androidx.startup.AppInitializer
 import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
+import javax.inject.Provider
+import javax.inject.Singleton
 import siarhei.luskanau.iot.doorbell.common.DefaultDoorbellsDataSource
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
 import siarhei.luskanau.iot.doorbell.common.DoorbellsDataSource
@@ -33,8 +35,6 @@ import siarhei.luskanau.iot.doorbell.data.repository.UptimeFirebaseRepository
 import siarhei.luskanau.iot.doorbell.data.repository.UptimeRepository
 import siarhei.luskanau.iot.doorbell.workmanager.DefaultScheduleWorkManagerService
 import siarhei.luskanau.iot.doorbell.workmanager.WorkManagerInitializer
-import javax.inject.Provider
-import javax.inject.Singleton
 
 @Suppress("TooManyFunctions")
 @Module
@@ -42,8 +42,7 @@ class CommonModule {
 
     @Provides
     @Singleton
-    fun provideContext(application: Application): Context =
-        application.applicationContext
+    fun provideContext(application: Application): Context = application.applicationContext
 
     @Provides
     @Singleton
@@ -67,17 +66,18 @@ class CommonModule {
 
     @Provides
     @Singleton
-    fun provideImageSenderRepository(thisDeviceRepository: ThisDeviceRepository): ImageSenderRepository =
-        if (thisDeviceRepository.isEmulator()) {
-            StubImageSenderRepository()
-        } else {
-            FirebaseImageSenderRepository()
-        }
+    fun provideImageSenderRepository(
+        thisDeviceRepository: ThisDeviceRepository
+    ): ImageSenderRepository = if (thisDeviceRepository.isEmulator()) {
+        StubImageSenderRepository()
+    } else {
+        FirebaseImageSenderRepository()
+    }
 
     @Provides
     @Singleton
     fun provideScheduleWorkManagerService(
-        workManager: Provider<WorkManager>,
+        workManager: Provider<WorkManager>
     ): ScheduleWorkManagerService =
         DefaultScheduleWorkManagerService(workManager = { workManager.get() })
 
@@ -85,12 +85,11 @@ class CommonModule {
     @Singleton
     fun provideCameraRepository(
         context: Provider<Context>,
-        imageRepository: Provider<ImageRepository>,
-    ): CameraRepository =
-        JetpackCameraRepository(
-            context = context.get(),
-            imageRepository = imageRepository.get(),
-        )
+        imageRepository: Provider<ImageRepository>
+    ): CameraRepository = JetpackCameraRepository(
+        context = context.get(),
+        imageRepository = imageRepository.get()
+    )
 
     @Provides
     @Singleton
@@ -104,11 +103,10 @@ class CommonModule {
     @Provides
     @Singleton
     fun provideDoorbellsDataSource(
-        doorbellRepository: Provider<DoorbellRepository>,
-    ): DoorbellsDataSource =
-        DefaultDoorbellsDataSource(
-            doorbellRepository = doorbellRepository.get(),
-        )
+        doorbellRepository: Provider<DoorbellRepository>
+    ): DoorbellsDataSource = DefaultDoorbellsDataSource(
+        doorbellRepository = doorbellRepository.get()
+    )
 
     @Provides
     @Singleton
@@ -117,17 +115,15 @@ class CommonModule {
 
     @Provides
     @Singleton
-    fun provideIpAddressProvider(): IpAddressProvider =
-        AndroidIpAddressProvider()
+    fun provideIpAddressProvider(): IpAddressProvider = AndroidIpAddressProvider()
 
     @Provides
     @Singleton
     fun provideImagesDataSourceFactory(
-        doorbellRepository: Provider<DoorbellRepository>,
-    ): ImagesDataSourceFactory =
-        ImagesDataSourceFactoryImpl(
-            doorbellRepository = doorbellRepository.get(),
-        )
+        doorbellRepository: Provider<DoorbellRepository>
+    ): ImagesDataSourceFactory = ImagesDataSourceFactoryImpl(
+        doorbellRepository = doorbellRepository.get()
+    )
 
     @Provides
     @Singleton
@@ -135,25 +131,23 @@ class CommonModule {
         context: Provider<Context>,
         deviceInfoProvider: Provider<DeviceInfoProvider>,
         cameraRepository: Provider<CameraRepository>,
-        ipAddressProvider: Provider<IpAddressProvider>,
-    ): ThisDeviceRepository =
-        AndroidThisDeviceRepository(
-            context = context.get(),
-            deviceInfoProvider = deviceInfoProvider.get(),
-            cameraRepository = cameraRepository.get(),
-            ipAddressProvider = ipAddressProvider.get(),
-        )
+        ipAddressProvider: Provider<IpAddressProvider>
+    ): ThisDeviceRepository = AndroidThisDeviceRepository(
+        context = context.get(),
+        deviceInfoProvider = deviceInfoProvider.get(),
+        cameraRepository = cameraRepository.get(),
+        ipAddressProvider = ipAddressProvider.get()
+    )
 
     @Provides
     @Singleton
     fun provideAppBackgroundServices(
         doorbellRepository: Provider<DoorbellRepository>,
         thisDeviceRepository: Provider<ThisDeviceRepository>,
-        scheduleWorkManagerService: Provider<ScheduleWorkManagerService>,
-    ): AppBackgroundServices =
-        AppBackgroundServices(
-            doorbellRepository = doorbellRepository.get(),
-            thisDeviceRepository = thisDeviceRepository.get(),
-            scheduleWorkManagerService = scheduleWorkManagerService.get(),
-        )
+        scheduleWorkManagerService: Provider<ScheduleWorkManagerService>
+    ): AppBackgroundServices = AppBackgroundServices(
+        doorbellRepository = doorbellRepository.get(),
+        thisDeviceRepository = thisDeviceRepository.get(),
+        scheduleWorkManagerService = scheduleWorkManagerService.get()
+    )
 }

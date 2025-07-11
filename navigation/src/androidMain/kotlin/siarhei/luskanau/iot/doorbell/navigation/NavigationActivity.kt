@@ -37,15 +37,19 @@ class NavigationActivity : ComponentActivity() {
         installSplashScreen()
         enableEdgeToEdge()
         setContent {
-            val permissionsControllerFactory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
-            val permissionsController: PermissionsController = remember(permissionsControllerFactory) { permissionsControllerFactory.createPermissionsController() }
+            val permissionsControllerFactory: PermissionsControllerFactory =
+                rememberPermissionsControllerFactory()
+            val permissionsController: PermissionsController =
+                remember(permissionsControllerFactory) {
+                    permissionsControllerFactory.createPermissionsController()
+                }
             BindEffect(permissionsController)
 
             AppTheme {
                 val navController: NavHostController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = AppRoutes.Splash,
+                    startDestination = AppRoutes.Splash
                 ) {
                     composable<AppRoutes.Splash> {
                         SplashComposable(
@@ -56,7 +60,7 @@ class NavigationActivity : ComponentActivity() {
                                         popUpTo<AppRoutes.Splash> { inclusive = true }
                                     }
                                 })
-                            },
+                            }
                         )
                     }
                     composable<AppRoutes.Permissions> {
@@ -69,9 +73,9 @@ class NavigationActivity : ComponentActivity() {
                                             popUpTo<AppRoutes.Permissions> { inclusive = true }
                                         }
                                     },
-                                    permissionsController = permissionsController,
+                                    permissionsController = permissionsController
                                 )
-                            },
+                            }
                         )
                     }
                     composable<AppRoutes.Auth> {
@@ -83,7 +87,7 @@ class NavigationActivity : ComponentActivity() {
                                 .wrapContentHeight(align = Alignment.CenterVertically),
                             textAlign = TextAlign.Center,
                             color = Color.Red,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                     composable<AppRoutes.DoorbellList> {
@@ -95,7 +99,7 @@ class NavigationActivity : ComponentActivity() {
                                 .wrapContentHeight(align = Alignment.CenterVertically),
                             textAlign = TextAlign.Center,
                             color = Color.Red,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodyMedium
                         )
                     }
                 }

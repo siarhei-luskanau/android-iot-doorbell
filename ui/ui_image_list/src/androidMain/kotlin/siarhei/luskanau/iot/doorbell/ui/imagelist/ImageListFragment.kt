@@ -11,9 +11,8 @@ import kotlinx.coroutines.launch
 import siarhei.luskanau.iot.doorbell.ui.common.BaseFragment
 import siarhei.luskanau.iot.doorbell.ui.imagelist.databinding.FragmentImageListBinding
 
-class ImageListFragment(
-    presenterProvider: (fragment: Fragment) -> ImageListPresenter,
-) : BaseFragment<ImageListPresenter>(presenterProvider) {
+class ImageListFragment(presenterProvider: (fragment: Fragment) -> ImageListPresenter) :
+    BaseFragment<ImageListPresenter>(presenterProvider) {
 
     private lateinit var fragmentBinding: FragmentImageListBinding
     private lateinit var normalStateCompose: ComposeView

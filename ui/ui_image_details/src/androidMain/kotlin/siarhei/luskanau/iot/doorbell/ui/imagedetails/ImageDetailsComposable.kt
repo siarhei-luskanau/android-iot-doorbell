@@ -23,13 +23,11 @@ import net.engawapg.lib.zoomable.zoomable
 import siarhei.luskanau.iot.doorbell.ui.common.R
 
 @Composable
-fun ImageDetailsComposable(
-    imageDetailsStateFlow: Flow<ImageDetailsState>,
-) {
+fun ImageDetailsComposable(imageDetailsStateFlow: Flow<ImageDetailsState>) {
     val imageDetailsState = imageDetailsStateFlow.collectAsState(initial = null)
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         when (val imageDetailsStateValue = imageDetailsState.value) {
             is NormalImageDetailsState -> {
@@ -39,7 +37,7 @@ fun ImageDetailsComposable(
                         .crossfade(durationMillis = 1000)
                         .error(R.drawable.ic_error_outline)
                         .placeholder(R.drawable.ic_image)
-                        .build(),
+                        .build()
                 )
                 Image(
                     modifier = Modifier
@@ -47,7 +45,7 @@ fun ImageDetailsComposable(
                         .zoomable(rememberZoomState()),
                     painter = painter,
                     contentDescription = "Unsplash Image",
-                    contentScale = ContentScale.Fit,
+                    contentScale = ContentScale.Fit
                 )
             }
 
@@ -57,7 +55,7 @@ fun ImageDetailsComposable(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(16.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
             )
 
             null -> Unit

@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import siarhei.luskanau.iot.doorbell.ui.common.theme.AppTheme
 import siarhei.luskanau.iot.doorbell.ui.common.R as UiCommonR
+import siarhei.luskanau.iot.doorbell.ui.common.theme.AppTheme
 
 @Composable
 fun SplashComposable(viewModel: SplashViewModel) {
@@ -21,7 +21,7 @@ fun SplashComposable(viewModel: SplashViewModel) {
             .fillMaxHeight(),
         painter = painterResource(id = UiCommonR.drawable.ic_android),
         colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.secondary),
-        contentDescription = null,
+        contentDescription = null
     )
     LaunchedEffect(true) {
         viewModel.onSplashComplete()

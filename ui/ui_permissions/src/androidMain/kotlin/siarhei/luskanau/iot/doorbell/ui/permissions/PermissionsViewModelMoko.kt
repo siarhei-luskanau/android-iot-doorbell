@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class PermissionsViewModelMoko(
     private val onPermissionScreenCompleted: () -> Unit,
-    private val permissionsController: PermissionsController,
+    private val permissionsController: PermissionsController
 ) : PermissionsViewModel() {
 
     override fun onLaunched() {
@@ -23,13 +23,13 @@ class PermissionsViewModelMoko(
                     PermissionsViewState.GrantedPermissionsViewState
                 } else {
                     PermissionsViewState.NotGrantedPermissionsViewState
-                },
+                }
             )
         }
     }
 
     override val viewState = MutableStateFlow<PermissionsViewState>(
-        PermissionsViewState.NotGrantedPermissionsViewState,
+        PermissionsViewState.NotGrantedPermissionsViewState
     )
 
     override fun onRequestPermissionClicked() {
@@ -51,11 +51,13 @@ class PermissionsViewModelMoko(
         viewModelScope.launch {
             permissionsController.openAppSettings()
             viewState.emit(
-                if (permissionsController.getPermissionState(Permission.CAMERA) == PermissionState.Granted) {
+                if (permissionsController.getPermissionState(Permission.CAMERA) ==
+                    PermissionState.Granted
+                ) {
                     PermissionsViewState.GrantedPermissionsViewState
                 } else {
                     PermissionsViewState.DeniedPermissionsViewState
-                },
+                }
             )
         }
     }

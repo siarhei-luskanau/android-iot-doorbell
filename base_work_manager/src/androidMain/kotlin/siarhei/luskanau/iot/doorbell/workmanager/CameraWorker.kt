@@ -17,43 +17,42 @@ class CameraWorker(
     private val thisDeviceRepository: ThisDeviceRepository,
     private val doorbellRepository: DoorbellRepository,
     private val imageSenderRepository: ImageSenderRepository,
-    private val cameraRepository: CameraRepository,
+    private val cameraRepository: CameraRepository
 ) : CoroutineWorker(
     context,
-    workerParams,
+    workerParams
 ) {
 
-    override suspend fun doWork(): Result =
-        runCatching {
-            doorbellRepository.getCameraImageRequest(
-                thisDeviceRepository.doorbellId(),
-            )
-                .filterValues { value -> value }
-                .onEach { (cameraId, _) ->
-                    doorbellRepository.sendCameraImageRequest(
-                        doorbellId = thisDeviceRepository.doorbellId(),
-                        cameraId = cameraId,
-                        isRequested = false,
-                    )
+    override suspend fun doWork(): Result = runCatching {
+        doorbellRepository.getCameraImageRequest(
+            thisDeviceRepository.doorbellId()
+        )
+            .filterValues { value -> value }
+            .onEach { (cameraId, _) ->
+                doorbellRepository.sendCameraImageRequest(
+                    doorbellId = thisDeviceRepository.doorbellId(),
+                    cameraId = cameraId,
+                    isRequested = false
+                )
 
-                    cameraRepository
-                        .makeImage(
+                cameraRepository
+                    .makeImage(
+                        doorbellId = thisDeviceRepository.doorbellId(),
+                        cameraId = cameraId
+                    )
+                    .also { imageFile ->
+                        val uri = Uri.fromFile(imageFile.path?.let { java.io.File(it) })
+                        imageSenderRepository.sendImage(
                             doorbellId = thisDeviceRepository.doorbellId(),
                             cameraId = cameraId,
+                            file = File(uri)
                         )
-                        .also { imageFile ->
-                            val uri = Uri.fromFile(imageFile.path?.let { java.io.File(it) })
-                            imageSenderRepository.sendImage(
-                                doorbellId = thisDeviceRepository.doorbellId(),
-                                cameraId = cameraId,
-                                file = File(uri),
-                            )
-                        }
-                }
+                    }
+            }
 
-            Result.success()
-        }.onFailure {
-            Timber.e(it)
-            Result.failure()
-        }.getOrDefault(Result.failure())
+        Result.success()
+    }.onFailure {
+        Timber.e(it)
+        Result.failure()
+    }.getOrDefault(Result.failure())
 }

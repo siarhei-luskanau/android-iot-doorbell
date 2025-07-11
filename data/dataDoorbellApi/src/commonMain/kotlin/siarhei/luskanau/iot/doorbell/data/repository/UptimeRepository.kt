@@ -7,31 +7,27 @@ interface UptimeRepository {
     suspend fun uptimeStartup(
         doorbellId: String,
         startupTimeMillis: Long,
-        startupTimeString: String,
+        startupTimeString: String
     )
 
-    suspend fun uptimePing(
-        doorbellId: String,
-        pingTimeMillis: Long,
-        pingTimeString: String,
-    )
+    suspend fun uptimePing(doorbellId: String, pingTimeMillis: Long, pingTimeString: String)
 
     suspend fun uptimeRebootRequest(
         doorbellId: String,
         rebootRequestTimeMillis: Long,
-        rebootRequestTimeString: String,
+        rebootRequestTimeString: String
     )
 
     suspend fun uptimeRebooting(
         doorbellId: String,
         rebootingTimeMillis: Long,
-        rebootingTimeString: String,
+        rebootingTimeString: String
     )
 
     suspend fun getUptime(doorbellId: String): Uptime?
 
     suspend fun sendIpAddressMap(
         doorbellId: String,
-        ipAddressMap: Map<String, Pair<String, String>>,
+        ipAddressMap: Map<String, Pair<String, String>>
     )
 }

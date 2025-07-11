@@ -33,23 +33,23 @@ import siarhei.luskanau.iot.doorbell.ui.common.R
 fun DoorbellListComposable(
     items: LazyPagingItems<DoorbellData>,
     checkPermissions: () -> Unit,
-    onItemClickListener: (DoorbellData?) -> Unit,
+    onItemClickListener: (DoorbellData?) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(all = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(
             count = items.itemCount,
             key = items.itemKey { it.doorbellId },
-            contentType = items.itemContentType { null },
+            contentType = items.itemContentType { null }
         ) { index ->
             val doorbellData = items[index]
             doorbellData?.let {
                 DoorbellDataItem(
                     doorbellData = doorbellData,
-                    onItemClickListener = onItemClickListener,
+                    onItemClickListener = onItemClickListener
                 )
             }
         }
@@ -74,31 +74,28 @@ fun DoorbellListComposable(
 }
 
 @Composable
-fun DoorbellDataItem(
-    doorbellData: DoorbellData,
-    onItemClickListener: (DoorbellData?) -> Unit,
-) {
+fun DoorbellDataItem(doorbellData: DoorbellData, onItemClickListener: (DoorbellData?) -> Unit) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.background
     ) {
         Row(
             modifier = Modifier
                 .padding(all = 8.dp)
                 .fillMaxWidth()
                 .clickable { onItemClickListener.invoke(doorbellData) },
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             val text = doorbellData.name ?: doorbellData.doorbellId
             Icon(
                 painter = painterResource(id = R.drawable.ic_device_hub),
-                contentDescription = text,
+                contentDescription = text
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }

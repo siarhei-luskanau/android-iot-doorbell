@@ -16,37 +16,36 @@ class DefaultWorkerFactory(
     private val doorbellRepository: () -> DoorbellRepository,
     private val imageSenderRepository: () -> ImageSenderRepository,
     private val cameraRepository: () -> CameraRepository,
-    private val uptimeRepository: () -> UptimeRepository,
+    private val uptimeRepository: () -> UptimeRepository
 ) : WorkerFactory() {
 
     override fun createWorker(
         appContext: Context,
         workerClassName: String,
-        workerParameters: WorkerParameters,
-    ): ListenableWorker? =
-        runCatching {
-            Timber.e("DefaultWorkerFactory:createWorker:$workerClassName")
-            when (workerClassName) {
-                CameraWorker::class.java.name -> CameraWorker(
-                    context = appContext,
-                    workerParams = workerParameters,
-                    thisDeviceRepository = thisDeviceRepository.invoke(),
-                    doorbellRepository = doorbellRepository.invoke(),
-                    imageSenderRepository = imageSenderRepository.invoke(),
-                    cameraRepository = cameraRepository.invoke(),
-                )
+        workerParameters: WorkerParameters
+    ): ListenableWorker? = runCatching {
+        Timber.e("DefaultWorkerFactory:createWorker:$workerClassName")
+        when (workerClassName) {
+            CameraWorker::class.java.name -> CameraWorker(
+                context = appContext,
+                workerParams = workerParameters,
+                thisDeviceRepository = thisDeviceRepository.invoke(),
+                doorbellRepository = doorbellRepository.invoke(),
+                imageSenderRepository = imageSenderRepository.invoke(),
+                cameraRepository = cameraRepository.invoke()
+            )
 
-                UptimeWorker::class.java.name -> UptimeWorker(
-                    context = appContext,
-                    workerParams = workerParameters,
-                    uptimeRepository = uptimeRepository.invoke(),
-                    thisDeviceRepository = thisDeviceRepository.invoke(),
-                    doorbellRepository = doorbellRepository.invoke(),
-                )
+            UptimeWorker::class.java.name -> UptimeWorker(
+                context = appContext,
+                workerParams = workerParameters,
+                uptimeRepository = uptimeRepository.invoke(),
+                thisDeviceRepository = thisDeviceRepository.invoke(),
+                doorbellRepository = doorbellRepository.invoke()
+            )
 
-                else -> null
-            }
-        }.onFailure {
-            Timber.e(it, "DefaultWorkerFactory:createWorker:$workerClassName")
-        }.getOrNull()
+            else -> null
+        }
+    }.onFailure {
+        Timber.e(it, "DefaultWorkerFactory:createWorker:$workerClassName")
+    }.getOrNull()
 }

@@ -20,12 +20,11 @@ class DiHolderImpl(context: Context) : DiHolder {
 
     override fun onAppTrimMemory(application: Application) = Unit
 
-    override fun provideWorkerFactory(): WorkerFactory =
-        DefaultWorkerFactory(
-            thisDeviceRepository = { commonComponent.provideThisDeviceRepository() },
-            doorbellRepository = { commonComponent.provideDoorbellRepository() },
-            imageSenderRepository = { commonComponent.provideImageSenderRepository() },
-            cameraRepository = { commonComponent.provideCameraRepository() },
-            uptimeRepository = { commonComponent.provideUptimeRepository() },
-        )
+    override fun provideWorkerFactory(): WorkerFactory = DefaultWorkerFactory(
+        thisDeviceRepository = { commonComponent.provideThisDeviceRepository() },
+        doorbellRepository = { commonComponent.provideDoorbellRepository() },
+        imageSenderRepository = { commonComponent.provideImageSenderRepository() },
+        cameraRepository = { commonComponent.provideCameraRepository() },
+        uptimeRepository = { commonComponent.provideUptimeRepository() }
+    )
 }

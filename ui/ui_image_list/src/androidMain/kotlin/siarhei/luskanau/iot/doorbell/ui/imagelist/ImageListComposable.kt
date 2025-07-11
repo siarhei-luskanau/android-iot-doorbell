@@ -29,23 +29,23 @@ import siarhei.luskanau.iot.doorbell.ui.common.R
 @Composable
 fun ImageListComposable(
     items: LazyPagingItems<ImageData>,
-    onItemClickListener: (ImageData?) -> Unit,
+    onItemClickListener: (ImageData?) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(all = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(
             count = items.itemCount,
             key = items.itemKey { it.imageId },
-            contentType = items.itemContentType { null },
+            contentType = items.itemContentType { null }
         ) { index ->
             val imageData = items[index]
             imageData?.let {
                 ImageDataItem(
                     imageData = imageData,
-                    onItemClickListener = onItemClickListener,
+                    onItemClickListener = onItemClickListener
                 )
             }
         }
@@ -67,30 +67,27 @@ fun ImageListComposable(
 }
 
 @Composable
-fun ImageDataItem(
-    imageData: ImageData,
-    onItemClickListener: (ImageData?) -> Unit,
-) {
+fun ImageDataItem(imageData: ImageData, onItemClickListener: (ImageData?) -> Unit) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(imageData.imageUri)
             .crossfade(durationMillis = 1000)
             .error(R.drawable.ic_error_outline)
             .placeholder(R.drawable.ic_image)
-            .build(),
+            .build()
     )
     Surface(
         shape = MaterialTheme.shapes.medium,
         modifier = Modifier
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable { onItemClickListener.invoke(imageData) },
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.background
     ) {
         Image(
             modifier = Modifier.fillMaxSize(),
             painter = painter,
             contentDescription = "Unsplash Image",
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Crop
         )
     }
 }

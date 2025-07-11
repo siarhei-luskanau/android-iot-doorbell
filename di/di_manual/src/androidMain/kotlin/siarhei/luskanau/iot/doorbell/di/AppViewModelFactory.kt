@@ -11,7 +11,7 @@ import timber.log.Timber
 class AppViewModelFactory(
     private val appModules: AppModules,
     private val appNavigation: AppNavigation,
-    private val args: Bundle?,
+    private val args: Bundle?
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -21,14 +21,14 @@ class AppViewModelFactory(
             DoorbellListViewModel::class.java.isAssignableFrom(modelClass) -> DoorbellListViewModel(
                 appNavigation = appNavigation,
                 thisDeviceRepository = appModules.thisDeviceRepository,
-                doorbellsDataSource = appModules.doorbellsDataSource,
+                doorbellsDataSource = appModules.doorbellsDataSource
             )
 
             ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
                 doorbellId = "doorbellId",
                 appNavigation = appNavigation,
                 doorbellRepository = appModules.doorbellRepository,
-                imagesDataSourceFactory = appModules.imagesDataSourceFactory,
+                imagesDataSourceFactory = appModules.imagesDataSourceFactory
             )
 
             else -> modelClass.getConstructor().newInstance()
