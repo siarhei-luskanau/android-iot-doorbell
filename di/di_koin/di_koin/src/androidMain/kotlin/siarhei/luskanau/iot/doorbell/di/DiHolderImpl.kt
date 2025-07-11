@@ -27,8 +27,8 @@ class DiHolderImpl(context: Context) : DiHolder {
                     doorbellListModule,
                     imageDetailsModule,
                     imageListModule,
-                    permissionsModule,
-                ),
+                    permissionsModule
+                )
             )
         }
     }
@@ -40,12 +40,11 @@ class DiHolderImpl(context: Context) : DiHolder {
 
     override fun onAppTrimMemory(application: Application) = Unit
 
-    override fun provideWorkerFactory(): WorkerFactory =
-        DefaultWorkerFactory(
-            thisDeviceRepository = { koinApplication.koin.get() },
-            doorbellRepository = { koinApplication.koin.get() },
-            imageSenderRepository = { koinApplication.koin.get() },
-            cameraRepository = { koinApplication.koin.get() },
-            uptimeRepository = { koinApplication.koin.get() },
-        )
+    override fun provideWorkerFactory(): WorkerFactory = DefaultWorkerFactory(
+        thisDeviceRepository = { koinApplication.koin.get() },
+        doorbellRepository = { koinApplication.koin.get() },
+        imageSenderRepository = { koinApplication.koin.get() },
+        cameraRepository = { koinApplication.koin.get() },
+        uptimeRepository = { koinApplication.koin.get() }
+    )
 }

@@ -13,27 +13,26 @@ class KodeinViewModelFactory(
     private val injector: DirectDI,
     private val activity: FragmentActivity,
     private val fragment: Fragment,
-    private val args: Bundle?,
+    private val args: Bundle?
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        runCatching {
-            Timber.d("KodeinViewModelFactory:create:$modelClass")
-            val viewModel: ViewModel = injector.instance(
-                tag = modelClass.simpleName,
-                arg = ViewModelFactoryArgs(
-                    activity = activity,
-                    fragment = fragment,
-                    args = args,
-                ),
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = runCatching {
+        Timber.d("KodeinViewModelFactory:create:$modelClass")
+        val viewModel: ViewModel = injector.instance(
+            tag = modelClass.simpleName,
+            arg = ViewModelFactoryArgs(
+                activity = activity,
+                fragment = fragment,
+                args = args
             )
-            viewModel as T
-        }
-            .getOrElse { kodeinThrowable: Throwable ->
-                runCatching {
-                    modelClass.getDeclaredConstructor().newInstance()
-                }
-                    .getOrNull() ?: throw kodeinThrowable
+        )
+        viewModel as T
+    }
+        .getOrElse { kodeinThrowable: Throwable ->
+            runCatching {
+                modelClass.getDeclaredConstructor().newInstance()
             }
+                .getOrNull() ?: throw kodeinThrowable
+        }
 }

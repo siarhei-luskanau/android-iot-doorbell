@@ -25,15 +25,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import siarhei.luskanau.iot.doorbell.ui.common.theme.AppTheme
 import siarhei.luskanau.iot.doorbell.ui.common.R as UiCommon
+import siarhei.luskanau.iot.doorbell.ui.common.theme.AppTheme
 
 @Composable
 fun PermissionsComposable(viewModel: PermissionsViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxHeight()
     ) {
         val permissionsViewState by viewModel.viewState.collectAsState()
         Spacer(modifier = Modifier.height(48.dp))
@@ -44,7 +44,7 @@ fun PermissionsComposable(viewModel: PermissionsViewModel) {
                 .padding(16.dp),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
@@ -61,7 +61,7 @@ fun PermissionsComposable(viewModel: PermissionsViewModel) {
                 .padding(16.dp),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Image(
             modifier = Modifier
@@ -72,7 +72,7 @@ fun PermissionsComposable(viewModel: PermissionsViewModel) {
             colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.secondary),
             alignment = Alignment.BottomEnd,
             contentScale = ContentScale.Fit,
-            contentDescription = null,
+            contentDescription = null
         )
         Spacer(modifier = Modifier.height(96.dp))
         Button(
@@ -90,17 +90,17 @@ fun PermissionsComposable(viewModel: PermissionsViewModel) {
                 .fillMaxWidth()
                 .padding(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
+                containerColor = MaterialTheme.colorScheme.primary
+            )
         ) {
             Text(
                 text = when (permissionsViewState) {
                     PermissionsViewState.NotGrantedPermissionsViewState,
-                    PermissionsViewState.GrantedPermissionsViewState,
+                    PermissionsViewState.GrantedPermissionsViewState
                     -> "Request permission"
                     PermissionsViewState.DeniedPermissionsViewState -> "Open Settings"
                 },
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -119,8 +119,8 @@ internal fun PermissionsComposableDeniedPreview() {
     AppTheme {
         PermissionsComposable(
             viewModel = permissionsViewModel(
-                permissionsViewState = PermissionsViewState.DeniedPermissionsViewState,
-            ),
+                permissionsViewState = PermissionsViewState.DeniedPermissionsViewState
+            )
         )
     }
 }
@@ -131,8 +131,8 @@ internal fun PermissionsComposableGrantedPreview() {
     AppTheme {
         PermissionsComposable(
             viewModel = permissionsViewModel(
-                permissionsViewState = PermissionsViewState.GrantedPermissionsViewState,
-            ),
+                permissionsViewState = PermissionsViewState.GrantedPermissionsViewState
+            )
         )
     }
 }
@@ -143,14 +143,14 @@ internal fun PermissionsComposableNotGrantedPreview() {
     AppTheme {
         PermissionsComposable(
             viewModel = permissionsViewModel(
-                permissionsViewState = PermissionsViewState.NotGrantedPermissionsViewState,
-            ),
+                permissionsViewState = PermissionsViewState.NotGrantedPermissionsViewState
+            )
         )
     }
 }
 
 internal fun permissionsViewModel(
-    permissionsViewState: PermissionsViewState,
+    permissionsViewState: PermissionsViewState
 ): PermissionsViewModel = object : PermissionsViewModel() {
     override val viewState: StateFlow<PermissionsViewState> = MutableStateFlow(permissionsViewState)
     override fun onLaunched() = Unit

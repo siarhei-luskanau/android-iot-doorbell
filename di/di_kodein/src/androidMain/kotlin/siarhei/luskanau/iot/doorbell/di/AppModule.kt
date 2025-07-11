@@ -73,7 +73,7 @@ val appModule = DI.Module(name = "appModule") {
     bind<CameraRepository>() with singleton {
         JetpackCameraRepository(
             context = instance(),
-            imageRepository = instance(),
+            imageRepository = instance()
         )
     }
     bind<UptimeRepository>() with singleton {
@@ -85,18 +85,18 @@ val appModule = DI.Module(name = "appModule") {
     }
     bind<DoorbellsDataSource>() with singleton {
         DefaultDoorbellsDataSource(
-            doorbellRepository = instance(),
+            doorbellRepository = instance()
         )
     }
     bind<DeviceInfoProvider>() with singleton {
         AndroidDeviceInfoProvider(
-            context = instance(),
+            context = instance()
         )
     }
     bind<IpAddressProvider>() with singleton { AndroidIpAddressProvider() }
     bind<ImagesDataSourceFactory>() with singleton {
         ImagesDataSourceFactoryImpl(
-            doorbellRepository = instance(),
+            doorbellRepository = instance()
         )
     }
     bind<ThisDeviceRepository>() with singleton {
@@ -104,14 +104,14 @@ val appModule = DI.Module(name = "appModule") {
             context = instance(),
             deviceInfoProvider = instance(),
             cameraRepository = instance(),
-            ipAddressProvider = instance(),
+            ipAddressProvider = instance()
         )
     }
     bindSingleton {
         AppBackgroundServices(
             doorbellRepository = instance(),
             thisDeviceRepository = instance(),
-            scheduleWorkManagerService = instance(),
+            scheduleWorkManagerService = instance()
         )
     }
 }
@@ -125,13 +125,13 @@ val activityModule = DI.Module(name = "activityModule") {
             injector = directDI,
             activity = viewModelFactoryArgs.activity,
             fragment = viewModelFactoryArgs.fragment,
-            args = viewModelFactoryArgs.args,
+            args = viewModelFactoryArgs.args
         )
     }
 
     // DoorbellList
     bind<Fragment>(
-        tag = DoorbellListFragment::class.simpleName,
+        tag = DoorbellListFragment::class.simpleName
     ) with factory { activity: FragmentActivity ->
         DoorbellListFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
@@ -139,16 +139,19 @@ val activityModule = DI.Module(name = "activityModule") {
                     arg = ViewModelFactoryArgs(
                         activity = activity,
                         fragment = fragment,
-                        args = fragment.arguments,
-                    ),
+                        args = fragment.arguments
+                    )
                 )
-            ViewModelProvider(fragment as ViewModelStoreOwner, viewModelFactory)[DoorbellListViewModel::class.java]
+            ViewModelProvider(
+                fragment as ViewModelStoreOwner,
+                viewModelFactory
+            )[DoorbellListViewModel::class.java]
         }
     }
 
     // ImageList
     bind<Fragment>(
-        tag = ImageListFragment::class.simpleName,
+        tag = ImageListFragment::class.simpleName
     ) with factory { activity: FragmentActivity ->
         ImageListFragment { fragment: Fragment ->
             val viewModelFactory: ViewModelProvider.Factory =
@@ -156,8 +159,8 @@ val activityModule = DI.Module(name = "activityModule") {
                     arg = ViewModelFactoryArgs(
                         activity = activity,
                         fragment = fragment,
-                        args = fragment.arguments,
-                    ),
+                        args = fragment.arguments
+                    )
                 )
             ViewModelProvider(fragment, viewModelFactory)[ImageListViewModel::class.java]
         }
@@ -165,15 +168,15 @@ val activityModule = DI.Module(name = "activityModule") {
 
     // ImageDetails
     bind<Fragment>(
-        tag = ImageDetailsFragment::class.simpleName,
+        tag = ImageDetailsFragment::class.simpleName
     ) with factory { activity: FragmentActivity ->
         ImageDetailsFragment { fragment: Fragment ->
             instance(
                 arg = ViewModelFactoryArgs(
                     activity = activity,
                     fragment = fragment,
-                    args = fragment.arguments,
-                ),
+                    args = fragment.arguments
+                )
             )
         }
     }
@@ -184,7 +187,7 @@ val activityModule = DI.Module(name = "activityModule") {
             ImageDetailsPresenterImpl(
                 doorbellId = doorbellId,
                 imageId = imageId,
-                doorbellRepository = instance(),
+                doorbellRepository = instance()
             )
         }
     }
@@ -192,24 +195,24 @@ val activityModule = DI.Module(name = "activityModule") {
 
 val viewModelModule = DI.Module(name = "viewModelModule") {
     bind<ViewModel>(
-        tag = DoorbellListViewModel::class.simpleName,
+        tag = DoorbellListViewModel::class.simpleName
     ) with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
         DoorbellListViewModel(
             appNavigation = instance(arg = viewModelFactoryArgs.activity),
             thisDeviceRepository = instance(),
-            doorbellsDataSource = instance(),
+            doorbellsDataSource = instance()
         )
     }
 
     bind<ViewModel>(
-        tag = ImageListViewModel::class.simpleName,
+        tag = ImageListViewModel::class.simpleName
     ) with factory { viewModelFactoryArgs: ViewModelFactoryArgs ->
         val doorbellId = "doorbellId"
         ImageListViewModel(
             doorbellId = doorbellId,
             appNavigation = instance(arg = viewModelFactoryArgs.activity),
             doorbellRepository = instance(),
-            imagesDataSourceFactory = instance(),
+            imagesDataSourceFactory = instance()
         )
     }
 }

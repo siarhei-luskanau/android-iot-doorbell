@@ -15,32 +15,30 @@ class KoinViewModelFactory(
     private val scope: Scope,
     private val activity: FragmentActivity,
     private val fragment: Fragment,
-    private val args: Bundle?,
+    private val args: Bundle?
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("TooGenericExceptionCaught")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = try {
+        Timber.d("KoinViewModelFactory:create:$modelClass")
+        scope.get(
+            clazz = modelClass.kotlin,
+            qualifier = null,
+            parameters = { parametersOf(activity, fragment, args) }
+        )
+    } catch (koinThrowable: Throwable) {
         try {
-            Timber.d("KoinViewModelFactory:create:$modelClass")
-            scope.get(
-                clazz = modelClass.kotlin,
-                qualifier = null,
-                parameters = { parametersOf(activity, fragment, args) },
-            )
-        } catch (koinThrowable: Throwable) {
-            try {
-                modelClass.getDeclaredConstructor().newInstance()
-            } catch (_: Throwable) {
-                throw koinThrowable
-            }
+            modelClass.getDeclaredConstructor().newInstance()
+        } catch (_: Throwable) {
+            throw koinThrowable
         }
+    }
 }
 
 inline fun <reified T : ViewModel> Module.viewModel(
-    noinline definition: ViewModelDefinition<T>,
-): KoinDefinition<T> =
-    factory { (activity: FragmentActivity, fragment: Fragment, args: Bundle?) ->
-        definition(activity, fragment, args)
-    }
+    noinline definition: ViewModelDefinition<T>
+): KoinDefinition<T> = factory { (activity: FragmentActivity, fragment: Fragment, args: Bundle?) ->
+    definition(activity, fragment, args)
+}
 
 typealias ViewModelDefinition<T> = Scope.(FragmentActivity, Fragment, Bundle?) -> T

@@ -1,7 +1,9 @@
-import org.apache.tools.ant.taskdefs.condition.Os
+@file:Suppress("PropertyName")
+
 import java.io.File
 import java.io.InputStream
 import java.util.Properties
+import org.apache.tools.ant.taskdefs.condition.Os
 
 println("gradle.startParameter.taskNames: ${gradle.startParameter.taskNames}")
 System.getProperties().forEach { key, value -> println("System.getProperties(): $key=$value") }
@@ -18,9 +20,6 @@ plugins {
 allprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    ktlint {
-        version.set("0.50.0")
-    }
 }
 
 kover {
@@ -43,7 +42,7 @@ subprojects.filter {
         ":di",
         ":ui",
         ":di:di_dagger",
-        ":di:di_koin",
+        ":di:di_koin"
     ).contains(it.path)
 }.forEach {
     it.apply(plugin = "org.jetbrains.kotlinx.kover")
@@ -58,7 +57,7 @@ tasks.register("ciLint") {
         gradlew(
             "ktlintCheck",
             "detekt",
-            "lintDebug",
+            "lintDebug"
         )
     }
 }
@@ -67,7 +66,7 @@ tasks.register("ciUnitTest") {
     group = CI_GRADLE
     doLast {
         gradlew(
-            "clean",
+            "clean"
 //            "koverXmlReportDebug",
 //            "koverXmlReport",
 //            "koverHtmlReportDebug",
@@ -90,7 +89,12 @@ tasks.register("ciBuildApp") {
     doLast {
         gradlew("assembleDebug")
         copy {
-            from(rootProject.subprojects.map { it.layout.buildDirectory.asFile.get() })
+            from(
+                rootProject.subprojects.map {
+                    it.layout.buildDirectory.asFile
+                        .get()
+                }
+            )
             include("**/*.apk")
             exclude("**/apk/androidTest/**")
             eachFile { path = name }
@@ -143,7 +147,7 @@ tasks.register("devAll") {
             "ciUnitTest",
             "ciRecordScreenshots",
             "ciBuildApp",
-            "assembleAndroidTest",
+            "assembleAndroidTest"
         )
     }
 }
@@ -153,23 +157,22 @@ tasks.register("devAllEmulator") {
     doLast {
         gradlew(
             "clean",
-            "ciEmulatorJobsMatrixSetup",
+            "ciEmulatorJobsMatrixSetup"
         )
         gradlew("cleanManagedDevices", "--unused-only")
-        EmulatorJobsMatrix().getTaskList(rootProject = rootProject).map { it.split(" ") }
+        EmulatorJobsMatrix()
+            .getTaskList(rootProject = rootProject)
+            .map { it.split(" ") }
             .forEach { tasks -> gradlew(*tasks.toTypedArray()) }
         gradlew("cleanManagedDevices")
     }
 }
 
-fun gradlew(
-    vararg tasks: String,
-    addToSystemProperties: Map<String, String>? = null,
-) {
+fun gradlew(vararg tasks: String, addToSystemProperties: Map<String, String>? = null) {
     providers.exec {
         executable = File(
             project.rootDir,
-            if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew",
+            if (Os.isFamily(Os.FAMILY_WINDOWS)) "gradlew.bat" else "gradlew"
         )
             .also { it.setExecutable(true) }
             .absolutePath

@@ -9,5 +9,5 @@ data class ImageDto(
     @SerialName("image_storage_path") val imageStoragePath: String?,
     @SerialName("camera_id") val cameraId: String,
     @SerialName("doorbell_id") val doorbellId: String,
-    @SerialName("timestamp") val timestamp: Long,
+    @SerialName("timestamp") val timestamp: Long
 )

@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.navigation.NavHostController
 import siarhei.luskanau.iot.doorbell.common.AppNavigation
 
-class DefaultAppNavigation(
-    private val navHostController: NavHostController,
-) : AppNavigation {
+class DefaultAppNavigation(private val navHostController: NavHostController) : AppNavigation {
 
     override fun goBack(): Boolean = navHostController.popBackStack()
 

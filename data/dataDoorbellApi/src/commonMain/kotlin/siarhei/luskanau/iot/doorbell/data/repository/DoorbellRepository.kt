@@ -9,7 +9,7 @@ interface DoorbellRepository {
     suspend fun getDoorbellsList(
         size: Int,
         startAt: String? = null,
-        orderAsc: Boolean = true,
+        orderAsc: Boolean = true
     ): List<DoorbellData>
 
     suspend fun getDoorbell(doorbellId: String): DoorbellData?
@@ -28,11 +28,8 @@ interface DoorbellRepository {
         doorbellId: String,
         size: Int,
         imageIdAt: String? = null,
-        orderAsc: Boolean = true,
+        orderAsc: Boolean = true
     ): List<ImageData>
 
-    suspend fun getImage(
-        doorbellId: String,
-        imageId: String,
-    ): ImageData?
+    suspend fun getImage(doorbellId: String, imageId: String): ImageData?
 }

@@ -9,7 +9,7 @@ import timber.log.Timber
 
 class KodeinFragmentFactory(
     private val activity: FragmentActivity,
-    private val injector: DirectDI,
+    private val injector: DirectDI
 ) : FragmentFactory() {
 
     override fun instantiate(classLoader: ClassLoader, className: String): Fragment =

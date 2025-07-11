@@ -7,9 +7,7 @@ import siarhei.luskanau.iot.doorbell.di.DiHolderImpl
 
 class DiInitializer : Initializer<DiHolder> {
 
-    override fun create(context: Context): DiHolder =
-        DiHolderImpl(context = context)
+    override fun create(context: Context): DiHolder = DiHolderImpl(context = context)
 
-    override fun dependencies(): List<Class<out Initializer<*>>> =
-        emptyList()
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

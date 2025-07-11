@@ -39,21 +39,21 @@ val appModule = module {
     factory<FragmentFactory> { (activity: FragmentActivity) ->
         KoinFragmentFactory(
             koin = getKoin(),
-            activity = activity,
+            activity = activity
         )
     }
 
     factory<ViewModelProvider.Factory> { (
         activity: FragmentActivity,
         fragment: Fragment,
-        args: Bundle?,
-    ),
+        args: Bundle?
+    )
         ->
         KoinViewModelFactory(
             scope = this,
             activity = activity,
             fragment = fragment,
-            args = args,
+            args = args
         )
     }
 
@@ -81,14 +81,14 @@ val appModule = module {
 
     single<ScheduleWorkManagerService> {
         DefaultScheduleWorkManagerService(
-            workManager = { get() },
+            workManager = { get() }
         )
     }
 
     single<CameraRepository> {
         JetpackCameraRepository(
             context = get(),
-            imageRepository = get(),
+            imageRepository = get()
         )
     }
 
@@ -102,7 +102,7 @@ val appModule = module {
 
     single<DoorbellsDataSource> {
         DefaultDoorbellsDataSource(
-            doorbellRepository = get(),
+            doorbellRepository = get()
         )
     }
 
@@ -112,7 +112,7 @@ val appModule = module {
 
     single<ImagesDataSourceFactory> {
         ImagesDataSourceFactoryImpl(
-            doorbellRepository = get(),
+            doorbellRepository = get()
         )
     }
 
@@ -121,7 +121,7 @@ val appModule = module {
             context = get(),
             deviceInfoProvider = get(),
             cameraRepository = get(),
-            ipAddressProvider = get(),
+            ipAddressProvider = get()
         )
     }
 
@@ -129,7 +129,7 @@ val appModule = module {
         AppBackgroundServices(
             doorbellRepository = get(),
             thisDeviceRepository = get(),
-            scheduleWorkManagerService = get(),
+            scheduleWorkManagerService = get()
         )
     }
 }

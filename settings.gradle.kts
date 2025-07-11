@@ -49,5 +49,5 @@ include(
     ":ui:ui_image_details",
     ":ui:ui_image_list",
     ":ui:ui_permissions",
-    ":ui:ui_splash",
+    ":ui:ui_splash"
 )

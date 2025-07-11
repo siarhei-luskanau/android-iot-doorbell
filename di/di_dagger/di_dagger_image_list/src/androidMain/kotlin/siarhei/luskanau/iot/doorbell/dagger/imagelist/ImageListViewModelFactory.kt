@@ -10,19 +10,18 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 class ImageListViewModelFactory(
     private val commonComponent: CommonComponent,
     private val appNavigation: AppNavigation,
-    private val args: Bundle?,
+    private val args: Bundle?
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        when {
-            ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
-                doorbellId = "doorbellId",
-                appNavigation = appNavigation,
-                doorbellRepository = commonComponent.provideDoorbellRepository(),
-                imagesDataSourceFactory = commonComponent.provideImagesDataSourceFactory(),
-            )
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = when {
+        ImageListViewModel::class.java.isAssignableFrom(modelClass) -> ImageListViewModel(
+            doorbellId = "doorbellId",
+            appNavigation = appNavigation,
+            doorbellRepository = commonComponent.provideDoorbellRepository(),
+            imagesDataSourceFactory = commonComponent.provideImagesDataSourceFactory()
+        )
 
-            else -> modelClass.getConstructor().newInstance()
-        } as T
+        else -> modelClass.getConstructor().newInstance()
+    } as T
 }

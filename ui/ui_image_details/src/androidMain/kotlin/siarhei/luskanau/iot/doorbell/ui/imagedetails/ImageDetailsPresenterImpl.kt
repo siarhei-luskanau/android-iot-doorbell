@@ -9,14 +9,14 @@ import siarhei.luskanau.iot.doorbell.data.repository.DoorbellRepository
 class ImageDetailsPresenterImpl(
     private val doorbellId: String,
     private val imageId: String,
-    private val doorbellRepository: DoorbellRepository,
+    private val doorbellRepository: DoorbellRepository
 ) : ImageDetailsPresenter {
 
     override fun getImageDetailsStateFlow(): Flow<ImageDetailsState> = flowOf(Any())
         .map {
             val imageData = doorbellRepository.getImage(
                 doorbellId = doorbellId,
-                imageId = imageId,
+                imageId = imageId
             )
             NormalImageDetailsState(requireNotNull(imageData))
         }.catch {

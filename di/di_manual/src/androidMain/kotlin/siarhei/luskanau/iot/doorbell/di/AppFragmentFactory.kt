@@ -14,10 +14,8 @@ import siarhei.luskanau.iot.doorbell.ui.imagelist.ImageListViewModel
 import timber.log.Timber
 
 @Suppress("LongMethod")
-class AppFragmentFactory(
-    navHostController: NavHostController,
-    private val appModules: AppModules,
-) : FragmentFactory() {
+class AppFragmentFactory(navHostController: NavHostController, private val appModules: AppModules) :
+    FragmentFactory() {
 
     private val appNavigation by lazy { DefaultAppNavigation(navHostController) }
 
@@ -29,7 +27,7 @@ class AppFragmentFactory(
                     val viewModelFactory: ViewModelProvider.Factory = AppViewModelFactory(
                         appNavigation = appNavigation,
                         appModules = appModules,
-                        args = fragment.arguments,
+                        args = fragment.arguments
                     )
                     ViewModelProvider(fragment, viewModelFactory)[DoorbellListViewModel::class.java]
                 }
@@ -40,7 +38,7 @@ class AppFragmentFactory(
                     val viewModelFactory: ViewModelProvider.Factory = AppViewModelFactory(
                         appNavigation = appNavigation,
                         appModules = appModules,
-                        args = fragment.arguments,
+                        args = fragment.arguments
                     )
                     ViewModelProvider(fragment, viewModelFactory)[ImageListViewModel::class.java]
                 }
@@ -53,7 +51,7 @@ class AppFragmentFactory(
                     ImageDetailsPresenterImpl(
                         doorbellId = doorbellId,
                         imageId = imageId,
-                        doorbellRepository = appModules.doorbellRepository,
+                        doorbellRepository = appModules.doorbellRepository
                     )
                 }
             }

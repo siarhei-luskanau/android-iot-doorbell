@@ -6,7 +6,9 @@ import androidx.work.WorkerFactory
 import siarhei.luskanau.iot.doorbell.workmanager.WorkerFactoryProvider
 import timber.log.Timber
 
-class AppApplication : Application(), WorkerFactoryProvider {
+class AppApplication :
+    Application(),
+    WorkerFactoryProvider {
 
     private val diHolder by lazy {
         AppInitializer.getInstance(this).initializeComponent(DiInitializer::class.java)
@@ -24,6 +26,5 @@ class AppApplication : Application(), WorkerFactoryProvider {
         diHolder.onAppTrimMemory(this)
     }
 
-    override fun provideWorkerFactory(): WorkerFactory =
-        diHolder.provideWorkerFactory()
+    override fun provideWorkerFactory(): WorkerFactory = diHolder.provideWorkerFactory()
 }

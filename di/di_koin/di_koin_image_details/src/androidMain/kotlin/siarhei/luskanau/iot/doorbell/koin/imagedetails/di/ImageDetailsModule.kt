@@ -24,7 +24,7 @@ val imageDetailsModule = module {
         ImageDetailsPresenterImpl(
             doorbellId = doorbellId,
             imageId = imageId,
-            doorbellRepository = get(),
+            doorbellRepository = get()
         )
     }
 }

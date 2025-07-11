@@ -4,6 +4,8 @@ import android.content.Context
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import siarhei.luskanau.iot.doorbell.common.DeviceInfoProvider
@@ -11,8 +13,6 @@ import siarhei.luskanau.iot.doorbell.common.IpAddressProvider
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.repository.CameraRepository
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class AndroidThisDeviceRepositoryTest {
 
@@ -40,7 +40,7 @@ class AndroidThisDeviceRepositoryTest {
         context = context,
         deviceInfoProvider = deviceInfoProvider,
         cameraRepository = cameraRepository,
-        ipAddressProvider = ipAddressProvider,
+        ipAddressProvider = ipAddressProvider
     )
 
     @Test
@@ -49,7 +49,7 @@ class AndroidThisDeviceRepositoryTest {
             assertEquals(
                 expected = doorbellId,
                 actual = androidThisDeviceRepository.doorbellId(),
-                message = "should be the same doorbellI",
+                message = "should be the same doorbellI"
             )
         }
     }
@@ -64,7 +64,7 @@ class AndroidThisDeviceRepositoryTest {
             assertEquals(
                 expected = doorbellData,
                 actual = resultDoorbellData,
-                message = "should be the same DoorbellData",
+                message = "should be the same DoorbellData"
             )
         }
     }
@@ -77,7 +77,7 @@ class AndroidThisDeviceRepositoryTest {
             assertEquals(
                 expected = camerasList,
                 actual = resultCamerasList,
-                message = "should be the same list",
+                message = "should be the same list"
             )
         }
     }
@@ -90,7 +90,7 @@ class AndroidThisDeviceRepositoryTest {
             assertEquals(
                 expected = ipAddressList,
                 actual = resultIpAddressList,
-                message = "should be the same list",
+                message = "should be the same list"
             )
         }
     }

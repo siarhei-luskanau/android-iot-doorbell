@@ -1,12 +1,12 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.random.Random
 import kotlinx.coroutines.delay
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.random.Random
 
 @Suppress("TooManyFunctions")
 class StubDoorbellRepository : DoorbellRepository {
@@ -14,7 +14,7 @@ class StubDoorbellRepository : DoorbellRepository {
     override suspend fun getDoorbellsList(
         size: Int,
         startAt: String?,
-        orderAsc: Boolean,
+        orderAsc: Boolean
     ): List<DoorbellData> {
         delay()
         if (startAt != null && Random.nextInt(PERCENT_FULL) > PERCENT_ERROR) {
@@ -25,7 +25,7 @@ class StubDoorbellRepository : DoorbellRepository {
             startAt = startAt?.toInt(),
             orderAsc = orderAsc,
             minCount = MIN_COUNT,
-            maxCount = DOORBELL_MAX_COUNT,
+            maxCount = DOORBELL_MAX_COUNT
         )
         val list = mutableListOf<DoorbellData>()
         fromToPair?.let {
@@ -33,8 +33,8 @@ class StubDoorbellRepository : DoorbellRepository {
                 list.add(
                     DoorbellData(
                         doorbellId = "$i",
-                        name = "doorbell_$i",
-                    ),
+                        name = "doorbell_$i"
+                    )
                 )
             }
         }
@@ -45,7 +45,7 @@ class StubDoorbellRepository : DoorbellRepository {
         delay()
         return DoorbellData(
             doorbellId = doorbellId,
-            name = "doorbell_$doorbellId",
+            name = "doorbell_$doorbellId"
         )
     }
 
@@ -54,16 +54,16 @@ class StubDoorbellRepository : DoorbellRepository {
         return listOf(
             CameraData(
                 cameraId = "0",
-                name = "camera0",
+                name = "camera0"
             ),
             CameraData(
                 cameraId = "1",
-                name = "camera1",
+                name = "camera1"
             ),
             CameraData(
                 cameraId = "2",
-                name = "camera2",
-            ),
+                name = "camera2"
+            )
         )
     }
 
@@ -78,7 +78,7 @@ class StubDoorbellRepository : DoorbellRepository {
     override suspend fun sendCameraImageRequest(
         doorbellId: String,
         cameraId: String,
-        isRequested: Boolean,
+        isRequested: Boolean
     ) {
         delay()
     }
@@ -88,14 +88,11 @@ class StubDoorbellRepository : DoorbellRepository {
         return emptyMap()
     }
 
-    override suspend fun getImage(
-        doorbellId: String,
-        imageId: String,
-    ): ImageData {
+    override suspend fun getImage(doorbellId: String, imageId: String): ImageData {
         delay()
         return ImageData(
             imageId = imageId,
-            imageUri = imageUriList[imageId.toInt() % imageUriList.size],
+            imageUri = imageUriList[imageId.toInt() % imageUriList.size]
         )
     }
 
@@ -103,7 +100,7 @@ class StubDoorbellRepository : DoorbellRepository {
         doorbellId: String,
         size: Int,
         imageIdAt: String?,
-        orderAsc: Boolean,
+        orderAsc: Boolean
     ): List<ImageData> {
         delay()
         if (imageIdAt != null && Random.nextInt(PERCENT_FULL) > PERCENT_ERROR) {
@@ -114,7 +111,7 @@ class StubDoorbellRepository : DoorbellRepository {
             startAt = imageIdAt?.toInt(),
             orderAsc = orderAsc,
             minCount = MIN_COUNT,
-            maxCount = IMAGE_MAX_COUNT,
+            maxCount = IMAGE_MAX_COUNT
         )
         val list = mutableListOf<ImageData>()
         fromToPair?.let {
@@ -123,8 +120,8 @@ class StubDoorbellRepository : DoorbellRepository {
                     ImageData(
                         imageId = "$i",
                         imageUri = imageUriList[i % imageUriList.size],
-                        timestampString = "timestampString_$i",
-                    ),
+                        timestampString = "timestampString_$i"
+                    )
                 )
             }
         }
@@ -137,7 +134,7 @@ class StubDoorbellRepository : DoorbellRepository {
         startAt: Int?,
         orderAsc: Boolean,
         minCount: Int,
-        maxCount: Int,
+        maxCount: Int
     ): Pair<Int, Int>? {
         startAt?.let { startAtInt ->
             if (orderAsc && startAtInt >= maxCount - 1) {

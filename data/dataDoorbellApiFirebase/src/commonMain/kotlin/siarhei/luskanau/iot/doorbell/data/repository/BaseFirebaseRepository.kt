@@ -16,11 +16,9 @@ open class BaseFirebaseRepository {
         dev.gitlive.firebase.Firebase.storage(dev.gitlive.firebase.Firebase.app)
     }
 
-    protected fun getAppDatabase() =
-        firebaseDatabase.reference(DOORBELL_APP_KEY)
+    protected fun getAppDatabase() = firebaseDatabase.reference(DOORBELL_APP_KEY)
 
-    protected fun getAppStorage() =
-        firebaseStorage.reference(DOORBELL_APP_KEY)
+    protected fun getAppStorage() = firebaseStorage.reference(DOORBELL_APP_KEY)
 
     companion object {
         internal const val DOORBELL_APP_KEY = "doorbell_app"
