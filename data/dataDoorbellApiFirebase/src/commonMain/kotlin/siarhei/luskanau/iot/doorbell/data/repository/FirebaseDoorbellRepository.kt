@@ -1,9 +1,10 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
 import dev.gitlive.firebase.database.Query
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.CameraInfoData
 import siarhei.luskanau.iot.doorbell.data.model.CameraxInfoData
@@ -11,6 +12,7 @@ import siarhei.luskanau.iot.doorbell.data.model.DoorbellData
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.data.model.SizeData
 
+@OptIn(ExperimentalTime::class)
 class FirebaseDoorbellRepository :
     BaseFirebaseRepository(),
     DoorbellRepository {
