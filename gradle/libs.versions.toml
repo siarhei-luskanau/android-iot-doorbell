@@ -1,5 +1,5 @@
 [versions]
-agp = "8.13.0"
+agp = "8.13.1"
 android-build-compileSdk = "36"
 android-build-minSdk = "26"
 android-build-targetSdk = "36"
