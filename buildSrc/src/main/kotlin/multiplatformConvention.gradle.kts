@@ -108,3 +108,7 @@ android {
         add("META-INF/com.google.dagger_dagger.version")
     }
 }
+
+tasks.withType<AbstractTestTask>().configureEach {
+    failOnNoDiscoveredTests = false
+}
