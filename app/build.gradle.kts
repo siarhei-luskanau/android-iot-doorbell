@@ -40,9 +40,6 @@ android {
         sourceCompatibility = JavaVersion.valueOf(libs.versions.build.javaVersion.get())
         targetCompatibility = JavaVersion.valueOf(libs.versions.build.javaVersion.get())
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.build.jvmTarget.get()
-    }
 
     testOptions.configureAndroidTestOptions()
 }
