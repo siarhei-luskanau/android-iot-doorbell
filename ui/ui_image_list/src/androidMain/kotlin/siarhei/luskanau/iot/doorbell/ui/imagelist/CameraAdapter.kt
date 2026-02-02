@@ -2,26 +2,27 @@ package siarhei.luskanau.iot.doorbell.ui.imagelist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
+import siarhei.luskanau.iot.doorbell.ui.common.R
 import siarhei.luskanau.iot.doorbell.ui.common.adapter.BaseRecyclerClickableListAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.adapter.BindingViewHolder
-import siarhei.luskanau.iot.doorbell.ui.common.databinding.ViewItemCameraBinding
 
 class CameraAdapter :
-    BaseRecyclerClickableListAdapter<CameraData, ViewItemCameraBinding>(
+    BaseRecyclerClickableListAdapter<CameraData>(
         DIFF_CALLBACK
     ) {
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
         viewType: Int
-    ): BindingViewHolder<ViewItemCameraBinding> =
-        BindingViewHolder(ViewItemCameraBinding.inflate(inflater, parent, false))
+    ): BindingViewHolder =
+        BindingViewHolder(inflater.inflate(R.layout.view_item_camera, parent, false))
 
-    override fun onBindViewHolder(holder: BindingViewHolder<ViewItemCameraBinding>, position: Int) {
+    override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         getItem(position).let { item ->
-            holder.binding.name.text = item.name ?: run { item.cameraId }
+            holder.itemView.findViewById<TextView>(R.id.name).text = item.name ?: item.cameraId
         }
     }
 

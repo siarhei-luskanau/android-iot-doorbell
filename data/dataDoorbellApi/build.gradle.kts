@@ -2,14 +2,12 @@ plugins {
     multiplatformConvention
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.data.repository"
-
 kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.data.repository"
+
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation(libs.gitlive.firebase.storage)
-            }
+        commonMain.dependencies {
+            implementation(libs.gitlive.firebase.storage)
         }
     }
 }

@@ -1,23 +1,15 @@
 plugins {
     multiplatformConvention
-    alias(libs.plugins.compose.screenshot)
-}
-
-android {
-    namespace = "siarhei.luskanau.iot.doorbell.ui.splash"
-    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "siarhei.luskanau.iot.doorbell.ui.splash"
+    }
+
     sourceSets {
-        val androidMain by getting {
-            dependencies {
-                implementation(project(":ui:ui_common"))
-            }
+        androidMain.dependencies {
+            implementation(project(":ui:ui_common"))
         }
     }
-}
-
-dependencies {
-    screenshotTestImplementation(libs.screenshot.validation.api)
 }

@@ -28,7 +28,10 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -74,6 +77,7 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(platform(libs.compose.bom))
     implementation(libs.compose.material)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.timber)
