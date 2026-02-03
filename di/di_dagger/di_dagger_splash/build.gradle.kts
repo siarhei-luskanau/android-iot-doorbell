@@ -1,5 +1,5 @@
 plugins {
-    multiplatformConvention
+    id("multiplatformConvention")
     id("com.google.devtools.ksp")
 }
 

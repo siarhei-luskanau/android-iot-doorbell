@@ -1,5 +1,5 @@
 plugins {
-    multiplatformConvention
+    id("multiplatformConvention")
     alias(libs.plugins.kotlinx.serialization)
 }
 
