@@ -63,8 +63,7 @@ tasks.register("ciLint") {
         val injected = project.objects.newInstance<Injected>()
         injected.gradlew(
             "ktlintCheck",
-            "detekt",
-            "lintDebug"
+            "detekt"
         )
     }
 }

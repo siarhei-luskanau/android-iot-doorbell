@@ -35,7 +35,24 @@ android {
         compose = true
     }
 
-    testOptions.configureAndroidTestOptions()
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            all { test: Test ->
+                test.testLogging {
+                    exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+                    events = org.gradle.api.tasks.testing.logging.TestLogEvent.entries.toSet()
+                }
+            }
+        }
+        animationsDisabled = true
+        EMULATOR_VERSIONS.forEach { version ->
+            managedDevices.localDevices.create("managedVirtualDevice$version") {
+                device = "Pixel 2"
+                apiLevel = version
+            }
+        }
+    }
 }
 
 kotlin {

@@ -36,8 +36,8 @@ class EmulatorJobsMatrix {
                         "${subProject.path}:managedVirtualDevice${version}DiManualDebugAndroidTest",
                     )
 
-                    File(subProject.projectDir, "src${File.separator}androidInstrumentedTest").exists() -> listOf(
-                        "${subProject.path}:managedVirtualDevice${version}DebugAndroidTest"
+                    File(subProject.projectDir, "src${File.separator}androidDeviceTest").exists() -> listOf(
+                        "${subProject.path}:managedVirtualDevice${version}AndroidDeviceTest"
                     )
 
                     else -> null

@@ -20,6 +20,7 @@ coil = "2.7.0"
 compose-multiplatform = "1.10.0"
 dagger = "2.59.1"
 detekt = "1.23.8"
+firebase-bom = "33.10.0"
 gitlive-firebase = "2.4.0"
 google-ksp = "2.3.5"
 google-services = "4.4.4"
@@ -68,6 +69,7 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "androidx-test-espresso" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
 espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "androidx-test-espresso" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 gitlive-firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "gitlive-firebase" }
 gitlive-firebase-storage = { module = "dev.gitlive:firebase-storage", version.ref = "gitlive-firebase" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
@@ -104,7 +106,6 @@ zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }

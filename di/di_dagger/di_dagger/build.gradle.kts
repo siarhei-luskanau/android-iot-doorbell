@@ -2,9 +2,9 @@ plugins {
     id("multiplatformConvention")
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.di.dagger"
-
 kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.di.dagger"
+
     sourceSets {
         androidMain.dependencies {
             implementation(project(":base_camera"))

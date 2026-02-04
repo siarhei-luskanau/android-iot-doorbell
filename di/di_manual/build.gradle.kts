@@ -2,9 +2,9 @@ plugins {
     id("multiplatformConvention")
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.di.manual"
-
 kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.di.manual"
+
     sourceSets {
         androidMain.dependencies {
             implementation(project(":base_android"))

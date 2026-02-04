@@ -3,9 +3,9 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.data.firebase"
-
 kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.data.firebase"
+
     sourceSets {
         commonMain.dependencies {
             implementation(libs.gitlive.firebase.database)

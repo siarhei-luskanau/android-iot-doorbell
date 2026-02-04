@@ -3,9 +3,9 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.dagger.imagedetails"
-
 kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.dagger.imagedetails"
+
     sourceSets {
         androidMain.dependencies {
             implementation(project(":common:common"))
