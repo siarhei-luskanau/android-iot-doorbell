@@ -3,9 +3,9 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.dagger.common"
-
 kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.dagger.common"
+
     sourceSets {
         commonMain.dependencies {
             implementation(libs.androidx.paging.compose)

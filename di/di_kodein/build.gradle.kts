@@ -2,9 +2,9 @@ plugins {
     id("multiplatformConvention")
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.di.kodein"
-
 kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.di.kodein"
+
     sourceSets {
         commonMain.dependencies {
             implementation(libs.androidx.paging.compose)

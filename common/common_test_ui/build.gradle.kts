@@ -2,4 +2,6 @@ plugins {
     id("multiplatformConvention")
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.common.test.ui"
+kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.common.test.ui"
+}

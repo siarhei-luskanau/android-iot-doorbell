@@ -2,9 +2,9 @@ plugins {
     id("multiplatformConvention")
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.workmanager"
-
 kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.workmanager"
+
     sourceSets {
         androidMain.dependencies {
             implementation(project(":common:common"))

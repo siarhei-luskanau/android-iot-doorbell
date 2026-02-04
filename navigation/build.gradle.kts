@@ -3,9 +3,9 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
 }
 
-android.namespace = "siarhei.luskanau.iot.doorbell.navigation"
-
 kotlin {
+    androidLibrary.namespace = "siarhei.luskanau.iot.doorbell.navigation"
+
     sourceSets {
         androidMain.dependencies {
             implementation(project(":common:common"))
