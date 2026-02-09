@@ -80,14 +80,6 @@ tasks.register("ciUnitTest") {
     }
 }
 
-tasks.register("ciRecordScreenshots") {
-    group = CI_GRADLE
-    doLast {
-        val injected = project.objects.newInstance<Injected>()
-        injected.gradlew("updateDebugScreenshotTest")
-    }
-}
-
 tasks.register("ciBuildApp") {
     group = CI_GRADLE
     doLast {
@@ -138,7 +130,6 @@ tasks.register("devAll") {
         injected.gradlew(
             "ciLint",
             "ciUnitTest",
-            "ciRecordScreenshots",
             "ciBuildApp",
             "assembleAndroidTest"
         )
