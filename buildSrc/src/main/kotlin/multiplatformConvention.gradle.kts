@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 val libs = project.extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 plugins {
@@ -10,55 +8,35 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        compilations.all {
-            compileTaskProvider {
-                compilerOptions {
-                    jvmTarget.set(
-                        JvmTarget.fromTarget(
-                            libs.findVersion("build-jvmTarget").get().requiredVersion
-                        )
-                    )
-                    freeCompilerArgs.add(
-                        "-Xjdk-release=${JavaVersion.valueOf(
-                            libs.findVersion("build-javaVersion").get().requiredVersion
-                        )}"
-                    )
-                }
-            }
-        }
-    }
+    jvmToolchain(libs.findVersion("javaVersion").get().requiredVersion.toInt())
+
+    androidTarget()
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-            }
+        commonMain.dependencies {
+                implementation(libs.findLibrary("jetbrains-compose-animation").get())
+                implementation(libs.findLibrary("jetbrains-compose-animation-graphics").get())
+                implementation(libs.findLibrary("jetbrains-compose-components-resources").get())
+                implementation(libs.findLibrary("jetbrains-compose-foundation").get())
+                implementation(libs.findLibrary("jetbrains-compose-material3").get())
+                implementation(libs.findLibrary("jetbrains-compose-runtime").get())
+                implementation(libs.findLibrary("jetbrains-compose-ui").get())
+                implementation(libs.findLibrary("jetbrains-compose-ui-tooling-preview").get())
+                implementation(libs.findLibrary("jetbrains-lifecycle-viewmodel-compose").get())
+                implementation(libs.findLibrary("jetbrains-navigation-compose").get())
         }
-        val commonTest by getting {
-            dependencies {
-            }
+    commonTest.dependencies {
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(compose.components.resources)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.runtime)
-                implementation(compose.ui)
+        androidMain.dependencies {
                 implementation(libs.findLibrary("android-material").get())
                 implementation(libs.findLibrary("androidx-activity-compose").get())
                 implementation(libs.findLibrary("androidx-activity-ktx").get())
                 implementation(libs.findLibrary("androidx-tracing").get())
                 implementation(libs.findLibrary("coil-compose").get())
-                implementation(libs.findLibrary("compose-material").get())
-                implementation(libs.findLibrary("compose-ui-tooling").get())
-                implementation(libs.findLibrary("jetbrains-lifecycle-viewmodel-compose").get())
-                implementation(libs.findLibrary("jetbrains-navigation-compose").get())
-            }
         }
         val androidUnitTest by getting {
             dependencies {
-                implementation(libs.findLibrary("androidx-paging-testing").get())
+                //implementation(libs.findLibrary("androidx-paging-testing").get())
                 implementation(libs.findLibrary("espresso-core").get())
                 implementation(libs.findLibrary("kotlin-test").get())
                 implementation(libs.findLibrary("kotlinx-coroutines-test").get())
@@ -67,9 +45,9 @@ kotlin {
         }
         val androidInstrumentedTest by getting {
             dependencies {
+                implementation(libs.findLibrary("compose-ui-test-junit4").get())
                 implementation(libs.findLibrary("espresso-core").get())
                 implementation(libs.findLibrary("kotlin-test").get())
-                implementation(libs.findLibrary("compose-ui-test-junit4").get())
             }
         }
     }
@@ -89,24 +67,9 @@ android {
         compose = true
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.valueOf(
-            libs.findVersion("build-javaVersion").get().requiredVersion,
-        )
-        targetCompatibility = JavaVersion.valueOf(
-            libs.findVersion("build-javaVersion").get().requiredVersion,
-        )
-    }
-
     testOptions.configureAndroidTestOptions()
 
-    packagingOptions.resources.excludes.apply {
-        add("META-INF/AL2.0")
-        add("META-INF/LGPL2.1")
-        add("META-INF/LICENSE-notice.md")
-        add("META-INF/LICENSE.md")
-        add("META-INF/com.google.dagger_dagger.version")
-    }
+    packaging.resources.excludes.add("META-INF/**")
 }
 
 tasks.withType<AbstractTestTask>().configureEach {

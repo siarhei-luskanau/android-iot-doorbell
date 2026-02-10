@@ -28,7 +28,6 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 
@@ -36,12 +35,11 @@ android {
         compose = true
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.valueOf(libs.versions.build.javaVersion.get())
-        targetCompatibility = JavaVersion.valueOf(libs.versions.build.javaVersion.get())
-    }
-
     testOptions.configureAndroidTestOptions()
+}
+
+kotlin {
+    jvmToolchain(libs.versions.javaVersion.get().toInt())
 }
 
 dependencies {
@@ -74,7 +72,7 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.compose.material)
+    implementation(libs.jetbrains.compose.material3)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.timber)
 

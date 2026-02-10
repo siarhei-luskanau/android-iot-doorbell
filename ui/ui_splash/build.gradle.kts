@@ -8,10 +8,8 @@ android {
 
 kotlin {
     sourceSets {
-        val androidMain by getting {
-            dependencies {
-                implementation(project(":ui:ui_common"))
-            }
+        androidMain.dependencies {
+            implementation(project(":ui:ui_common"))
         }
     }
 }
