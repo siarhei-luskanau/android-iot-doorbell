@@ -2,29 +2,28 @@ package siarhei.luskanau.iot.doorbell.ui.imagelist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import coil.load
 import siarhei.luskanau.iot.doorbell.data.model.ImageData
 import siarhei.luskanau.iot.doorbell.ui.common.R
 import siarhei.luskanau.iot.doorbell.ui.common.adapter.BaseRecyclerClickablePagingAdapter
 import siarhei.luskanau.iot.doorbell.ui.common.adapter.BindingViewHolder
-import siarhei.luskanau.iot.doorbell.ui.common.databinding.ViewItemImageBinding
 
-class ImageAdapter :
-    BaseRecyclerClickablePagingAdapter<ImageData, ViewItemImageBinding>(
-        DIFF_CALLBACK
-    ) {
+class ImageAdapter : BaseRecyclerClickablePagingAdapter<ImageData>(DIFF_CALLBACK) {
+
     override fun onCreateViewHolder(
         inflater: LayoutInflater,
         parent: ViewGroup,
         viewType: Int
-    ): BindingViewHolder<ViewItemImageBinding> =
-        BindingViewHolder(ViewItemImageBinding.inflate(inflater, parent, false))
+    ): BindingViewHolder =
+        BindingViewHolder(inflater.inflate(R.layout.view_item_image, parent, false))
 
-    override fun onBindViewHolder(holder: BindingViewHolder<ViewItemImageBinding>, position: Int) {
+    override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         getItem(position)?.let { item ->
-            holder.binding.name.text = item.imageUri
-            holder.binding.imageView.load(item.imageUri) {
+            holder.itemView.findViewById<TextView>(R.id.name).text = item.imageUri
+            holder.itemView.findViewById<ImageView>(R.id.imageView).load(item.imageUri) {
                 placeholder(R.drawable.ic_image)
             }
         }
