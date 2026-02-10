@@ -21,6 +21,11 @@ plugins {
 allprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    ktlint {
+        filter {
+            exclude { element -> element.file.path.contains("/build/generated/") }
+        }
+    }
 }
 
 kover {
