@@ -1,1 +1,0 @@
-val EMULATOR_VERSIONS = listOf(27, 29, 31, 34, 36)

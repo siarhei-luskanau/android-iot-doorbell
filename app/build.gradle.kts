@@ -45,7 +45,7 @@ android {
             }
         }
         animationsDisabled = true
-        EMULATOR_VERSIONS.forEach { version ->
+        libs.versions.android.emulators.get().split(",").map { it.toInt() }.forEach { version ->
             managedDevices.localDevices.create("managedVirtualDevice$version") {
                 device = "Pixel 2"
                 apiLevel = version

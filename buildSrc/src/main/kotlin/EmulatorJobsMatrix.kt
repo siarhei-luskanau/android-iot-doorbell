@@ -12,8 +12,8 @@ class EmulatorJobsMatrix {
             .create()
     }
 
-    fun createMatrixJsonFile(rootProject: Project) {
-        val map = getTaskList(rootProject = rootProject).map {
+    fun createMatrixJsonFile(rootProject: Project, androidEmulators: List<Int>) {
+        val map = getTaskList(rootProject = rootProject, androidEmulators = androidEmulators).map {
             mapOf(
                 "experimental" to it.contains("managedVirtualDevice37"),
                 "gradle_tasks" to it
@@ -25,9 +25,9 @@ class EmulatorJobsMatrix {
         File(rootProject.layout.buildDirectory.asFile.get(), "emulator_jobs_matrix.json").writeText(jsonText)
     }
 
-    fun getTaskList(rootProject: Project): List<String> =
+    fun getTaskList(rootProject: Project, androidEmulators: List<Int>): List<String> =
         rootProject.subprojects.flatMap { subProject ->
-            EMULATOR_VERSIONS.mapNotNull { version ->
+            androidEmulators.mapNotNull { version ->
                 when {
                     ":app" == subProject.path -> listOf(
                         "${subProject.path}:managedVirtualDevice${version}DiDaggerDebugAndroidTest",

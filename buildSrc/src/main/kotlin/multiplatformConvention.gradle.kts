@@ -23,12 +23,14 @@ kotlin {
         }.configure {
             instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             animationsDisabled = true
-            EMULATOR_VERSIONS.forEach { version ->
-                managedDevices.localDevices.create("managedVirtualDevice$version") {
-                    device = "Pixel 2"
-                    apiLevel = version
+            libs.findVersion("android-emulators").get().requiredVersion
+                .split(",").map { it.toInt() }
+                .forEach { version ->
+                    managedDevices.localDevices.create("managedVirtualDevice$version") {
+                        device = "Pixel 2"
+                        apiLevel = version
+                    }
                 }
-            }
         }
 
         packaging.resources.excludes.add("META-INF/**")

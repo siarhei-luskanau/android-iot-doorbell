@@ -95,7 +95,11 @@ tasks.register("ciBuildApp") {
 tasks.register("ciEmulatorJobsMatrixSetup") {
     group = CI_GRADLE
     doLast {
-        EmulatorJobsMatrix().createMatrixJsonFile(rootProject = rootProject)
+        val androidEmulators = libs.versions.android.emulators.get().split(",").map { it.toInt() }
+        EmulatorJobsMatrix().createMatrixJsonFile(
+            rootProject = rootProject,
+            androidEmulators = androidEmulators
+        )
     }
 }
 
@@ -149,8 +153,9 @@ tasks.register("devAllEmulator") {
             "ciEmulatorJobsMatrixSetup"
         )
         injected.gradlew("cleanManagedDevices", "--unused-only")
+        val androidEmulators = libs.versions.android.emulators.get().split(",").map { it.toInt() }
         EmulatorJobsMatrix()
-            .getTaskList(rootProject = rootProject)
+            .getTaskList(rootProject = rootProject, androidEmulators = androidEmulators)
             .map { it.split(" ") }
             .forEach { tasks -> injected.gradlew(*tasks.toTypedArray()) }
         injected.gradlew("cleanManagedDevices")
