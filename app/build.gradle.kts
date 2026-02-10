@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application")
-    kotlin("plugin.compose")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -83,7 +83,6 @@ dependencies {
     implementation(project(":ui:ui_splash"))
 
     debugImplementation(libs.leakcanary.android)
-    implementation(libs.android.material)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.startup.runtime)
