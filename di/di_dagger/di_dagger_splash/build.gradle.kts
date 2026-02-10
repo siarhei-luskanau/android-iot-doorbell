@@ -1,6 +1,6 @@
 plugins {
     id("multiplatformConvention")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.google.ksp)
 }
 
 kotlin {

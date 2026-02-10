@@ -1,6 +1,7 @@
 rootProject.name = "Doorbell"
 
 pluginManagement {
+    includeBuild("convention-plugin-multiplatform")
     repositories {
         google()
         gradlePluginPortal()

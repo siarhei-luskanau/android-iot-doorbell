@@ -11,6 +11,8 @@ System.getProperties().forEach { (key, value) -> println("System.getProperties()
 System.getenv().forEach { (key, value) -> println("System.getenv(): $key=$value") }
 
 plugins {
+    alias(libs.plugins.android.application).apply(false)
+    alias(libs.plugins.compose.compiler).apply(false)
     alias(libs.plugins.detekt)
     alias(libs.plugins.google.ksp) apply false
     alias(libs.plugins.google.services) apply false
