@@ -91,7 +91,7 @@ tasks.register("ciUnitTest") {
             "clean",
             "koverXmlReport",
             "koverHtmlReport",
-            "koverVerify",
+            "koverVerify"
         )
     }
 }
