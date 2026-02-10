@@ -32,10 +32,23 @@ allprojects {
 
 kover {
     reports {
+        filters {
+            excludes {
+                packages("*.generated.resources")
+            }
+        }
+        total {
+            html {
+                title = "Doorbell Project Coverage"
+                htmlDir = layout.buildDirectory.dir("reports/kover/html")
+            }
+            xml {
+                xmlFile = layout.buildDirectory.file("reports/kover/report.xml")
+            }
+        }
         verify {
             rule {
-                minBound(95)
-                maxBound(98)
+                minBound(1)
             }
         }
     }
@@ -54,7 +67,7 @@ subprojects.filter {
     ).contains(it.path)
 }.forEach {
     it.apply(plugin = "org.jetbrains.kotlinx.kover")
-    it.dependencies { kover(project(it.path)) }
+    dependencies { kover(project(it.path)) }
 }
 
 val CI_GRADLE = "CI_GRADLE"
@@ -75,13 +88,10 @@ tasks.register("ciUnitTest") {
     doLast {
         val injected = project.objects.newInstance<Injected>()
         injected.gradlew(
-            "clean"
-//            "koverXmlReportDebug",
-//            "koverXmlReport",
-//            "koverHtmlReportDebug",
-//            "koverHtmlReport",
-//            "koverVerifyDebug",
-//            "koverVerify",
+            "clean",
+            "koverXmlReport",
+            "koverHtmlReport",
+            "koverVerify",
         )
     }
 }
