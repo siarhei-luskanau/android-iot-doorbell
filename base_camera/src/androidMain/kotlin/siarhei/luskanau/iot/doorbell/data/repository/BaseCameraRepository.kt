@@ -1,6 +1,5 @@
 package siarhei.luskanau.iot.doorbell.data.repository
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.ImageFormat
 import android.hardware.camera2.CameraCharacteristics
@@ -8,7 +7,7 @@ import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CameraMetadata
 import android.hardware.camera2.params.StreamConfigurationMap
 import android.util.Size
-import androidx.camera.camera2.internal.Camera2CameraInfoImpl
+import androidx.camera.camera2.interop.Camera2CameraInfo
 import androidx.camera.lifecycle.ProcessCameraProvider
 import siarhei.luskanau.iot.doorbell.data.model.CameraData
 import siarhei.luskanau.iot.doorbell.data.model.CameraInfoData
@@ -109,14 +108,11 @@ abstract class BaseCameraRepository(private val context: Context) : CameraReposi
             CameraInfoData(error = it.toString())
         }
 
-    @SuppressLint("RestrictedApi")
     private fun getCameraxInfo(cameraId: String): CameraxInfoData? = runCatching {
         ProcessCameraProvider.getInstance(context).get().availableCameraInfos
-            .map { it as Camera2CameraInfoImpl }
-            .firstOrNull { it.cameraId == cameraId }
-            ?.let { cameraInfo: Camera2CameraInfoImpl ->
+            .firstOrNull { Camera2CameraInfo.from(it).cameraId == cameraId }
+            ?.let { cameraInfo ->
                 CameraxInfoData(
-                    implementationType = cameraInfo.implementationType,
                     sensorRotationDegrees = cameraInfo.sensorRotationDegrees.toString(),
                     hasFlashUnit = cameraInfo.hasFlashUnit().toString(),
                     toString = cameraInfo.toString()
