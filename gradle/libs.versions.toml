@@ -1,8 +1,8 @@
 [versions]
-agp = "9.1.1"
-android-build-compileSdk = "36"
+agp = "9.2.0"
+android-build-compileSdk = "37"
 android-build-minSdk = "26"
-android-build-targetSdk = "36"
+android-build-targetSdk = "37"
 android-emulators = "27,29,31,34,36"
 android-material = "1.13.0"
 androidx-activity = "1.13.0"
