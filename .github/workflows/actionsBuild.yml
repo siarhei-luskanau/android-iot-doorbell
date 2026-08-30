@@ -42,6 +42,7 @@ jobs:
 
 
   jobUnitTest:
+    needs: jobLint
     runs-on: ubuntu-latest
     steps:
 
@@ -60,6 +61,7 @@ jobs:
 
 
   jobBuildApp:
+    needs: jobLint
     runs-on: ubuntu-latest
     steps:
 
@@ -77,6 +79,7 @@ jobs:
 
 
   jobEmulatorMatrixSetup:
+    needs: jobBuildApp
     runs-on: ubuntu-latest
     outputs:
       emulator_jobs_matrix: ${{ steps.dataStep.outputs.emulator_jobs_matrix }}
